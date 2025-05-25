@@ -41,7 +41,7 @@ async function bootstrap() {
   app.enableVersioning({
     type: VersioningType.URI,
   });
-  // app.setGlobalPrefix('api');
+  app.setGlobalPrefix('api');
 
   // Start the server
   const port = process.env.PORT || 3000;
