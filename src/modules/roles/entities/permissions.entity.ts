@@ -6,7 +6,7 @@ export class Permission {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true, length: 100 })
+  @Column({ unique: true, length: 100, })
   name: string;
 
   @Column({ type: 'text', nullable: true })
