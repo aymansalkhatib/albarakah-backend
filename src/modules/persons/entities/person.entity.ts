@@ -41,12 +41,6 @@ export class Person {
   @Column({ length: 100, name: 'last_name' })
   lastName: string;
 
-  @ManyToOne(() => Person, { nullable: true, onDelete: 'SET NULL' })
-  father: Person;
-
-  @ManyToOne(() => Person, { nullable: true, onDelete: 'SET NULL' })
-  mother: Person;
-
   @Column({ type: 'date', nullable: true, name: 'birth_date' })
   birthDate: Date;
 
@@ -77,37 +71,17 @@ export class Person {
   @Column({ type: 'boolean', default: false, name: 'is_smoker' })
   isSmoker: boolean;
 
-  @ManyToOne(() => DropdownOption, { nullable: true, onDelete: 'SET NULL', eager: true })
-  @JoinColumn({ name: 'health_status_id' })
-  healthStatus: DropdownOption;
-
   @Column({ name: 'health_status_id', nullable: true })
   healthStatusId: number;
-
-  @ManyToOne(() => DropdownOption, { nullable: true, onDelete: 'SET NULL', eager: true })
-  @JoinColumn({ name: 'education_level_id' })
-  educationLevel: DropdownOption;
 
   @Column({ name: 'education_level_id', nullable: true })
   educationLevelId: number;
 
-  @ManyToOne(() => DropdownOption, { nullable: true, onDelete: 'SET NULL', eager: true })
-  @JoinColumn({ name: 'school_type_id' })
-  schoolType: DropdownOption;
-
   @Column({ name: 'school_type_id', nullable: true })
   schoolTypeId: number;
 
-  @ManyToOne(() => DropdownOption, { nullable: true, onDelete: 'SET NULL', eager: true })
-  @JoinColumn({ name: 'person_status_id' })
-  personStatus: DropdownOption;
-
   @Column({ name: 'person_status_id', nullable: true })
   personStatusId: number;
-
-  @ManyToOne(() => DropdownOption, { nullable: true, onDelete: 'SET NULL', eager: true })
-  @JoinColumn({ name: 'marital_status_id' })
-  maritalStatus: DropdownOption;
 
   @Column({ name: 'marital_status_id', nullable: true })
   maritalStatusId: number;
@@ -147,4 +121,32 @@ export class Person {
 
   @DeleteDateColumn({ type: 'timestamp', name: 'deleted_at', nullable: true })
   deletedAt?: Date;
+
+  @ManyToOne(() => Person, { nullable: true, onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'father_id' })
+  father?: Person;
+
+  @ManyToOne(() => Person, { nullable: true, onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'mother_id' })
+  mother?: Person;
+
+  @ManyToOne(() => DropdownOption, { nullable: true, onDelete: 'SET NULL', eager: true })
+  @JoinColumn({ name: 'education_level_id' })
+  educationLevel: DropdownOption;
+
+  @ManyToOne(() => DropdownOption, { nullable: true, onDelete: 'SET NULL', eager: true })
+  @JoinColumn({ name: 'marital_status_id' })
+  maritalStatus: DropdownOption;
+
+  @ManyToOne(() => DropdownOption, { nullable: true, onDelete: 'SET NULL', eager: true })
+  @JoinColumn({ name: 'person_status_id' })
+  personStatus: DropdownOption;
+
+  @ManyToOne(() => DropdownOption, { nullable: true, onDelete: 'SET NULL', eager: true })
+  @JoinColumn({ name: 'school_type_id' })
+  schoolType: DropdownOption;
+
+  @ManyToOne(() => DropdownOption, { nullable: true, onDelete: 'SET NULL', eager: true })
+  @JoinColumn({ name: 'health_status_id' })
+  healthStatus: DropdownOption;
 }

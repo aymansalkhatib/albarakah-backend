@@ -17,9 +17,6 @@ export class DropdownCategory {
   @Column({ type: 'int', name: 'parent_id', nullable: true })
   parentId?: number;
 
-  @OneToMany(() => DropdownCategory, (category) => category.parent)
-  children: DropdownCategory[];
-
   @Column({ length: 200 })
   name: string;
 
@@ -29,6 +26,9 @@ export class DropdownCategory {
   @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
   updatedAt: Date;
 
+  @OneToMany(() => DropdownCategory, (category) => category.parent)
+  children: DropdownCategory[];
+  
   @ManyToOne(() => DropdownCategory, (category) => category.children, {
     nullable: true,
     onDelete: 'RESTRICT',
