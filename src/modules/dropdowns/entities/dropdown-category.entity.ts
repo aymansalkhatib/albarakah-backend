@@ -14,13 +14,6 @@ export class DropdownCategory {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => DropdownCategory, (category) => category.children, {
-    nullable: true,
-    onDelete: 'RESTRICT',
-  })
-  @JoinColumn({ name: 'parent_id' })
-  parent?: DropdownCategory;
-
   @Column({ type: 'int', name: 'parent_id', nullable: true })
   parentId?: number;
 
@@ -35,4 +28,11 @@ export class DropdownCategory {
 
   @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
   updatedAt: Date;
+
+  @ManyToOne(() => DropdownCategory, (category) => category.children, {
+    nullable: true,
+    onDelete: 'RESTRICT',
+  })
+  @JoinColumn({ name: 'parent_id' })
+  parent?: DropdownCategory;
 }
