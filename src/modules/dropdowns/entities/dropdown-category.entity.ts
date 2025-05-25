@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
   ManyToOne,
   OneToMany,
+  JoinColumn,
 } from 'typeorm';
 
 @Entity('dropdown_category')
@@ -14,10 +15,14 @@ export class DropdownCategory {
   id: number;
 
   @ManyToOne(() => DropdownCategory, (category) => category.children, {
-    nullable: false,
+    nullable: true,
     onDelete: 'RESTRICT',
   })
+  @JoinColumn({ name: 'parent_id' })
   parent?: DropdownCategory;
+
+  @Column({ type: 'int', name: 'parent_id', nullable: true })
+  parentId?: number;
 
   @OneToMany(() => DropdownCategory, (category) => category.parent)
   children: DropdownCategory[];
@@ -25,9 +30,9 @@ export class DropdownCategory {
   @Column({ length: 200 })
   name: string;
 
-  @CreateDateColumn({ type: 'timestamp' })
-  created_at: Date;
+  @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
+  createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamp' })
-  updated_at: Date;
+  @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
+  updatedAt: Date;
 }
