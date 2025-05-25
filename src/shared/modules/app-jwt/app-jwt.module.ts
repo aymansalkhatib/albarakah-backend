@@ -5,8 +5,8 @@ import { EnvironmentConfig } from 'src/shared/modules/app-config/env.schema';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { AppJwtService } from './app-jwt.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from 'src/modules/users/entities/base/user.entity';
-import { Session } from 'src/modules/auth/session.entity';
+// import { User } from 'src/modules/users/entities/base/user.entity';
+// import { Session } from 'src/modules/auth/session.entity';
 
 /**
  * Module for JWT authentication and authorization
@@ -15,7 +15,7 @@ import { Session } from 'src/modules/auth/session.entity';
 @Global()
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Session]),
+    // TypeOrmModule.forFeature([User, Session]),
     JwtModule.registerAsync({
       useFactory: async (configService: ConfigService<EnvironmentConfig>) => ({
         secret: configService.get('JWT_ACCESS_SECRET'),

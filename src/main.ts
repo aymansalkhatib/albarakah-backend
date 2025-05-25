@@ -6,6 +6,8 @@ import * as compression from 'compression';
 import { i18nValidationErrorFactory, I18nValidationExceptionFilter } from 'nestjs-i18n';
 
 async function bootstrap() {
+  process.removeAllListeners('warning');
+
   const app = await NestFactory.create(AppModule);
 
   // Enable CORS
@@ -39,7 +41,7 @@ async function bootstrap() {
   app.enableVersioning({
     type: VersioningType.URI,
   });
-  app.setGlobalPrefix('api');
+  // app.setGlobalPrefix('api');
 
   // Start the server
   const port = process.env.PORT || 3000;

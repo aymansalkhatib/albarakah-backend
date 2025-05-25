@@ -3,10 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EnvironmentConfig } from '../app-config/env.schema';
 import { Environment } from '../app-config/env.constant';
-import { User } from 'src/modules/users/entities/base/user.entity';
-import { Session } from 'src/modules/auth/session.entity';
 import { Client } from 'pg';
-console.log(__dirname + '/../**/*.entity{.ts,.js}');
 
 @Module({
   imports: [
