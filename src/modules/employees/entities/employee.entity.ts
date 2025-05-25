@@ -1,4 +1,5 @@
 import { Person } from 'src/modules/persons/entities/person.entity';
+import { UserAccount } from 'src/modules/users/entities/user-accounts.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -8,6 +9,7 @@ import {
   UpdateDateColumn,
   JoinColumn,
   DeleteDateColumn,
+  OneToOne,
 } from 'typeorm';
 
 @Entity('employees')
@@ -42,4 +44,7 @@ export class Employee {
   @ManyToOne(() => Person, { nullable: false, onDelete: 'RESTRICT' })
   @JoinColumn({ name: 'person_id' })
   person: Person;
+
+  @OneToOne(() => UserAccount, (userAccount) => userAccount.employee)
+  userAccount: UserAccount;
 }

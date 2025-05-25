@@ -22,7 +22,6 @@ export class DropdownOption {
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
 
-  // Define the many-to-one relationship with Dropdown
   @ManyToOne(() => Dropdown, (dropdown) => dropdown.options, {
     nullable: false,
     onDelete: 'RESTRICT',
