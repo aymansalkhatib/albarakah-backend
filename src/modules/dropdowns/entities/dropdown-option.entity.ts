@@ -15,6 +15,6 @@ export class DropdownOption {
   @Column({ length: 100 })
   name: string;
 
-  @CreateDateColumn({ type: 'timestamp' })
-  created_at: Date;
+  @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
+  createdAt: Date;
 }
