@@ -8,6 +8,7 @@ import {
   ManyToOne,
   Check,
   JoinColumn,
+  DeleteDateColumn,
 } from 'typeorm';
 import { DropdownOption } from '../../dropdowns/entities/dropdown-option.entity';
 
@@ -34,11 +35,11 @@ export class Person {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 100 })
-  first_name: string;
+  @Column({ length: 100, name: 'first_name' })
+  firstName: string;
 
-  @Column({ length: 100 })
-  last_name: string;
+  @Column({ length: 100, name: 'last_name' })
+  lastName: string;
 
   @ManyToOne(() => Person, { nullable: true, onDelete: 'SET NULL' })
   father: Person;
@@ -46,14 +47,14 @@ export class Person {
   @ManyToOne(() => Person, { nullable: true, onDelete: 'SET NULL' })
   mother: Person;
 
-  @Column({ type: 'date', nullable: true })
-  birth_date: Date;
+  @Column({ type: 'date', nullable: true, name: 'birth_date' })
+  birthDate: Date;
 
-  @Column({ length: 50, unique: true, nullable: true })
-  national_id: string;
+  @Column({ length: 50, unique: true, nullable: true, name: 'national_id' })
+  nationalId: string;
 
-  @Column({ type: 'boolean', default: false })
-  is_palestinian: boolean;
+  @Column({ type: 'boolean', default: false, name: 'is_palestinian' })
+  isPalestinian: boolean;
 
   @Column({ type: 'enum', enum: GenderType, nullable: true })
   gender: GenderType;
@@ -61,43 +62,58 @@ export class Person {
   @Column({ length: 100, nullable: true })
   nationality: string;
 
-  @Column({ length: 200, nullable: true })
-  birth_place: string;
+  @Column({ length: 200, nullable: true, name: 'birth_place' })
+  birthPlace: string;
 
-  @Column({ type: 'boolean', default: false })
-  is_employed: boolean;
+  @Column({ type: 'boolean', default: false, name: 'is_working' })
+  isWorking: boolean;
 
-  @Column({ length: 200, nullable: true })
-  current_job: string;
+  @Column({ length: 200, nullable: true, name: 'current_job' })
+  currentJob: string;
 
-  @Column({ type: 'text', nullable: true })
-  job_details: string;
+  @Column({ type: 'text', nullable: true, name: 'job_details' })
+  jobDetails: string;
 
-  @Column({ type: 'boolean', default: false })
-  is_smoker: boolean;
+  @Column({ type: 'boolean', default: false, name: 'is_smoker' })
+  isSmoker: boolean;
 
   @ManyToOne(() => DropdownOption, { nullable: true, onDelete: 'SET NULL', eager: true })
   @JoinColumn({ name: 'health_status_id' })
-  health_status: DropdownOption;
+  healthStatus: DropdownOption;
+
+  @Column({ name: 'health_status_id', nullable: true })
+  healthStatusId: number;
 
   @ManyToOne(() => DropdownOption, { nullable: true, onDelete: 'SET NULL', eager: true })
   @JoinColumn({ name: 'education_level_id' })
-  education_level: DropdownOption;
+  educationLevel: DropdownOption;
+
+  @Column({ name: 'education_level_id', nullable: true })
+  educationLevelId: number;
 
   @ManyToOne(() => DropdownOption, { nullable: true, onDelete: 'SET NULL', eager: true })
   @JoinColumn({ name: 'school_type_id' })
-  school_type: DropdownOption;
+  schoolType: DropdownOption;
+
+  @Column({ name: 'school_type_id', nullable: true })
+  schoolTypeId: number;
 
   @ManyToOne(() => DropdownOption, { nullable: true, onDelete: 'SET NULL', eager: true })
   @JoinColumn({ name: 'person_status_id' })
-  person_status: DropdownOption;
+  personStatus: DropdownOption;
+
+  @Column({ name: 'person_status_id', nullable: true })
+  personStatusId: number;
 
   @ManyToOne(() => DropdownOption, { nullable: true, onDelete: 'SET NULL', eager: true })
   @JoinColumn({ name: 'marital_status_id' })
-  marital_status: DropdownOption;
+  maritalStatus: DropdownOption;
 
-  @Column({ length: 150, nullable: true })
-  university_major: string;
+  @Column({ name: 'marital_status_id', nullable: true })
+  maritalStatusId: number;
+
+  @Column({ length: 150, nullable: true, name: 'university_major' })
+  universityMajor: string;
 
   @Column({ length: 255, unique: true, nullable: true })
   email: string;
@@ -109,22 +125,26 @@ export class Person {
   address: string;
 
   @Check(`"shoe_size" BETWEEN 16 AND 48`)
-  @Column({ type: 'int', nullable: true })
-  shoe_size: number;
+  @Column({ type: 'int', nullable: true, name: 'shoe_size' })
+  shoeSize: number;
 
   @Column({
     type: 'enum',
     enum: ClothingSize,
     nullable: true,
+    name: 'clothing_size',
   })
-  clothing_size: ClothingSize;
+  clothingSize: ClothingSize;
 
   @Column({ type: 'text', nullable: true })
   notes: string;
 
-  @CreateDateColumn({ type: 'timestamp' })
-  created_at: Date;
+  @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
+  createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamp' })
-  updated_at: Date;
+  @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
+  updatedAt: Date;
+
+  @DeleteDateColumn({ type: 'timestamp', name: 'deleted_at', nullable: true })
+  deletedAt?: Date;
 }
