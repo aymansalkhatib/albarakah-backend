@@ -4,14 +4,14 @@ import {
   DEFAULT_COMPRESSION_OPTIONS,
   FORMAT_PRIORITIES,
   SHARP_SUPPORTED_FORMATS,
-} from '../constants/file-validation.constants.ts.js';
-import { extractFileExtension } from './file-helper.functions.ts.js';
+} from '../constants/file-validation.constants';
+import { extractFileExtension } from './file-helper.functions';
 import {
   FileSizeUnit,
   ImageCompressionOptions,
   ImageDimensions,
   ImageFormat,
-} from '../types/index.js';
+} from '../types/index';
 
 /**
  * Optimizes an image by finding the best balance between quality and file size
@@ -69,16 +69,12 @@ async function findBestFormat(buffer: Buffer): Promise<ImageFormat> {
   const originalSize = buffer.length;
   const results = await Promise.all(
     FORMAT_PRIORITIES.map(async (format) => {
-      const converted = await sharp(buffer)
-        .toFormat(format, { quality: 80 })
-        .toBuffer();
+      const converted = await sharp(buffer).toFormat(format, { quality: 80 }).toBuffer();
       return { format, size: converted.length };
     }),
   );
 
-  const bestResult = results.reduce((best, current) =>
-    current.size < best.size ? current : best,
-  );
+  const bestResult = results.reduce((best, current) => (current.size < best.size ? current : best));
 
   return bestResult.size < originalSize ? bestResult.format : 'jpeg';
 }
@@ -154,9 +150,7 @@ async function compressImageIteratively({
   let currentQuality = initialQuality;
   const dimensions = await calculateOptimalDimensions(buffer, maxSize);
 
-  while (
-    needsCompression(currentBuffer.length, maxSize, currentQuality, minQuality)
-  ) {
+  while (needsCompression(currentBuffer.length, maxSize, currentQuality, minQuality)) {
     currentBuffer = await processImage(buffer, currentQuality, format, dimensions);
     currentQuality -= 5;
   }

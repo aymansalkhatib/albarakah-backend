@@ -22,9 +22,9 @@ import { AppJwtModule } from './shared/modules/app-jwt/app-jwt.module';
     AppLoggerModule,
     // NotificationModule,
     AppI18nModule,
-    AppTypeOrmModule,
-    AppStorageModule.register({ provider: 'local' }),
-    MailModule,
+    // AppTypeOrmModule,
+    // AppStorageModule.register({ provider: 'local' }),
+    // MailModule,
 
     // AppJwtModule,
     // AuthModule,
@@ -50,6 +50,6 @@ import { AppJwtModule } from './shared/modules/app-jwt/app-jwt.module';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    // consumer.apply(AppLoggerMiddleware).forRoutes('*all');
+    consumer.apply(AppLoggerMiddleware).forRoutes('*all');
   }
 }

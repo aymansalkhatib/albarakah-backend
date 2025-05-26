@@ -4,7 +4,7 @@ import * as bytes from 'bytes';
 import { isArrayOfFiles, isSingleFile, validateFileUpload } from '../functions/file-structure-checker';
 import { BadRequestException } from '@nestjs/common';
 import { formatBytes } from '../functions/format-bytes';
-import { extractFileExtension } from '../functions/file-helper.functions.ts';
+import { extractFileExtension } from '../functions/file-helper.functions';
 
 /**
  * Validates file sizes based on their type.

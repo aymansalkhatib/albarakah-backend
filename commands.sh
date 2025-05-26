@@ -10,3 +10,7 @@ $env:NODE_ENV
 
 # 3. Remove Environment Variable
 Remove-Item Env:NODE_ENV
+
+# 4. Update Packages 
+npx npm-check-updates -u
+npm install

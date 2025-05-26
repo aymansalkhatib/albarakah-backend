@@ -1,31 +1,29 @@
 import { DynamicModule, Module, Provider } from '@nestjs/common';
-import {
-  DEFAULT_COMPRESSION_OPTIONS,
-  DEFAULT_FILE_VALIDATION_OPTIONS,
-} from './constants/file-validation.constants.ts.js';
-import { STORAGE_CONSTANTS } from './constants/storage.constants.js';
-import { LocalStorageService } from './local-storage.service.js';
-import { ImageProcessingPipe } from './pipes/image-processing.pipe.js';
-import { CustomFileParsingPipe } from './pipes/parse-file.pipe.js';
+
 import {
   FileValidationOptions,
   ImageCompressionOptions,
   StorageConfig,
   StorageProvider,
 } from './types/index.js';
-import { SupabaseStorageService } from './supabase-storage.service.js';
-import { EnvironmentConfig } from '../app-config/env.schema.js';
 import { ConfigService } from '@nestjs/config';
+import { EnvironmentConfig } from '../app-config/env.schema';
+import {
+  DEFAULT_COMPRESSION_OPTIONS,
+  DEFAULT_FILE_VALIDATION_OPTIONS,
+} from './constants/file-validation.constants';
+import { STORAGE_CONSTANTS } from './constants/storage.constants';
+import { LocalStorageService } from './local-storage.service';
+import { ImageProcessingPipe } from './pipes/image-processing.pipe';
+import { CustomFileParsingPipe } from './pipes/parse-file.pipe';
+import { SupabaseStorageService } from './supabase-storage.service';
 
 @Module({})
 export class AppStorageModule {
   /**
    * Registers the storage module with the specified provider and configuration
    */
-  static register(config: {
-    provider: StorageProvider;
-    options?: StorageConfig;
-  }): DynamicModule {
+  static register(config: { provider: StorageProvider; options?: StorageConfig }): DynamicModule {
     const storageProvider = this.createStorageProvider(config);
     const commonProviders = this.createCommonProviders();
 
@@ -53,9 +51,7 @@ export class AppStorageModule {
           //-1
           supabaseConfig: {
             BASE_PATH: configService.get<string>('BASE_PATH'),
-            SUPABASE_SERVICE_ROLE_KEY: configService.get(
-              'SUPABASE_SERVICE_ROLE_KEY',
-            ),
+            SUPABASE_SERVICE_ROLE_KEY: configService.get('SUPABASE_SERVICE_ROLE_KEY'),
             SUPABASE_BUCKET: configService.get<string>('SUPABASE_BUCKET'),
             SUPABASE_URL: configService.get<string>('SUPABASE_URL'),
           },
@@ -76,17 +72,13 @@ export class AppStorageModule {
         switch (config.provider) {
           case 'local':
             if (!config.options.localConfig) {
-              throw new Error(
-                'Local configuration is required for local storage provider',
-              );
+              throw new Error('Local configuration is required for local storage provider');
             }
             return new LocalStorageService(config.options.localConfig);
 
           case 'supabase':
             if (!config.options.supabaseConfig) {
-              throw new Error(
-                'Supabase configuration is required for Supabase storage provider',
-              );
+              throw new Error('Supabase configuration is required for Supabase storage provider');
             }
             return new SupabaseStorageService(config.options.supabaseConfig);
           default:

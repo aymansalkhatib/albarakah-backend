@@ -9,8 +9,9 @@ import { Environment } from 'src/shared/modules/app-config/env.constant';
   imports: [
     I18nModule.forRoot({
       fallbackLanguage: 'en',
+
       loaderOptions: {
-        path: path.join(__dirname, '/translate/'),
+        path: path.join(__dirname, 'shared/modules/app-i18n/translate'),
         watch: process.env.NODE_ENV !== Environment.PRODUCTION,
       },
       resolvers: [
