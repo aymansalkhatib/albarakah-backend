@@ -3,13 +3,13 @@ import { CoreEntity } from '../../../shared/modules/app-type-orm/entities/core.e
 import { BeneficiaryFamily } from '../../beneficiary-families/entities/beneficiary-families.entity';
 import { EmergencyAidRequestStatus } from '../enums/emergency-aid-request-status.enum';
 
-@Entity('emergency_financial_aid')
+@Entity('emergency_aid_requests')
 @Index(['familyId'])
 @Index(['requestStatus'])
 @Index(['requestDate'])
 @Index(['disbursementDate'])
 @Index(['deletedAt'])
-export class EmergencyFinancialAid extends CoreEntity {
+export class EmergencyAidRequest extends CoreEntity {
   @Column({ name: 'family_id' })
   familyId: number;
 

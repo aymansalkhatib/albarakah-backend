@@ -15,6 +15,7 @@ import { Max } from 'class-validator';
 import { Guardian } from 'src/modules/guardians/entities/guardian.entity';
 import { Child } from './children.entity';
 import { CoreEntity } from 'src/shared/modules/app-type-orm/entities/core.entity';
+import { FamilyNeed } from 'src/modules/family-needs/entities/family-need.entity';
 
 @Entity('beneficiary_families')
 @Index(['guardianId', 'deletedAt'])
@@ -98,6 +99,11 @@ export class BeneficiaryFamily extends CoreEntity {
     cascade: ['insert', 'update'],
   })
   children: Child[];
+
+  @OneToMany(() => FamilyNeed, (need) => need.family, {
+    cascade: ['insert', 'update'],
+  })
+  needs: FamilyNeed[];
 
   get sponsoredChildrenCount(): number {
     return this.children?.filter((child) => child.isSponsored).length || 0;
