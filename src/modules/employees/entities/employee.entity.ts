@@ -10,9 +10,15 @@ import {
   JoinColumn,
   DeleteDateColumn,
   OneToOne,
+  Index,
 } from 'typeorm';
 
 @Entity('employees')
+@Index(['personId'], { unique: true, where: 'deleted_at IS NULL' })
+@Index(['position'])
+@Index(['hireDate'])
+@Index(['terminationDate'])
+@Index(['deletedAt'])
 export class Employee {
   @PrimaryGeneratedColumn()
   id: number;
@@ -45,6 +51,8 @@ export class Employee {
   @JoinColumn({ name: 'person_id' })
   person: Person;
 
-  @OneToOne(() => UserAccount, (userAccount) => userAccount.employee)
-  userAccount: UserAccount;
+  @OneToOne(() => UserAccount, (userAccount) => userAccount.employee, {
+    cascade: ['insert', 'update'],
+  })
+  userAccount?: UserAccount;
 }

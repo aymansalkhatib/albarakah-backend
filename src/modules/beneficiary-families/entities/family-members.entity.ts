@@ -18,6 +18,8 @@ import { BeneficiaryFamily } from './beneficiary-families.entity';
 @Index(['familyId', 'personId', 'relationType'], { unique: true, where: 'deleted_at IS NULL' })
 @Index(['familyId', 'relationType'])
 @Index(['personId'])
+@Index(['relationType'])
+@Index(['deletedAt'])
 export class FamilyMember {
   @PrimaryGeneratedColumn()
   id: number;
@@ -43,11 +45,13 @@ export class FamilyMember {
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: Date;
 
-  @ManyToOne(() => Person, { onDelete: 'CASCADE' })
+  // Relationships
+
+  @ManyToOne(() => Person, { onDelete: 'RESTRICT' })
   @JoinColumn({ name: 'person_id' })
   person: Person;
 
-  @ManyToOne(() => BeneficiaryFamily, (family) => family.members, { onDelete: 'CASCADE' })
+  @ManyToOne(() => BeneficiaryFamily, (family) => family.members, { onDelete: 'RESTRICT' })
   @JoinColumn({ name: 'family_id' })
   family: BeneficiaryFamily;
 

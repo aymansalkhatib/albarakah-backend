@@ -37,6 +37,8 @@ export class DropdownSelection {
   @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
   updatedAt: Date;
 
+  // Relationships
+
   @ManyToOne(() => DropdownCategory, { nullable: true, onDelete: 'RESTRICT' })
   @JoinColumn({ name: 'dropdown_category_id' })
   dropdownCategory?: DropdownCategory;

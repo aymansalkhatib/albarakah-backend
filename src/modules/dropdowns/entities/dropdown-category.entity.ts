@@ -26,9 +26,11 @@ export class DropdownCategory {
   @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
   updatedAt: Date;
 
+  // Relationships
+
   @OneToMany(() => DropdownCategory, (category) => category.parent)
   children: DropdownCategory[];
-  
+
   @ManyToOne(() => DropdownCategory, (category) => category.children, {
     nullable: true,
     onDelete: 'RESTRICT',

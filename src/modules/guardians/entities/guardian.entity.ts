@@ -11,9 +11,15 @@ import {
   UpdateDateColumn,
   OneToMany,
   DeleteDateColumn,
+  Index,
 } from 'typeorm';
 
 @Entity('guardians')
+@Index(['personId'], { unique: true, where: 'deleted_at IS NULL' })
+@Index(['relationType'])
+@Index(['guardianshipStartDate'])
+@Index(['guardianshipEndDate'])
+@Index(['deletedAt'])
 export class Guardian {
   @PrimaryGeneratedColumn()
   id: number;
@@ -40,7 +46,8 @@ export class Guardian {
   deletedAt: Date;
 
   // Relationships
-  @ManyToOne(() => Person, { onDelete: 'CASCADE', eager: true })
+
+  @ManyToOne(() => Person, { onDelete: 'RESTRICT' })
   @JoinColumn({ name: 'person_id' })
   person: Person;
 

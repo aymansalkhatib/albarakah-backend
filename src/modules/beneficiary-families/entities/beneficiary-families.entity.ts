@@ -18,6 +18,11 @@ import { Child } from './children.entity';
 @Entity('beneficiary_families')
 @Index(['guardianId', 'deletedAt'])
 @Index(['familyBookNumber'], { unique: true, where: 'deleted_at IS NULL' })
+@Index(['familyName'])
+@Index(['registrationDate'])
+@Index(['isDisplaced'])
+@Index(['isExtremelyPoor'])
+@Index(['deletedAt'])
 export class BeneficiaryFamily {
   @PrimaryGeneratedColumn()
   id: number;
@@ -88,6 +93,7 @@ export class BeneficiaryFamily {
   deletedAt: Date;
 
   // Relationships
+
   @ManyToOne(() => Guardian, (guardian) => guardian.families, {
     onDelete: 'RESTRICT',
   })
@@ -95,12 +101,12 @@ export class BeneficiaryFamily {
   guardian: Guardian;
 
   @OneToMany(() => FamilyMember, (member) => member.family, {
-    cascade: true,
+    cascade: ['insert', 'update'],
   })
   members: FamilyMember[];
 
   @OneToMany(() => Child, (child) => child.family, {
-    cascade: true,
+    cascade: ['insert', 'update'],
   })
   children: Child[];
 

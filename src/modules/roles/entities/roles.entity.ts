@@ -13,6 +13,8 @@ export class Role {
   @Column({ type: 'text', nullable: true })
   description?: string;
 
+  // Relationships
+
   @OneToMany(() => RolePermission, (rolePermission) => rolePermission.role)
   rolePermissions: RolePermission[];
 

@@ -11,9 +11,14 @@ import {
   JoinColumn,
   OneToOne,
   OneToMany,
+  Index,
 } from 'typeorm';
 
 @Entity('user_accounts')
+@Index(['username'], { unique: true })
+@Index(['employeesId'], { unique: true, where: 'employees_id IS NOT NULL' })
+@Index(['roleId'])
+@Index(['lastLogin'])
 export class UserAccount {
   @PrimaryGeneratedColumn()
   id: number;
@@ -48,7 +53,7 @@ export class UserAccount {
 
   @OneToOne(() => Employee, (employee) => employee.userAccount, {
     nullable: true,
-    onDelete: 'SET NULL',
+    onDelete: 'RESTRICT',
   })
   @JoinColumn({ name: 'employees_id' })
   employee?: Employee;

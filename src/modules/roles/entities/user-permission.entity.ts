@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { Permission } from './permissions.entity';
 import { UserAccount } from 'src/modules/users/entities/user-accounts.entity';
- 
+
 @Entity('user_permissions')
 export class UserPermission {
   @PrimaryGeneratedColumn()
@@ -15,6 +15,8 @@ export class UserPermission {
 
   @Column({ name: 'is_allowed', default: true })
   isAllowed: boolean;
+
+  // Relationships
 
   @ManyToOne(() => UserAccount, (userAccount) => userAccount.userPermissions, {
     onDelete: 'CASCADE',

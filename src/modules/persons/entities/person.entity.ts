@@ -9,6 +9,7 @@ import {
   Check,
   JoinColumn,
   DeleteDateColumn,
+  Index,
 } from 'typeorm';
 import { DropdownOption } from '../../dropdowns/entities/dropdown-option.entity';
 
@@ -31,9 +32,20 @@ export enum ClothingSize {
 }
 
 @Entity('person')
+@Index(['nationalId'], { unique: true, where: 'national_id IS NOT NULL AND deleted_at IS NULL' })
+@Index(['email'], { unique: true, where: 'email IS NOT NULL AND deleted_at IS NULL' })
+@Index(['firstName', 'lastName'])
+@Index(['birthDate'])
+@Index(['deletedAt'])
 export class Person {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column({ name: 'father_id', nullable: true })
+  fatherId?: number;
+
+  @Column({ name: 'mother_id', nullable: true })
+  motherId?: number;
 
   @Column({ length: 100, name: 'first_name' })
   firstName: string;
@@ -122,6 +134,8 @@ export class Person {
   @DeleteDateColumn({ type: 'timestamp', name: 'deleted_at', nullable: true })
   deletedAt?: Date;
 
+  // Relationships
+
   @ManyToOne(() => Person, { nullable: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'father_id' })
   father?: Person;
@@ -130,23 +144,23 @@ export class Person {
   @JoinColumn({ name: 'mother_id' })
   mother?: Person;
 
-  @ManyToOne(() => DropdownOption, { nullable: true, onDelete: 'SET NULL', eager: true })
+  @ManyToOne(() => DropdownOption, { nullable: true, onDelete: 'RESTRICT' })
   @JoinColumn({ name: 'education_level_id' })
-  educationLevel: DropdownOption;
+  educationLevel?: DropdownOption;
 
-  @ManyToOne(() => DropdownOption, { nullable: true, onDelete: 'SET NULL', eager: true })
+  @ManyToOne(() => DropdownOption, { nullable: true, onDelete: 'RESTRICT' })
   @JoinColumn({ name: 'marital_status_id' })
-  maritalStatus: DropdownOption;
+  maritalStatus?: DropdownOption;
 
-  @ManyToOne(() => DropdownOption, { nullable: true, onDelete: 'SET NULL', eager: true })
+  @ManyToOne(() => DropdownOption, { nullable: true, onDelete: 'RESTRICT' })
   @JoinColumn({ name: 'person_status_id' })
-  personStatus: DropdownOption;
+  personStatus?: DropdownOption;
 
-  @ManyToOne(() => DropdownOption, { nullable: true, onDelete: 'SET NULL', eager: true })
+  @ManyToOne(() => DropdownOption, { nullable: true, onDelete: 'RESTRICT' })
   @JoinColumn({ name: 'school_type_id' })
-  schoolType: DropdownOption;
+  schoolType?: DropdownOption;
 
-  @ManyToOne(() => DropdownOption, { nullable: true, onDelete: 'SET NULL', eager: true })
+  @ManyToOne(() => DropdownOption, { nullable: true, onDelete: 'RESTRICT' })
   @JoinColumn({ name: 'health_status_id' })
-  healthStatus: DropdownOption;
+  healthStatus?: DropdownOption;
 }
