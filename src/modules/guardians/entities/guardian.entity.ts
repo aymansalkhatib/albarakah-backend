@@ -1,6 +1,7 @@
 import { BeneficiaryFamily } from 'src/modules/beneficiary-families/entities/beneficiary-families.entity';
 import { FamilyRelationType } from 'src/modules/beneficiary-families/enums/family-relation-type.enum';
 import { Person } from 'src/modules/persons/entities/person.entity';
+import { CoreEntity } from 'src/shared/modules/app-type-orm/entities/core.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -20,10 +21,7 @@ import {
 @Index(['guardianshipStartDate'])
 @Index(['guardianshipEndDate'])
 @Index(['deletedAt'])
-export class Guardian {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Guardian extends CoreEntity {
   @Column({ name: 'relation_type', type: 'enum', enum: FamilyRelationType, nullable: true })
   relationType?: FamilyRelationType;
 
@@ -35,15 +33,6 @@ export class Guardian {
 
   @Column({ type: 'text', nullable: true })
   notes?: string;
-
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
-
-  @DeleteDateColumn({ name: 'deleted_at' })
-  deletedAt: Date;
 
   // Relationships
 

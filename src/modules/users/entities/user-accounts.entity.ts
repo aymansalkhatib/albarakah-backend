@@ -1,6 +1,7 @@
 import { Employee } from 'src/modules/employees/entities/employee.entity';
 import { Role } from 'src/modules/roles/entities/roles.entity';
 import { UserPermission } from 'src/modules/roles/entities/user-permission.entity';
+import { CoreEntity } from 'src/shared/modules/app-type-orm/entities/core.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -19,10 +20,7 @@ import {
 @Index(['employeesId'], { unique: true, where: 'employees_id IS NOT NULL' })
 @Index(['roleId'])
 @Index(['lastLogin'])
-export class UserAccount {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class UserAccount extends CoreEntity {
   @Column({ name: 'employees_id', nullable: true })
   employeesId?: number;
 
@@ -42,11 +40,7 @@ export class UserAccount {
   @Column({ name: 'last_login', type: 'timestamp', nullable: true })
   lastLogin?: Date;
 
-  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
-  updatedAt: Date;
+  // Relationships
 
   @OneToMany(() => UserPermission, (userPermission) => userPermission.userAccount)
   userPermissions: UserPermission[];

@@ -1,5 +1,6 @@
 import { Person } from 'src/modules/persons/entities/person.entity';
 import { UserAccount } from 'src/modules/users/entities/user-accounts.entity';
+import { CoreEntity } from 'src/shared/modules/app-type-orm/entities/core.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -19,10 +20,7 @@ import {
 @Index(['hireDate'])
 @Index(['terminationDate'])
 @Index(['deletedAt'])
-export class Employee {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Employee extends CoreEntity {
   @Column({ name: 'person_id' })
   personId: number;
 
@@ -37,15 +35,6 @@ export class Employee {
 
   @Column({ type: 'text', nullable: true })
   notes?: string;
-
-  @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
-  updatedAt: Date;
-
-  @DeleteDateColumn({ type: 'timestamp', name: 'deleted_at', nullable: true })
-  deletedAt: Date;
 
   @ManyToOne(() => Person, { nullable: false, onDelete: 'RESTRICT' })
   @JoinColumn({ name: 'person_id' })

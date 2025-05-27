@@ -13,17 +13,14 @@ import {
 } from 'typeorm';
 import { FamilyRelationType } from '../enums/family-relation-type.enum';
 import { BeneficiaryFamily } from './beneficiary-families.entity';
-
+import { CoreEntity } from 'src/shared/modules/app-type-orm/entities/core.entity';
 @Entity('family_members')
 @Index(['familyId', 'personId', 'relationType'], { unique: true, where: 'deleted_at IS NULL' })
 @Index(['familyId', 'relationType'])
 @Index(['personId'])
 @Index(['relationType'])
 @Index(['deletedAt'])
-export class FamilyMember {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class FamilyMember extends CoreEntity {
   @Column({ name: 'person_id' })
   personId: number;
 
@@ -35,15 +32,6 @@ export class FamilyMember {
 
   @Column({ type: 'text', nullable: true })
   notes?: string;
-
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
-
-  @DeleteDateColumn({ name: 'deleted_at' })
-  deletedAt: Date;
 
   // Relationships
 

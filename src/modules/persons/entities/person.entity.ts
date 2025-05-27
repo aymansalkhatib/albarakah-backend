@@ -12,6 +12,7 @@ import {
   Index,
 } from 'typeorm';
 import { DropdownOption } from '../../dropdowns/entities/dropdown-option.entity';
+import { CoreEntity } from 'src/shared/modules/app-type-orm/entities/core.entity';
 
 export enum GenderType {
   MALE = 'male',
@@ -37,10 +38,7 @@ export enum ClothingSize {
 @Index(['firstName', 'lastName'])
 @Index(['birthDate'])
 @Index(['deletedAt'])
-export class Person {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Person extends CoreEntity {
   @Column({ name: 'father_id', nullable: true })
   fatherId?: number;
 
@@ -124,15 +122,6 @@ export class Person {
 
   @Column({ type: 'text', nullable: true })
   notes: string;
-
-  @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
-  updatedAt: Date;
-
-  @DeleteDateColumn({ type: 'timestamp', name: 'deleted_at', nullable: true })
-  deletedAt?: Date;
 
   // Relationships
 

@@ -11,6 +11,7 @@ import {
   OneToOne,
 } from 'typeorm';
 import { SupportType } from '../enums/support-type';
+import { CoreEntity } from 'src/shared/modules/app-type-orm/entities/core.entity';
 
 @Entity('supporters')
 @Index(['personId'])
@@ -18,10 +19,7 @@ import { SupportType } from '../enums/support-type';
 @Index(['supportType'])
 @Index(['deletedAt'])
 @Index(['supportStartDate', 'supportEndDate'])
-export class Supporter {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Supporter extends CoreEntity {
   @Column({ name: 'person_id', nullable: false })
   personId: number;
 
@@ -38,15 +36,6 @@ export class Supporter {
     nullable: true,
   })
   supportType?: SupportType;
-
-  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
-  updatedAt: Date;
-
-  @DeleteDateColumn({ name: 'deleted_at', type: 'timestamp', nullable: true })
-  deletedAt?: Date;
 
   // Relationships
 

@@ -14,6 +14,7 @@ import { FamilyMember } from './family-members.entity';
 import { Max } from 'class-validator';
 import { Guardian } from 'src/modules/guardians/entities/guardian.entity';
 import { Child } from './children.entity';
+import { CoreEntity } from 'src/shared/modules/app-type-orm/entities/core.entity';
 
 @Entity('beneficiary_families')
 @Index(['guardianId', 'deletedAt'])
@@ -23,10 +24,7 @@ import { Child } from './children.entity';
 @Index(['isDisplaced'])
 @Index(['isExtremelyPoor'])
 @Index(['deletedAt'])
-export class BeneficiaryFamily {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class BeneficiaryFamily extends CoreEntity {
   @Column({ name: 'guardian_id' })
   guardianId: number;
 
@@ -82,15 +80,6 @@ export class BeneficiaryFamily {
 
   @Column({ type: 'text', nullable: true })
   notes?: string;
-
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
-
-  @DeleteDateColumn({ name: 'deleted_at' })
-  deletedAt: Date;
 
   // Relationships
 
