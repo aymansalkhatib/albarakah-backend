@@ -10,10 +10,12 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   Index,
+  OneToMany,
 } from 'typeorm';
 import { FamilyMember } from './family-members.entity';
 import { BeneficiaryFamily } from './beneficiary-families.entity';
 import { CoreEntity } from 'src/shared/modules/app-type-orm/entities/core.entity';
+import { DeliveredAssistance } from 'src/modules/assistance/entities/delivered-assistance.entity';
 @Entity('children')
 @Index(['personId'], { unique: true, where: 'deleted_at IS NULL' })
 @Index(['familyId', 'isSponsored'])
@@ -49,4 +51,9 @@ export class Child extends CoreEntity {
   @ManyToOne(() => BeneficiaryFamily, (family) => family.children, { onDelete: 'RESTRICT' })
   @JoinColumn({ name: 'family_id' })
   family: BeneficiaryFamily;
+
+  @OneToMany(() => DeliveredAssistance, (assistance) => assistance.child, {
+    cascade: ['insert', 'update'],
+  })
+  receivedAssistance: DeliveredAssistance[];
 }

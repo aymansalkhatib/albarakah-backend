@@ -53,7 +53,9 @@ export class EmergencyAidRequest extends CoreEntity {
   disbursementDate?: Date;
 
   // Relationships
-  @ManyToOne(() => BeneficiaryFamily, { onDelete: 'RESTRICT' })
+  @ManyToOne(() => BeneficiaryFamily, (family) => family.emergencyAidRequests, {
+    onDelete: 'RESTRICT',
+  })
   @JoinColumn({ name: 'family_id' })
   family: BeneficiaryFamily;
 }
