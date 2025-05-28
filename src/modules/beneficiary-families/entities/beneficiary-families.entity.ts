@@ -9,6 +9,7 @@ import {
   JoinColumn,
   ManyToOne,
   Index,
+  OneToOne,
 } from 'typeorm';
 import { FamilyMember } from './family-members.entity';
 import { Max } from 'class-validator';
@@ -20,6 +21,7 @@ import { EmergencyAidRequest } from 'src/modules/emergency-aid/entities/emergenc
 import { ReceivedAssistance } from 'src/modules/received-assistance/entities/received-assistance.entity';
 import { FamilyIncome } from './family-income.entity';
 import { CallLog } from 'src/modules/call-logs/entities/call-log.entity';
+import { House } from 'src/modules/houses/entities/house.entity';
 @Entity('beneficiary_families')
 @Index(['guardianId', 'deletedAt'])
 @Index(['familyBookNumber'], { unique: true, where: 'deleted_at IS NULL' })
@@ -31,6 +33,9 @@ import { CallLog } from 'src/modules/call-logs/entities/call-log.entity';
 export class BeneficiaryFamily extends CoreEntity {
   @Column({ name: 'guardian_id' })
   guardianId: number;
+
+  @Column({ name: 'house_id', nullable: true })
+  houseId?: number;
 
   @Column({ name: 'family_name', type: 'varchar', length: 64 })
   familyName: string;
@@ -127,6 +132,13 @@ export class BeneficiaryFamily extends CoreEntity {
     cascade: ['insert', 'update'],
   })
   callLogs: CallLog[];
+
+  @OneToOne(() => House, (house) => house.family, {
+    cascade: ['insert', 'update'],
+    nullable: true,
+  })
+  @JoinColumn({ name: 'house_id' })
+  house?: House;
 
   get sponsoredChildrenCount(): number {
     return this.children?.filter((child) => child.isSponsored).length || 0;
