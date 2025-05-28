@@ -1,5 +1,6 @@
-import { Entity, Column, Index } from 'typeorm';
+import { Entity, Column, Index, OneToMany } from 'typeorm';
 import { CoreEntity } from '../../../shared/modules/app-type-orm/entities/core.entity';
+import { CourseBatch } from './course-batch.entity';
 
 @Entity('training_courses')
 @Index(['name'])
@@ -12,4 +13,10 @@ export class TrainingCourse extends CoreEntity {
 
   @Column({ type: 'text', nullable: true })
   note?: string;
+
+  // Relationships
+  @OneToMany(() => CourseBatch, (batch) => batch.trainingCourse, {
+    cascade: ['insert', 'update'],
+  })
+  batches: CourseBatch[];
 }
