@@ -24,6 +24,7 @@ import { CallLog } from 'src/modules/call-logs/entities/call-log.entity';
 import { House } from 'src/modules/houses/entities/house.entity';
 import { Interview } from '../../interviews/entities/interview.entity';
 import { FamilyRegistrationForm } from '../../family-registration-forms/entities/family-registration-form.entity';
+import { Visit } from 'src/modules/visits/entities/visit.entity';
 @Entity('beneficiary_families')
 @Index(['guardianId', 'deletedAt'])
 @Index(['familyBookNumber'], { unique: true, where: 'deleted_at IS NULL' })
@@ -151,6 +152,13 @@ export class BeneficiaryFamily extends CoreEntity {
     cascade: ['insert', 'update'],
   })
   registrationForm: FamilyRegistrationForm;
+
+  @OneToMany(() => Visit, (visit) => visit.family, {
+    cascade: ['insert', 'update'],
+  })
+  visits: Visit[];
+
+  // getters
 
   get sponsoredChildrenCount(): number {
     return this.children?.filter((child) => child.isSponsored).length || 0;

@@ -1,0 +1,47 @@
+import { Entity, Column, Index, JoinColumn, ManyToOne } from 'typeorm';
+import { CoreEntity } from '../../../shared/modules/app-type-orm/entities/core.entity';
+import { BeneficiaryFamily } from 'src/modules/beneficiary-families/entities/beneficiary-families.entity';
+
+@Entity('visits')
+@Index(['visitDate'])
+@Index(['visitDispatchDate'])
+export class Visit extends CoreEntity {
+  @Column({ name: 'family_id', nullable: true })
+  familyId?: number;
+
+  @Column({ name: 'visit_date', type: 'date' })
+  visitDate: Date;
+
+  @Column({ name: 'visit_dispatch_date', type: 'date', nullable: true })
+  visitDispatchDate?: Date;
+
+  @Column({ name: 'visit_notes', type: 'text', nullable: true })
+  visitNotes?: string;
+
+  @Column({ name: 'family_members_count', type: 'integer', nullable: true })
+  familyMembersCount?: number;
+
+  @Column({ name: 'house_residents_count', type: 'integer', nullable: true })
+  houseResidentsCount?: number;
+
+  @Column({ name: 'family_health_conditions', type: 'text', nullable: true })
+  familyHealthConditions?: string;
+
+  @Column({ name: 'visit_committee_evaluation', type: 'text', nullable: true })
+  visitCommitteeEvaluation?: string;
+
+  @Column({ name: 'final_evaluation', type: 'text', nullable: true })
+  finalEvaluation?: string;
+
+  @Column({ name: 'visit_committee_members', type: 'text', array: true, nullable: true })
+  visitCommitteeMembers?: string[];
+
+  // Relationships
+
+  @ManyToOne(() => BeneficiaryFamily, (family) => family.visits, {
+    onDelete: 'RESTRICT',
+    nullable: true,
+  })
+  @JoinColumn({ name: 'family_id' })
+  family?: BeneficiaryFamily;
+}
