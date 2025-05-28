@@ -1,6 +1,7 @@
-import { Entity, Column, ManyToOne, JoinColumn, Index } from 'typeorm';
+import { Entity, Column, ManyToOne, JoinColumn, Index, OneToMany } from 'typeorm';
 import { CoreEntity } from '../../../shared/modules/app-type-orm/entities/core.entity';
 import { TrainingCourse } from './training-course.entity';
+import { PersonCourseBatch } from './person-course-batch.entity';
 
 @Entity('course_batches')
 @Index(['trainingCourseId'])
@@ -33,4 +34,9 @@ export class CourseBatch extends CoreEntity {
   })
   @JoinColumn({ name: 'training_course_id' })
   trainingCourse: TrainingCourse;
+
+  @OneToMany(() => PersonCourseBatch, (participant) => participant.courseBatch, {
+    cascade: ['insert', 'update'],
+  })
+  participants: PersonCourseBatch[];
 }
