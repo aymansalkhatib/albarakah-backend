@@ -15,7 +15,8 @@ import {
 import { FamilyMember } from './family-members.entity';
 import { BeneficiaryFamily } from './beneficiary-families.entity';
 import { CoreEntity } from 'src/shared/modules/app-type-orm/entities/core.entity';
-import { DeliveredAssistance } from 'src/modules/assistance/entities/delivered-assistance.entity';
+import { ReceivedAssistance } from 'src/modules/received-assistance/entities/received-assistance.entity';
+import { CallLog } from 'src/modules/call-logs/entities/call-log.entity';
 @Entity('children')
 @Index(['personId'], { unique: true, where: 'deleted_at IS NULL' })
 @Index(['familyId', 'isSponsored'])
@@ -28,9 +29,6 @@ export class Child extends CoreEntity {
 
   @Column({ name: 'family_member_id' })
   familyMemberId: number;
-
-  @Column({ name: 'family_id' })
-  familyId: number;
 
   @Column({ name: 'is_sponsored', default: false })
   isSponsored: boolean;
@@ -52,8 +50,8 @@ export class Child extends CoreEntity {
   @JoinColumn({ name: 'family_id' })
   family: BeneficiaryFamily;
 
-  @OneToMany(() => DeliveredAssistance, (assistance) => assistance.child, {
+  @OneToMany(() => ReceivedAssistance, (assistance) => assistance.child, {
     cascade: ['insert', 'update'],
   })
-  receivedAssistance: DeliveredAssistance[];
+  receivedAssistance: ReceivedAssistance[];
 }

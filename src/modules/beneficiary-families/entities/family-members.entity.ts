@@ -10,10 +10,12 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   Index,
+  OneToMany,
 } from 'typeorm';
 import { FamilyRelationType } from '../enums/family-relation-type.enum';
 import { BeneficiaryFamily } from './beneficiary-families.entity';
 import { CoreEntity } from 'src/shared/modules/app-type-orm/entities/core.entity';
+import { CallLog } from 'src/modules/call-logs/entities/call-log.entity';
 @Entity('family_members')
 @Index(['familyId', 'personId', 'relationType'], { unique: true, where: 'deleted_at IS NULL' })
 @Index(['familyId', 'relationType'])
@@ -43,9 +45,15 @@ export class FamilyMember extends CoreEntity {
   @JoinColumn({ name: 'family_id' })
   family: BeneficiaryFamily;
 
+  @OneToMany(() => CallLog, (callLog) => callLog.familyMember, {
+    cascade: ['insert', 'update'],
+  })
+  callLogs: CallLog[];
+
   get isParent(): boolean {
     return [FamilyRelationType.MOTHER, FamilyRelationType.FATHER].includes(this.relationType);
   }
+
 
   get isChild(): boolean {
     return [FamilyRelationType.SON, FamilyRelationType.DAUGHTER].includes(this.relationType);

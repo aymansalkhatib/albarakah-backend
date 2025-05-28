@@ -19,6 +19,7 @@ import { FamilyNeed } from 'src/modules/family-needs/entities/family-need.entity
 import { EmergencyAidRequest } from 'src/modules/emergency-aid/entities/emergency-aid-request.entity';
 import { ReceivedAssistance } from 'src/modules/received-assistance/entities/received-assistance.entity';
 import { FamilyIncome } from './family-income.entity';
+import { CallLog } from 'src/modules/call-logs/entities/call-log.entity';
 @Entity('beneficiary_families')
 @Index(['guardianId', 'deletedAt'])
 @Index(['familyBookNumber'], { unique: true, where: 'deleted_at IS NULL' })
@@ -121,6 +122,11 @@ export class BeneficiaryFamily extends CoreEntity {
     cascade: ['insert', 'update'],
   })
   income: FamilyIncome[];
+
+  @OneToMany(() => CallLog, (callLog) => callLog.family, {
+    cascade: ['insert', 'update'],
+  })
+  callLogs: CallLog[];
 
   get sponsoredChildrenCount(): number {
     return this.children?.filter((child) => child.isSponsored).length || 0;
