@@ -22,6 +22,7 @@ import { ReceivedAssistance } from 'src/modules/received-assistance/entities/rec
 import { FamilyIncome } from './family-income.entity';
 import { CallLog } from 'src/modules/call-logs/entities/call-log.entity';
 import { House } from 'src/modules/houses/entities/house.entity';
+import { Interview } from '../../interviews/entities/interview.entity';
 @Entity('beneficiary_families')
 @Index(['guardianId', 'deletedAt'])
 @Index(['familyBookNumber'], { unique: true, where: 'deleted_at IS NULL' })
@@ -139,6 +140,11 @@ export class BeneficiaryFamily extends CoreEntity {
   })
   @JoinColumn({ name: 'house_id' })
   house?: House;
+
+  @OneToMany(() => Interview, (interview) => interview.family, {
+    cascade: ['insert', 'update'],
+  })
+  interviews: Interview[];
 
   get sponsoredChildrenCount(): number {
     return this.children?.filter((child) => child.isSponsored).length || 0;

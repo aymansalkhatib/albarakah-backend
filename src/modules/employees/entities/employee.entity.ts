@@ -12,7 +12,9 @@ import {
   DeleteDateColumn,
   OneToOne,
   Index,
+  OneToMany,
 } from 'typeorm';
+import { Interview } from '../../interviews/entities/interview.entity';
 
 @Entity('employees')
 @Index(['personId'], { unique: true, where: 'deleted_at IS NULL' })
@@ -44,4 +46,9 @@ export class Employee extends CoreEntity {
     cascade: ['insert', 'update'],
   })
   userAccount?: UserAccount;
+
+  @OneToMany(() => Interview, (interview) => interview.interviewer, {
+    cascade: ['insert', 'update'],
+  })
+  interviews: Interview[];
 }
