@@ -14,6 +14,7 @@ import { MailModule } from './services/mail/mail.module';
 import { AppStorageModule } from './shared/modules/app-storage/app-storage.module';
 import { AppTypeOrmModule } from './shared/modules/app-type-orm/app-type-orm.module';
 import { AppJwtModule } from './shared/modules/app-jwt/app-jwt.module';
+import { PersonModule } from './modules/persons/person.module';
 // import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
@@ -22,30 +23,31 @@ import { AppJwtModule } from './shared/modules/app-jwt/app-jwt.module';
     AppLoggerModule,
     // NotificationModule,
     AppI18nModule,
-    // AppTypeOrmModule,
+    AppTypeOrmModule,
     // AppStorageModule.register({ provider: 'local' }),
     // MailModule,
 
     // AppJwtModule,
     // AuthModule,
+    PersonModule,
   ],
 
   controllers: [
-    // AppController
+    AppController
   ],
 
   providers: [
-    // AppService,
-    // WinstonLoggerService,
-    // ErrorHandlerFactory,
-    // {
-    //   provide: APP_FILTER,
-    //   useClass: GlobalExceptionFilter,
-    // },
-    // {
-    //   provide: APP_INTERCEPTOR,
-    //   useClass: ClassSerializerInterceptor,
-    // },
+    AppService,
+    WinstonLoggerService,
+    ErrorHandlerFactory,
+    {
+      provide: APP_FILTER,
+      useClass: GlobalExceptionFilter,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ClassSerializerInterceptor,
+    },
   ],
 })
 export class AppModule implements NestModule {

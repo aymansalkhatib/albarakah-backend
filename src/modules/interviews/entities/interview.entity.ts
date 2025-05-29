@@ -5,7 +5,6 @@ import { BeneficiaryFamily } from '../../beneficiary-families/entities/beneficia
 import { Person } from '../../persons/entities/person.entity';
 
 @Entity('interviews')
-@Index(['employeesId'])
 @Index(['familyId'])
 @Index(['interviewerId'])
 @Index(['interviewDate'])

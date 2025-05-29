@@ -30,6 +30,9 @@ export class Child extends CoreEntity {
   @Column({ name: 'family_member_id' })
   familyMemberId: number;
 
+  @Column({ name: 'family_id' })
+  familyId: number;
+
   @Column({ name: 'is_sponsored', default: false })
   isSponsored: boolean;
 
@@ -53,5 +56,11 @@ export class Child extends CoreEntity {
   @OneToMany(() => ReceivedAssistance, (assistance) => assistance.child, {
     cascade: ['insert', 'update'],
   })
+
+  @OneToMany(() => CallLog, (callLog) => callLog.child, {
+    cascade: ['insert', 'update'],
+  })
+  callLogs: CallLog[];
+
   receivedAssistance: ReceivedAssistance[];
 }

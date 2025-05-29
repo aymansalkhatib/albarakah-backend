@@ -15,7 +15,6 @@ import { CoreEntity } from 'src/shared/modules/app-type-orm/entities/core.entity
 
 @Entity('supporters')
 @Index(['personId'])
-@Index(['isActive'])
 @Index(['supportType'])
 @Index(['deletedAt'])
 @Index(['supportStartDate', 'supportEndDate'])

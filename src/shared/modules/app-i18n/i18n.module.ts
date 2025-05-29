@@ -11,7 +11,7 @@ import { Environment } from 'src/shared/modules/app-config/env.constant';
       fallbackLanguage: 'en',
 
       loaderOptions: {
-        path: path.join(__dirname, 'shared/modules/app-i18n/translate'),
+        path: path.join(__dirname, '/translate/'),
         watch: process.env.NODE_ENV !== Environment.PRODUCTION,
       },
       resolvers: [

@@ -3,9 +3,10 @@ import { CoreEntity } from '../../../shared/modules/app-type-orm/entities/core.e
 import { BeneficiaryFamily } from '../../beneficiary-families/entities/beneficiary-families.entity';
 import { CallStatus } from '../enums/call-status.enum';
 import { FamilyMember } from 'src/modules/beneficiary-families/entities/family-members.entity';
+import { Child } from 'src/modules/beneficiary-families/entities/children.entity';
 @Entity('call_logs')
 @Index(['familyId'])
-@Index(['personId'])
+@Index(['familyMemberId'])
 @Index(['callStatus'])
 @Index(['createdAt'])
 export class CallLog extends CoreEntity {
@@ -47,4 +48,13 @@ export class CallLog extends CoreEntity {
   })
   @JoinColumn({ name: 'family_member_id' })
   familyMember?: FamilyMember;
+
+  @ManyToOne(() => Child, (child) => child.callLogs, {
+    onDelete: 'RESTRICT',
+    nullable: true,
+  })
+  @JoinColumn({ name: 'child_id' })
+  child?: Child;
+
+  
 }

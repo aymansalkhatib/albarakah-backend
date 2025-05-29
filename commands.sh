@@ -14,3 +14,7 @@ Remove-Item Env:NODE_ENV
 # 4. Update Packages 
 npx npm-check-updates -u
 npm install
+
+# 5. Kill the process on port 3000
+for /f "tokens=5" %a in ('netstat -ano ^| findstr :3000') do taskkill /PID %a /F
+ 

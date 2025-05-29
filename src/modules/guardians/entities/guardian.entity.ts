@@ -22,6 +22,9 @@ import {
 @Index(['guardianshipEndDate'])
 @Index(['deletedAt'])
 export class Guardian extends CoreEntity {
+  @Column({ name: 'person_id', nullable: true })
+  personId?: number;
+
   @Column({ name: 'relation_type', type: 'enum', enum: FamilyRelationType, nullable: true })
   relationType?: FamilyRelationType;
 

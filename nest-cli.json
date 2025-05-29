@@ -4,8 +4,6 @@
   "sourceRoot": "src",
   "compilerOptions": {
     "deleteOutDir": true,
-    "webpack": true,
-    "webpackConfigPath": "webpack-hmr.config.js",
     "assets": [
       {
         "include": "shared/modules/app-i18n/translate/**/*",
