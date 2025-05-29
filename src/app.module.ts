@@ -32,9 +32,7 @@ import { PersonModule } from './modules/persons/person.module';
     PersonModule,
   ],
 
-  controllers: [
-    AppController
-  ],
+  controllers: [AppController],
 
   providers: [
     AppService,
