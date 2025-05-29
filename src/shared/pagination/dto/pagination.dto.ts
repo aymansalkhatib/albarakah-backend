@@ -1,4 +1,4 @@
-import { Type } from 'class-transformer';
+import { Type, Expose, Exclude, Transform } from 'class-transformer';
 import {
   IsOptional,
   IsPositive,
@@ -23,20 +23,26 @@ export class SortDto {
   order: SortOrder;
 }
 
+@Exclude()
 export class PaginationDto {
+  @Expose()
   @IsOptional()
+  @Transform(({ value }) => (value ? Number(value) : 1))
   @Type(() => Number)
   @IsPositive()
   @Min(1)
-  page?: number = 1;
+  page: number;
 
+  @Expose()
   @IsOptional()
+  @Transform(({ value }) => (value ? Number(value) : 10))
   @Type(() => Number)
   @IsPositive()
   @Min(1)
   @Max(100)
-  limit?: number = 10;
+  limit: number;
 
+  @Expose()
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })

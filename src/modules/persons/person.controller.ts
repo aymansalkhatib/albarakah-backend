@@ -13,6 +13,7 @@ import {
 import { PersonService } from './person.service';
 import { CreatePersonDto } from './dto/create-person.dto';
 import { UpdatePersonDto } from './dto/update-person.dto';
+import { PaginationDto } from 'src/shared/pagination/dto/pagination.dto';
 
 @Controller('persons')
 export class PersonController {
@@ -24,8 +25,8 @@ export class PersonController {
   }
 
   @Get()
-  async findAll() {
-    return this.personService.findAll();
+  async findAll(@Query() query: PaginationDto) {
+    return this.personService.findAll(query);
   }
 
   @Get(':id')

@@ -27,8 +27,8 @@ async function bootstrap() {
     new ValidationPipe({
       exceptionFactory: i18nValidationErrorFactory,
       whitelist: true,
-      // transform: true,
-      // forbidNonWhitelisted: true,
+      transform: true,
+      forbidNonWhitelisted: true,
       transformOptions: {
         enableImplicitConversion: true,
       },

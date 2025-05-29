@@ -6,7 +6,7 @@ import { CreatePersonDto } from './dto/create-person.dto';
 import { UpdatePersonDto } from './dto/update-person.dto';
 import { QueryBuilderUtil } from 'src/utils/query-builder.util';
 import { PaginationResult } from 'src/shared/pagination/dto/interfaces/pagination.interface';
-
+import { PaginationDto } from 'src/shared/pagination/dto/pagination.dto';
 @Injectable()
 export class PersonService {
   constructor(
@@ -19,12 +19,12 @@ export class PersonService {
     return this.personRepository.save(person);
   }
 
-  async findAll(relations: string[] = []): Promise<PaginationResult<Person>> {
+  async findAll(query: PaginationDto): Promise<PaginationResult<Person>> {
     return QueryBuilderUtil.paginate(
       this.personRepository.createQueryBuilder('person'),
-      { page: 1, limit: 10 },
-      ['createdAt'],
-      { field: 'createdAt', order: 'DESC' }, // default sort
+      { page: query.page, limit: query.limit },
+      ['createdAt', 'updatedAt', 'deletedAt', 'id'],
+      { field: 'createdAt', order: 'DESC' },
     );
   }
 
