@@ -11,7 +11,8 @@ import {
   Max,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { GenderType, ClothingSize } from '../entities/person.entity';
+import { GenderType } from '../enums/gender-type.enum';
+import { ClothingSize } from '../enums/clothing-size.enum';
 
 export class CreatePersonDto {
   @IsOptional()

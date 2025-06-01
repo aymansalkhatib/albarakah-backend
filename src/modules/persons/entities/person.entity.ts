@@ -1,37 +1,13 @@
 // person.entity.ts
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  ManyToOne,
-  Check,
-  JoinColumn,
-  DeleteDateColumn,
-  Index,
-} from 'typeorm';
+import { Entity, Column, ManyToOne, Check, JoinColumn, Index, OneToOne, OneToMany } from 'typeorm';
 import { DropdownOption } from '../../dropdowns/entities/dropdown-option.entity';
 import { CoreEntity } from 'src/shared/modules/app-type-orm/entities/core.entity';
-
-export enum GenderType {
-  MALE = 'male',
-  FEMALE = 'female',
-}
-
-export enum ClothingSize {
-  XXS = 'XXS',
-  XS = 'XS',
-  S = 'S',
-  M = 'M',
-  L = 'L',
-  XL = 'XL',
-  XXL = 'XXL',
-  XXXL = 'XXXL',
-  XXXXL = 'XXXXL',
-  XXXXXL = 'XXXXXL',
-}
-
+import { GenderType } from '../enums/gender-type.enum';
+import { ClothingSize } from '../enums/clothing-size.enum';
+import { Guardian } from 'src/modules/guardians/entities/guardian.entity';
+import { Child } from 'src/modules/beneficiary-families/entities/children.entity';
+import { FamilyMember } from 'src/modules/beneficiary-families/entities/family-members.entity';
+import { Employee } from 'src/modules/employees/entities/employee.entity';
 @Entity('person')
 @Index(['nationalId'], { unique: true, where: 'national_id IS NOT NULL AND deleted_at IS NULL' })
 @Index(['email'], { unique: true, where: 'email IS NOT NULL AND deleted_at IS NULL' })
@@ -60,7 +36,7 @@ export class Person extends CoreEntity {
   @Column({ type: 'boolean', default: false, name: 'is_palestinian' })
   isPalestinian: boolean;
 
-  @Column({ type: 'enum', enum: GenderType, nullable: true })
+  @Column({ type: 'enum', enum: GenderType, nullable: true, name: 'gender' })
   gender: GenderType;
 
   @Column({ length: 100, nullable: true })
@@ -152,4 +128,29 @@ export class Person extends CoreEntity {
   @ManyToOne(() => DropdownOption, { nullable: true, onDelete: 'RESTRICT' })
   @JoinColumn({ name: 'health_status_id' })
   healthStatus?: DropdownOption;
+
+  // one to one relations
+  @OneToOne(() => Guardian, (guardian) => guardian.person, {
+    cascade: true,
+    nullable: true,
+  })
+  guardian?: Guardian;
+
+  @OneToOne(() => Child, (child) => child.person, {
+    cascade: true,
+    nullable: true,
+  })
+  child?: Child;
+
+  @OneToOne(() => FamilyMember, (member) => member.person, {
+    cascade: true,
+    nullable: true,
+  })
+  familyMember?: FamilyMember;
+
+  @OneToOne(() => Employee, (employee) => employee.person, {
+    cascade: true,
+    nullable: true,
+  })
+  employee?: Employee;
 }
