@@ -1,16 +1,4 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  OneToMany,
-  CreateDateColumn,
-  UpdateDateColumn,
-  DeleteDateColumn,
-  JoinColumn,
-  ManyToOne,
-  Index,
-  OneToOne,
-} from 'typeorm';
+import { Entity, Column, OneToMany, JoinColumn, ManyToOne, Index, OneToOne } from 'typeorm';
 import { FamilyMember } from './family-members.entity';
 import { Max } from 'class-validator';
 import { Guardian } from 'src/modules/guardians/entities/guardian.entity';
@@ -25,21 +13,15 @@ import { House } from 'src/modules/houses/entities/house.entity';
 import { Interview } from '../../interviews/entities/interview.entity';
 import { FamilyRegistrationForm } from '../../family-registration-forms/entities/family-registration-form.entity';
 import { Visit } from 'src/modules/visits/entities/visit.entity';
-@Entity('beneficiary_families')
-@Index(['guardianId', 'deletedAt'])
+
 @Index(['familyBookNumber'], { unique: true, where: 'deleted_at IS NULL' })
 @Index(['familyName'])
 @Index(['registrationDate'])
 @Index(['isDisplaced'])
 @Index(['isExtremelyPoor'])
 @Index(['deletedAt'])
+@Entity('beneficiary_families')
 export class BeneficiaryFamily extends CoreEntity {
-  @Column({ name: 'guardian_id' })
-  guardianId: number;
-
-  @Column({ name: 'house_id', nullable: true })
-  houseId?: number;
-
   @Column({ name: 'family_name', type: 'varchar', length: 64 })
   familyName: string;
 
@@ -70,6 +52,7 @@ export class BeneficiaryFamily extends CoreEntity {
 
   @Column({ name: 'mother_is_training_beneficiary', nullable: true })
   motherIsTrainingBeneficiary?: boolean;
+
   @Column({
     name: 'children_school_expenses',
     type: 'int',

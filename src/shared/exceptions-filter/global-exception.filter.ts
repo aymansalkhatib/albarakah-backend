@@ -24,6 +24,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 
     // Generate a unique trace ID for error tracking
     const traceId = randomUUID();
+    const developerMode = request.headers['developer-mode'];
 
     try {
       // Get the appropriate handler for this type of error
@@ -40,8 +41,14 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       this.logError(request, exception, traceId);
 
       // Send response
-      const { statusCode, ...responseBody } = errorResponse;
-      response.status(statusCode).json(responseBody);
+      if (developerMode) {
+        response.status(errorResponse.statusCode).json(errorResponse);
+      } else {
+        response.status(errorResponse.statusCode).json({
+          status: errorResponse.status,
+          message: errorResponse.message,
+        });
+      }
     } catch (error) {
       // Handle errors that occur during error handling
       this.logger.error('Error in exception filter', {
@@ -49,13 +56,20 @@ export class GlobalExceptionFilter implements ExceptionFilter {
         traceId,
         responseTime: new Date().toISOString(),
       });
-
-      response.status(500).json({
-        status: 'error',
-        message: 'An unexpected error occurred',
-        traceId,
-        timestamp: new Date().toISOString(),
-      });
+      if (developerMode) {
+        response.status(500).json({
+          status: 'error',
+          message: 'An unexpected error occurred',
+          statusCode: 500,
+          traceId,
+          timestamp: new Date().toISOString(),
+        });
+      } else {
+        response.status(500).json({
+          status: 'error',
+          message: 'An unexpected error occurred',
+        });
+      }
     }
   }
 

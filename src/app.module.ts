@@ -1,3 +1,4 @@
+import { BeneficiaryFamiliesModule } from './modules/beneficiary-families/beneficiary-families.module';
 import { ClassSerializerInterceptor, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -30,6 +31,7 @@ import { PersonModule } from './modules/persons/person.module';
     // AppJwtModule,
     // AuthModule,
     PersonModule,
+    BeneficiaryFamiliesModule,
   ],
 
   controllers: [AppController],
