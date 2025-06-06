@@ -1,4 +1,15 @@
-import { Body, Controller, Get, NotFoundException, Param, Post, Put, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  NotFoundException,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { BeneficiaryFamiliesService } from './beneficiary-families.service';
 import { CreateBeneficiaryFamilyDto } from './dto/create-beneficiary-family-dto';
 import { UpdateBeneficiaryFamilyDto } from './dto/update-beneficiary-family-dto';
@@ -20,7 +31,7 @@ export class BeneficiaryFamiliesController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: number): Promise<BeneficiaryFamilyResponseDto> {
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<BeneficiaryFamilyResponseDto> {
     const beneficiaryFamily = await this.beneficiaryFamiliesService.findOne(id);
     if (!beneficiaryFamily) {
       throw new NotFoundException('Beneficiary family not found');
@@ -48,5 +59,13 @@ export class BeneficiaryFamiliesController {
       updateBeneficiaryFamilyDto,
     );
     return toDto(BeneficiaryFamilyResponseDto, beneficiaryFamily);
+  }
+
+  @Delete(':id')
+  async delete(@Param('id', ParseIntPipe) id: number): Promise<{ message: string }> {
+    await this.beneficiaryFamiliesService.delete(id);
+    return {
+      message: 'Beneficiary family deleted successfully',
+    };
   }
 }

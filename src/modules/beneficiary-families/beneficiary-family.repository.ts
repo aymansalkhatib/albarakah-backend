@@ -1,11 +1,4 @@
-import {
-  DataSource,
-  DeleteResult,
-  EntityRepository,
-  SelectQueryBuilder,
-  UpdateResult,
-} from 'typeorm';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { FilterBeneficiaryFamilyDto } from './dto/filter-beneficiary-family.dto';
 import { BeneficiaryFamily } from './entities/beneficiary-families.entity';
 import { CreateBeneficiaryFamilyDto } from './dto/create-beneficiary-family-dto';
@@ -21,12 +14,13 @@ export class BeneficiaryFamilyRepository extends Repository<BeneficiaryFamily> {
   ) {
     super(repository.target, repository.manager, repository.queryRunner);
   }
+
   findAll(filter: FilterBeneficiaryFamilyDto): Promise<BeneficiaryFamily[]> {
     return this.find({ where: filter });
   }
 
   findOneByFamilyBookNumber(familyBookNumber: string): Promise<BeneficiaryFamily | undefined> {
-    return this.findOne({ where: { familyBookNumber } });
+    return this.findOneBy({ familyBookNumber });
   }
 
   findOneById(id: number): Promise<BeneficiaryFamily | undefined> {
@@ -41,10 +35,11 @@ export class BeneficiaryFamilyRepository extends Repository<BeneficiaryFamily> {
   }
 
   updateBeneficiaryFamily(
-    id: number,
+    oldBeneficiaryFamily: BeneficiaryFamily,
     updateBeneficiaryFamilyDto: UpdateBeneficiaryFamilyDto,
   ): Promise<BeneficiaryFamily> {
-    return this.save(updateBeneficiaryFamilyDto);
+    const updatedFamily = this.merge(oldBeneficiaryFamily, updateBeneficiaryFamilyDto);
+    return this.save(updatedFamily);
   }
 
   forceDeleteBeneficiaryFamily(id: number): Promise<DeleteResult> {

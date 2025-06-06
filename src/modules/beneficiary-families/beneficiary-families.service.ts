@@ -3,7 +3,6 @@ import { CreateBeneficiaryFamilyDto } from './dto/create-beneficiary-family-dto'
 import { BeneficiaryFamily } from './entities/beneficiary-families.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UpdateBeneficiaryFamilyDto } from './dto/update-beneficiary-family-dto';
-import { removeUndefinedFields } from 'src/common/helpers/remove-undefined-fields.helper';
 import { FilterBeneficiaryFamilyDto } from './dto/filter-beneficiary-family.dto';
 import { BeneficiaryFamilyRepository } from './beneficiary-family.repository';
 
@@ -50,13 +49,23 @@ export class BeneficiaryFamiliesService {
         updateBeneficiaryFamilyDto.familyBookNumber,
       );
 
-      if (existingFamily) {
+      if (existingFamily && existingFamily.id !== id) {
         throw new ConflictException('Family book number already exists for another family');
       }
     }
 
-    const cleanedData = removeUndefinedFields(updateBeneficiaryFamilyDto);
-    const mergedData = Object.assign(beneficiaryFamily, cleanedData);
-    return await this.beneficiaryFamilyRepository.updateBeneficiaryFamily(id, mergedData);
+    return await this.beneficiaryFamilyRepository.updateBeneficiaryFamily(
+      beneficiaryFamily,
+      updateBeneficiaryFamilyDto,
+    );
+  }
+
+  async delete(id: number): Promise<void> {
+    const beneficiaryFamily = await this.findOne(id);
+    if (!beneficiaryFamily) {
+      throw new NotFoundException('Beneficiary family not found');
+    }
+
+    await this.beneficiaryFamilyRepository.softRemove({ id });
   }
 }
