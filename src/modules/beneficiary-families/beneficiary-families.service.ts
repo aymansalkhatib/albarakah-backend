@@ -1,12 +1,9 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateBeneficiaryFamilyDto } from './dto/create-beneficiary-family-dto';
-import { Not, Repository } from 'typeorm';
 import { BeneficiaryFamily } from './entities/beneficiary-families.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { BeneficiaryFamilyResponseDto } from './dto/beneficiary-family-response.dto';
 import { UpdateBeneficiaryFamilyDto } from './dto/update-beneficiary-family-dto';
 import { removeUndefinedFields } from 'src/common/helpers/remove-undefined-fields.helper';
-import { toDto } from 'src/common/helpers/to-dto';
 import { FilterBeneficiaryFamilyDto } from './dto/filter-beneficiary-family.dto';
 import { BeneficiaryFamilyRepository } from './beneficiary-family.repository';
 
@@ -22,24 +19,20 @@ export class BeneficiaryFamiliesService {
   }
 
   async findOne(id: number): Promise<BeneficiaryFamily> {
-    const beneficiaryFamily = await this.beneficiaryFamilyRepository.findOneById(id);
-    return beneficiaryFamily;
+    return await this.beneficiaryFamilyRepository.findOneById(id);
   }
 
   async create(createBeneficiaryFamilyDto: CreateBeneficiaryFamilyDto): Promise<BeneficiaryFamily> {
-    // if (createBeneficiaryFamilyDto.familyBookNumber) {
-    //   const existingFamily = await this.beneficiaryFamilyRepository.findOneByFamilyBookNumber(
-    //     createBeneficiaryFamilyDto.familyBookNumber,
-    //   );
-    //   if (existingFamily) {
-    //     throw new ConflictException('Family book number already exists');
-    //   }
-    // }
+    if (createBeneficiaryFamilyDto.familyBookNumber) {
+      const existingFamily = await this.beneficiaryFamilyRepository.findOneByFamilyBookNumber(
+        createBeneficiaryFamilyDto.familyBookNumber,
+      );
+      if (existingFamily) {
+        throw new ConflictException('Family book number already exists');
+      }
+    }
 
-    const beneficiaryFamily = this.beneficiaryFamilyRepository.createBeneficiaryFamily(
-      createBeneficiaryFamilyDto,
-    );
-    return beneficiaryFamily;
+    return this.beneficiaryFamilyRepository.createBeneficiaryFamily(createBeneficiaryFamilyDto);
   }
 
   async update(

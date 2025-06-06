@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Put, Param, Get, NotFoundException, Query } from '@nestjs/common';
+import { Body, Controller, Get, NotFoundException, Param, Post, Put, Query } from '@nestjs/common';
 import { BeneficiaryFamiliesService } from './beneficiary-families.service';
 import { CreateBeneficiaryFamilyDto } from './dto/create-beneficiary-family-dto';
 import { UpdateBeneficiaryFamilyDto } from './dto/update-beneficiary-family-dto';
