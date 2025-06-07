@@ -23,10 +23,10 @@ export class BeneficiaryFamilyRepository extends Repository<BeneficiaryFamily> {
     return this.findOneBy({ familyBookNumber });
   }
 
-  findOneById(id: number): Promise<BeneficiaryFamily | undefined> {
-    return this.findOne({ where: { id } });
+  async findOneById(id: number, options: { withDeleted?: boolean } = {}): Promise<BeneficiaryFamily | undefined> {
+    const { withDeleted = false } = options;
+    return this.findOne({ where: { id }, withDeleted });
   }
-
   createBeneficiaryFamily(
     createBeneficiaryFamilyDto: CreateBeneficiaryFamilyDto,
   ): Promise<BeneficiaryFamily> {

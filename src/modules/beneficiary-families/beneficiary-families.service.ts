@@ -72,4 +72,17 @@ export class BeneficiaryFamiliesService {
     await this.findOne(id);
     await this.beneficiaryFamilyRepository.delete(id);
   }
+
+  async restore(id: number): Promise<void> {
+    const beneficiaryFamily = await this.beneficiaryFamilyRepository.findOneById(id, {
+      withDeleted: true,
+    });
+    if (!beneficiaryFamily) {
+      throw new NotFoundException('Beneficiary family not found');
+    }
+    if (!beneficiaryFamily.deletedAt) {
+      throw new ConflictException('Beneficiary family is not deleted');
+    }
+    await this.beneficiaryFamilyRepository.restore(beneficiaryFamily.id);
+  }
 }

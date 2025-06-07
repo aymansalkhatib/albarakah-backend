@@ -73,4 +73,12 @@ export class BeneficiaryFamiliesController {
       message: 'Beneficiary family deleted successfully',
     };
   }
+
+  @Post('/:id/restore')
+  async restore(@Param('id', ParseIntPipe) id: number): Promise<{ message: string }> {
+    await this.beneficiaryFamiliesService.restore(id);
+    return {
+      message: 'Beneficiary family restored successfully',
+    };
+  }
 }
