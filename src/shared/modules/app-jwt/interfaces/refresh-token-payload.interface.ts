@@ -7,13 +7,13 @@ import { BaseJwtPayload } from './base-jwt-payload.interface';
 export class RefreshTokenPayload {
   /** User's email address */
   email: string;
-  
+
   /** User's unique identifier */
   userId: number;
-  
+
   /** Session number for tracking multiple sessions */
   sessionNumber: number;
-  
+
   /** User's roles for authorization */
   roles: string[];
 }

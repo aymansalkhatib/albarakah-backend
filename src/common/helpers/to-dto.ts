@@ -1,4 +1,4 @@
-import { plainToInstance, ClassConstructor, ClassTransformOptions } from 'class-transformer';
+import { ClassConstructor, ClassTransformOptions, plainToInstance } from 'class-transformer';
 
 export function toDto<T, V>(
   cls: ClassConstructor<T>,

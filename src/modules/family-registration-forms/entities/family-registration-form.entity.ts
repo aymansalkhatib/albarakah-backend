@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToOne, JoinColumn, Index, OneToOne } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { CoreEntity } from '../../../shared/modules/app-type-orm/entities/core.entity';
 import { Person } from '../../persons/entities/person.entity';
 import { BeneficiaryFamily } from '../../beneficiary-families/entities/beneficiary-families.entity';

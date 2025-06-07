@@ -1,8 +1,7 @@
-import { Entity, Column, ManyToOne, JoinColumn, Index } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
 import { CoreEntity } from '../../../shared/modules/app-type-orm/entities/core.entity';
 import { Employee } from '../../employees/entities/employee.entity';
 import { BeneficiaryFamily } from '../../beneficiary-families/entities/beneficiary-families.entity';
-import { Person } from '../../persons/entities/person.entity';
 
 @Entity('interviews')
 @Index(['familyId'])

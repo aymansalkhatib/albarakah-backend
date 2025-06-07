@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { ENV_VALIDATION } from '../env.constant';
- 
+
 export const securitySchema = z.object({
   JWT_SECRET: z
     .string()

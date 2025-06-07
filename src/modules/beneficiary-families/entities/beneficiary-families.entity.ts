@@ -1,4 +1,4 @@
-import { Entity, Column, OneToMany, JoinColumn, ManyToOne, Index, OneToOne } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 import { FamilyMember } from './family-members.entity';
 import { Max } from 'class-validator';
 import { Guardian } from 'src/modules/guardians/entities/guardian.entity';
@@ -84,25 +84,25 @@ export class BeneficiaryFamily extends CoreEntity {
   @JoinColumn({ name: 'guardian_id' })
   guardian: Guardian;
 
-  @OneToMany(() => FamilyMember, (member) => member.family, )
+  @OneToMany(() => FamilyMember, (member) => member.family)
   members: FamilyMember[];
 
-  @OneToMany(() => Child, (child) => child.family, )
+  @OneToMany(() => Child, (child) => child.family)
   children: Child[];
 
-  @OneToMany(() => FamilyNeed, (need) => need.family, )
+  @OneToMany(() => FamilyNeed, (need) => need.family)
   needs: FamilyNeed[];
 
-  @OneToMany(() => ReceivedAssistance, (assistance) => assistance.family, )
+  @OneToMany(() => ReceivedAssistance, (assistance) => assistance.family)
   receivedAssistance: ReceivedAssistance[];
 
-  @OneToMany(() => EmergencyAidRequest, (request) => request.family, )
+  @OneToMany(() => EmergencyAidRequest, (request) => request.family)
   emergencyAidRequests: EmergencyAidRequest[];
 
-  @OneToMany(() => FamilyIncome, (income) => income.family, )
+  @OneToMany(() => FamilyIncome, (income) => income.family)
   income: FamilyIncome[];
 
-  @OneToMany(() => CallLog, (callLog) => callLog.family, )
+  @OneToMany(() => CallLog, (callLog) => callLog.family)
   callLogs: CallLog[];
 
   @OneToOne(() => House, (house) => house.family, {
@@ -112,13 +112,13 @@ export class BeneficiaryFamily extends CoreEntity {
   @JoinColumn({ name: 'house_id' })
   house?: House;
 
-  @OneToMany(() => Interview, (interview) => interview.family, )
+  @OneToMany(() => Interview, (interview) => interview.family)
   interviews: Interview[];
 
-  @OneToOne(() => FamilyRegistrationForm, (form) => form.family, )
+  @OneToOne(() => FamilyRegistrationForm, (form) => form.family)
   registrationForm: FamilyRegistrationForm;
 
-  @OneToMany(() => Visit, (visit) => visit.family, )
+  @OneToMany(() => Visit, (visit) => visit.family)
   visits: Visit[];
 
   // getters

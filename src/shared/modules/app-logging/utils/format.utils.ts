@@ -21,22 +21,13 @@ export class FormatUtils {
       if (code < 500) return Colors.fgBrightYellow;
       return Colors.fgBrightRed;
     };
-    return this.colorize(
-      statusCode?.toString(),
-      getStatusColor(statusCode),
-      showColor,
-    );
+    return this.colorize(statusCode?.toString(), getStatusColor(statusCode), showColor);
   }
 
   /**
    * Creates a formatted box around content with a title
    */
-  static drawBox(
-    title: string,
-    content: string,
-    color: string,
-    showColor: boolean,
-  ): string {
+  static drawBox(title: string, content: string, color: string, showColor: boolean): string {
     const contentLines = content.split('\n');
     const formattedContent = contentLines
       .map(

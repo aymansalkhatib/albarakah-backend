@@ -37,13 +37,9 @@ export class FileSizeValidatorPerType extends FileValidator {
       }
     }
 
-    const sortedLimits = this.getAllLimitsSortedBySize(
-      this.options.perTypeSizeLimits,
-    );
+    const sortedLimits = this.getAllLimitsSortedBySize(this.options.perTypeSizeLimits);
 
-    const limitsDescription = sortedLimits
-      .map(([type, size]) => `[${type}: ${size}]`)
-      .join(', ');
+    const limitsDescription = sortedLimits.map(([type, size]) => `[${type}: ${size}]`).join(', ');
 
     return `Invalid file or unsupported type. Supported file size limits are: ${limitsDescription}`;
   }
@@ -81,17 +77,12 @@ export class FileSizeValidatorPerType extends FileValidator {
    * @returns True if file size is within limits
    * @private
    */
-  private validateFileSize(
-    file: Express.Multer.File,
-    options: ValidationOptions,
-  ): boolean {
+  private validateFileSize(file: Express.Multer.File, options: ValidationOptions): boolean {
     const fileType = this.extractFileType(file);
     const sizeLimit = options.perTypeSizeLimits[fileType];
 
     if (!sizeLimit) {
-      throw new BadRequestException(
-        `No size limit defined for file type: ${fileType}`,
-      );
+      throw new BadRequestException(`No size limit defined for file type: ${fileType}`);
     }
 
     const maxSizeInBytes = bytes(sizeLimit);
@@ -107,9 +98,7 @@ export class FileSizeValidatorPerType extends FileValidator {
   private extractFileType(file: Express.Multer.File): SupportedFileType {
     const extension = extractFileExtension(file.originalname);
     if (!extension) {
-      throw new Error(
-        `Could not determine file type for file: ${file.originalname}`,
-      );
+      throw new Error(`Could not determine file type for file: ${file.originalname}`);
     }
     return extension as SupportedFileType;
   }

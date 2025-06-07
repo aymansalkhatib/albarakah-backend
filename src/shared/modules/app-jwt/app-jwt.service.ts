@@ -54,15 +54,6 @@ export class AppJwtService {
   }
 
   /**
-   * Creates a refresh token for token renewal
-   * @param payload User information to include in token
-   * @returns Signed JWT refresh token
-   */
-  private createRefreshToken(payload: RefreshTokenPayload): string {
-    return jwt.sign(payload, this.refreshSecret, { expiresIn: this.refreshExpiresIn });
-  }
-
-  /**
    * Creates a security token for operations like email verification or password reset
    * @param payload Security information including email, code and operation type
    * @returns Signed JWT security token
@@ -134,5 +125,14 @@ export class AppJwtService {
       }
       throw new UnauthorizedException('Invalid or expired security token');
     }
+  }
+
+  /**
+   * Creates a refresh token for token renewal
+   * @param payload User information to include in token
+   * @returns Signed JWT refresh token
+   */
+  private createRefreshToken(payload: RefreshTokenPayload): string {
+    return jwt.sign(payload, this.refreshSecret, { expiresIn: this.refreshExpiresIn });
   }
 }

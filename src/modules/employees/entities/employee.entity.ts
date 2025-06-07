@@ -1,19 +1,7 @@
 import { Person } from 'src/modules/persons/entities/person.entity';
 import { UserAccount } from 'src/modules/users/entities/user-accounts.entity';
 import { CoreEntity } from 'src/shared/modules/app-type-orm/entities/core.entity';
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  CreateDateColumn,
-  UpdateDateColumn,
-  JoinColumn,
-  DeleteDateColumn,
-  OneToOne,
-  Index,
-  OneToMany,
-} from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 import { Interview } from '../../interviews/entities/interview.entity';
 
 @Entity('employees')

@@ -31,10 +31,7 @@ const DOCUMENT_FILE_TYPES: NonEmptyArray<SupportedFileType> = ['txt'];
 /**
  * Maps field names to allowed file types to enforce field-specific file restrictions.
  */
-export const FIELD_FILE_TYPE_CONSTRAINTS: Record<
-  string,
-  NonEmptyArray<SupportedFileType>
-> = {
+export const FIELD_FILE_TYPE_CONSTRAINTS: Record<string, NonEmptyArray<SupportedFileType>> = {
   image: IMAGE_FILE_TYPES,
   images: IMAGE_FILE_TYPES,
   videos: VIDEO_FILE_TYPES,

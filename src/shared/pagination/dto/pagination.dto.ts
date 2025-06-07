@@ -1,13 +1,13 @@
-import { Type, Expose, Exclude, Transform } from 'class-transformer';
+import { Exclude, Expose, Transform, Type } from 'class-transformer';
 import {
+  IsArray,
+  IsEnum,
   IsOptional,
   IsPositive,
-  Min,
-  Max,
   IsString,
-  IsEnum,
+  Max,
+  Min,
   ValidateNested,
-  IsArray,
 } from 'class-validator';
 
 export enum SortOrder {

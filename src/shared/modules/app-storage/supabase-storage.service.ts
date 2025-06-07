@@ -11,10 +11,7 @@ export class SupabaseStorageService extends BaseStorageService {
 
   constructor(private readonly config: SupabaseStorageConfig) {
     super();
-    this.supabase = createClient(
-      config.SUPABASE_URL,
-      config.SUPABASE_SERVICE_ROLE_KEY,
-    );
+    this.supabase = createClient(config.SUPABASE_URL, config.SUPABASE_SERVICE_ROLE_KEY);
     this.bucketName = config.SUPABASE_BUCKET;
   }
 
@@ -48,9 +45,7 @@ export class SupabaseStorageService extends BaseStorageService {
    */
   async retrieve(fileId: string): Promise<Buffer> {
     try {
-      const { data, error } = await this.supabase.storage
-        .from(this.bucketName)
-        .download(fileId);
+      const { data, error } = await this.supabase.storage.from(this.bucketName).download(fileId);
 
       if (error) throw error;
 
@@ -66,9 +61,7 @@ export class SupabaseStorageService extends BaseStorageService {
    */
   async delete(fileId: string): Promise<boolean> {
     try {
-      const { error } = await this.supabase.storage
-        .from(this.bucketName)
-        .remove([fileId]);
+      const { error } = await this.supabase.storage.from(this.bucketName).remove([fileId]);
 
       if (error) throw error;
       return true;
@@ -105,17 +98,10 @@ export class SupabaseStorageService extends BaseStorageService {
   /**
    * Stores multiple files in Supabase storage using built-in batch operations
    */
-  async storeMany(
-    files: Express.Multer.File[],
-    customPath?: string,
-  ): Promise<string[]> {
+  async storeMany(files: Express.Multer.File[], customPath?: string): Promise<string[]> {
     return await this.processBatch(files, this.BATCH_SIZE, async (batch) => {
       const uploadPromises = batch.map((file) => {
-        const storagePath = super.buildStoragePath(
-          '',
-          file.originalname,
-          customPath,
-        );
+        const storagePath = super.buildStoragePath('', file.originalname, customPath);
         return this.supabase.storage
           .from(this.bucketName)
           .upload(storagePath, file.buffer, {
@@ -138,9 +124,7 @@ export class SupabaseStorageService extends BaseStorageService {
   async deleteMany(fileIds: string[]): Promise<boolean[]> {
     return await this.processBatch(fileIds, this.BATCH_SIZE, async (batch) => {
       try {
-        const { error } = await this.supabase.storage
-          .from(this.bucketName)
-          .remove(batch);
+        const { error } = await this.supabase.storage.from(this.bucketName).remove(batch);
 
         if (error) throw error;
         return batch.map(() => true);

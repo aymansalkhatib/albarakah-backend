@@ -1,9 +1,8 @@
-import { Entity, Column, ManyToOne, JoinColumn, Index } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
 import { CoreEntity } from '../../../shared/modules/app-type-orm/entities/core.entity';
 import { FamilyMember } from '../../beneficiary-families/entities/family-members.entity';
 import { CourseBatch } from './course-batch.entity';
 import { AttendanceStatus } from '../enums/attendance-status.enum';
-import { Person } from 'src/modules/persons/entities/person.entity';
 
 @Entity('person_course_batches')
 @Index(['familyMemberId'])

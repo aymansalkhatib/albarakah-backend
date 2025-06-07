@@ -28,7 +28,7 @@ export class ConsoleFormatter {
       requestTime,
       responseTime,
       during,
-      roles
+      roles,
     } = entry;
 
     const levelColor = LevelColors[levelLog] || Colors.fgBrightWhite;

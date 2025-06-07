@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  NotFoundException,
   Param,
   ParseIntPipe,
   Post,
@@ -59,26 +58,10 @@ export class BeneficiaryFamiliesController {
   }
 
   @Delete(':id')
-  async remove(@Param('id', ParseIntPipe) id: number): Promise<{ message: string }> {
-    await this.beneficiaryFamiliesService.remove(id);
-    return {
-      message: 'Beneficiary family deleted successfully',
-    };
-  }
-
-  @Delete('/:id/force')
   async forceDelete(@Param('id', ParseIntPipe) id: number): Promise<{ message: string }> {
     await this.beneficiaryFamiliesService.forceDelete(id);
     return {
       message: 'Beneficiary family deleted successfully',
-    };
-  }
-
-  @Post('/:id/restore')
-  async restore(@Param('id', ParseIntPipe) id: number): Promise<{ message: string }> {
-    await this.beneficiaryFamiliesService.restore(id);
-    return {
-      message: 'Beneficiary family restored successfully',
     };
   }
 }

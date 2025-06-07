@@ -1,11 +1,5 @@
 import { z } from 'zod';
-import {
-  databaseSchema,
-  mailSchema,
-  securitySchema,
-  serverSchema,
-  jwtSchema,
-} from './schemas';
+import { databaseSchema, jwtSchema, mailSchema, securitySchema, serverSchema } from './schemas';
 
 export const environmentSchema = z.object({
   ...serverSchema.shape,

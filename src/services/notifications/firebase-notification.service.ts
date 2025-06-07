@@ -1,8 +1,5 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import {
-  BatchResponse,
-  INotificationService,
-} from './interfaces/notification.interface';
+import { BatchResponse, INotificationService } from './interfaces/notification.interface';
 import {
   SingleTokenNotificationDto,
   TokensNotificationDto,
@@ -16,9 +13,7 @@ export class FirebaseNotificationService implements INotificationService {
   private readonly logger = new Logger(FirebaseNotificationService.name);
   private readonly batchSize = 500;
 
-  constructor(
-    @Inject('FIREBASE_ADMIN') private readonly firebaseAdmin: admin.app.App,
-  ) {}
+  constructor(@Inject('FIREBASE_ADMIN') private readonly firebaseAdmin: admin.app.App) {}
 
   /**
    * Send notification to a single token
@@ -33,9 +28,7 @@ export class FirebaseNotificationService implements INotificationService {
         },
         data: notification.data,
         android: {
-          ttl: notification.ttlInSeconds
-            ? notification.ttlInSeconds * 1000
-            : undefined,
+          ttl: notification.ttlInSeconds ? notification.ttlInSeconds * 1000 : undefined,
           priority: notification.priority || 'normal',
           notification: {
             sound: notification.sound || 'default',
@@ -51,15 +44,10 @@ export class FirebaseNotificationService implements INotificationService {
         },
       });
 
-      this.logger.log(
-        `Successfully sent notification to token ${notification.token}`,
-      );
+      this.logger.log(`Successfully sent notification to token ${notification.token}`);
       return response;
     } catch (error) {
-      this.logger.error(
-        `Failed to send notification to token ${notification.token}:`,
-        error,
-      );
+      this.logger.error(`Failed to send notification to token ${notification.token}:`, error);
       throw error;
     }
   }
@@ -78,33 +66,29 @@ export class FirebaseNotificationService implements INotificationService {
     try {
       const batchPromises = batches.map(async (batchTokens, batchIndex) => {
         try {
-          const response = await this.firebaseAdmin
-            .messaging()
-            .sendEachForMulticast({
-              tokens: batchTokens,
+          const response = await this.firebaseAdmin.messaging().sendEachForMulticast({
+            tokens: batchTokens,
+            notification: {
+              title: notificationData.title,
+              body: notificationData.body,
+            },
+            data: notificationData.data,
+            android: {
+              ttl: notificationData.ttlInSeconds ? notificationData.ttlInSeconds * 1000 : undefined,
+              priority: notificationData.priority || 'normal',
               notification: {
-                title: notificationData.title,
-                body: notificationData.body,
+                sound: notificationData.sound || 'default',
+                clickAction: notificationData.clickAction,
               },
-              data: notificationData.data,
-              android: {
-                ttl: notificationData.ttlInSeconds
-                  ? notificationData.ttlInSeconds * 1000
-                  : undefined,
-                priority: notificationData.priority || 'normal',
-                notification: {
+            },
+            apns: {
+              payload: {
+                aps: {
                   sound: notificationData.sound || 'default',
-                  clickAction: notificationData.clickAction,
                 },
               },
-              apns: {
-                payload: {
-                  aps: {
-                    sound: notificationData.sound || 'default',
-                  },
-                },
-              },
-            });
+            },
+          });
 
           totalSuccessCount += response.successCount;
           totalFailureCount += response.failureCount;
@@ -152,9 +136,7 @@ export class FirebaseNotificationService implements INotificationService {
         },
         data: notificationData.data,
         android: {
-          ttl: notificationData.ttlInSeconds
-            ? notificationData.ttlInSeconds * 1000
-            : undefined,
+          ttl: notificationData.ttlInSeconds ? notificationData.ttlInSeconds * 1000 : undefined,
           priority: notificationData.priority || 'normal',
           notification: {
             sound: notificationData.sound || 'default',
@@ -184,9 +166,7 @@ export class FirebaseNotificationService implements INotificationService {
   async subscribeToTopic(tokens: string[], topic: string): Promise<void> {
     try {
       await this.firebaseAdmin.messaging().subscribeToTopic(tokens, topic);
-      this.logger.log(
-        `Successfully subscribed ${tokens.length} tokens to topic: ${topic}`,
-      );
+      this.logger.log(`Successfully subscribed ${tokens.length} tokens to topic: ${topic}`);
     } catch (error) {
       this.logger.error(`Failed to subscribe tokens to topic ${topic}:`, error);
       throw error;
@@ -199,9 +179,7 @@ export class FirebaseNotificationService implements INotificationService {
   async unsubscribeFromTopic(tokens: string[], topic: string): Promise<void> {
     try {
       await this.firebaseAdmin.messaging().unsubscribeFromTopic(tokens, topic);
-      this.logger.log(
-        `Successfully unsubscribed ${tokens.length} tokens from topic: ${topic}`,
-      );
+      this.logger.log(`Successfully unsubscribed ${tokens.length} tokens from topic: ${topic}`);
     } catch (error) {
       this.logger.error(`Failed to unsubscribe tokens from topic ${topic}:`, error);
       throw error;

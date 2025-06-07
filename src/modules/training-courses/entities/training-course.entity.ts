@@ -1,4 +1,4 @@
-import { Entity, Column, Index, OneToMany } from 'typeorm';
+import { Column, Entity, Index, OneToMany } from 'typeorm';
 import { CoreEntity } from '../../../shared/modules/app-type-orm/entities/core.entity';
 import { CourseBatch } from './course-batch.entity';
 

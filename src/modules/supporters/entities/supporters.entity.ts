@@ -1,15 +1,5 @@
 import { Person } from 'src/modules/persons/entities/person.entity';
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  DeleteDateColumn,
-  JoinColumn,
-  Index,
-  OneToOne,
-} from 'typeorm';
+import { Column, Entity, Index, JoinColumn, OneToOne } from 'typeorm';
 import { SupportType } from '../enums/support-type';
 import { CoreEntity } from 'src/shared/modules/app-type-orm/entities/core.entity';
 

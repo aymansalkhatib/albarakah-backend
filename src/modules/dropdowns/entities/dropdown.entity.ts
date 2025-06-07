@@ -1,12 +1,12 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
+  Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
-  JoinColumn,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { DropdownCategory } from './dropdown-category.entity';
 import { DropdownOption } from './dropdown-option.entity';

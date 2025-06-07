@@ -1,6 +1,6 @@
-import { Injectable, ExecutionContext, UnauthorizedException, Logger } from '@nestjs/common';
+import { ExecutionContext, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { TokenExpiredError, JsonWebTokenError } from 'jsonwebtoken';
+import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
 import { Observable } from 'rxjs';
 
 /**

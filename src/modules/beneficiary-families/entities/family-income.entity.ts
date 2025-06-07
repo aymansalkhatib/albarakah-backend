@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToOne, JoinColumn, Index } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
 import { CoreEntity } from '../../../shared/modules/app-type-orm/entities/core.entity';
 import { BeneficiaryFamily } from './beneficiary-families.entity';
 
@@ -25,4 +25,4 @@ export class FamilyIncome extends CoreEntity {
   })
   @JoinColumn({ name: 'family_id' })
   family: BeneficiaryFamily;
-} 
+}

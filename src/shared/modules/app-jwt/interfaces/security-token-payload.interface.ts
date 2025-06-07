@@ -7,11 +7,11 @@ import { BaseJwtPayload } from './base-jwt-payload.interface';
 export interface SecurityTokenPayload {
   /** User's email address for identification */
   email: string;
-  
+
   /** Verification code (typically 6 digits) for user confirmation */
   code: number;
-  
-  /** 
+
+  /**
    * Token type to distinguish between different security operations
    * - 'email_verification': Used for verifying user email addresses
    * - 'password_reset': Used for password reset flows

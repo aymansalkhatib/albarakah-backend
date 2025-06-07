@@ -43,24 +43,18 @@ export class ImageProcessingPipe implements PipeTransform {
    * Processes a single file upload
    */
 
-  private async processSingleFile(
-    file: Express.Multer.File,
-  ): Promise<Express.Multer.File> {
+  private async processSingleFile(file: Express.Multer.File): Promise<Express.Multer.File> {
     return optimizeImage(file, this.options);
   }
 
   /**
    * Processes an array of file uploads concurrently
    */
-  private async processFileArray(
-    files: Express.Multer.File[],
-  ): Promise<Express.Multer.File[]> {
+  private async processFileArray(files: Express.Multer.File[]): Promise<Express.Multer.File[]> {
     return Promise.all(files.map((file) => this.processSingleFile(file)));
   }
 
-  private async processNestedFiles(
-    files: NestedFileUpload,
-  ): Promise<NestedFileUpload> {
+  private async processNestedFiles(files: NestedFileUpload): Promise<NestedFileUpload> {
     const processedFiles: NestedFileUpload = { ...files };
 
     await Promise.all(

@@ -5,7 +5,7 @@
 export interface TokenPair {
   /** Short-lived token used for API authorization */
   accessToken: string;
-  
+
   /** Long-lived token used to obtain new access tokens */
   refreshToken: string;
 }

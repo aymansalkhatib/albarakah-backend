@@ -1,22 +1,11 @@
 import { Person } from 'src/modules/persons/entities/person.entity';
-import {
-  Entity,
-  Unique,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  JoinColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  DeleteDateColumn,
-  Index,
-  OneToMany,
-} from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { FamilyMember } from './family-members.entity';
 import { BeneficiaryFamily } from './beneficiary-families.entity';
 import { CoreEntity } from 'src/shared/modules/app-type-orm/entities/core.entity';
 import { ReceivedAssistance } from 'src/modules/received-assistance/entities/received-assistance.entity';
 import { CallLog } from 'src/modules/call-logs/entities/call-log.entity';
+
 @Entity('children')
 @Index(['personId'], { unique: true, where: 'deleted_at IS NULL' })
 @Index(['familyId', 'isSponsored'])
@@ -56,7 +45,6 @@ export class Child extends CoreEntity {
   @OneToMany(() => ReceivedAssistance, (assistance) => assistance.child, {
     cascade: ['insert', 'update'],
   })
-
   @OneToMany(() => CallLog, (callLog) => callLog.child, {
     cascade: ['insert', 'update'],
   })

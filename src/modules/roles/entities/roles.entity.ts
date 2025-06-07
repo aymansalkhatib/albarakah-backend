@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { RolePermission } from './role-permission.entity';
 import { UserAccount } from 'src/modules/users/entities/user-accounts.entity';
 

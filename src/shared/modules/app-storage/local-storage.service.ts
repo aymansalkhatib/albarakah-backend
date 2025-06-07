@@ -26,7 +26,7 @@ export class LocalStorageService extends BaseStorageService {
 
     try {
       await fs.writeFile(storagePath, file.buffer);
-    } catch (error:any) {
+    } catch (error: any) {
       throw new Error(`Failed to store file at ${storagePath}: ${error.message}`);
     }
     return storagePath;
@@ -84,10 +84,7 @@ export class LocalStorageService extends BaseStorageService {
   /**
    * Stores multiple files in local filesystem using batched operations
    */
-  async storeMany(
-    files: Express.Multer.File[],
-    customPath?: string,
-  ): Promise<string[]> {
+  async storeMany(files: Express.Multer.File[], customPath?: string): Promise<string[]> {
     return await this.processBatch(files, this.BATCH_SIZE, async (batch) => {
       const promises = batch.map((file) => this.store(file, customPath));
       return await Promise.all(promises);

@@ -11,11 +11,9 @@ import { GlobalExceptionFilter } from './shared/exceptions-filter/global-excepti
 // import { NotificationModule } from './services/notifications/notification.module';
 import { AppI18nModule } from './shared/modules/app-i18n/i18n.module';
 import { AppConfigModel } from './shared/modules/app-config/app_config.module';
-import { MailModule } from './services/mail/mail.module';
-import { AppStorageModule } from './shared/modules/app-storage/app-storage.module';
 import { AppTypeOrmModule } from './shared/modules/app-type-orm/app-type-orm.module';
-import { AppJwtModule } from './shared/modules/app-jwt/app-jwt.module';
 import { PersonModule } from './modules/persons/person.module';
+
 // import { AuthModule } from './modules/auth/auth.module';
 
 @Module({

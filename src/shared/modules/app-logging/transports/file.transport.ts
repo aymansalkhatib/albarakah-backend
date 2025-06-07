@@ -76,9 +76,7 @@ export const createDailyRotateTransport = ({
 /**
  * Creates all file transports for the logger
  */
-export const createFileTransports = (
-  customFormat: winston.Logform.Format,
-): winston.transport[] => {
+export const createFileTransports = (customFormat: winston.Logform.Format): winston.transport[] => {
   return [
     createDailyRotateTransport({
       filename: FILE_CONFIG.ERROR_FILE,

@@ -1,4 +1,4 @@
-import { Entity, Column, ManyToOne, JoinColumn, Index } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
 import { CoreEntity } from '../../../shared/modules/app-type-orm/entities/core.entity';
 import { BeneficiaryFamily } from '../../beneficiary-families/entities/beneficiary-families.entity';
 import { EmergencyAidRequestStatus } from '../enums/emergency-aid-request-status.enum';

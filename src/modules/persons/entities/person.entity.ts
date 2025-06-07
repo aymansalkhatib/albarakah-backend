@@ -1,5 +1,5 @@
 // person.entity.ts
-import { Entity, Column, ManyToOne, Check, JoinColumn, Index, OneToOne, OneToMany } from 'typeorm';
+import { Check, Column, Entity, Index, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { DropdownOption } from '../../dropdowns/entities/dropdown-option.entity';
 import { CoreEntity } from 'src/shared/modules/app-type-orm/entities/core.entity';
 import { GenderType } from '../enums/gender-type.enum';
@@ -8,6 +8,7 @@ import { Guardian } from 'src/modules/guardians/entities/guardian.entity';
 import { Child } from 'src/modules/beneficiary-families/entities/children.entity';
 import { FamilyMember } from 'src/modules/beneficiary-families/entities/family-members.entity';
 import { Employee } from 'src/modules/employees/entities/employee.entity';
+
 @Entity('person')
 @Index(['nationalId'], { unique: true, where: 'national_id IS NOT NULL AND deleted_at IS NULL' })
 @Index(['email'], { unique: true, where: 'email IS NOT NULL AND deleted_at IS NULL' })

@@ -1,14 +1,14 @@
 import {
-  IsString,
-  IsEmail,
-  IsOptional,
   IsBoolean,
-  IsEnum,
   IsDateString,
+  IsEmail,
+  IsEnum,
   IsInt,
+  IsOptional,
+  IsString,
   Length,
-  Min,
   Max,
+  Min,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
 import { GenderType } from '../enums/gender-type.enum';

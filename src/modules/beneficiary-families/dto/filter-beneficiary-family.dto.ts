@@ -1,16 +1,21 @@
 import {
+  IsBoolean,
+  IsDateString,
+  IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
-  IsBoolean,
-  IsNumber,
-  IsDateString,
-  Min,
+  Matches,
   Max,
   MaxLength,
-  Matches,
+  Min,
 } from 'class-validator';
 import { Expose } from 'class-transformer';
+import { StrictBoolean } from '../../../common/decorators/strict-boolean.decorator';
+import { ValidateMinMaxPairs } from '../../../common/decorators/validate-min-max-pairs-constraint';
+import { IsAfterDate } from '../../../common/decorators/is-after-date.decorator';
 
+@ValidateMinMaxPairs()
 export class FilterBeneficiaryFamilyDto {
   @IsOptional()
   @IsString()
@@ -19,32 +24,34 @@ export class FilterBeneficiaryFamilyDto {
   familyName?: string;
 
   @IsOptional()
-  @IsString()
   @MaxLength(20)
+  @IsNotEmpty()
+  @IsString()
+  @Matches(/^[0-9]+$/, { message: 'Family book number must be exactly 20 digits' })
   @Expose()
   familyBookNumber?: string;
 
   @IsOptional()
   @IsString()
   @MaxLength(10)
-  @Matches(/^[0-9]{10}$/, { message: 'Landline phone must be exactly 10 digits' })
+  @IsNotEmpty()
   @Expose()
   landlinePhone?: string;
 
   @IsOptional()
   @IsString()
   @MaxLength(10)
-  @Matches(/^[0-9]{10}$/, { message: 'Mobile phone must be exactly 10 digits' })
+  @Matches(/^[0-9]{1,10}$/, { message: 'Mobile phone must be between 1 and 10 digits' })
   @Expose()
   mobilePhone?: string;
 
   @IsOptional()
-  @IsBoolean()
+  @StrictBoolean()
   @Expose()
   isDisplaced?: boolean;
 
   @IsOptional()
-  @IsBoolean()
+  @StrictBoolean()
   @Expose()
   isExtremelyPoor?: boolean;
 
@@ -69,6 +76,7 @@ export class FilterBeneficiaryFamilyDto {
 
   @IsOptional()
   @IsDateString()
+  @IsAfterDate('familySuspensionDateFrom')
   @Expose()
   familySuspensionDateTo?: string;
 

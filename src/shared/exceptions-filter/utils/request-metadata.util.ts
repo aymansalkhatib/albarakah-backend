@@ -18,12 +18,8 @@ export function extractRequestMetadata(request: Request): LogMetadata {
     contentLength: `${request.get('content-length') || '0'}B`,
     body: sanitizeRequestBody(request.body, 'No body parameters'),
     headers: sanitizeHeaders(request.headers),
-    query:
-      Object.keys(request.query).length > 0 ? request.query : 'No query parameters',
-    params:
-      Object.keys(request.params).length > 0
-        ? request.params
-        : 'No params parameters',
+    query: Object.keys(request.query).length > 0 ? request.query : 'No query parameters',
+    params: Object.keys(request.params).length > 0 ? request.params : 'No params parameters',
     requestTime: 'Unknown',
     responseTime: endTime.toISOString(),
     during: 'Unknown',

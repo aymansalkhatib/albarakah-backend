@@ -14,11 +14,7 @@ export class ErrorHandlerFactory {
   private readonly fallbackHandler: ErrorHandlerStrategy;
 
   constructor() {
-    this.handlers = [
-      new MulterErrorHandler(),
-      new JwtErrorHandler(),
-      new HttpExceptionHandler(),
-    ];
+    this.handlers = [new MulterErrorHandler(), new JwtErrorHandler(), new HttpExceptionHandler()];
     this.fallbackHandler = new UnknownErrorHandler();
   }
 
@@ -26,9 +22,6 @@ export class ErrorHandlerFactory {
    * Gets the appropriate handler for the given error
    */
   getHandler(error: Error): ErrorHandlerStrategy {
-    return (
-      this.handlers.find((handler) => handler.canHandle(error)) ||
-      this.fallbackHandler
-    );
+    return this.handlers.find((handler) => handler.canHandle(error)) || this.fallbackHandler;
   }
 }

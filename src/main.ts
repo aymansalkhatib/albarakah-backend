@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { RequestMethod, ValidationPipe, VersioningType } from '@nestjs/common';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
 import helmet from 'helmet';
 import * as compression from 'compression';
 import { i18nValidationErrorFactory, I18nValidationExceptionFilter } from 'nestjs-i18n';

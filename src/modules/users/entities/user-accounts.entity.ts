@@ -2,18 +2,7 @@ import { Employee } from 'src/modules/employees/entities/employee.entity';
 import { Role } from 'src/modules/roles/entities/roles.entity';
 import { UserPermission } from 'src/modules/roles/entities/user-permission.entity';
 import { CoreEntity } from 'src/shared/modules/app-type-orm/entities/core.entity';
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  ManyToOne,
-  JoinColumn,
-  OneToOne,
-  OneToMany,
-  Index,
-} from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 
 @Entity('user_accounts')
 @Index(['username'], { unique: true })

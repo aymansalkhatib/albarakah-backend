@@ -1,16 +1,17 @@
 import {
-  IsString,
-  IsNotEmpty,
-  IsOptional,
   IsBoolean,
-  IsNumber,
   IsDateString,
-  MaxLength,
-  Max,
-  Min,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
   Matches,
+  Max,
+  MaxLength,
+  Min,
 } from 'class-validator';
-import { Transform, Expose } from 'class-transformer';
+import { Expose, Transform } from 'class-transformer';
+import { StrictBoolean } from '../../../common/decorators/strict-boolean.decorator';
 
 export class CreateBeneficiaryFamilyDto {
   @IsString()
@@ -22,13 +23,17 @@ export class CreateBeneficiaryFamilyDto {
   @MaxLength(20)
   @IsNotEmpty()
   @IsString()
+  @Matches(/^[0-9]+$/, { message: 'Family book number must be exactly 20 digits' })
   @Expose()
   familyBookNumber: string;
 
   @IsOptional()
   @IsString()
   @MaxLength(10)
-  @Matches(/^[0-9]{10}$/, { message: 'Landline phone must be exactly 10 digits' })
+  @Matches(/^0\d{2}\d{6,7}$/, {
+    message:
+      'The Syrian landline number must start with 0, followed by a 2-digit area code and then 6 or 7 digits.',
+  })
   @Expose()
   landlinePhone?: string;
 
@@ -40,12 +45,12 @@ export class CreateBeneficiaryFamilyDto {
   mobilePhone?: string;
 
   @IsOptional()
-  @IsBoolean()
+  @StrictBoolean()
   @Expose()
   isDisplaced?: boolean;
 
   @IsOptional()
-  @IsBoolean()
+  @StrictBoolean()
   @Expose()
   isExtremelyPoor?: boolean;
 

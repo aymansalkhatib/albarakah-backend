@@ -2,18 +2,7 @@ import { BeneficiaryFamily } from 'src/modules/beneficiary-families/entities/ben
 import { FamilyRelationType } from 'src/modules/beneficiary-families/enums/family-relation-type.enum';
 import { Person } from 'src/modules/persons/entities/person.entity';
 import { CoreEntity } from 'src/shared/modules/app-type-orm/entities/core.entity';
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  JoinColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  OneToMany,
-  DeleteDateColumn,
-  Index,
-} from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 
 @Entity('guardians')
 @Index(['personId'], { unique: true, where: 'deleted_at IS NULL' })

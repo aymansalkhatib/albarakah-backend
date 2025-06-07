@@ -63,26 +63,10 @@ export class BeneficiaryFamiliesService {
     );
   }
 
-  async remove(id: number): Promise<void> {
-    const beneficiaryFamily = await this.findOne(id);
-    await this.beneficiaryFamilyRepository.softRemove(beneficiaryFamily);
-  }
-
   async forceDelete(id: number): Promise<void> {
-    await this.findOne(id);
-    await this.beneficiaryFamilyRepository.delete(id);
-  }
-
-  async restore(id: number): Promise<void> {
-    const beneficiaryFamily = await this.beneficiaryFamilyRepository.findOneById(id, {
-      withDeleted: true,
-    });
-    if (!beneficiaryFamily) {
+    const result = await this.beneficiaryFamilyRepository.forceDelete(id);
+    if (!result.affected) {
       throw new NotFoundException('Beneficiary family not found');
     }
-    if (!beneficiaryFamily.deletedAt) {
-      throw new ConflictException('Beneficiary family is not deleted');
-    }
-    await this.beneficiaryFamilyRepository.restore(beneficiaryFamily.id);
   }
 }
