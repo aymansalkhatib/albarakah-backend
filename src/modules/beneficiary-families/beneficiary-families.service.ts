@@ -18,7 +18,11 @@ export class BeneficiaryFamiliesService {
   }
 
   async findOne(id: number): Promise<BeneficiaryFamily> {
-    return await this.beneficiaryFamilyRepository.findOneById(id);
+    const beneficiaryFamily = await this.beneficiaryFamilyRepository.findOneById(id);
+    if (!beneficiaryFamily) {
+      throw new NotFoundException('Beneficiary family not found');
+    }
+    return beneficiaryFamily;
   }
 
   async create(createBeneficiaryFamilyDto: CreateBeneficiaryFamilyDto): Promise<BeneficiaryFamily> {
@@ -30,7 +34,6 @@ export class BeneficiaryFamiliesService {
         throw new ConflictException('Family book number already exists');
       }
     }
-
     return this.beneficiaryFamilyRepository.createBeneficiaryFamily(createBeneficiaryFamilyDto);
   }
 
@@ -60,12 +63,13 @@ export class BeneficiaryFamiliesService {
     );
   }
 
-  async delete(id: number): Promise<void> {
+  async remove(id: number): Promise<void> {
     const beneficiaryFamily = await this.findOne(id);
-    if (!beneficiaryFamily) {
-      throw new NotFoundException('Beneficiary family not found');
-    }
+    await this.beneficiaryFamilyRepository.softRemove(beneficiaryFamily);
+  }
 
-    await this.beneficiaryFamilyRepository.softRemove({ id });
+  async forceDelete(id: number): Promise<void> {
+    await this.findOne(id);
+    await this.beneficiaryFamilyRepository.delete(id);
   }
 }

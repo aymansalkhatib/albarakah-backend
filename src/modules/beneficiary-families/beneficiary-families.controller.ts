@@ -33,9 +33,6 @@ export class BeneficiaryFamiliesController {
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: number): Promise<BeneficiaryFamilyResponseDto> {
     const beneficiaryFamily = await this.beneficiaryFamiliesService.findOne(id);
-    if (!beneficiaryFamily) {
-      throw new NotFoundException('Beneficiary family not found');
-    }
     return toDto(BeneficiaryFamilyResponseDto, beneficiaryFamily);
   }
 
@@ -62,8 +59,16 @@ export class BeneficiaryFamiliesController {
   }
 
   @Delete(':id')
-  async delete(@Param('id', ParseIntPipe) id: number): Promise<{ message: string }> {
-    await this.beneficiaryFamiliesService.delete(id);
+  async remove(@Param('id', ParseIntPipe) id: number): Promise<{ message: string }> {
+    await this.beneficiaryFamiliesService.remove(id);
+    return {
+      message: 'Beneficiary family deleted successfully',
+    };
+  }
+
+  @Delete('/:id/force')
+  async forceDelete(@Param('id', ParseIntPipe) id: number): Promise<{ message: string }> {
+    await this.beneficiaryFamiliesService.forceDelete(id);
     return {
       message: 'Beneficiary family deleted successfully',
     };

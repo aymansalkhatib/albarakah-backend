@@ -84,39 +84,25 @@ export class BeneficiaryFamily extends CoreEntity {
   @JoinColumn({ name: 'guardian_id' })
   guardian: Guardian;
 
-  @OneToMany(() => FamilyMember, (member) => member.family, {
-    cascade: ['insert', 'update'],
-  })
+  @OneToMany(() => FamilyMember, (member) => member.family, )
   members: FamilyMember[];
 
-  @OneToMany(() => Child, (child) => child.family, {
-    cascade: ['insert', 'update'],
-  })
+  @OneToMany(() => Child, (child) => child.family, )
   children: Child[];
 
-  @OneToMany(() => FamilyNeed, (need) => need.family, {
-    cascade: ['insert', 'update'],
-  })
+  @OneToMany(() => FamilyNeed, (need) => need.family, )
   needs: FamilyNeed[];
 
-  @OneToMany(() => ReceivedAssistance, (assistance) => assistance.family, {
-    cascade: ['insert', 'update'],
-  })
+  @OneToMany(() => ReceivedAssistance, (assistance) => assistance.family, )
   receivedAssistance: ReceivedAssistance[];
 
-  @OneToMany(() => EmergencyAidRequest, (request) => request.family, {
-    cascade: ['insert', 'update'],
-  })
+  @OneToMany(() => EmergencyAidRequest, (request) => request.family, )
   emergencyAidRequests: EmergencyAidRequest[];
 
-  @OneToMany(() => FamilyIncome, (income) => income.family, {
-    cascade: ['insert', 'update'],
-  })
+  @OneToMany(() => FamilyIncome, (income) => income.family, )
   income: FamilyIncome[];
 
-  @OneToMany(() => CallLog, (callLog) => callLog.family, {
-    cascade: ['insert', 'update'],
-  })
+  @OneToMany(() => CallLog, (callLog) => callLog.family, )
   callLogs: CallLog[];
 
   @OneToOne(() => House, (house) => house.family, {
@@ -126,19 +112,13 @@ export class BeneficiaryFamily extends CoreEntity {
   @JoinColumn({ name: 'house_id' })
   house?: House;
 
-  @OneToMany(() => Interview, (interview) => interview.family, {
-    cascade: ['insert', 'update'],
-  })
+  @OneToMany(() => Interview, (interview) => interview.family, )
   interviews: Interview[];
 
-  @OneToOne(() => FamilyRegistrationForm, (form) => form.family, {
-    cascade: ['insert', 'update'],
-  })
+  @OneToOne(() => FamilyRegistrationForm, (form) => form.family, )
   registrationForm: FamilyRegistrationForm;
 
-  @OneToMany(() => Visit, (visit) => visit.family, {
-    cascade: ['insert', 'update'],
-  })
+  @OneToMany(() => Visit, (visit) => visit.family, )
   visits: Visit[];
 
   // getters
