@@ -10,6 +10,7 @@ import {
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
+  Unique,
   UpdateDateColumn,
 } from 'typeorm';
 import { DropdownOption } from '../../dropdowns/entities/dropdown-option.entity';
@@ -21,11 +22,10 @@ import { FamilyMember } from 'src/modules/beneficiary-families/entities/family-m
 import { Employee } from 'src/modules/employees/entities/employee.entity';
 
 @Entity('person')
-@Index(['nationalId'], { unique: true, where: 'national_id IS NOT NULL AND deleted_at IS NULL' })
-@Index(['email'], { unique: true, where: 'email IS NOT NULL AND deleted_at IS NULL' })
+@Index(['nationalId'], { unique: true, where: 'national_id IS NOT NULL' })
+@Index(['email'], { unique: true, where: 'email IS NOT NULL' })
 @Index(['firstName', 'lastName'])
-@Index(['birthDate'])
-@Index(['deletedAt'])
+@Unique(['firstName', 'birthDate', 'lastName'])
 export class Person {
   @PrimaryGeneratedColumn()
   id: number;
@@ -43,13 +43,13 @@ export class Person {
   lastName: string;
 
   @Column({ type: 'date', nullable: true, name: 'birth_date' })
-  birthDate: Date;
+  birthDate: string;
 
   @Column({ length: 50, unique: true, nullable: true, name: 'national_id' })
   nationalId: string;
 
-  @Column({ type: 'boolean', default: false, name: 'is_palestinian' })
-  isPalestinian: boolean;
+  @Column({ type: 'boolean', name: 'is_palestinian', nullable: true })
+  isPalestinian?: boolean;
 
   @Column({ type: 'enum', enum: GenderType, nullable: true, name: 'gender' })
   gender: GenderType;
@@ -60,8 +60,8 @@ export class Person {
   @Column({ length: 200, nullable: true, name: 'birth_place' })
   birthPlace: string;
 
-  @Column({ type: 'boolean', default: false, name: 'is_working' })
-  isWorking: boolean;
+  @Column({ type: 'boolean', name: 'is_working', nullable: true })
+  isWorking?: boolean;
 
   @Column({ length: 200, nullable: true, name: 'current_job' })
   currentJob: string;
@@ -69,8 +69,8 @@ export class Person {
   @Column({ type: 'text', nullable: true, name: 'job_details' })
   jobDetails: string;
 
-  @Column({ type: 'boolean', default: false, name: 'is_smoker' })
-  isSmoker: boolean;
+  @Column({ type: 'boolean', name: 'is_smoker', nullable: true })
+  isSmoker?: boolean;
 
   @Column({ name: 'health_status_id', nullable: true })
   healthStatusId: number;
@@ -114,14 +114,6 @@ export class Person {
   @Column({ type: 'text', nullable: true })
   notes: string;
 
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
-
-  @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
-
-  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
-  deletedAt?: Date;
   // Relationships
 
   @ManyToOne(() => Person, { nullable: true, onDelete: 'SET NULL' })

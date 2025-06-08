@@ -2,6 +2,8 @@ import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from 
 import { EmployeesService } from './employee.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
+import { toDto } from 'src/common/helpers/to-dto';
+import { EmployeeResponseDto } from './dto/employee-response.dto';
 
 @Controller('employees')
 export class EmployeesController {
@@ -9,7 +11,8 @@ export class EmployeesController {
 
   @Post()
   async create(@Body() createEmployeeDto: CreateEmployeeDto) {
-    return this.employeesService.create(createEmployeeDto);
+    const employee = await this.employeesService.create(createEmployeeDto);
+    return toDto(EmployeeResponseDto, employee);
   }
 
   @Get(':id')

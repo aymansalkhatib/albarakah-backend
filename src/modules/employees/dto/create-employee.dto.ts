@@ -1,7 +1,17 @@
-import { IsDateString, IsOptional, IsString, MaxLength } from 'class-validator';
+import {
+  IsDateString,
+  IsNumber,
+  IsOptional,
+  IsString,
+  MaxLength,
+  ValidateNested,
+} from 'class-validator';
 import { CreatePersonDto } from '../../persons/dto/create-person.dto';
+import { Type } from 'class-transformer';
+import { OnlyOneOf } from 'src/common/decorators/validate-one-of-two-fields.validator';
 
-export class CreateEmployeeDto extends CreatePersonDto {
+@OnlyOneOf(['personId', 'person'])
+export class CreateEmployeeDto { 
   @IsOptional()
   @IsString()
   @MaxLength(100)
@@ -18,4 +28,13 @@ export class CreateEmployeeDto extends CreatePersonDto {
   @IsOptional()
   @IsString()
   notes?: string;
+
+  @IsOptional()
+  @IsNumber()
+  personId?: number;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => CreatePersonDto)
+  person?: CreatePersonDto;
 }

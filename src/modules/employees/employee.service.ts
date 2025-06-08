@@ -16,23 +16,60 @@ export class EmployeesService {
   ) {}
 
   async create(createEmployeeDto: CreateEmployeeDto): Promise<Employee> {
-    if (createEmployeeDto.nationalId) {
-      if (await this.personRepository.findOneBy({ nationalId: createEmployeeDto.nationalId })) {
-        throw new ConflictException('National ID already exists');
+    ///
+    //- Validate person existence and check for existing employee association
+    if (createEmployeeDto.personId) {
+      const person = await this.personRepository.findOne({
+        where: { id: createEmployeeDto.personId },
+        relations: ['employee'],
+      });
+      if (!person) {
+        throw new NotFoundException(`Person with ID ${createEmployeeDto.personId} not found`);
+      }
+      if (person.employee) {
+        throw new ConflictException(
+          `Person with ID ${createEmployeeDto.personId} is already an employee`,
+        );
+      }
+    }
+    ///
+    // Validate that the national ID is unique if provided in the new person data
+    else if (createEmployeeDto.person) {
+      const { nationalId, email, firstName, lastName, birthDate } = createEmployeeDto.person;
+
+      // Check if nationalId is provided and unique
+      if (nationalId) {
+        const existingPersonWithNationalId = await this.personRepository.findOneBy({ nationalId });
+        if (existingPersonWithNationalId) {
+          throw new ConflictException(`Person with National ID ${nationalId} already exists`);
+        }
+      }
+
+      // Check if email is provided and unique
+      if (email) {
+        const existingPersonWithEmail = await this.personRepository.findOneBy({ email });
+        if (existingPersonWithEmail) {
+          throw new ConflictException(`Person with email ${email} already exists`);
+        }
+      }
+
+      // Validate required fields
+      const existingPerson = await this.personRepository.findOne({
+        where: {
+          firstName,
+          lastName,
+          birthDate,
+        },
+      });
+      if (existingPerson) {
+        throw new ConflictException(
+          'A person with this first name, last name, and birth date already exists',
+        );
       }
     }
 
-    const person = this.personRepository.create({
-      ...createEmployeeDto,
-    });
-    const employee = this.employeeRepository.create({
-      ...createEmployeeDto,
-      person: person,
-    });
-
-    const savedEmployee = await this.employeeRepository.save(employee);
-
-    return this.findOne(savedEmployee.id);
+    const employee = this.employeeRepository.create(createEmployeeDto);
+    return await this.employeeRepository.save(employee);
   }
 
   async findOne(id: number): Promise<Employee> {
@@ -51,22 +88,41 @@ export class EmployeesService {
   async update(id: number, updateEmployeeDto: UpdateEmployeeDto): Promise<Employee> {
     const employee = await this.findOne(id);
 
-    // If updating personId, check for conflicts
-    // if (updateEmployeeDto.personId && updateEmployeeDto.personId !== employee.personId) {
-    //   const existingEmployee = await this.employeeRepository.findOne({
-    //     where: { personId: updateEmployeeDto.personId },
-    //     withDeleted: false,
-    //   });
-    //
-    //   if (existingEmployee && existingEmployee.id !== id) {
-    //     throw new ConflictException(
-    //       `Person with ID ${updateEmployeeDto.personId} is already an employee`,
-    //     );
-    //   }
-    // }
+    // If updating person data, check for unique constraints
+    if (updateEmployeeDto.person) {
+      const { nationalId, email, firstName, lastName, birthDate } = updateEmployeeDto.person;
 
-    await this.employeeRepository.update(id, updateEmployeeDto);
-    return this.findOne(id);
+      // Check if nationalId is provided and unique
+      if (nationalId) {
+        const existingPersonWithNationalId = await this.personRepository.findOneBy({ nationalId });
+        if (existingPersonWithNationalId && existingPersonWithNationalId.id !== employee.personId) {
+          throw new ConflictException(`Person with National ID ${nationalId} already exists`);
+        }
+      }
+
+      // Check if email is provided and unique
+      if (email) {
+        const existingPersonWithEmail = await this.personRepository.findOneBy({ email });
+        if (existingPersonWithEmail && existingPersonWithEmail.id !== employee.personId) {
+          throw new ConflictException(`Person with email ${email} already exists`);
+        }
+      }
+
+      // Validate required fields
+      if (!firstName || !lastName || !birthDate) {
+        const existingPerson = await this.personRepository.findOne({
+          where: [{ firstName, lastName, birthDate }],
+        });
+        if (existingPerson && existingPerson.id !== employee.personId) {
+          throw new ConflictException(
+            'A person with this first name, last name, and birth date or national ID already exists',
+          );
+        }
+      }
+    }
+
+    const mergedEmployee = this.employeeRepository.merge(employee, updateEmployeeDto);
+    return await this.employeeRepository.save(mergedEmployee);
   }
 
   async remove(id: number): Promise<{ message: string }> {

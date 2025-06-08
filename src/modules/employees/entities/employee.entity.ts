@@ -16,26 +16,25 @@ import {
 import { Interview } from '../../interviews/entities/interview.entity';
 
 @Entity('employees')
-@Index(['personId'], { unique: true, where: 'deleted_at IS NULL' })
+@Index(['personId'], { unique: true })
 @Index(['position'])
 @Index(['hireDate'])
 @Index(['terminationDate'])
-@Index(['deletedAt'])
 export class Employee {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'person_id' })
+  @Column({ name: 'person_id', unique: true })
   personId: number;
 
   @Column({ length: 100, nullable: true })
   position?: string;
 
   @Column({ type: 'date', nullable: true })
-  hireDate?: string;
+  hireDate?: Date;
 
   @Column({ type: 'date', nullable: true })
-  terminationDate?: string;
+  terminationDate?: Date;
 
   @Column({ type: 'text', nullable: true })
   notes?: string;
@@ -45,9 +44,6 @@ export class Employee {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
-
-  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
-  deletedAt?: Date;
 
   //
 
