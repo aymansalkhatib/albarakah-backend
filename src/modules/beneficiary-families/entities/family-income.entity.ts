@@ -1,12 +1,24 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
-import { CoreEntity } from '../../../shared/modules/app-type-orm/entities/core.entity';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { BeneficiaryFamily } from './beneficiary-families.entity';
 
 @Entity('family_income')
 @Index(['familyId'])
 @Index(['incomeSource'])
 @Index(['createdAt'])
-export class FamilyIncome extends CoreEntity {
+export class FamilyIncome {
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column({ name: 'family_id' })
   familyId: number;
 
@@ -18,6 +30,15 @@ export class FamilyIncome extends CoreEntity {
 
   @Column({ type: 'text', nullable: true })
   notes?: string;
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
+
+  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
+  deletedAt?: Date;
 
   // Relationships
   @ManyToOne(() => BeneficiaryFamily, (family) => family.income, {

@@ -12,7 +12,7 @@ import { GlobalExceptionFilter } from './shared/exceptions-filter/global-excepti
 import { AppI18nModule } from './shared/modules/app-i18n/i18n.module';
 import { AppConfigModel } from './shared/modules/app-config/app_config.module';
 import { AppTypeOrmModule } from './shared/modules/app-type-orm/app-type-orm.module';
-import { PersonModule } from './modules/persons/person.module';
+import { EmployeesModule } from './modules/employees/entities/employee.module';
 
 // import { AuthModule } from './modules/auth/auth.module';
 
@@ -28,8 +28,8 @@ import { PersonModule } from './modules/persons/person.module';
 
     // AppJwtModule,
     // AuthModule,
-    PersonModule,
     BeneficiaryFamiliesModule,
+    EmployeesModule,
   ],
 
   controllers: [AppController],

@@ -1,11 +1,23 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
-import { CoreEntity } from '../../../shared/modules/app-type-orm/entities/core.entity';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { BeneficiaryFamily } from 'src/modules/beneficiary-families/entities/beneficiary-families.entity';
 
 @Entity('visits')
 @Index(['visitDate'])
 @Index(['visitDispatchDate'])
-export class Visit extends CoreEntity {
+export class Visit {
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column({ name: 'family_id', nullable: true })
   familyId?: number;
 
@@ -35,6 +47,15 @@ export class Visit extends CoreEntity {
 
   @Column({ name: 'visit_committee_members', type: 'text', array: true, nullable: true })
   visitCommitteeMembers?: string[];
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
+
+  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
+  deletedAt?: Date;
 
   // Relationships
 

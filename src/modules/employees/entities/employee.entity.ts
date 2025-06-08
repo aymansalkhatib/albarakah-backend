@@ -1,7 +1,18 @@
 import { Person } from 'src/modules/persons/entities/person.entity';
 import { UserAccount } from 'src/modules/users/entities/user-accounts.entity';
-import { CoreEntity } from 'src/shared/modules/app-type-orm/entities/core.entity';
-import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Interview } from '../../interviews/entities/interview.entity';
 
 @Entity('employees')
@@ -10,7 +21,10 @@ import { Interview } from '../../interviews/entities/interview.entity';
 @Index(['hireDate'])
 @Index(['terminationDate'])
 @Index(['deletedAt'])
-export class Employee extends CoreEntity {
+export class Employee {
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column({ name: 'person_id' })
   personId: number;
 
@@ -26,17 +40,28 @@ export class Employee extends CoreEntity {
   @Column({ type: 'text', nullable: true })
   notes?: string;
 
-  @ManyToOne(() => Person, { nullable: false, onDelete: 'RESTRICT' })
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
+
+  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
+  deletedAt?: Date;
+
+  //
+
+  @ManyToOne(() => Person, { nullable: false, onDelete: 'RESTRICT', cascade: true })
   @JoinColumn({ name: 'person_id' })
   person: Person;
 
   @OneToOne(() => UserAccount, (userAccount) => userAccount.employee, {
-    cascade: ['insert', 'update'],
+    cascade: true,
   })
   userAccount?: UserAccount;
 
   @OneToMany(() => Interview, (interview) => interview.interviewer, {
-    cascade: ['insert', 'update'],
+    cascade: true,
   })
   interviews: Interview[];
 }

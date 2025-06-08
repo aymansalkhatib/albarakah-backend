@@ -1,8 +1,18 @@
 import { Person } from 'src/modules/persons/entities/person.entity';
-import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { FamilyMember } from './family-members.entity';
 import { BeneficiaryFamily } from './beneficiary-families.entity';
-import { CoreEntity } from 'src/shared/modules/app-type-orm/entities/core.entity';
 import { ReceivedAssistance } from 'src/modules/received-assistance/entities/received-assistance.entity';
 import { CallLog } from 'src/modules/call-logs/entities/call-log.entity';
 
@@ -12,7 +22,10 @@ import { CallLog } from 'src/modules/call-logs/entities/call-log.entity';
 @Index(['familyMemberId'])
 @Index(['isSponsored'])
 @Index(['deletedAt'])
-export class Child extends CoreEntity {
+export class Child {
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column({ name: 'person_id' })
   personId: number;
 
@@ -27,6 +40,15 @@ export class Child extends CoreEntity {
 
   @Column({ type: 'text', nullable: true })
   notes?: string;
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
+
+  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
+  deletedAt?: Date;
 
   // Relationships
 

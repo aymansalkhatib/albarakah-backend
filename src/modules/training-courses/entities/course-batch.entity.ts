@@ -1,5 +1,15 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
-import { CoreEntity } from '../../../shared/modules/app-type-orm/entities/core.entity';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { TrainingCourse } from './training-course.entity';
 import { PersonCourseBatch } from './person-course-batch.entity';
 
@@ -8,7 +18,10 @@ import { PersonCourseBatch } from './person-course-batch.entity';
 @Index(['batchNumber'])
 @Index(['startDate'])
 @Index(['endDate'])
-export class CourseBatch extends CoreEntity {
+export class CourseBatch {
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column({ name: 'training_course_id' })
   trainingCourseId: number;
 
@@ -26,6 +39,15 @@ export class CourseBatch extends CoreEntity {
 
   @Column({ type: 'text', nullable: true })
   note?: string;
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
+
+  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
+  deletedAt?: Date;
 
   // Relationships
   @ManyToOne(() => TrainingCourse, (course) => course.batches, {

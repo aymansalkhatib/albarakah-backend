@@ -1,8 +1,18 @@
 import { Person } from 'src/modules/persons/entities/person.entity';
-import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { FamilyRelationType } from '../enums/family-relation-type.enum';
 import { BeneficiaryFamily } from './beneficiary-families.entity';
-import { CoreEntity } from 'src/shared/modules/app-type-orm/entities/core.entity';
 import { CallLog } from 'src/modules/call-logs/entities/call-log.entity';
 import { PersonCourseBatch } from '../../training-courses/entities/person-course-batch.entity';
 
@@ -12,7 +22,10 @@ import { PersonCourseBatch } from '../../training-courses/entities/person-course
 @Index(['personId'])
 @Index(['relationType'])
 @Index(['deletedAt'])
-export class FamilyMember extends CoreEntity {
+export class FamilyMember {
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column({ name: 'person_id' })
   personId: number;
 
@@ -24,6 +37,15 @@ export class FamilyMember extends CoreEntity {
 
   @Column({ type: 'text', nullable: true })
   notes?: string;
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
+
+  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
+  deletedAt?: Date;
 
   // Relationships
 

@@ -1,5 +1,14 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
-import { CoreEntity } from '../../../shared/modules/app-type-orm/entities/core.entity';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { BeneficiaryFamily } from '../../beneficiary-families/entities/beneficiary-families.entity';
 import { Child } from '../../beneficiary-families/entities/children.entity';
 import { PriorityLevel } from '../enums/priority-level.enum';
@@ -12,7 +21,10 @@ import { FamilyNeedStatus } from '../enums/family-need-status.enum';
 @Index(['priorityLevel'])
 @Index(['status'])
 @Index(['deletedAt'])
-export class FamilyNeed extends CoreEntity {
+export class FamilyNeed {
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column({ name: 'family_id' })
   familyId: number;
 
@@ -43,6 +55,15 @@ export class FamilyNeed extends CoreEntity {
     default: FamilyNeedStatus.PENDING,
   })
   status: FamilyNeedStatus;
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
+
+  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
+  deletedAt?: Date;
 
   // Relationships
   @ManyToOne(() => BeneficiaryFamily, (family) => family.needs, {

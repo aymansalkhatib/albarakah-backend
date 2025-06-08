@@ -1,7 +1,18 @@
 // person.entity.ts
-import { Check, Column, Entity, Index, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
+import {
+  Check,
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { DropdownOption } from '../../dropdowns/entities/dropdown-option.entity';
-import { CoreEntity } from 'src/shared/modules/app-type-orm/entities/core.entity';
 import { GenderType } from '../enums/gender-type.enum';
 import { ClothingSize } from '../enums/clothing-size.enum';
 import { Guardian } from 'src/modules/guardians/entities/guardian.entity';
@@ -15,7 +26,10 @@ import { Employee } from 'src/modules/employees/entities/employee.entity';
 @Index(['firstName', 'lastName'])
 @Index(['birthDate'])
 @Index(['deletedAt'])
-export class Person extends CoreEntity {
+export class Person {
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column({ name: 'father_id', nullable: true })
   fatherId?: number;
 
@@ -100,6 +114,14 @@ export class Person extends CoreEntity {
   @Column({ type: 'text', nullable: true })
   notes: string;
 
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
+
+  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
+  deletedAt?: Date;
   // Relationships
 
   @ManyToOne(() => Person, { nullable: true, onDelete: 'SET NULL' })
@@ -130,27 +152,23 @@ export class Person extends CoreEntity {
   @JoinColumn({ name: 'health_status_id' })
   healthStatus?: DropdownOption;
 
-  // one to one relations
+  // one-to-one relations
   @OneToOne(() => Guardian, (guardian) => guardian.person, {
-    cascade: true,
     nullable: true,
   })
   guardian?: Guardian;
 
   @OneToOne(() => Child, (child) => child.person, {
-    cascade: true,
     nullable: true,
   })
   child?: Child;
 
   @OneToOne(() => FamilyMember, (member) => member.person, {
-    cascade: true,
     nullable: true,
   })
   familyMember?: FamilyMember;
 
   @OneToOne(() => Employee, (employee) => employee.person, {
-    cascade: true,
     nullable: true,
   })
   employee?: Employee;

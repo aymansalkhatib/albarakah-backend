@@ -1,5 +1,14 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
-import { CoreEntity } from '../../../shared/modules/app-type-orm/entities/core.entity';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { FamilyMember } from '../../beneficiary-families/entities/family-members.entity';
 import { CourseBatch } from './course-batch.entity';
 import { AttendanceStatus } from '../enums/attendance-status.enum';
@@ -9,7 +18,10 @@ import { AttendanceStatus } from '../enums/attendance-status.enum';
 @Index(['courseBatchId'])
 @Index(['attendanceStatus'])
 @Index(['joinDate'])
-export class PersonCourseBatch extends CoreEntity {
+export class PersonCourseBatch {
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column({ name: 'family_member_id' })
   familyMemberId: number;
 
@@ -35,6 +47,15 @@ export class PersonCourseBatch extends CoreEntity {
 
   @Column({ type: 'text', nullable: true })
   notes?: string;
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
+
+  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
+  deletedAt?: Date;
 
   // Relationships
   @ManyToOne(() => FamilyMember, (familyMember) => familyMember.courseBatches, {

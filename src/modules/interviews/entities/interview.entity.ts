@@ -1,5 +1,14 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
-import { CoreEntity } from '../../../shared/modules/app-type-orm/entities/core.entity';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Employee } from '../../employees/entities/employee.entity';
 import { BeneficiaryFamily } from '../../beneficiary-families/entities/beneficiary-families.entity';
 
@@ -7,7 +16,10 @@ import { BeneficiaryFamily } from '../../beneficiary-families/entities/beneficia
 @Index(['familyId'])
 @Index(['interviewerId'])
 @Index(['interviewDate'])
-export class Interview extends CoreEntity {
+export class Interview {
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column({ name: 'family_id', nullable: true })
   familyId?: number;
 
@@ -25,6 +37,15 @@ export class Interview extends CoreEntity {
 
   @Column({ type: 'text', nullable: true })
   notes?: string;
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
+
+  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
+  deletedAt?: Date;
 
   // Relationships
 

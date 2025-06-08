@@ -1,5 +1,15 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
-import { CoreEntity } from '../../../shared/modules/app-type-orm/entities/core.entity';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Person } from '../../persons/entities/person.entity';
 import { BeneficiaryFamily } from '../../beneficiary-families/entities/beneficiary-families.entity';
 import { RequestStatus } from '../enums/request-status.enum';
@@ -11,7 +21,10 @@ import { RequestStatus } from '../enums/request-status.enum';
 @Index(['requestStatus'])
 @Index(['emailArrivalDate'])
 @Index(['applicationApprovalDate'])
-export class FamilyRegistrationForm extends CoreEntity {
+export class FamilyRegistrationForm {
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column({ name: 'guardian_id' })
   guardianId: number;
 
@@ -64,6 +77,15 @@ export class FamilyRegistrationForm extends CoreEntity {
 
   @Column({ name: 'mealtime_participants', type: 'integer', nullable: true })
   mealtimeParticipants?: number;
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
+
+  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
+  deletedAt?: Date;
 
   // Relationships
   @ManyToOne(() => Person, {

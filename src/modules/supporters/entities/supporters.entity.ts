@@ -1,14 +1,26 @@
 import { Person } from 'src/modules/persons/entities/person.entity';
-import { Column, Entity, Index, JoinColumn, OneToOne } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  Index,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { SupportType } from '../enums/support-type';
-import { CoreEntity } from 'src/shared/modules/app-type-orm/entities/core.entity';
 
 @Entity('supporters')
 @Index(['personId'])
 @Index(['supportType'])
 @Index(['deletedAt'])
 @Index(['supportStartDate', 'supportEndDate'])
-export class Supporter extends CoreEntity {
+export class Supporter {
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column({ name: 'person_id', nullable: false })
   personId: number;
 
@@ -25,6 +37,15 @@ export class Supporter extends CoreEntity {
     nullable: true,
   })
   supportType?: SupportType;
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
+
+  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
+  deletedAt?: Date;
 
   // Relationships
 

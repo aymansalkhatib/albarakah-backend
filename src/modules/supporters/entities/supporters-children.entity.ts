@@ -1,9 +1,18 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Supporter } from './supporters.entity';
 import { Person } from '../../persons/entities/person.entity';
 import { BeneficiaryFamily } from '../../beneficiary-families/entities/beneficiary-families.entity';
 import { SponsorshipStatus } from '../enums/sponsorship-status.enum';
-import { CoreEntity } from '../../../shared/modules/app-type-orm/entities/core.entity';
 
 @Entity('supporter_child_sponsorships')
 @Index(['supporterId', 'personId'], { unique: true, where: 'deleted_at IS NULL' })
@@ -11,7 +20,10 @@ import { CoreEntity } from '../../../shared/modules/app-type-orm/entities/core.e
 @Index(['sponsorshipStatus'])
 @Index(['sponsorshipStartDate', 'sponsorshipEndDate'])
 @Index(['deletedAt'])
-export class SupporterChildSponsorship extends CoreEntity {
+export class SupporterChildSponsorship {
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column({ name: 'supporter_id' })
   supporterId: number;
 
@@ -41,6 +53,15 @@ export class SupporterChildSponsorship extends CoreEntity {
     default: SponsorshipStatus.ACTIVE,
   })
   sponsorshipStatus: SponsorshipStatus;
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
+
+  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
+  deletedAt?: Date;
 
   // Relationships
   @ManyToOne(() => Supporter, { onDelete: 'RESTRICT' })

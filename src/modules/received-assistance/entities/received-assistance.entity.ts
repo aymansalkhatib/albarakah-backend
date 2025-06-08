@@ -1,5 +1,14 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
-import { CoreEntity } from '../../../shared/modules/app-type-orm/entities/core.entity';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { BeneficiaryFamily } from '../../beneficiary-families/entities/beneficiary-families.entity';
 import { Child } from '../../beneficiary-families/entities/children.entity';
 import { AssistanceType } from '../enums/assistance-type.enum';
@@ -10,7 +19,10 @@ import { AssistanceType } from '../enums/assistance-type.enum';
 @Index(['assistanceType'])
 @Index(['deliveryDate'])
 @Index(['deletedAt'])
-export class ReceivedAssistance extends CoreEntity {
+export class ReceivedAssistance {
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column({ name: 'family_id' })
   familyId: number;
 
@@ -37,6 +49,15 @@ export class ReceivedAssistance extends CoreEntity {
 
   @Column({ type: 'text', nullable: true })
   description?: string;
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
+
+  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
+  deletedAt?: Date;
 
   // Relationships
   @ManyToOne(() => BeneficiaryFamily, (family) => family.receivedAssistance, {

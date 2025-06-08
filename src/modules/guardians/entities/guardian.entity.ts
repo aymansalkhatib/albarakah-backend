@@ -1,8 +1,18 @@
 import { BeneficiaryFamily } from 'src/modules/beneficiary-families/entities/beneficiary-families.entity';
 import { FamilyRelationType } from 'src/modules/beneficiary-families/enums/family-relation-type.enum';
 import { Person } from 'src/modules/persons/entities/person.entity';
-import { CoreEntity } from 'src/shared/modules/app-type-orm/entities/core.entity';
-import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('guardians')
 @Index(['personId'], { unique: true, where: 'deleted_at IS NULL' })
@@ -10,7 +20,10 @@ import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from 'typeorm
 @Index(['guardianshipStartDate'])
 @Index(['guardianshipEndDate'])
 @Index(['deletedAt'])
-export class Guardian extends CoreEntity {
+export class Guardian {
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column({ name: 'person_id', nullable: true })
   personId?: number;
 
@@ -25,6 +38,15 @@ export class Guardian extends CoreEntity {
 
   @Column({ type: 'text', nullable: true })
   notes?: string;
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
+
+  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
+  deletedAt?: Date;
 
   // Relationships
 

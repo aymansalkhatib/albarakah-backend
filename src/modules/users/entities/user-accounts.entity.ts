@@ -1,15 +1,29 @@
 import { Employee } from 'src/modules/employees/entities/employee.entity';
 import { Role } from 'src/modules/roles/entities/roles.entity';
 import { UserPermission } from 'src/modules/roles/entities/user-permission.entity';
-import { CoreEntity } from 'src/shared/modules/app-type-orm/entities/core.entity';
-import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('user_accounts')
 @Index(['username'], { unique: true })
 @Index(['employeesId'], { unique: true, where: 'employees_id IS NOT NULL' })
 @Index(['roleId'])
 @Index(['lastLogin'])
-export class UserAccount extends CoreEntity {
+export class UserAccount {
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column({ name: 'employees_id', nullable: true })
   employeesId?: number;
 
@@ -28,6 +42,15 @@ export class UserAccount extends CoreEntity {
 
   @Column({ name: 'last_login', type: 'timestamp', nullable: true })
   lastLogin?: Date;
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
+
+  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
+  deletedAt?: Date;
 
   // Relationships
 

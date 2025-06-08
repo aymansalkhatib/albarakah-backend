@@ -1,9 +1,20 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { FamilyMember } from './family-members.entity';
 import { Max } from 'class-validator';
 import { Guardian } from 'src/modules/guardians/entities/guardian.entity';
 import { Child } from './children.entity';
-import { CoreEntity } from 'src/shared/modules/app-type-orm/entities/core.entity';
 import { FamilyNeed } from 'src/modules/family-needs/entities/family-need.entity';
 import { EmergencyAidRequest } from 'src/modules/emergency-aid/entities/emergency-aid-request.entity';
 import { ReceivedAssistance } from 'src/modules/received-assistance/entities/received-assistance.entity';
@@ -21,7 +32,10 @@ import { Visit } from 'src/modules/visits/entities/visit.entity';
 @Index(['isExtremelyPoor'])
 @Index(['deletedAt'])
 @Entity('beneficiary_families')
-export class BeneficiaryFamily extends CoreEntity {
+export class BeneficiaryFamily {
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column({ name: 'family_name', type: 'varchar', length: 64 })
   familyName: string;
 
@@ -75,6 +89,15 @@ export class BeneficiaryFamily extends CoreEntity {
 
   @Column({ type: 'text', nullable: true })
   notes?: string;
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
+
+  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
+  deletedAt?: Date;
 
   // Relationships
 

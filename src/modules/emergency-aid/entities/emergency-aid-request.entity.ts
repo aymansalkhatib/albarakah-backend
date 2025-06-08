@@ -1,5 +1,14 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
-import { CoreEntity } from '../../../shared/modules/app-type-orm/entities/core.entity';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { BeneficiaryFamily } from '../../beneficiary-families/entities/beneficiary-families.entity';
 import { EmergencyAidRequestStatus } from '../enums/emergency-aid-request-status.enum';
 
@@ -9,7 +18,10 @@ import { EmergencyAidRequestStatus } from '../enums/emergency-aid-request-status
 @Index(['requestDate'])
 @Index(['disbursementDate'])
 @Index(['deletedAt'])
-export class EmergencyAidRequest extends CoreEntity {
+export class EmergencyAidRequest {
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column({ name: 'family_id' })
   familyId: number;
 
@@ -51,6 +63,15 @@ export class EmergencyAidRequest extends CoreEntity {
     nullable: true,
   })
   disbursementDate?: Date;
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
+
+  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
+  deletedAt?: Date;
 
   // Relationships
   @ManyToOne(() => BeneficiaryFamily, (family) => family.emergencyAidRequests, {
