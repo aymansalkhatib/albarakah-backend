@@ -10,8 +10,11 @@ import { CreatePersonDto } from '../../persons/dto/create-person.dto';
 import { Type } from 'class-transformer';
 import { OnlyOneOf } from 'src/common/decorators/validate-one-of-two-fields.validator';
 
-@OnlyOneOf(['personId', 'person'])
-export class CreateEmployeeDto { 
+@OnlyOneOf([{
+  fields: ['person', 'personId'],
+  isRequired: true,
+}])
+export class CreateEmployeeDto {
   @IsOptional()
   @IsString()
   @MaxLength(100)

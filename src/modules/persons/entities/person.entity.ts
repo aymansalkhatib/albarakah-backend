@@ -2,8 +2,6 @@
 import {
   Check,
   Column,
-  CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   Index,
   JoinColumn,
@@ -116,11 +114,11 @@ export class Person {
 
   // Relationships
 
-  @ManyToOne(() => Person, { nullable: true, onDelete: 'SET NULL' })
+  @ManyToOne(() => Person, { nullable: true, onDelete: 'SET NULL', cascade: true })
   @JoinColumn({ name: 'father_id' })
   father?: Person;
 
-  @ManyToOne(() => Person, { nullable: true, onDelete: 'SET NULL' })
+  @ManyToOne(() => Person, { nullable: true, onDelete: 'SET NULL', cascade: true })
   @JoinColumn({ name: 'mother_id' })
   mother?: Person;
 

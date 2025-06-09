@@ -23,7 +23,7 @@ export interface ErrorResponse {
     request?: Record<string, any>;
 
     /** Additional error details */
-    details?: Record<string, any>;
+    details?: Record<string, any> | string;
 
     /** Error code for client-side error handling */
     code?: string;

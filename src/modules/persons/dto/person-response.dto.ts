@@ -1,6 +1,6 @@
 import { GenderType } from '../enums/gender-type.enum';
 import { ClothingSize } from '../enums/clothing-size.enum';
-import { Exclude, Expose } from 'class-transformer';
+import { Exclude, Expose, Type } from 'class-transformer';
 
 @Exclude()
 export class PersonResponseDto {
@@ -87,9 +87,11 @@ export class PersonResponseDto {
 
   // Relationships
   @Expose()
+  @Type(() => PersonResponseDto)
   father?: PersonResponseDto;
 
   @Expose()
+  @Type(() => PersonResponseDto)
   mother?: PersonResponseDto;
 
   // @Expose()

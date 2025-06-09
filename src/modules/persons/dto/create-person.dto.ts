@@ -9,11 +9,23 @@ import {
   Length,
   Max,
   Min,
+  ValidateNested,
 } from 'class-validator';
-import { Transform } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { GenderType } from '../enums/gender-type.enum';
 import { ClothingSize } from '../enums/clothing-size.enum';
+import { OnlyOneOf } from 'src/common/decorators/validate-one-of-two-fields.validator';
 
+@OnlyOneOf([
+  {
+    fields: ['motherId', 'mother'],
+    isRequired: false,
+  },
+  {
+    fields: ['fatherId', 'father'],
+    isRequired: false,
+  },
+])
 export class CreatePersonDto {
   @IsOptional()
   @IsInt()
@@ -149,4 +161,14 @@ export class CreatePersonDto {
   @Transform(({ value }) => value?.trim())
   @Length(3, 200)
   notes?: string;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => CreatePersonDto)
+  father?: CreatePersonDto;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => CreatePersonDto)
+  mother?: CreatePersonDto;
 }
