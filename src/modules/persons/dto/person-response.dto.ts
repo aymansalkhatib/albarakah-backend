@@ -93,31 +93,4 @@ export class PersonResponseDto {
   @Expose()
   @Type(() => PersonResponseDto)
   mother?: PersonResponseDto;
-
-  // @Expose()
-  // educationLevelId?: number;
-
-  // @Expose()
-  // maritalStatusId?: number;
-
-  // @Expose()
-  // personStatusId?: number;
-
-  // @Expose()
-  // schoolTypeId?: number;
-
-  // @Expose()
-  // healthStatusId?: number;
-
-  // @Expose()
-  // guardian?: GuardianResponseDto;
-
-  // @Expose()
-  // child?: ChildResponseDto;
-
-  // @Expose()
-  // familyMember?: FamilyMemberResponseDto;
-
-  // @Expose()
-  // employee?: EmployeeResponseDto;
 }

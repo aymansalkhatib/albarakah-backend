@@ -73,7 +73,7 @@ export class CreateBeneficiaryFamilyDto {
   suspensionReason?: string;
 
   @IsOptional()
-  @IsBoolean()
+  @StrictBoolean()
   @Expose()
   motherIsTrainingBeneficiary?: boolean;
 

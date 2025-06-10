@@ -5,11 +5,21 @@ import helmet from 'helmet';
 import * as compression from 'compression';
 import { i18nValidationErrorFactory, I18nValidationExceptionFilter } from 'nestjs-i18n';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { urlencoded } from 'express';
+import { parse } from 'qs';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     logger: ['error', 'debug', 'log', 'verbose'],
   });
+
+  // Configure query parser to allow dot notation in query parameters while preventing prototype pollution
+  app.set('query parser', (str: string) =>
+    parse(str, {
+      allowDots: true,
+      allowPrototypes: false,
+    }),
+  );
 
   // Enable CORS
   app.enableCors();

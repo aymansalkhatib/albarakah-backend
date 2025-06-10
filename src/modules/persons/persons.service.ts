@@ -15,40 +15,40 @@ export class PersonsService {
     private readonly personRepository: Repository<Person>,
   ) {}
 
-  async checkPersonExists(createPersonDto: CreatePersonDto): Promise<void> {
-    const identifiers = await this.collectFamilyIdentifiers(createPersonDto, {
+  async checkPersonExists(dto: CreatePersonDto | UpdatePersonDto): Promise<void> {
+    const identifiers = await this.collectFamilyIdentifiers(dto, {
       emails: [],
       fullNameAndBirth: [],
       nationalIds: [],
     });
     await this.validateFamilyIdentifiers(identifiers);
-    await this.validatePersonInDatabase(createPersonDto);
+    await this.validatePersonInDatabase(dto);
   }
 
   private async collectFamilyIdentifiers(
-    person: CreatePersonDto,
+    dto: CreatePersonDto | UpdatePersonDto,
     personUniqueIdentifiers: PersonUniqueIdentifiers,
   ): Promise<PersonUniqueIdentifiers> {
-    if (person.email) {
-      personUniqueIdentifiers.emails.push(person.email);
+    if (dto.email) {
+      personUniqueIdentifiers.emails.push(dto.email);
     }
 
-    if (person.nationalId) {
-      personUniqueIdentifiers.nationalIds.push(person.nationalId);
+    if (dto.nationalId) {
+      personUniqueIdentifiers.nationalIds.push(dto.nationalId);
     }
 
     personUniqueIdentifiers.fullNameAndBirth.push({
-      firstName: person.firstName,
-      lastName: person.lastName,
-      birthDate: person.birthDate ?? '',
+      firstName: dto.firstName,
+      lastName: dto.lastName,
+      birthDate: dto.birthDate ?? '',
     });
 
-    if (person.father) {
-      await this.collectFamilyIdentifiers(person.father, personUniqueIdentifiers);
+    if (dto.father) {
+      await this.collectFamilyIdentifiers(dto.father, personUniqueIdentifiers);
     }
 
-    if (person.mother) {
-      await this.collectFamilyIdentifiers(person.mother, personUniqueIdentifiers);
+    if (dto.mother) {
+      await this.collectFamilyIdentifiers(dto.mother, personUniqueIdentifiers);
     }
 
     return personUniqueIdentifiers;
@@ -78,49 +78,46 @@ export class PersonsService {
       );
     }
   }
-
-  private async validatePersonInDatabase(createPersonDto: CreatePersonDto): Promise<void> {
+  private async validatePersonInDatabase(dto: CreatePersonDto | UpdatePersonDto): Promise<void> {
     // Check by nationalId if provided
-    if (createPersonDto.nationalId) {
+    if (dto.nationalId) {
       const existingByNationalId = await this.personRepository.exists({
-        where: { nationalId: createPersonDto.nationalId },
+        where: { nationalId: dto.nationalId },
       });
       if (existingByNationalId) {
-        throw new ConflictException(
-          `Person with national ID ${createPersonDto.nationalId} already exists`,
-        );
+        throw new ConflictException(`Person with national ID ${dto.nationalId} already exists`);
       }
     }
 
     // Check by email if provided
-    if (createPersonDto.email) {
+    if (dto.email) {
       const existingByEmail = await this.personRepository.exists({
-        where: { email: createPersonDto.email },
+        where: { email: dto.email },
       });
       if (existingByEmail) {
-        throw new ConflictException(`Person with email ${createPersonDto.email} already exists`);
+        throw new ConflictException(`Person with email ${dto.email} already exists`);
       }
     }
 
     // Check by firstName, lastName, and birthDate combination
     const existingByFullNameAndBirth = await this.personRepository.exists({
       where: {
-        firstName: createPersonDto.firstName,
-        lastName: createPersonDto.lastName,
-        birthDate: createPersonDto.birthDate,
+        firstName: dto.firstName,
+        lastName: dto.lastName,
+        birthDate: dto.birthDate,
       },
     });
     if (existingByFullNameAndBirth) {
       throw new ConflictException(
-        `Person with name ${createPersonDto.firstName} ${createPersonDto.lastName} and birth date ${createPersonDto.birthDate} already exists`,
+        `Person with name ${dto.firstName} ${dto.lastName} and birth date ${dto.birthDate} already exists`,
       );
     }
 
-    if (createPersonDto.father) {
-      await this.checkPersonExists(createPersonDto.father);
+    if (dto.father) {
+      await this.checkPersonExists(dto.father);
     }
-    if (createPersonDto.mother) {
-      await this.checkPersonExists(createPersonDto.mother);
+    if (dto.mother) {
+      await this.checkPersonExists(dto.mother);
     }
   }
 
@@ -135,5 +132,25 @@ export class PersonsService {
     }
 
     return person;
+  }
+
+  getUniqueFieldsChanged(existingPerson: any, updatePerson: any): any {
+    const cleanDto = {};
+    Object.keys(updatePerson).forEach((key) => {
+      const newValue = updatePerson[key];
+      const existingValue = existingPerson[key];
+      // Remove unique fields (email, nationalId) and composite fields (firstName, lastName, birthDate)
+      // since they will be validated against the database for duplicates
+      // If duplicates are found, an exception will be thrown
+      if (
+        newValue !== undefined &&
+        newValue !== null &&
+        newValue !== existingValue &&
+        !['email', 'nationalId', 'firstName', 'lastName', 'birthDate'].includes(key)
+      ) {
+        cleanDto[key] = newValue;
+      }
+    });
+    return cleanDto;
   }
 }

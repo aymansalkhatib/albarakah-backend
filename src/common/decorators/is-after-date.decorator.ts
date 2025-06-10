@@ -19,14 +19,13 @@ export function IsAfterDate(related: string | Date, validationOptions?: Validati
 
           if (typeof related === 'string') {
             const refValue = (args.object as any)[related];
-            if (refValue !== undefined) {
-              compareDate = new Date(refValue);
-            } else {
-              compareDate = new Date(related);
-            }
+            if (refValue == null) return true;
+            compareDate = new Date(refValue);
           } else {
-            compareDate = new Date(related);
+            compareDate = related;
           }
+
+          console.log(compareDate);
 
           return valueDate > compareDate;
         },

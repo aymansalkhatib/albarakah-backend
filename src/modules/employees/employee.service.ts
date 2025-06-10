@@ -1,10 +1,11 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Like, Between } from 'typeorm';
 import { Employee } from './entities/employee.entity';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { PersonsService } from '../persons/persons.service';
+import { FilterEmployeeDto } from './dto/filter-employee.dto';
 
 @Injectable()
 export class EmployeesService {
@@ -35,10 +36,38 @@ export class EmployeesService {
     return await this.employeeRepository.save(employee);
   }
 
+  async update(id: number, updateEmployeeDto: UpdateEmployeeDto): Promise<Employee> {
+    const employee = await this.findOne(id);
+
+    if (updateEmployeeDto.person) {
+      // Filter out unchanged fields from the person update to avoid unnecessary duplicate checks
+      const cleanPersonDto = this.personsService.getUniqueFieldsChanged(
+        employee.person,
+        updateEmployeeDto.person,
+      );
+
+      // Only check if there are actual changes
+      if (Object.keys(cleanPersonDto).length > 0) {
+        await this.personsService.checkPersonExists(cleanPersonDto);
+      }
+    }
+
+    const mergedEmployee = this.employeeRepository.merge(employee, updateEmployeeDto);
+    return await this.employeeRepository.save(mergedEmployee);
+  }
+
+  async delete(id: number): Promise<{ message: string }> {
+    const employee = await this.findOne(id);
+    await this.employeeRepository.delete(id);
+    return {
+      message: `Employee ${employee.person?.firstName} ${employee.person?.lastName} has been deleted`,
+    };
+  }
+
   async findOne(id: number): Promise<Employee> {
     const employee = await this.employeeRepository.findOne({
       where: { id },
-      relations: ['person', 'userAccount', 'interviews'],
+      relations: ['person'],
     });
 
     if (!employee) {
@@ -48,52 +77,93 @@ export class EmployeesService {
     return employee;
   }
 
-  async update(id: number, updateEmployeeDto: UpdateEmployeeDto): Promise<Employee> {
-    const employee = await this.findOne(id);
+  async findAll(filterDto: FilterEmployeeDto): Promise<Employee[]> {
+    const queryBuilder = this.employeeRepository
+      .createQueryBuilder('employee')
+      .leftJoinAndSelect('employee.person', 'person');
 
-    // If updating person data, check for unique constraints
-    if (updateEmployeeDto.person) {
-      const { nationalId, email, firstName, lastName, birthDate } = updateEmployeeDto.person;
-
-      // Check if nationalId is provided and unique
-      //   if (nationalId) {
-      //     const existingPersonWithNationalId = await this.personRepository.findOneBy({ nationalId });
-      //     if (existingPersonWithNationalId && existingPersonWithNationalId.id !== employee.personId) {
-      //       throw new ConflictException(`Person with National ID ${nationalId} already exists`);
-      //     }
-      //   }
-
-      //   // Check if email is provided and unique
-      //   if (email) {
-      //     const existingPersonWithEmail = await this.personRepository.findOneBy({ email });
-      //     if (existingPersonWithEmail && existingPersonWithEmail.id !== employee.personId) {
-      //       throw new ConflictException(`Person with email ${email} already exists`);
-      //     }
-      //   }
-
-      //   // Validate required fields
-      //   if (!firstName || !lastName || !birthDate) {
-      //     const existingPerson = await this.personRepository.findOne({
-      //       where: [{ firstName, lastName, birthDate }],
-      //     });
-      //     if (existingPerson && existingPerson.id !== employee.personId) {
-      //       throw new ConflictException(
-      //         'A person with this first name, last name, and birth date or national ID already exists',
-      //       );
-      //     }
-      //   }
+    if (filterDto.position) {
+      queryBuilder.andWhere('employee.position LIKE :position', {
+        position: `%${filterDto.position}%`,
+      });
     }
 
-    const mergedEmployee = this.employeeRepository.merge(employee, updateEmployeeDto);
-    return await this.employeeRepository.save(mergedEmployee);
-  }
+    if (filterDto.hireDateFrom) {
+      queryBuilder.andWhere('employee.hireDate >= :from', {
+        from: filterDto.hireDateFrom,
+      });
+    }
 
-  async remove(id: number): Promise<{ message: string }> {
-    const employee = await this.findOne(id);
-    await this.employeeRepository.softDelete(id);
+    if (filterDto.hireDateTo) {
+      queryBuilder.andWhere('employee.hireDate <= :to', {
+        to: filterDto.hireDateTo,
+      });
+    }
 
-    return {
-      message: `Employee ${employee.person?.firstName} ${employee.person?.lastName} has been deleted`,
-    };
+    if (filterDto.search) {
+      queryBuilder.andWhere(
+        '(person.firstName LIKE :search OR person.lastName LIKE :search OR employee.position LIKE :search)',
+        { search: `%${filterDto.search}%` },
+      );
+    }
+
+    // Add person filters
+    if (filterDto.person) {
+      if (filterDto.person.firstName) {
+        queryBuilder.andWhere('person.firstName LIKE :firstName', {
+          firstName: `%${filterDto.person.firstName}%`,
+        });
+      }
+
+      if (filterDto.person.lastName) {
+        queryBuilder.andWhere('person.lastName LIKE :lastName', {
+          lastName: `%${filterDto.person.lastName}%`,
+        });
+      }
+
+      if (filterDto.person.nationalId) {
+        queryBuilder.andWhere('person.nationalId LIKE :nationalId', {
+          nationalId: `%${filterDto.person.nationalId}%`,
+        });
+      }
+
+      if (filterDto.person.isPalestinian !== undefined) {
+        queryBuilder.andWhere('person.isPalestinian = :isPalestinian', {
+          isPalestinian: filterDto.person.isPalestinian,
+        });
+      }
+
+      if (filterDto.person.gender) {
+        queryBuilder.andWhere('person.gender = :gender', {
+          gender: filterDto.person.gender,
+        });
+      }
+      if (filterDto.person.nationality) {
+        queryBuilder.andWhere('person.nationality ILIKE :nationality', {
+          nationality: `%${filterDto.person.nationality}%`,
+        });
+      }
+
+      if (filterDto.person.phone) {
+        queryBuilder.andWhere('person.phone LIKE :phone', {
+          phone: `%${filterDto.person.phone}%`,
+        });
+      }
+
+      if (filterDto.person.email) {
+        queryBuilder.andWhere('person.email LIKE :email', {
+          email: `%${filterDto.person.email}%`,
+        });
+      }
+
+      if (filterDto.person.birthDateFrom && filterDto.person.birthDateTo) {
+        queryBuilder.andWhere('person.birthDate BETWEEN :birthDateFrom AND :birthDateTo', {
+          birthDateFrom: filterDto.person.birthDateFrom,
+          birthDateTo: filterDto.person.birthDateTo,
+        });
+      }
+    }
+
+    return await queryBuilder.getMany();
   }
 }

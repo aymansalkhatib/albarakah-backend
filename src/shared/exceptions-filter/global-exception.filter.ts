@@ -49,7 +49,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
           message: errorResponse.message,
         });
       }
-    } catch (error) {
+    } catch (error: any) {
       // Handle errors that occur during error handling
       this.logger.error('Error in exception filter', {
         error,
@@ -63,6 +63,10 @@ export class GlobalExceptionFilter implements ExceptionFilter {
           statusCode: 500,
           traceId,
           timestamp: new Date().toISOString(),
+          context: {
+            code: 'INTERNAL_SERVER_ERROR',
+            details: error?.message,
+          },
         });
       } else {
         response.status(500).json({

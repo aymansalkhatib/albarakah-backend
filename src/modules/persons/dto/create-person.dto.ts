@@ -1,5 +1,4 @@
 import {
-  IsBoolean,
   IsDateString,
   IsEmail,
   IsEnum,
@@ -15,6 +14,7 @@ import { Transform, Type } from 'class-transformer';
 import { GenderType } from '../enums/gender-type.enum';
 import { ClothingSize } from '../enums/clothing-size.enum';
 import { OnlyOneOf } from 'src/common/decorators/validate-one-of-two-fields.validator';
+import { StrictBoolean } from 'src/common/decorators/strict-boolean.decorator';
 
 @OnlyOneOf([
   {
@@ -39,12 +39,10 @@ export class CreatePersonDto {
 
   @IsString()
   @Length(3, 100)
-  @Transform(({ value }) => value?.trim())
   firstName: string;
 
   @IsString()
   @Length(3, 100)
-  @Transform(({ value }) => value?.trim())
   lastName: string;
 
   @IsOptional()
@@ -54,11 +52,10 @@ export class CreatePersonDto {
   @IsOptional()
   @IsString()
   @Length(11, 11, { message: 'National ID must be exactly 11 characters long' })
-  @Transform(({ value }) => value?.trim())
   nationalId?: string;
 
   @IsOptional()
-  @IsBoolean()
+  @StrictBoolean()
   isPalestinian?: boolean;
 
   @IsOptional()
@@ -68,33 +65,29 @@ export class CreatePersonDto {
   @IsOptional()
   @IsString()
   @Length(3, 100)
-  @Transform(({ value }) => value?.trim())
   nationality?: string;
 
   @IsOptional()
   @IsString()
   @Length(3, 100)
-  @Transform(({ value }) => value?.trim())
   birthPlace?: string;
 
   @IsOptional()
-  @IsBoolean()
+  @StrictBoolean()
   isWorking?: boolean;
 
   @IsOptional()
   @IsString()
   @Length(3, 100)
-  @Transform(({ value }) => value?.trim())
   currentJob?: string;
 
   @IsOptional()
   @IsString()
-  @Transform(({ value }) => value?.trim())
   @Length(1, 500)
   jobDetails?: string;
 
   @IsOptional()
-  @IsBoolean()
+  @StrictBoolean()
   isSmoker?: boolean;
 
   @IsOptional()
@@ -125,7 +118,6 @@ export class CreatePersonDto {
   @IsOptional()
   @IsString()
   @Length(3, 150)
-  @Transform(({ value }) => value?.trim())
   universityMajor?: string;
 
   @IsOptional()
@@ -137,12 +129,10 @@ export class CreatePersonDto {
   @IsOptional()
   @IsString()
   @Length(10)
-  @Transform(({ value }) => value?.trim())
   phone?: string;
 
   @IsOptional()
   @IsString()
-  @Transform(({ value }) => value?.trim())
   @Length(3, 200)
   address?: string;
 
@@ -158,7 +148,6 @@ export class CreatePersonDto {
 
   @IsOptional()
   @IsString()
-  @Transform(({ value }) => value?.trim())
   @Length(3, 200)
   notes?: string;
 
