@@ -15,6 +15,7 @@ import { GenderType } from '../enums/gender-type.enum';
 import { ClothingSize } from '../enums/clothing-size.enum';
 import { OnlyOneOf } from 'src/common/decorators/validate-one-of-two-fields.validator';
 import { StrictBoolean } from 'src/common/decorators/strict-boolean.decorator';
+import { OmitType } from '@nestjs/mapped-types';
 
 @OnlyOneOf([
   {
@@ -153,11 +154,11 @@ export class CreatePersonDto {
 
   @IsOptional()
   @ValidateNested()
-  @Type(() => CreatePersonDto)
-  father?: CreatePersonDto;
+  @Type(() => OmitType(CreatePersonDto, ['father', 'mother', 'fatherId', 'motherId'] as const))
+  father?: Omit<CreatePersonDto, 'father' | 'mother' | 'fatherId' | 'motherId'>;
 
   @IsOptional()
   @ValidateNested()
-  @Type(() => CreatePersonDto)
-  mother?: CreatePersonDto;
+  @Type(() => OmitType(CreatePersonDto, ['father', 'mother', 'fatherId', 'motherId'] as const))
+  mother?: Omit<CreatePersonDto, 'father' | 'mother' | 'fatherId' | 'motherId'>;
 }

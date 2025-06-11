@@ -19,7 +19,9 @@ export class EmployeesService {
     ///
     //- Validate person existence and check for existing employee association
     if (createEmployeeDto.personId) {
-      const person = await this.personsService.findOne(createEmployeeDto.personId, ['employee']);
+      const person = await this.personsService.findOne(createEmployeeDto.personId, {
+        relations: ['employee'],
+      });
       if (person.employee) {
         throw new ConflictException(
           `Person with ID ${createEmployeeDto.personId} is already an employee`,
@@ -41,7 +43,7 @@ export class EmployeesService {
 
     if (updateEmployeeDto.person) {
       // Filter out unchanged fields from the person update to avoid unnecessary duplicate checks
-      const cleanPersonDto = this.personsService.getUniqueFieldsChanged(
+      const cleanPersonDto = this.personsService.filterChangedPersonData(
         employee.person,
         updateEmployeeDto.person,
       );
