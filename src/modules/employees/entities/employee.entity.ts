@@ -45,9 +45,9 @@ export class Employee {
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
-  //
+  // TODO HANDEL RELASHION WITH PERSON fro delete person
 
-  @ManyToOne(() => Person, { nullable: false, onDelete: 'RESTRICT', cascade: true })
+  @ManyToOne(() => Person, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'person_id' })
   person: Person;
 

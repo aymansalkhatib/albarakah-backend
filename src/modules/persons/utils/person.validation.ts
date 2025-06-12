@@ -81,6 +81,19 @@ export async function validatePersonUniqueness(
       );
     }
 
+    // Check for name + no parent info conflict
+    if (
+      existingPerson.fatherId == null &&
+      existingPerson.motherId == null &&
+      existingPerson.firstName === dto.firstName &&
+      existingPerson.lastName === dto.lastName
+    ) {
+      throw new ConflictException(
+        `A person named "${dto.firstName} ${dto.lastName}" already exists in the system without any parent information. ` +
+          `To differentiate between individuals with the same name, please provide either the father's ID or the mother's ID.`,
+      );
+    }
+
     // Generic fallback error
     throw new ConflictException(`A person with these details already exists`);
   }

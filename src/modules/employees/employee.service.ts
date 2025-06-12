@@ -16,46 +16,26 @@ export class EmployeesService {
   ) {}
 
   async create(createEmployeeDto: CreateEmployeeDto): Promise<Employee> {
-    ///
-    //- Validate person existence and check for existing employee association
-    if (createEmployeeDto.personId) {
-      const person = await this.personsService.findOne(createEmployeeDto.personId, {
-        relations: ['employee'],
-      });
-      if (person.employee) {
-        throw new ConflictException(
-          `Person with ID ${createEmployeeDto.personId} is already an employee`,
-        );
-      }
-    }
-    ///
-    //- Validate that the national ID is unique if provided in the new person data
-    else if (createEmployeeDto.person) {
-      // await this.personsService.checkPersonExists(createEmployeeDto.person);
-    }
+    const person = await this.personsService.create(createEmployeeDto.person);
 
-    const employee = this.employeeRepository.create(createEmployeeDto);
+    const employee = this.employeeRepository.create({
+      ...createEmployeeDto,
+      person,
+    });
+
     return await this.employeeRepository.save(employee);
   }
 
   async update(id: number, updateEmployeeDto: UpdateEmployeeDto): Promise<Employee> {
     const employee = await this.findOne(id);
 
-    // if (updateEmployeeDto.person) {
-    //   // Filter out unchanged fields from the person update to avoid unnecessary duplicate checks
-    //   // const cleanPersonDto = this.personsService.filterChangedPersonData(
-    //     employee.person,
-    //     updateEmployeeDto.person,
-    //   );
-
-    //   // Only check if there are actual changes
-    //   if (Object.keys(cleanPersonDto).length > 0) {
-    //     // await this.personsService.checkPersonExists(cleanPersonDto);
-    //   }
-    // }
-
-    const mergedEmployee = this.employeeRepository.merge(employee, updateEmployeeDto);
-    return await this.employeeRepository.save(mergedEmployee);
+    if (updateEmployeeDto.person) {
+      updateEmployeeDto.person = await this.personsService.update(
+        employee.person.id,
+        updateEmployeeDto.person,
+      );
+    }
+    return await this.employeeRepository.save(employee);
   }
 
   async delete(id: number): Promise<{ message: string }> {
