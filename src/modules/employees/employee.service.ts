@@ -31,7 +31,7 @@ export class EmployeesService {
     ///
     //- Validate that the national ID is unique if provided in the new person data
     else if (createEmployeeDto.person) {
-      await this.personsService.checkPersonExists(createEmployeeDto.person);
+      // await this.personsService.checkPersonExists(createEmployeeDto.person);
     }
 
     const employee = this.employeeRepository.create(createEmployeeDto);
@@ -41,18 +41,18 @@ export class EmployeesService {
   async update(id: number, updateEmployeeDto: UpdateEmployeeDto): Promise<Employee> {
     const employee = await this.findOne(id);
 
-    if (updateEmployeeDto.person) {
-      // Filter out unchanged fields from the person update to avoid unnecessary duplicate checks
-      const cleanPersonDto = this.personsService.filterChangedPersonData(
-        employee.person,
-        updateEmployeeDto.person,
-      );
+    // if (updateEmployeeDto.person) {
+    //   // Filter out unchanged fields from the person update to avoid unnecessary duplicate checks
+    //   // const cleanPersonDto = this.personsService.filterChangedPersonData(
+    //     employee.person,
+    //     updateEmployeeDto.person,
+    //   );
 
-      // Only check if there are actual changes
-      if (Object.keys(cleanPersonDto).length > 0) {
-        await this.personsService.checkPersonExists(cleanPersonDto);
-      }
-    }
+    //   // Only check if there are actual changes
+    //   if (Object.keys(cleanPersonDto).length > 0) {
+    //     // await this.personsService.checkPersonExists(cleanPersonDto);
+    //   }
+    // }
 
     const mergedEmployee = this.employeeRepository.merge(employee, updateEmployeeDto);
     return await this.employeeRepository.save(mergedEmployee);

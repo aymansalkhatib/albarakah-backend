@@ -26,26 +26,23 @@ export class PersonController {
     return this.personsService.create(createPersonDto);
   }
 
-  @Get()
-  async findAll(@Query() filterDto: FilterPersonDto) {
-    return this.personsService.findAll(filterDto);
-  }
-
-  @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.personsService.findOne(id);
-  }
-
   @Patch(':id')
-  async update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updatePersonDto: UpdatePersonDto,
-  ) {
+  async update(@Param('id', ParseIntPipe) id: number, @Body() updatePersonDto: UpdatePersonDto) {
     return this.personsService.update(id, updatePersonDto);
   }
 
   @Delete(':id')
   async delete(@Param('id', ParseIntPipe) id: number) {
     return this.personsService.delete(id);
+  }
+
+  @Get(':id')
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.personsService.findOne(id, { relations: ['father', 'mother'] });
+  }
+
+  @Get()
+  async findAll(@Query() filterDto: FilterPersonDto) {
+    return this.personsService.findAll(filterDto);
   }
 }

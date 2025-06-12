@@ -2,15 +2,17 @@ import {
   IsOptional,
   IsString,
   IsDateString,
-  IsBoolean,
   IsEnum,
-  IsEmail,
   Length,
   IsInt,
   Min,
   Max,
+  IsNotEmpty,
+  MaxDate,
+  MinDate,
+  IsDate,
 } from 'class-validator';
-import { Transform } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { GenderType } from '../enums/gender-type.enum';
 import { ClothingSize } from '../enums/clothing-size.enum';
 import { IsAfterDate } from 'src/common/decorators/is-after-date.decorator';
@@ -129,11 +131,25 @@ export class FilterPersonDto {
   clothingSize?: ClothingSize;
 
   @IsOptional()
-  @IsDateString()
-  birthDateFrom?: string;
+  @IsDate()
+  @MinDate(new Date('1900-01-01'), { message: 'Birth date must be after 1900-01-01' })
+  @MaxDate(new Date(), { message: 'Birth date must be before today' })
+  birthDateFrom?: Date;
 
   @IsOptional()
-  @IsDateString()
+  @IsDate()
+  @MinDate(new Date('1900-01-01'), { message: 'Birth date must be after 1900-01-01' })
+  @MaxDate(new Date(), { message: 'Birth date must be before today' })
   @IsAfterDate('birthDateFrom')
-  birthDateTo?: string;
+  birthDateTo?: Date;
+
+  @IsOptional()
+  @IsString()
+  @Length(1, 100)
+  fatherFirstName?: string;
+
+  @IsOptional()
+  @IsString()
+  @Length(1, 100)
+  motherFirstName?: string;
 }

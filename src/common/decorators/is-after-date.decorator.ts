@@ -25,8 +25,6 @@ export function IsAfterDate(related: string | Date, validationOptions?: Validati
             compareDate = related;
           }
 
-          console.log(compareDate);
-
           return valueDate > compareDate;
         },
 

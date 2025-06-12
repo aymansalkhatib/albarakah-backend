@@ -1,4 +1,5 @@
 import {
+  IsDate,
   IsDateString,
   IsEmail,
   IsEnum,
@@ -7,26 +8,16 @@ import {
   IsString,
   Length,
   Max,
+  MaxDate,
   Min,
-  ValidateNested,
+  MinDate,
 } from 'class-validator';
-import { Transform, Type } from 'class-transformer';
+import { Transform } from 'class-transformer';
 import { GenderType } from '../enums/gender-type.enum';
 import { ClothingSize } from '../enums/clothing-size.enum';
-import { OnlyOneOf } from 'src/common/decorators/validate-one-of-two-fields.validator';
 import { StrictBoolean } from 'src/common/decorators/strict-boolean.decorator';
-import { OmitType } from '@nestjs/mapped-types';
+import { NotEqualTo } from 'src/common/decorators/not-equal-to.decorator';
 
-@OnlyOneOf([
-  {
-    fields: ['motherId', 'mother'],
-    isRequired: false,
-  },
-  {
-    fields: ['fatherId', 'father'],
-    isRequired: false,
-  },
-])
 export class CreatePersonDto {
   @IsOptional()
   @IsInt()
@@ -36,6 +27,7 @@ export class CreatePersonDto {
   @IsOptional()
   @IsInt()
   @Min(1)
+  @NotEqualTo('fatherId')
   motherId?: number;
 
   @IsString()
@@ -47,8 +39,14 @@ export class CreatePersonDto {
   lastName: string;
 
   @IsOptional()
-  @IsDateString()
-  birthDate?: string;
+  @IsDate()
+  @MinDate(new Date('1900-01-01'), {
+    message: 'Birth date must be after 1900-01-01',
+  })
+  @MaxDate(new Date(), {
+    message: 'Birth date must be before today',
+  })
+  birthDate?: Date;
 
   @IsOptional()
   @IsString()
@@ -151,14 +149,4 @@ export class CreatePersonDto {
   @IsString()
   @Length(3, 200)
   notes?: string;
-
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => OmitType(CreatePersonDto, ['father', 'mother', 'fatherId', 'motherId'] as const))
-  father?: Omit<CreatePersonDto, 'father' | 'mother' | 'fatherId' | 'motherId'>;
-
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => OmitType(CreatePersonDto, ['father', 'mother', 'fatherId', 'motherId'] as const))
-  mother?: Omit<CreatePersonDto, 'father' | 'mother' | 'fatherId' | 'motherId'>;
 }

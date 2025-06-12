@@ -41,7 +41,7 @@ export class Person {
   lastName: string;
 
   @Column({ type: 'date', nullable: true, name: 'birth_date' })
-  birthDate: string;
+  birthDate: Date;
 
   @Column({ length: 50, unique: true, nullable: true, name: 'national_id' })
   nationalId: string;
