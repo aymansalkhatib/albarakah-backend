@@ -22,8 +22,8 @@ import { Employee } from 'src/modules/employees/entities/employee.entity';
 @Entity('person')
 @Index(['nationalId'], { unique: true, where: 'national_id IS NOT NULL' })
 @Index(['email'], { unique: true, where: 'email IS NOT NULL' })
-@Index(['firstName', 'lastName'])
-@Unique(['firstName', 'birthDate', 'lastName'])
+@Index(['firstName', 'lastName', 'fatherId'], { unique: true })
+@Index(['firstName', 'lastName', 'motherId'], { unique: true })
 export class Person {
   @PrimaryGeneratedColumn()
   id: number;

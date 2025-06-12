@@ -24,7 +24,11 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 
     // Generate a unique trace ID for error tracking
     const traceId = randomUUID();
-    const developerMode = request.headers['developer-mode'];
+
+    const developerMode: boolean =
+      request.headers['developer-mode'] === 'true' && process.env.NODE_ENV === 'development';
+    console.log(request.headers['developer-mode']);
+    console.log(process.env.NODE_ENV);
 
     try {
       // Get the appropriate handler for this type of error
@@ -33,7 +37,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       const errorResponse = handler.handle(exception, traceId);
 
       // Add stack trace in development
-      if (process.env.NODE_ENV === 'development') {
+      if (developerMode) {
         errorResponse.stack = exception.stack;
       }
 
@@ -41,6 +45,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       this.logError(request, exception, traceId);
 
       // Send response
+
       if (developerMode) {
         response.status(errorResponse.statusCode).json(errorResponse);
       } else {

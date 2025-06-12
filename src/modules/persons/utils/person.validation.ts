@@ -11,24 +11,35 @@ export async function validatePersonUniqueness(
 ): Promise<void> {
   const conditions = [];
 
+  // Email uniqueness check
   if (dto.email) {
     conditions.push({ email: dto.email });
   }
 
+  // National ID uniqueness check
   if (dto.nationalId) {
     conditions.push({ nationalId: dto.nationalId });
   }
 
-  if (dto.firstName || dto.lastName) {
+  if (dto.firstName || dto.lastName || dto.motherId || dto.fatherId) {
+    // Name + Father combination check
     conditions.push({
       firstName: dto.firstName,
       lastName: dto.lastName,
-      birthDate: dto.birthDate,
+      fatherId: dto.fatherId,
+    });
+
+    // Name + Mother combination check
+    conditions.push({
+      firstName: dto.firstName,
+      lastName: dto.lastName,
+      motherId: dto.motherId,
     });
   }
 
   if (conditions.length === 0) return;
 
+  // Apply exclude ID filter to all conditions
   const whereConditions = conditions.map((condition) => ({
     ...condition,
     ...(excludeId && { id: Not(excludeId) }),
@@ -39,15 +50,39 @@ export async function validatePersonUniqueness(
   });
 
   if (existingPerson) {
-    if (existingPerson.email === dto.email) {
-      throw new ConflictException(`Person with email ${dto.email} already exists`);
+    // Provide specific error messages based on conflict type
+    if (dto.email && existingPerson.email === dto.email) {
+      throw new ConflictException(`A person with email "${dto.email}" already exists`);
     }
-    if (existingPerson.nationalId === dto.nationalId) {
-      throw new ConflictException(`Person with national ID ${dto.nationalId} already exists`);
+
+    if (dto.nationalId && existingPerson.nationalId === dto.nationalId) {
+      throw new ConflictException(`A person with national ID "${dto.nationalId}" already exists`);
     }
-    throw new ConflictException(
-      `Person with name ${dto.firstName} ${dto.lastName} and birth date already exists`,
-    );
+
+    // Check for father-based conflict
+    if (
+      existingPerson.fatherId === dto.fatherId &&
+      existingPerson.firstName === dto.firstName &&
+      existingPerson.lastName === dto.lastName
+    ) {
+      throw new ConflictException(
+        `A person named "${dto.firstName} ${dto.lastName}" with the same father already exists`,
+      );
+    }
+
+    // Check for mother-based conflict
+    if (
+      existingPerson.motherId === dto.motherId &&
+      existingPerson.firstName === dto.firstName &&
+      existingPerson.lastName === dto.lastName
+    ) {
+      throw new ConflictException(
+        `A person named "${dto.firstName} ${dto.lastName}" with the same mother already exists`,
+      );
+    }
+
+    // Generic fallback error
+    throw new ConflictException(`A person with these details already exists`);
   }
 }
 

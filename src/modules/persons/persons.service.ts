@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { GoneException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Person } from './entities/person.entity';
@@ -29,7 +29,9 @@ export class PersonsService {
 
     validationPromises.push(validatePersonUniqueness(this.personRepository, createPersonDto));
 
-    await Promise.all(validationPromises);
+    (await Promise.allSettled(validationPromises)).forEach((r) => {
+      if (r.status === 'rejected') throw r.reason;
+    });
 
     const person = this.personRepository.create(createPersonDto);
     const savedPerson = await this.personRepository.save(person);
@@ -38,7 +40,9 @@ export class PersonsService {
 
   async update(id: number, updatePersonDto: UpdatePersonDto): Promise<Person> {
     const person = await this.findOne(id);
-    await validateFamilyRelationships(id, updatePersonDto, person);
+    const mergedPerson = this.personRepository.merge(person, updatePersonDto);
+
+    validateFamilyRelationships(id, updatePersonDto, person);
 
     const validationPromises = [];
 
@@ -48,11 +52,12 @@ export class PersonsService {
     if (updatePersonDto.motherId) {
       validationPromises.push(this.findOne(updatePersonDto.motherId));
     }
-    validationPromises.push(validatePersonUniqueness(this.personRepository, updatePersonDto, id));
+    validationPromises.push(validatePersonUniqueness(this.personRepository, mergedPerson, id));
 
-    await Promise.all(validationPromises);
+    (await Promise.allSettled(validationPromises)).forEach((r) => {
+      if (r.status === 'rejected') throw r.reason;
+    });
 
-    const mergedPerson = this.personRepository.merge(person, updatePersonDto);
     const savedPerson = await this.personRepository.save(mergedPerson);
     return this.findOne(savedPerson.id, { relations: ['father', 'mother'] });
   }
