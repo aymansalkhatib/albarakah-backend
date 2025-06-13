@@ -6,6 +6,7 @@ import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { PersonsService } from '../persons/persons.service';
 import { FilterEmployeeDto } from './dto/filter-employee.dto';
+import { Person } from '../persons/entities/person.entity';
 
 @Injectable()
 export class EmployeesService {
@@ -16,13 +17,23 @@ export class EmployeesService {
   ) {}
 
   async create(createEmployeeDto: CreateEmployeeDto): Promise<Employee> {
-    const person = await this.personsService.create(createEmployeeDto.person);
+    let person: Person;
 
+    if (createEmployeeDto.personId) {
+      person = await this.personsService.findOne(createEmployeeDto.personId, {
+        relations: ['employee'],
+      });
+      
+      if (person.employee) {
+        throw new ConflictException('This person is already an employee');
+      }
+    } else {
+      person = await this.personsService.create(createEmployeeDto.person);
+    }
     const employee = this.employeeRepository.create({
       ...createEmployeeDto,
       person,
     });
-
     return await this.employeeRepository.save(employee);
   }
 
