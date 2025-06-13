@@ -7,7 +7,7 @@ import { ValidateNested } from 'class-validator';
 import { UpdatePersonDto } from 'src/modules/persons/dto/update-person.dto';
 
 export class UpdateEmployeeDto extends PartialType(
-  OmitType(CreateEmployeeDto, ['person'] as const),
+  OmitType(CreateEmployeeDto, ['person', 'personId'] as const),
 ) {
   @IsOptional()
   @ValidateNested()

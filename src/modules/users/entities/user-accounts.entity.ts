@@ -49,9 +49,6 @@ export class UserAccount {
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
-  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
-  deletedAt?: Date;
-
   // Relationships
 
   @OneToMany(() => UserPermission, (userPermission) => userPermission.userAccount)
