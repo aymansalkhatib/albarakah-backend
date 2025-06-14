@@ -12,14 +12,14 @@ import { OnlyOneOf } from 'src/common/decorators/validate-one-of-two-fields.vali
 
 @OnlyOneOf([
   {
-    fields: ['employee', 'employeesId'],
+    fields: ['employee', 'employeeId'],
     isRequired: true,
   },
 ])
-export class CreateUserAccountDto {
+export class CreateSystemUserDto {
   @IsOptional()
   @IsNumber()
-  employeesId?: number;
+  employeeId?: number;
 
   @IsOptional()
   @ValidateNested()

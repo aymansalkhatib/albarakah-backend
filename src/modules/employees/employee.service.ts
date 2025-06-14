@@ -23,7 +23,7 @@ export class EmployeesService {
       person = await this.personsService.findOne(createEmployeeDto.personId, {
         relations: ['employee'],
       });
-      
+
       if (person.employee) {
         throw new ConflictException('This person is already an employee');
       }
@@ -38,7 +38,7 @@ export class EmployeesService {
   }
 
   async update(id: number, updateEmployeeDto: UpdateEmployeeDto): Promise<Employee> {
-    const employee = await this.findOne(id);
+    const employee = await this.findOne(id, { relations: ['person'] });
 
     if (updateEmployeeDto.person) {
       updateEmployeeDto.person = await this.personsService.update(
@@ -57,10 +57,13 @@ export class EmployeesService {
     };
   }
 
-  async findOne(id: number): Promise<Employee> {
+  async findOne(
+    id: number,
+    { relations }: { relations?: (keyof Employee)[] } = {},
+  ): Promise<Employee> {
     const employee = await this.employeeRepository.findOne({
       where: { id },
-      relations: ['person'],
+      relations: relations || [],
     });
 
     if (!employee) {

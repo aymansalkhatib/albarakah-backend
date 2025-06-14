@@ -1,11 +1,11 @@
 import { PartialType, OmitType } from '@nestjs/mapped-types';
-import { CreateUserAccountDto } from './create-user-account.dto';
 import { Type } from 'class-transformer';
 import { IsOptional, ValidateNested } from 'class-validator';
 import { UpdateEmployeeDto } from 'src/modules/employees/dto/update-employee.dto';
+import { CreateSystemUserDto } from './create-system-user.dto';
 
 export class UpdateUserAccountDto extends PartialType(
-  OmitType(CreateUserAccountDto, ['employee', 'employeesId'] as const),
+  OmitType(CreateSystemUserDto, ['employee', 'employeeId'] as const),
 ) {
   @IsOptional()
   @ValidateNested()

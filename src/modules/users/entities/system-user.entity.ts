@@ -15,26 +15,26 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('user_accounts')
-@Index(['username'], { unique: true })
-@Index(['employeesId'], { unique: true, where: 'employees_id IS NOT NULL' })
-@Index(['roleId'])
-@Index(['lastLogin'])
-export class UserAccount {
+@Entity('system_users')
+@Index('idx_system_users_username', ['username'], { unique: true })
+@Index('idx_system_users_employee_id', ['employeeId'], { unique: true })
+@Index('idx_system_users_role_id', ['roleId'])
+@Index('idx_system_users_last_login', ['lastLogin'])
+export class SystemUser {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'employees_id', nullable: true })
-  employeesId?: number;
+  @Column({ name: 'employee_id' })
+  employeeId: number;
 
   @Column({ name: 'role_id', nullable: true })
   roleId?: number;
 
-  @ManyToOne(() => Role, (role) => role.userAccounts, { nullable: true, onDelete: 'SET NULL' })
+  @ManyToOne(() => Role, (role) => role.systemUsers, { nullable: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'role_id' })
   role?: Role;
 
-  @Column({ length: 100, unique: true })
+  @Column({ length: 100 })
   username: string;
 
   @Column({ type: 'text' })
@@ -51,13 +51,12 @@ export class UserAccount {
 
   // Relationships
 
-  @OneToMany(() => UserPermission, (userPermission) => userPermission.userAccount)
+  @OneToMany(() => UserPermission, (userPermission) => userPermission.systemUser)
   userPermissions: UserPermission[];
 
-  @OneToOne(() => Employee, (employee) => employee.userAccount, {
-    nullable: true,
+  @OneToOne(() => Employee, (employee) => employee.systemUser, {
     onDelete: 'RESTRICT',
   })
-  @JoinColumn({ name: 'employees_id' })
-  employee?: Employee;
+  @JoinColumn({ name: 'employee_id' })
+  employee: Employee;
 }

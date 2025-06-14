@@ -1,7 +1,7 @@
 import { Exclude, Expose } from 'class-transformer';
 
 @Exclude()
-export class UserAccountResponseDto {
+export class SystemUserResponseDto {
   @Expose()
   id: number;
 

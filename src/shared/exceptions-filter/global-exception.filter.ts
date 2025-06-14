@@ -27,8 +27,6 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 
     const developerMode: boolean =
       request.headers['developer-mode'] === 'true' && process.env.NODE_ENV === 'development';
-    console.log(request.headers['developer-mode']);
-    console.log(process.env.NODE_ENV);
 
     try {
       // Get the appropriate handler for this type of error

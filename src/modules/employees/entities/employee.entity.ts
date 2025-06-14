@@ -1,5 +1,4 @@
 import { Person } from 'src/modules/persons/entities/person.entity';
-import { UserAccount } from 'src/modules/users/entities/user-accounts.entity';
 import {
   Column,
   CreateDateColumn,
@@ -14,12 +13,13 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Interview } from '../../interviews/entities/interview.entity';
+import { SystemUser } from 'src/modules/users/entities/system-user.entity';
 
 @Entity('employees')
-@Index(['personId'], { unique: true })
-@Index(['position'])
-@Index(['hireDate'])
-@Index(['terminationDate'])
+@Index('idx_employees_person_id', ['personId'], { unique: true })
+@Index('idx_employees_position', ['position'])
+@Index('idx_employees_hire_date', ['hireDate'])
+@Index('idx_employees_termination_date', ['terminationDate'])
 export class Employee {
   @PrimaryGeneratedColumn()
   id: number;
@@ -51,10 +51,11 @@ export class Employee {
   @JoinColumn({ name: 'person_id' })
   person: Person;
 
-  @OneToOne(() => UserAccount, (userAccount) => userAccount.employee, {
+  @OneToOne(() => SystemUser, (systemUser) => systemUser.employee, {
     cascade: true,
   })
-  userAccount?: UserAccount;
+  @JoinColumn()
+  systemUser?: SystemUser;
 
   @OneToMany(() => Interview, (interview) => interview.interviewer, {
     cascade: true,

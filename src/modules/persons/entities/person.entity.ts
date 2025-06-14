@@ -20,10 +20,10 @@ import { FamilyMember } from 'src/modules/beneficiary-families/entities/family-m
 import { Employee } from 'src/modules/employees/entities/employee.entity';
 
 @Entity('person')
-@Index(['nationalId'], { unique: true, where: 'national_id IS NOT NULL' })
-@Index(['email'], { unique: true, where: 'email IS NOT NULL' })
-@Index(['firstName', 'lastName', 'fatherId'], { unique: true })
-@Index(['firstName', 'lastName', 'motherId'], { unique: true })
+@Index('idx_person_national_id', ['nationalId'], { unique: true, where: 'national_id IS NOT NULL' })
+@Index('idx_person_email', ['email'], { unique: true, where: 'email IS NOT NULL' })
+@Index('idx_person_father', ['firstName', 'lastName', 'fatherId'], { unique: true })
+@Index('idx_person_mother', ['firstName', 'lastName', 'motherId'], { unique: true })
 export class Person {
   @PrimaryGeneratedColumn()
   id: number;
