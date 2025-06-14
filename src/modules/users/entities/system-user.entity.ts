@@ -27,12 +27,12 @@ export class SystemUser {
   @Column({ name: 'employee_id' })
   employeeId: number;
 
-  @Column({ name: 'role_id', nullable: true })
-  roleId?: number;
+  @Column({ name: 'role_id' })
+  roleId: number;
 
-  @ManyToOne(() => Role, (role) => role.systemUsers, { nullable: true, onDelete: 'SET NULL' })
+  @ManyToOne(() => Role, (role) => role.systemUsers, { onDelete: 'SET NULL' })
   @JoinColumn({ name: 'role_id' })
-  role?: Role;
+  role: Role;
 
   @Column({ length: 100 })
   username: string;

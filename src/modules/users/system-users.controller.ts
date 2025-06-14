@@ -8,12 +8,14 @@ import {
   Delete,
   ParseIntPipe,
   NotFoundException,
+  Query,
 } from '@nestjs/common';
-import { UpdateUserAccountDto } from './dto/update-user-account.dto';
+import { UpdateSystemUserDto } from './dto/update-user-account.dto';
 import { toDto } from 'src/common/helpers/to-dto';
 import { SystemUserResponseDto } from './dto/system-user-response.dto';
 import { CreateSystemUserDto } from './dto/create-system-user.dto';
 import { SystemUsersService } from './system-users.service';
+import { FilterSystemUserDto } from './dto/filter-system-user.dto';
 
 @Controller('system-users')
 export class SystemUsersController {
@@ -25,22 +27,10 @@ export class SystemUsersController {
     return toDto(SystemUserResponseDto, systemUser);
   }
 
-  @Get()
-  async findAll(): Promise<SystemUserResponseDto[]> {
-    const systemUsers = await this.systemUsersService.findAll();
-    return toDto(SystemUserResponseDto, systemUsers);
-  }
-
-  @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: number): Promise<SystemUserResponseDto> {
-    const systemUser = await this.systemUsersService.findOne(id);
-    return toDto(SystemUserResponseDto, systemUser);
-  }
-
   @Patch(':id')
   async update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() updateUserAccountDto: UpdateUserAccountDto,
+    @Body() updateUserAccountDto: UpdateSystemUserDto,
   ): Promise<SystemUserResponseDto> {
     const systemUser = await this.systemUsersService.update(id, updateUserAccountDto);
     return toDto(SystemUserResponseDto, systemUser);
@@ -54,5 +44,19 @@ export class SystemUsersController {
     }
     await this.systemUsersService.remove(id);
     return { message: `System user with ID ${id} has been deleted successfully` };
+  }
+
+  @Get(':id')
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<SystemUserResponseDto> {
+    const systemUser = await this.systemUsersService.findOne(id, {
+      relations: ['employee', 'role', 'employee.person'],
+    });
+    return toDto(SystemUserResponseDto, systemUser);
+  }
+
+  @Get()
+  async findAll(@Query() filterDto: FilterSystemUserDto): Promise<SystemUserResponseDto[]> {
+    const systemUsers = await this.systemUsersService.findAll(filterDto);
+    return toDto(SystemUserResponseDto, systemUsers);
   }
 }

@@ -54,7 +54,6 @@ export class Employee {
   @OneToOne(() => SystemUser, (systemUser) => systemUser.employee, {
     cascade: true,
   })
-  @JoinColumn()
   systemUser?: SystemUser;
 
   @OneToMany(() => Interview, (interview) => interview.interviewer, {

@@ -41,26 +41,37 @@ export class EmployeesService {
     const employee = await this.findOne(id, { relations: ['person'] });
 
     if (updateEmployeeDto.person) {
-      updateEmployeeDto.person = await this.personsService.update(
+      employee.person = await this.personsService.update(
         employee.person.id,
         updateEmployeeDto.person,
       );
+      delete updateEmployeeDto.person;
     }
-    return await this.employeeRepository.save(employee);
+
+    const updatedEmployee = this.employeeRepository.create({
+      ...employee,
+      ...updateEmployeeDto,
+    });
+
+    return await this.employeeRepository.save(updatedEmployee);
   }
 
   async delete(id: number): Promise<{ message: string }> {
-    const employee = await this.findOne(id);
+    const employee = await this.findOne(id, { relations: ['systemUser'] });
+    console.log(employee);
+
+    if (employee.systemUser) {
+      throw new ConflictException(
+        'Cannot delete employee with system account. Please delete the system account first.',
+      );
+    }
     await this.employeeRepository.delete(id);
     return {
       message: `Employee ${employee.person?.firstName} ${employee.person?.lastName} has been deleted`,
     };
   }
 
-  async findOne(
-    id: number,
-    { relations }: { relations?: (keyof Employee)[] } = {},
-  ): Promise<Employee> {
+  async findOne(id: number, { relations }: { relations?: string[] } = {}): Promise<Employee> {
     const employee = await this.employeeRepository.findOne({
       where: { id },
       relations: relations || [],
@@ -155,6 +166,14 @@ export class EmployeesService {
       if (filterDto.person.birthDateFrom && filterDto.person.birthDateTo) {
         queryBuilder.andWhere('person.birthDate BETWEEN :birthDateFrom AND :birthDateTo', {
           birthDateFrom: filterDto.person.birthDateFrom,
+          birthDateTo: filterDto.person.birthDateTo,
+        });
+      } else if (filterDto.person.birthDateFrom) {
+        queryBuilder.andWhere('person.birthDate >= :birthDateFrom', {
+          birthDateFrom: filterDto.person.birthDateFrom,
+        });
+      } else if (filterDto.person.birthDateTo) {
+        queryBuilder.andWhere('person.birthDate <= :birthDateTo', {
           birthDateTo: filterDto.person.birthDateTo,
         });
       }

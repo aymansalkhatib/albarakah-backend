@@ -4,7 +4,7 @@ import { IsOptional, ValidateNested } from 'class-validator';
 import { UpdateEmployeeDto } from 'src/modules/employees/dto/update-employee.dto';
 import { CreateSystemUserDto } from './create-system-user.dto';
 
-export class UpdateUserAccountDto extends PartialType(
+export class UpdateSystemUserDto extends PartialType(
   OmitType(CreateSystemUserDto, ['employee', 'employeeId'] as const),
 ) {
   @IsOptional()

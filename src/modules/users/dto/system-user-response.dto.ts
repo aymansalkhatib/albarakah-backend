@@ -1,12 +1,12 @@
-import { Exclude, Expose } from 'class-transformer';
+import { Exclude, Expose, Type } from 'class-transformer';
+import { EmployeeResponseDto } from '../../employees/dto/employee-response.dto';
+import { Role } from 'src/modules/roles/entities/roles.entity';
+import { ResponseRoleDto } from 'src/modules/roles/dto/response-role.dto';
 
 @Exclude()
 export class SystemUserResponseDto {
   @Expose()
   id: number;
-
-  @Expose()
-  employeesId?: number;
 
   @Expose()
   roleId?: number;
@@ -22,4 +22,15 @@ export class SystemUserResponseDto {
 
   @Expose()
   updatedAt: Date;
+
+  @Expose()
+  employeeId?: number;
+
+  @Expose()
+  @Type(() => EmployeeResponseDto)
+  employee?: EmployeeResponseDto;
+
+  @Expose()
+  @Type(() => ResponseRoleDto)
+  role?: ResponseRoleDto;
 }

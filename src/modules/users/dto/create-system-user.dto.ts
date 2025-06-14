@@ -26,9 +26,8 @@ export class CreateSystemUserDto {
   @Type(() => CreateEmployeeDto)
   employee?: CreateEmployeeDto;
 
-  @IsOptional()
   @IsNumber()
-  roleId?: number;
+  roleId: number;
 
   @IsNotEmpty()
   @IsString()

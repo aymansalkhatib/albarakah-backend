@@ -1,4 +1,4 @@
-import { GoneException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, GoneException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Person } from './entities/person.entity';
@@ -63,11 +63,45 @@ export class PersonsService {
   }
 
   async delete(id: number): Promise<{ message: string }> {
-    const person = await this.findOne(id);
+    const person = await this.findOne(id, {
+      relations: ['employee', 'child', 'familyMember', 'guardian'],
+    });
+
+    const relatedData: string[] = [];
+
+    if (person.employee) relatedData.push(`Employee record (ID: ${person.employee.id})`);
+
+    if (person.child) relatedData.push(`Child record (ID: ${person.child.id})`);
+
+    if (person.familyMember)
+      relatedData.push(`Family member record (ID: ${person.familyMember.id})`);
+
+    if (person.guardian) relatedData.push(`Guardian record (ID: ${person.guardian.id})`);
+
+    if (relatedData.length > 0) {
+      const relationsList = relatedData.join(', ');
+      throw new ConflictException(
+        `Cannot delete person "${person.firstName} ${person.lastName}" because they have the following related records: ${relationsList}. Please remove these relationships first.`,
+      );
+    }
+
     await this.personRepository.delete(id);
     return {
-      message: `Person ${person.firstName} ${person.lastName} has been deleted`,
+      message: `Person "${person.firstName} ${person.lastName}" has been successfully deleted`,
     };
+  }
+
+  async findOne(id: number, { relations }: { relations?: string[] } = {}): Promise<Person> {
+    const person = await this.personRepository.findOne({
+      where: { id },
+      relations: relations || [],
+    });
+
+    if (!person) {
+      throw new NotFoundException(`Person with ID ${id} not found`);
+    }
+
+    return person;
   }
 
   async findAll(filterDto: FilterPersonDto): Promise<Person[]> {
@@ -155,21 +189,6 @@ export class PersonsService {
       });
     }
 
-    // Add more filters as needed based on FilterPersonDto
-
     return await queryBuilder.getMany();
-  }
-
-  async findOne(id: number, { relations }: { relations?: (keyof Person)[] } = {}): Promise<Person> {
-    const person = await this.personRepository.findOne({
-      where: { id },
-      relations: relations || [],
-    });
-
-    if (!person) {
-      throw new NotFoundException(`Person with ID ${id} not found`);
-    }
-
-    return person;
   }
 }
