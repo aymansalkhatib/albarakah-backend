@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { IsOptional, IsString, IsNumber, IsBoolean, ValidateNested } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
 import { FilterRoleDto } from 'src/modules/roles/dto/filter-role.dto';
@@ -10,7 +11,6 @@ export class FilterSystemUserDto {
 
   @IsOptional()
   @IsNumber()
-  @Transform(({ value }) => Number(value))
   roleId?: number;
 
   @IsOptional()

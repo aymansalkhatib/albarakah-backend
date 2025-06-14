@@ -17,6 +17,11 @@ export class FilterEmployeeDto {
   position?: string;
 
   @IsOptional()
+  @IsString()
+  @Length(1, 100)
+  username?: string;
+
+  @IsOptional()
   @IsDateString()
   hireDateFrom?: string;
 
