@@ -2,10 +2,14 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ROLES_KEY } from '../decorators/roles.decorator';
 import { ROLE_HIERARCHY, UserRole } from '../enums/role.enum';
+import { RolesService } from '../../modules/roles/roles.service';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-  constructor(private reflector: Reflector) {}
+  constructor(
+    private reflector: Reflector,
+    private rolesService: RolesService
+  ) {}
 
   canActivate(context: ExecutionContext): boolean {
     const requiredRoles = this.reflector.getAllAndOverride<UserRole[]>(ROLES_KEY, [
@@ -13,26 +17,17 @@ export class RolesGuard implements CanActivate {
       context.getClass(),
     ]);
 
-    if (!requiredRoles) {
+    if (!requiredRoles || requiredRoles.length === 0) {
       return true;
     }
 
     const { user } = context.switchToHttp().getRequest();
-    return this.matchRoles(requiredRoles, user.roles);
-  }
-
-  private matchRoles(requiredRoles: UserRole[], userRoles: UserRole[]): boolean {
-    return requiredRoles.some((required) =>
-      userRoles.some((userRole) => this.hasRole(userRole, required)),
-    );
-  }
-
-  private hasRole(userRole: UserRole, requiredRole: UserRole): boolean {
-    if (userRole === requiredRole) {
-      return true;
+    
+    // تأكد من وجود المستخدم وأدواره
+    if (!user || !user.roles || !Array.isArray(user.roles)) {
+      return false;
     }
-
-    const hierarchy = ROLE_HIERARCHY[userRole] || [];
-    return hierarchy.includes(requiredRole);
+    
+    return this.rolesService.hasAnyRole(user.roles, requiredRoles);
   }
 }
