@@ -18,7 +18,6 @@ import { CreateSystemUserDto } from './dto/create-system-user.dto';
 import { SystemUsersService } from './system-users.service';
 import { FilterSystemUserDto } from './dto/filter-system-user.dto';
 import 'reflect-metadata';
-import { getFilterMetadata } from 'src/common/utils/filter-metadata.util';
 
 @Controller('system-users')
 export class SystemUsersController {
@@ -59,10 +58,6 @@ export class SystemUsersController {
 
   @Get()
   async findAll(@Query() filterDto: FilterSystemUserDto): Promise<SystemUserResponseDto[]> {
-    const metadata = getFilterMetadata(filterDto, FilterSystemUserDto);
-    console.log('Filter metadata:', JSON.stringify(metadata, null, 2));
-    console.log(metadata);
-
     const systemUsers = await this.systemUsersService.findAll(filterDto);
     return toDto(SystemUserResponseDto, systemUsers);
   }
