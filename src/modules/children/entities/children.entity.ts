@@ -11,10 +11,10 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { FamilyMember } from './family-members.entity';
-import { BeneficiaryFamily } from './beneficiary-families.entity';
 import { ReceivedAssistance } from 'src/modules/received-assistance/entities/received-assistance.entity';
 import { CallLog } from 'src/modules/call-logs/entities/call-log.entity';
+import { BeneficiaryFamily } from 'src/modules/beneficiary-families/entities/beneficiary-families.entity';
+import { FamilyMember } from 'src/modules/beneficiary-families/entities/family-members.entity';
 
 @Entity('children')
 @Index(['personId'], { unique: true, where: 'deleted_at IS NULL' })

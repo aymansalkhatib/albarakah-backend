@@ -14,7 +14,6 @@ import {
 import { FamilyMember } from './family-members.entity';
 import { Max } from 'class-validator';
 import { Guardian } from 'src/modules/guardians/entities/guardian.entity';
-import { Child } from './children.entity';
 import { FamilyNeed } from 'src/modules/family-needs/entities/family-need.entity';
 import { EmergencyAidRequest } from 'src/modules/emergency-aid/entities/emergency-aid-request.entity';
 import { ReceivedAssistance } from 'src/modules/received-assistance/entities/received-assistance.entity';
@@ -24,6 +23,7 @@ import { House } from 'src/modules/houses/entities/house.entity';
 import { Interview } from '../../interviews/entities/interview.entity';
 import { FamilyRegistrationForm } from '../../family-registration-forms/entities/family-registration-form.entity';
 import { Visit } from 'src/modules/visits/entities/visit.entity';
+import { Child } from 'src/modules/children/entities/children.entity';
 
 @Index(['familyBookNumber'], { unique: true, where: 'deleted_at IS NULL' })
 @Index(['familyName'])

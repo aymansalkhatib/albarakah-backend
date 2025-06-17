@@ -12,7 +12,7 @@ import {
 import { BeneficiaryFamily } from '../../beneficiary-families/entities/beneficiary-families.entity';
 import { CallStatus } from '../enums/call-status.enum';
 import { FamilyMember } from 'src/modules/beneficiary-families/entities/family-members.entity';
-import { Child } from 'src/modules/beneficiary-families/entities/children.entity';
+import { Child } from 'src/modules/children/entities/children.entity';
 
 @Entity('call_logs')
 @Index(['familyId'])

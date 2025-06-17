@@ -10,9 +10,9 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { BeneficiaryFamily } from '../../beneficiary-families/entities/beneficiary-families.entity';
-import { Child } from '../../beneficiary-families/entities/children.entity';
 import { PriorityLevel } from '../enums/priority-level.enum';
 import { FamilyNeedStatus } from '../enums/family-need-status.enum';
+import { Child } from 'src/modules/children/entities/children.entity';
 
 @Entity('family_needs')
 @Index(['familyId'])

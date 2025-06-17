@@ -15,10 +15,10 @@ import { DropdownOption } from '../../dropdowns/entities/dropdown-option.entity'
 import { GenderType } from '../enums/gender-type.enum';
 import { ClothingSize } from '../enums/clothing-size.enum';
 import { Guardian } from 'src/modules/guardians/entities/guardian.entity';
-import { Child } from 'src/modules/beneficiary-families/entities/children.entity';
 import { FamilyMember } from 'src/modules/beneficiary-families/entities/family-members.entity';
 import { Employee } from 'src/modules/employees/entities/employee.entity';
 import { Supporter } from 'src/modules/supporters/entities/supporters.entity';
+import { Child } from 'src/modules/children/entities/children.entity';
 
 @Entity('person')
 @Index('idx_person_national_id', ['nationalId'], { unique: true, where: 'national_id IS NOT NULL' })

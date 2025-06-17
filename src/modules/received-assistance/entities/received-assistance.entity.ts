@@ -10,8 +10,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { BeneficiaryFamily } from '../../beneficiary-families/entities/beneficiary-families.entity';
-import { Child } from '../../beneficiary-families/entities/children.entity';
 import { AssistanceType } from '../enums/assistance-type.enum';
+import { Child } from 'src/modules/children/entities/children.entity';
 
 @Entity('received_assistance')
 @Index(['childId'])
