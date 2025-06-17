@@ -2,21 +2,24 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Role } from './entities/roles.entity';
-import { Permission } from './entities/permissions.entity';
+import { PermissionEntity } from './entities/permissions.entity';
 import { RolePermission } from './entities/role-permission.entity';
-import { CreateRoleDto } from './dto/create-role.dto';
-import { UpdateRoleDto } from './dto/update-role.dto';
-import { FilterRoleDto } from './dto/filter-role.dto';
-import { CreatePermissionDto } from './dto/create-permission.dto';
-import { UserRole, ROLE_HIERARCHY } from 'src/common/enums/role.enum';
+import { CreateRoleDto } from './dto/request/create-role.dto';
+import { UpdateRoleDto } from './dto/request/update-role.dto';
+import { FilterRoleDto } from './dto/query/filter-role.dto';
+import { CreatePermissionDto } from './dto/request/create-permission.dto';
+import { UserRole, ROLE_HIERARCHY } from 'src/modules/roles/enums/role.enum';
+import { UpdatePermissionDto } from './dto/request/update-permission.dto';
+import { FilterPermissionDto } from './dto/query/filter-permission.dto';
+import { Permission } from './enums/permission.enum';
 
 @Injectable()
 export class RolesService {
   constructor(
     @InjectRepository(Role)
     private readonly roleRepository: Repository<Role>,
-    @InjectRepository(Permission)
-    private readonly permissionRepository: Repository<Permission>,
+    @InjectRepository(PermissionEntity)
+    private readonly permissionRepository: Repository<PermissionEntity>,
     @InjectRepository(RolePermission)
     private readonly rolePermissionRepository: Repository<RolePermission>,
   ) {}
@@ -120,16 +123,33 @@ export class RolesService {
   }
 
   // Permission Management
-  async createPermission(createPermissionDto: CreatePermissionDto): Promise<Permission> {
+  async createPermission(createPermissionDto: CreatePermissionDto): Promise<PermissionEntity> {
     const permission = this.permissionRepository.create(createPermissionDto);
     return this.permissionRepository.save(permission);
   }
 
-  async findAllPermissions(): Promise<Permission[]> {
-    return this.permissionRepository.find();
+  async findAllPermissions(filterDto: FilterPermissionDto): Promise<PermissionEntity[]> {
+    const queryBuilder = this.permissionRepository.createQueryBuilder('permission');
+
+    if (filterDto.id) {
+      queryBuilder.andWhere('permission.id = :id', { id: filterDto.id });
+    }
+
+    if (filterDto.name) {
+      queryBuilder.andWhere('permission.name LIKE :name', { name: `%${filterDto.name}%` });
+    }
+
+    if (filterDto.search) {
+      queryBuilder.andWhere(
+        '(permission.name LIKE :search OR permission.description LIKE :search)',
+        { search: `%${filterDto.search}%` },
+      );
+    }
+
+    return queryBuilder.getMany();
   }
 
-  async findPermissionById(id: number): Promise<Permission> {
+  async findPermissionById(id: number): Promise<PermissionEntity> {
     const permission = await this.permissionRepository.findOne({
       where: { id },
       relations: ['rolePermissions', 'rolePermissions.role'],
@@ -142,7 +162,7 @@ export class RolesService {
     return permission;
   }
 
-  async findPermissionByName(name: string): Promise<Permission> {
+  async findPermissionByName(name: Permission): Promise<PermissionEntity> {
     const permission = await this.permissionRepository.findOne({
       where: { name },
     });
@@ -156,10 +176,17 @@ export class RolesService {
 
   async updatePermission(
     id: number,
-    updatePermissionDto: CreatePermissionDto,
-  ): Promise<Permission> {
+    updatePermissionDto: UpdatePermissionDto,
+  ): Promise<PermissionEntity> {
     const permission = await this.findPermissionById(id);
-    Object.assign(permission, updatePermissionDto);
+
+    if (updatePermissionDto.name !== undefined) {
+      permission.name = updatePermissionDto.name;
+    }
+    if (updatePermissionDto.description !== undefined) {
+      permission.description = updatePermissionDto.description;
+    }
+
     return this.permissionRepository.save(permission);
   }
 
@@ -168,7 +195,7 @@ export class RolesService {
     await this.permissionRepository.remove(permission);
   }
 
-  async getPermissionsForRole(roleId: number): Promise<Permission[]> {
+  async getPermissionsForRole(roleId: number): Promise<PermissionEntity[]> {
     const role = await this.roleRepository.findOne({
       where: { id: roleId },
       relations: ['rolePermissions', 'rolePermissions.permission'],
@@ -178,10 +205,10 @@ export class RolesService {
       throw new NotFoundException(`Role with ID ${roleId} not found`);
     }
 
-    return role.rolePermissions.map(rp => rp.permission);
+    return role.rolePermissions.map((rp) => rp.permission);
   }
 
-  async getPermissionsForRoleName(roleName: string): Promise<Permission[]> {
+  async getPermissionsForRoleName(roleName: string): Promise<PermissionEntity[]> {
     const role = await this.roleRepository.findOne({
       where: { name: roleName },
       relations: ['rolePermissions', 'rolePermissions.permission'],
@@ -191,58 +218,59 @@ export class RolesService {
       throw new NotFoundException(`Role with name ${roleName} not found`);
     }
 
-    return role.rolePermissions.map(rp => rp.permission);
+    return role.rolePermissions.map((rp) => rp.permission);
   }
 
   // تحقق ما إذا كان المستخدم يمتلك دورًا معينًا
   hasRole(userRoles: UserRole[], requiredRole: UserRole): boolean {
-    return userRoles.some(userRole => 
-      userRole === requiredRole || 
-      (ROLE_HIERARCHY[userRole] && ROLE_HIERARCHY[userRole].includes(requiredRole))
+    return userRoles.some(
+      (userRole) =>
+        userRole === requiredRole ||
+        (ROLE_HIERARCHY[userRole] && ROLE_HIERARCHY[userRole].includes(requiredRole)),
     );
   }
 
   // تحقق ما إذا كان المستخدم يمتلك أي من الأدوار المطلوبة
   hasAnyRole(userRoles: UserRole[], requiredRoles: UserRole[]): boolean {
-    return requiredRoles.some(required => this.hasRole(userRoles, required));
+    return requiredRoles.some((required) => this.hasRole(userRoles, required));
   }
 
   // تحقق ما إذا كان المستخدم يمتلك جميع الأدوار المطلوبة
   hasAllRoles(userRoles: UserRole[], requiredRoles: UserRole[]): boolean {
-    return requiredRoles.every(required => this.hasRole(userRoles, required));
+    return requiredRoles.every((required) => this.hasRole(userRoles, required));
   }
 
   // تحقق ما إذا كان المستخدم يمتلك جميع الصلاحيات المطلوبة
   async hasAllPermissions(userRoles: UserRole[], requiredPermissions: string[]): Promise<boolean> {
     const userPermissions = new Set<string>();
-    
+
     for (const role of userRoles) {
       try {
         const permissions = await this.getPermissionsForRoleName(role);
-        permissions.forEach(p => userPermissions.add(p.name));
+        permissions.forEach((p) => userPermissions.add(p.name));
       } catch (error) {
         // إذا لم يتم العثور على الدور، نتجاهل الخطأ ونستمر
         continue;
       }
     }
 
-    return requiredPermissions.every(p => userPermissions.has(p));
+    return requiredPermissions.every((p) => userPermissions.has(p));
   }
 
   // تحقق ما إذا كان المستخدم يمتلك أي من الصلاحيات المطلوبة
   async hasAnyPermission(userRoles: UserRole[], requiredPermissions: string[]): Promise<boolean> {
     const userPermissions = new Set<string>();
-    
+
     for (const role of userRoles) {
       try {
         const permissions = await this.getPermissionsForRoleName(role);
-        permissions.forEach(p => userPermissions.add(p.name));
+        permissions.forEach((p) => userPermissions.add(p.name));
       } catch (error) {
         // إذا لم يتم العثور على الدور، نتجاهل الخطأ ونستمر
         continue;
       }
     }
 
-    return requiredPermissions.some(p => userPermissions.has(p));
+    return requiredPermissions.some((p) => userPermissions.has(p));
   }
 }

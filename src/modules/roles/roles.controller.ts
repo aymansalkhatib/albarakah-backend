@@ -10,10 +10,12 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { RolesService } from './roles.service';
-import { CreateRoleDto } from './dto/create-role.dto';
-import { UpdateRoleDto } from './dto/update-role.dto';
-import { FilterRoleDto } from './dto/filter-role.dto';
-import { CreatePermissionDto } from './dto/create-permission.dto';
+import { CreateRoleDto } from './dto/request/create-role.dto';
+import { UpdateRoleDto } from './dto/request/update-role.dto';
+import { FilterRoleDto } from './dto/query/filter-role.dto';
+import { CreatePermissionDto } from './dto/request/create-permission.dto';
+import { UpdatePermissionDto } from './dto/request/update-permission.dto';
+import { FilterPermissionDto } from './dto/query/filter-permission.dto';
 
 @Controller('roles')
 export class RolesController {
@@ -51,8 +53,8 @@ export class RolesController {
   }
 
   @Get('permissions')
-  findAllPermissions() {
-    return this.rolesService.findAllPermissions();
+  findAllPermissions(@Query() filterDto: FilterPermissionDto) {
+    return this.rolesService.findAllPermissions(filterDto);
   }
 
   @Get('permissions/:id')
@@ -63,7 +65,7 @@ export class RolesController {
   @Patch('permissions/:id')
   updatePermission(
     @Param('id', ParseIntPipe) id: number,
-    @Body() updatePermissionDto: CreatePermissionDto,
+    @Body() updatePermissionDto: UpdatePermissionDto,
   ) {
     return this.rolesService.updatePermission(id, updatePermissionDto);
   }
