@@ -6,6 +6,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  Unique,
   UpdateDateColumn,
 } from 'typeorm';
 import { DropdownCategory } from './dropdown-category.entity';
@@ -17,6 +18,7 @@ export enum DropdownSelectionType {
 }
 
 @Entity('dropdown')
+@Unique('UQ_dropdown_name_category_id', ['dropdownName', 'dropdownCategoryId'])
 export class Dropdown {
   @PrimaryGeneratedColumn()
   id: number;
@@ -50,6 +52,6 @@ export class Dropdown {
   // Relationships
 
   @ManyToOne(() => DropdownCategory, { nullable: false, onDelete: 'RESTRICT' })
-  @JoinColumn({ name: ' ' })
+  @JoinColumn({ name: 'dropdown_category_id' })
   dropdownCategory: DropdownCategory;
 }

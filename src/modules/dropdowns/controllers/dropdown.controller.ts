@@ -1,59 +1,64 @@
-// import {
-//   Body,
-//   Controller,
-//   Delete,
-//   Get,
-//   Param,
-//   ParseIntPipe,
-//   Patch,
-//   Post,
-//   Query,
-// } from '@nestjs/common';
-// import { DropdownService } from '../services/dropdown.service';
-// import { CreateDropdownDto } from '../dto/create-dropdown.dto';
-// import { UpdateDropdownDto } from '../dto/update-dropdown.dto';
-// import { Dropdown } from '../entities/dropdown.entity';
-// import { FilterDropdownDto } from '../dto/filter-dropdown.dto';
-// import { PaginationDto } from 'src/common/pagination/dto/pagination.dto';
-// import { PaginationResponseDto } from 'src/common/pagination/dto/pagination-response.dto';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
+import { DropdownService } from '../services/dropdown.service';
+import { UpdateDropdownDto } from '../dto/dropdown/update-dropdown.dto';
+import { Dropdown } from '../entities/dropdown.entity';
+import { PaginationResponseDto } from 'src/common/pagination/dto/pagination-response.dto';
+import { CreateDropdownDto } from '../dto/dropdown/create-dropdown.dto';
+import { FilterDropdownDto } from '../dto/dropdown/filter-dropdown.dto';
+import { SerializeResponse } from 'src/common/decorators/serialize-response.decorator';
+import { ResponseDropdownDto } from '../dto/dropdown/response-dropdown.dto';
 
-// @Controller('dropdowns')
-// export class DropdownController {
-//   constructor(private readonly dropdownService: DropdownService) {}
+@Controller('dropdowns')
+export class DropdownController {
+  constructor(private readonly dropdownService: DropdownService) {}
 
-//   @Post()
-//   create(@Body() createDto: CreateDropdownDto): Promise<Dropdown> {
-//     return this.dropdownService.create(createDto);
-//   }
+  @Post()
+  @SerializeResponse(ResponseDropdownDto)
+  create(@Body() createDto: CreateDropdownDto): Promise<Dropdown> {
+    return this.dropdownService.create(createDto);
+  }
 
-//   @Get()
-//   findAll(
-//     @Query() filter: FilterDropdownDto,
-//     @Query() paginationDto: PaginationDto,
-//   ): Promise<PaginationResponseDto<Dropdown>> {
-//     return this.dropdownService.findAll(filter, paginationDto);
-//   }
+  @Patch(':id')
+  @SerializeResponse(ResponseDropdownDto)
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateDto: UpdateDropdownDto,
+  ): Promise<Dropdown> {
+    return this.dropdownService.update(id, updateDto);
+  }
 
-//   @Get('by-category/:categoryId')
-//   findByCategory(@Param('categoryId', ParseIntPipe) categoryId: number): Promise<Dropdown[]> {
-//     return this.dropdownService.findByCategory(categoryId);
-//   }
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    return this.dropdownService.remove(id);
+  }
 
-//   @Get(':id')
-//   findOne(@Param('id', ParseIntPipe) id: number): Promise<Dropdown> {
-//     return this.dropdownService.findOne(id);
-//   }
+  @Get()
+  findAll(@Query() filter: FilterDropdownDto): Promise<PaginationResponseDto<ResponseDropdownDto>> {
+    return this.dropdownService.findAll(filter);
+  }
 
-//   @Patch(':id')
-//   update(
-//     @Param('id', ParseIntPipe) id: number,
-//     @Body() updateDto: UpdateDropdownDto,
-//   ): Promise<Dropdown> {
-//     return this.dropdownService.update(id, updateDto);
-//   }
-
-//   @Delete(':id')
-//   remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
-//     return this.dropdownService.remove(id);
-//   }
-// }
+  @Get(':id')
+  @SerializeResponse(ResponseDropdownDto)
+  findOne(@Param('id', ParseIntPipe) id: number): Promise<ResponseDropdownDto> {
+    return this.dropdownService.findOne(id);
+    }
+    
+  @Get('category/:categoryId')
+  @SerializeResponse(ResponseDropdownDto)
+  findByCategory(@Param('categoryId', ParseIntPipe) categoryId: number): Promise<Dropdown[]> {
+    return this.dropdownService.findByCategory(categoryId);
+  }
+}

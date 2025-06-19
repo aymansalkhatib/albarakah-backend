@@ -187,4 +187,11 @@ export class DropdownCategoryService {
 
     return roots;
   }
+
+  async ensureExists(id: number): Promise<void> {
+    const exists = await this.dropdownCategoryRepository.findOne({ where: { id } });
+    if (!exists) {
+      throw new NotFoundException(`Dropdown category with ID ${id} not found`);
+    }
+  }
 }

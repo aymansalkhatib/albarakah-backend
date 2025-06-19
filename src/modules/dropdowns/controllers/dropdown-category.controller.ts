@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   HttpCode,
+  HttpStatus,
   Param,
   ParseIntPipe,
   Patch,
@@ -39,7 +40,7 @@ export class DropdownCategoryController {
   }
 
   @Delete(':id')
-  @HttpCode(204)
+  @HttpCode(HttpStatus.NO_CONTENT)
   delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
     return this.dropdownCategoryService.delete(id);
   }

@@ -1,8 +1,9 @@
 import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 import { Expose } from 'class-transformer';
-import { DropdownSelectionType } from '../entities/dropdown.entity';
+import { PaginationDto } from 'src/common/pagination/dto/pagination.dto';
+import { DropdownSelectionType } from '../../entities/dropdown.entity';
 
-export class FilterDropdownDto {
+export class FilterDropdownDto extends PaginationDto {
   @IsNumber()
   @IsOptional()
   @Expose()
