@@ -11,6 +11,7 @@ import { DropdownCategoryService } from './dropdown-category.service';
 import { FilterDropdownDto } from '../dto/dropdown/filter-dropdown.dto';
 import { CreateDropdownDto } from '../dto/dropdown/create-dropdown.dto';
 import { ResponseDropdownDto } from '../dto/dropdown/response-dropdown.dto';
+import { TranslateHelper } from 'src/shared/modules/app-i18n/translate.helper';
 
 @Injectable()
 export class DropdownService {
@@ -18,6 +19,7 @@ export class DropdownService {
     private readonly dropdownCategoryService: DropdownCategoryService,
     @InjectRepository(Dropdown)
     private readonly dropdownRepository: Repository<Dropdown>,
+    private readonly translateHelper: TranslateHelper,
   ) {}
 
   async create(createDto: CreateDropdownDto): Promise<Dropdown> {
@@ -40,7 +42,7 @@ export class DropdownService {
     const dropdown = await this.findOne(id);
     if (dropdown.options && dropdown.options.length > 0) {
       throw new BadRequestException(
-        'Cannot delete dropdown with options. Remove options first or use force delete.',
+        this.translateHelper.tr('dropdowns.errors.dropdown_has_options'),
       );
     }
     await this.dropdownRepository.remove(dropdown);
@@ -83,7 +85,9 @@ export class DropdownService {
       .where('dropdown.id = :id', { id })
       .getOne();
     if (!dropdown) {
-      throw new NotFoundException(`Dropdown with ID ${id} not found`);
+      throw new NotFoundException(
+        this.translateHelper.tr('dropdowns.errors.dropdown_not_found', { id }),
+      );
     }
     console.log(dropdown);
 
@@ -93,7 +97,9 @@ export class DropdownService {
   async ensureExists(id: number): Promise<Dropdown> {
     const dropdown = await this.dropdownRepository.findOne({ where: { id } });
     if (!dropdown) {
-      throw new NotFoundException(`Dropdown with ID ${id} not found`);
+      throw new NotFoundException(
+        this.translateHelper.tr('dropdowns.errors.dropdown_not_found', { id }),
+      );
     }
     return dropdown;
   }
@@ -110,7 +116,7 @@ export class DropdownService {
     });
     if (existingDropdown) {
       throw new BadRequestException(
-        `Dropdown with name "${dropdownName}" already exists in this category`,
+        this.translateHelper.tr('dropdowns.errors.dropdown_name_exists', { name: dropdownName }),
       );
     }
   }

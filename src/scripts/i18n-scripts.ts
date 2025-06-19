@@ -372,7 +372,7 @@ class I18nValidator {
       .map(([key, params]) => {
         const interfaceName = this.generateInterfaceName(key);
         const parameters = [...params]
-          .map((param) => `${this.normalizeValidationArgs(param)}: string`)
+          .map((param) => `${this.normalizeValidationArgs(param)}: string | number`)
           .join('; ');
         return `interface ${interfaceName} {\n  ${parameters}\n}`;
       })

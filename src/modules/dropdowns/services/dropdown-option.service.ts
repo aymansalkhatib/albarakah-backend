@@ -11,6 +11,7 @@ import { PaginationResponseDto } from 'src/common/pagination/dto/pagination-resp
 import { paginate } from 'src/common/pagination/paginate.service';
 import { DropdownService } from './dropdown.service';
 import { Not } from 'typeorm';
+import { TranslateHelper } from 'src/shared/modules/app-i18n/translate.helper';
 
 @Injectable()
 export class DropdownOptionService {
@@ -18,6 +19,7 @@ export class DropdownOptionService {
     @InjectRepository(DropdownOption)
     private readonly dropdownOptionRepository: Repository<DropdownOption>,
     private readonly dropdownService: DropdownService,
+    private readonly translateHelper: TranslateHelper,
   ) {}
 
   async create(createDto: CreateDropdownOptionDto): Promise<DropdownOption> {
@@ -40,7 +42,7 @@ export class DropdownOptionService {
     const option = await this.findOne(id);
     if (option.selections && option.selections.length > 0) {
       throw new BadRequestException(
-        'Cannot delete option that is being used in selections. Remove selections first.',
+        this.translateHelper.tr('dropdowns.errors.option_has_selections'),
       );
     }
     await this.dropdownOptionRepository.delete(id);
@@ -62,7 +64,9 @@ export class DropdownOptionService {
   async findOne(id: number): Promise<DropdownOption> {
     const option = await this.dropdownOptionRepository.findOne({ where: { id } });
     if (!option) {
-      throw new NotFoundException(`Dropdown option with ID ${id} not found`);
+      throw new NotFoundException(
+        this.translateHelper.tr('dropdowns.errors.option_not_found', { id }),
+      );
     }
     return option;
   }
@@ -79,7 +83,7 @@ export class DropdownOptionService {
     const existing = await this.dropdownOptionRepository.findOne({ where });
     if (existing) {
       throw new BadRequestException(
-        `Dropdown option with name "${name}" already exists in this dropdown.`,
+        this.translateHelper.tr('dropdowns.errors.option_name_exists', { name }),
       );
     }
   }

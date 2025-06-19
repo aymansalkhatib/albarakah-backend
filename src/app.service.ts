@@ -6,6 +6,6 @@ export class AppService {
   constructor(private readonly t: TranslateHelper) {}
 
   async getHello() {
-    return this.t.tr('test.errors.network');
+    return this.t.tr('dropdowns.errors.category_has_children');
   }
 }

@@ -10,12 +10,14 @@ import { PaginationResponseDto } from 'src/common/pagination/dto/pagination-resp
 import { InjectRepository } from '@nestjs/typeorm';
 import { paginate } from 'src/common/pagination/paginate.service';
 import { ResponseDropdownCategoryDto } from '../dto/dropdown-category/response-dropdown-category.dto';
+import { TranslateHelper } from 'src/shared/modules/app-i18n/translate.helper';
 
 @Injectable()
 export class DropdownCategoryService {
   constructor(
     @InjectRepository(DropdownCategory)
     private readonly dropdownCategoryRepository: Repository<DropdownCategory>,
+    private readonly translateHelper: TranslateHelper,
   ) {}
 
   async create(createDto: CreateDropdownCategoryDto): Promise<DropdownCategory> {
@@ -26,7 +28,11 @@ export class DropdownCategoryService {
         where: { id: createDto.parentId },
       });
       if (!parentExists) {
-        throw new BadRequestException(`Parent category with ID ${createDto.parentId} not found`);
+        throw new BadRequestException(
+          this.translateHelper.tr('dropdowns.errors.category_not_found', {
+            id: createDto.parentId,
+          }),
+        );
       }
     }
 
@@ -35,7 +41,9 @@ export class DropdownCategoryService {
       where: { name: createDto.name },
     });
     if (existingCategory) {
-      throw new BadRequestException(`Category with name "${createDto.name}" already exists`);
+      throw new BadRequestException(
+        this.translateHelper.tr('dropdowns.errors.category_name_exists', { name: createDto.name }),
+      );
     }
 
     const category = this.dropdownCategoryRepository.create(createDto);
@@ -50,7 +58,9 @@ export class DropdownCategoryService {
       where: { name: updateDto.name, id: Not(id) },
     });
     if (existingCategory) {
-      throw new BadRequestException(`Category with name "${updateDto.name}" already exists`);
+      throw new BadRequestException(
+        this.translateHelper.tr('dropdowns.errors.category_name_exists', { name: updateDto.name }),
+      );
     }
 
     this.dropdownCategoryRepository.merge(category, updateDto);
@@ -62,13 +72,13 @@ export class DropdownCategoryService {
 
     if (category.dropdowns && category.dropdowns.length > 0) {
       throw new BadRequestException(
-        'Cannot delete category with dropdowns. Remove dropdowns first.',
+        this.translateHelper.tr('dropdowns.errors.category_has_dropdowns'),
       );
     }
 
     if (category.children && category.children.length > 0) {
       throw new BadRequestException(
-        'Cannot delete category with children. Remove child categories first.',
+        this.translateHelper.tr('dropdowns.errors.category_has_children'),
       );
     }
 
@@ -108,7 +118,9 @@ export class DropdownCategoryService {
       .where('category.id = :id', { id })
       .getOne();
     if (!category) {
-      throw new NotFoundException(`Dropdown category with ID ${id} not found`);
+      throw new NotFoundException(
+        this.translateHelper.tr('dropdowns.errors.category_not_found', { id }),
+      );
     }
     return category;
   }
@@ -199,7 +211,9 @@ export class DropdownCategoryService {
   async ensureExists(id: number): Promise<void> {
     const exists = await this.dropdownCategoryRepository.findOne({ where: { id } });
     if (!exists) {
-      throw new NotFoundException(`Dropdown category with ID ${id} not found`);
+      throw new NotFoundException(
+        this.translateHelper.tr('dropdowns.errors.category_not_found', { id }),
+      );
     }
   }
 }
