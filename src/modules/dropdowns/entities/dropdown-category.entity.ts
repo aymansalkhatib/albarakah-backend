@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
@@ -10,6 +11,7 @@ import {
 } from 'typeorm';
 
 @Entity('dropdown_category')
+@Index('IDX_DROPDOWN_CATEGORY_NAME', ['name'], { unique: true })
 export class DropdownCategory {
   @PrimaryGeneratedColumn()
   id: number;

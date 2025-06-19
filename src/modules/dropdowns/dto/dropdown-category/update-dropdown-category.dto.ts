@@ -7,8 +7,4 @@ export class UpdateDropdownCategoryDto {
   @MaxLength(200)
   @Expose()
   name: string;
-
-  @IsOptional()
-  @Expose()
-  parentId?: number;
 }

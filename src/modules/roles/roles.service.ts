@@ -135,10 +135,6 @@ export class RolesService {
       queryBuilder.andWhere('permission.id = :id', { id: filterDto.id });
     }
 
-    if (filterDto.name) {
-      queryBuilder.andWhere('permission.name LIKE :name', { name: `%${filterDto.name}%` });
-    }
-
     if (filterDto.search) {
       queryBuilder.andWhere(
         '(permission.name LIKE :search OR permission.description LIKE :search)',
