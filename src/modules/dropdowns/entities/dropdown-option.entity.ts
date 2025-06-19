@@ -4,11 +4,15 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
+  Unique,
 } from 'typeorm';
 import { Dropdown } from './dropdown.entity';
+import { DropdownSelection } from './dropdown-selection.entity';
 
 @Entity('dropdown_options')
+@Unique('UQ_dropdown_option_name_dropdown', ['name', 'dropdownId'])
 export class DropdownOption {
   @PrimaryGeneratedColumn()
   id: number;
@@ -30,4 +34,7 @@ export class DropdownOption {
   })
   @JoinColumn({ name: 'dropdown_id' })
   dropdown: Dropdown;
+
+  @OneToMany(() => DropdownSelection, (selection) => selection.selectedOption)
+  selections: DropdownSelection[];
 }

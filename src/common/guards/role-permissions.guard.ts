@@ -18,14 +18,17 @@ export class RolePermissionsGuard implements CanActivate {
     }
 
     const { user } = context.switchToHttp().getRequest();
-    
+
     // تأكد من وجود المستخدم وأدواره
     if (!user || !user.roles || !Array.isArray(user.roles)) {
       throw new UnauthorizedException('المستخدم غير مصرح له');
     }
 
     // التحقق من وجود جميع الصلاحيات المطلوبة
-    const hasAllPermissions = await this.rolesService.hasAllPermissions(user.roles, requiredPermissions);
+    const hasAllPermissions = await this.rolesService.hasAllPermissions(
+      user.roles,
+      requiredPermissions,
+    );
 
     if (!hasAllPermissions) {
       throw new UnauthorizedException('ليس لديك الصلاحيات المطلوبة');

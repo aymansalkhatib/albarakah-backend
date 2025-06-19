@@ -246,7 +246,7 @@ export class RolesService {
         permissions.forEach((p) => userPermissions.add(p.name));
       } catch (error) {
         // إذا لم يتم العثور على الدور، نتجاهل الخطأ ونستمر
-        continue;
+
       }
     }
 
@@ -263,7 +263,7 @@ export class RolesService {
         permissions.forEach((p) => userPermissions.add(p.name));
       } catch (error) {
         // إذا لم يتم العثور على الدور، نتجاهل الخطأ ونستمر
-        continue;
+
       }
     }
 

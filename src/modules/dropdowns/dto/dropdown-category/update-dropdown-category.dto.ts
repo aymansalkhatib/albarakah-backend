@@ -5,6 +5,5 @@ export class UpdateDropdownCategoryDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(200)
-  @Expose()
   name: string;
 }

@@ -9,6 +9,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Dropdown } from './dropdown.entity';
 
 @Entity('dropdown_category')
 @Index('IDX_DROPDOWN_CATEGORY_NAME', ['name'], { unique: true })
@@ -39,4 +40,7 @@ export class DropdownCategory {
   })
   @JoinColumn({ name: 'parent_id' })
   parent?: DropdownCategory;
+
+  @OneToMany(() => Dropdown, (dropdown) => dropdown.dropdownCategory)
+  dropdowns: Dropdown[];
 }

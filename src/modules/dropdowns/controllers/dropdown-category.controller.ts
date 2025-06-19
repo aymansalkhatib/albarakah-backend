@@ -46,7 +46,6 @@ export class DropdownCategoryController {
   }
 
   @Get()
-  @SerializeResponse(ResponseDropdownCategoryDto)
   findAll(
     @Query() filter: FilterDropdownCategoryDto,
   ): Promise<PaginationResponseDto<ResponseDropdownCategoryDto>> {

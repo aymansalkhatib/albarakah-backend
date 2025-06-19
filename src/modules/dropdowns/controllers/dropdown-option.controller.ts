@@ -1,58 +1,59 @@
-// import {
-//   Body,
-//   Controller,
-//   Delete,
-//   Get,
-//   Param,
-//   ParseIntPipe,
-//   Patch,
-//   Post,
-//   Query,
-// } from '@nestjs/common';
-// import { DropdownOptionService } from '../services/dropdown-option.service';
-// import { CreateDropdownOptionDto } from '../dto/create-dropdown-option.dto';
-// import { UpdateDropdownOptionDto } from '../dto/update-dropdown-option.dto';
-// import { DropdownOption } from '../entities/dropdown-option.entity';
-// import { PaginationDto } from 'src/common/pagination/dto/pagination.dto';
-// import { PaginationResponseDto } from 'src/common/pagination/dto/pagination-response.dto';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
+import { CreateDropdownOptionDto } from '../dto/dropdown-option/create-dropdown-option.dto';
+import { UpdateDropdownOptionDto } from '../dto/dropdown-option/update-dropdown-option.dto';
+import { FilterDropdownOptionDto } from '../dto/dropdown-option/filter-dropdown-option.dto';
+import { ResponseDropdownOptionDto } from '../dto/dropdown-option/response-dropdown-option.dto';
+import { PaginationResponseDto } from 'src/common/pagination/dto/pagination-response.dto';
+import { DropdownOptionService } from '../services/dropdown-option.service';
+import { SerializeResponse } from 'src/common/decorators/serialize-response.decorator';
 
-// @Controller('dropdown-options')
-// export class DropdownOptionController {
-//   constructor(private readonly dropdownOptionService: DropdownOptionService) {}
+@Controller('dropdown-options')
+export class DropdownOptionController {
+  constructor(private readonly dropdownOptionService: DropdownOptionService) {}
 
-//   @Post()
-//   create(@Body() createDto: CreateDropdownOptionDto): Promise<DropdownOption> {
-//     return this.dropdownOptionService.create(createDto);
-//   }
+  @Post()
+  @SerializeResponse(ResponseDropdownOptionDto)
+  create(@Body() createDto: CreateDropdownOptionDto): Promise<ResponseDropdownOptionDto> {
+    return this.dropdownOptionService.create(createDto);
+  }
 
-//   @Get('by-dropdown/:dropdownId')
-//   findAll(
-//     @Param('dropdownId', ParseIntPipe) dropdownId: number,
-//     @Query() paginationDto: PaginationDto,
-//   ): Promise<PaginationResponseDto<DropdownOption>> {
-//     return this.dropdownOptionService.findAll(dropdownId, paginationDto);
-//   }
+  @Patch(':id')
+  @SerializeResponse(ResponseDropdownOptionDto)
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateDto: UpdateDropdownOptionDto,
+  ): Promise<ResponseDropdownOptionDto> {
+    return this.dropdownOptionService.update(id, updateDto);
+  }
 
-//   @Get('list/:dropdownId')
-//   findByDropdown(@Param('dropdownId', ParseIntPipe) dropdownId: number): Promise<DropdownOption[]> {
-//     return this.dropdownOptionService.findByDropdown(dropdownId);
-//   }
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    return this.dropdownOptionService.delete(id);
+  }
 
-//   @Get(':id')
-//   findOne(@Param('id', ParseIntPipe) id: number): Promise<DropdownOption> {
-//     return this.dropdownOptionService.findOne(id);
-//   }
+  @Get(':id')
+  @SerializeResponse(ResponseDropdownOptionDto)
+  findOne(@Param('id', ParseIntPipe) id: number): Promise<ResponseDropdownOptionDto> {
+    return this.dropdownOptionService.findOne(id);
+  }
 
-//   @Patch(':id')
-//   update(
-//     @Param('id', ParseIntPipe) id: number,
-//     @Body() updateDto: UpdateDropdownOptionDto,
-//   ): Promise<DropdownOption> {
-//     return this.dropdownOptionService.update(id, updateDto);
-//   }
-
-//   @Delete(':id')
-//   remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
-//     return this.dropdownOptionService.remove(id);
-//   }
-// }
+  @Get()
+  findAll(
+    @Query() filter: FilterDropdownOptionDto,
+  ): Promise<PaginationResponseDto<ResponseDropdownOptionDto>> {
+    return this.dropdownOptionService.findAll(filter);
+  }
+}

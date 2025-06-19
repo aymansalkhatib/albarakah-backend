@@ -60,11 +60,13 @@ export class DropdownCategoryService {
   async delete(id: number): Promise<void> {
     const category = await this.findOne(id);
 
-    const hasChildren = await this.dropdownCategoryRepository.count({
-      where: { parentId: id },
-    });
+    if (category.dropdowns && category.dropdowns.length > 0) {
+      throw new BadRequestException(
+        'Cannot delete category with dropdowns. Remove dropdowns first.',
+      );
+    }
 
-    if (hasChildren > 0) {
+    if (category.children && category.children.length > 0) {
       throw new BadRequestException(
         'Cannot delete category with children. Remove child categories first.',
       );
@@ -83,7 +85,11 @@ export class DropdownCategoryService {
     }
 
     if (filter.parentId !== undefined) {
-      queryBuilder.andWhere('category.parentId = :parentId', { parentId: filter.parentId });
+      if (filter.parentId === null) {
+        queryBuilder.andWhere('category.parentId IS NULL');
+      } else {
+        queryBuilder.andWhere('category.parentId = :parentId', { parentId: filter.parentId });
+      }
     }
 
     // Add relations
@@ -98,6 +104,7 @@ export class DropdownCategoryService {
       .createQueryBuilder('category')
       .leftJoinAndSelect('category.parent', 'parent')
       .leftJoinAndSelect('category.children', 'children')
+      .leftJoinAndSelect('category.dropdowns', 'dropdowns')
       .where('category.id = :id', { id })
       .getOne();
     if (!category) {
@@ -170,6 +177,7 @@ export class DropdownCategoryService {
         createdAt: cat.created_at,
         updatedAt: cat.updated_at,
         children: [],
+        dropdowns: [],
       });
     });
 

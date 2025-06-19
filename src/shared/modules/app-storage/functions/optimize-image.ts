@@ -6,7 +6,12 @@ import {
   SHARP_SUPPORTED_FORMATS,
 } from '../constants/file-validation.constants';
 import { extractFileExtension } from './file-helper.functions';
-import { FileSizeUnit, ImageCompressionOptions, ImageDimensions, ImageFormat } from '../types/index';
+import {
+  FileSizeUnit,
+  ImageCompressionOptions,
+  ImageDimensions,
+  ImageFormat,
+} from '../types/index';
 
 /**
  * Optimizes an image by finding the best balance between quality and file size

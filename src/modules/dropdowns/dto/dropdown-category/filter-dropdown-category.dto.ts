@@ -1,15 +1,15 @@
-import { IsNumber, IsOptional, IsString, ValidateIf } from 'class-validator';
-import { Expose } from 'class-transformer';
+import { IsString, IsOptional, ValidateIf, Min } from 'class-validator';
 import { PaginationDto } from 'src/common/pagination/dto/pagination.dto';
+import { applyDecorators } from '@nestjs/common';
+import { Transform } from 'class-transformer';
+import { PositiveIntegerId } from 'src/common/decorators/positive-integer-id.decorator';
 
 export class FilterDropdownCategoryDto extends PaginationDto {
-  @IsNumber()
   @IsOptional()
-  @Expose()
+  @PositiveIntegerId({ nullable: true })
   parentId?: number | null;
 
   @IsString()
   @IsOptional()
-  @Expose()
   name?: string;
 }

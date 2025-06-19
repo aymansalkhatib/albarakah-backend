@@ -9,26 +9,22 @@ import {
 } from 'class-validator';
 import { Expose } from 'class-transformer';
 import { DropdownSelectionType } from '../../entities/dropdown.entity';
+import { PositiveIntegerId } from 'src/common/decorators/positive-integer-id.decorator';
 
 export class CreateDropdownDto {
-  @IsNumber()
-  @IsNotEmpty()
-  @Expose()
+  @PositiveIntegerId()
   dropdownCategoryId: number;
 
   @IsString()
   @IsNotEmpty()
   @MaxLength(100)
-  @Expose()
   dropdownName: string;
 
   @IsEnum(DropdownSelectionType)
   @IsOptional()
-  @Expose()
   selectionType?: DropdownSelectionType = DropdownSelectionType.SINGLE;
 
   @IsBoolean()
   @IsOptional()
-  @Expose()
   allowDuplicates?: boolean = false;
 }

@@ -16,7 +16,9 @@ export function StrictBoolean() {
       if (value === 1 || value === '1' || value === 'true') return true;
       if (value === 0 || value === '0' || value === 'false') return false;
 
-      throw new BadRequestException(`Invalid boolean value for ${key}. Only true, false, 1, 0 are allowed.`);
+      throw new BadRequestException(
+        `Invalid boolean value for ${key}. Only true, false, 1, 0 are allowed.`,
+      );
     }),
     IsBoolean(),
   );
