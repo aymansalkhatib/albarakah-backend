@@ -3,13 +3,17 @@ import { applyDecorators, BadRequestException } from '@nestjs/common';
 import { Transform } from 'class-transformer';
 import { IsBoolean } from 'class-validator';
 
-export function StrictBoolean() {
+interface StrictBooleanOptions {
+  default?: boolean;
+}
+
+export function StrictBoolean(options?: StrictBooleanOptions) {
   return applyDecorators(
     Transform(({ key, obj }) => {
       const value = obj[key];
 
       if (value === undefined || value === null || value === '') {
-        return undefined;
+        return options?.default !== undefined ? options.default : undefined;
       }
 
       if (value === true || value === false) return value;

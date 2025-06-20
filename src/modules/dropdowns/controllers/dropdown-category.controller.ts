@@ -12,12 +12,12 @@ import {
   Query,
 } from '@nestjs/common';
 import { DropdownCategoryService } from '../services/dropdown-category.service';
-import { CreateDropdownCategoryDto } from '../dto/dropdown-category/create-dropdown-category.dto';
-import { UpdateDropdownCategoryDto } from '../dto/dropdown-category/update-dropdown-category.dto';
+import { CreateDropdownCategoryDto } from '../dtos/dropdown-category/create-dropdown-category.dto';
+import { UpdateDropdownCategoryDto } from '../dtos/dropdown-category/update-dropdown-category.dto';
 import { DropdownCategory } from '../entities/dropdown-category.entity';
-import { FilterDropdownCategoryDto } from '../dto/dropdown-category/filter-dropdown-category.dto';
+import { FilterDropdownCategoryDto } from '../dtos/dropdown-category/filter-dropdown-category.dto';
 import { PaginationResponseDto } from 'src/common/pagination/dto/pagination-response.dto';
-import { ResponseDropdownCategoryDto } from '../dto/dropdown-category/response-dropdown-category.dto';
+import { ResponseDropdownCategoryDto } from '../dtos/dropdown-category/response-dropdown-category.dto';
 import { SerializeResponse } from 'src/common/decorators/serialize-response.decorator';
 
 @Controller('dropdown-categories')

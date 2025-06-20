@@ -12,13 +12,13 @@ import {
   Query,
 } from '@nestjs/common';
 import { DropdownService } from '../services/dropdown.service';
-import { UpdateDropdownDto } from '../dto/dropdown/update-dropdown.dto';
+import { UpdateDropdownDto } from '../dtos/dropdown/update-dropdown.dto';
 import { Dropdown } from '../entities/dropdown.entity';
 import { PaginationResponseDto } from 'src/common/pagination/dto/pagination-response.dto';
-import { CreateDropdownDto } from '../dto/dropdown/create-dropdown.dto';
-import { FilterDropdownDto } from '../dto/dropdown/filter-dropdown.dto';
+import { CreateDropdownDto } from '../dtos/dropdown/create-dropdown.dto';
+import { FilterDropdownDto } from '../dtos/dropdown/filter-dropdown.dto';
 import { SerializeResponse } from 'src/common/decorators/serialize-response.decorator';
-import { ResponseDropdownDto } from '../dto/dropdown/response-dropdown.dto';
+import { ResponseDropdownDto } from '../dtos/dropdown/response-dropdown.dto';
 
 @Controller('dropdowns')
 export class DropdownController {

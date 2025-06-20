@@ -1,6 +1,7 @@
 import { IsNumber, IsOptional, IsString, MaxLength } from 'class-validator';
 import { PositiveIntegerId } from 'src/common/decorators/positive-integer-id.decorator';
 import { PaginationDto } from 'src/common/pagination/dto/pagination.dto';
+import { StrictBoolean } from 'src/common/decorators/strict-boolean.decorator';
 
 export class FilterDropdownOptionDto extends PaginationDto {
   @IsOptional()
@@ -13,5 +14,6 @@ export class FilterDropdownOptionDto extends PaginationDto {
   name?: string;
 
   @IsOptional()
+  @StrictBoolean()
   isActive?: boolean;
 }

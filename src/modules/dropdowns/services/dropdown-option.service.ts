@@ -2,11 +2,11 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { DropdownOption } from '../entities/dropdown-option.entity';
-import { DropdownSelection } from '../entities/dropdown-selection.entity';
-import { CreateDropdownOptionDto } from '../dto/dropdown-option/create-dropdown-option.dto';
-import { UpdateDropdownOptionDto } from '../dto/dropdown-option/update-dropdown-option.dto';
-import { FilterDropdownOptionDto } from '../dto/dropdown-option/filter-dropdown-option.dto';
-import { ResponseDropdownOptionDto } from '../dto/dropdown-option/response-dropdown-option.dto';
+import { SelectedDropdownOption } from '../entities/selected-dropdown-option.entity';
+import { CreateDropdownOptionDto } from '../dtos/dropdown-option/create-dropdown-option.dto';
+import { UpdateDropdownOptionDto } from '../dtos/dropdown-option/update-dropdown-option.dto';
+import { FilterDropdownOptionDto } from '../dtos/dropdown-option/filter-dropdown-option.dto';
+import { ResponseDropdownOptionDto } from '../dtos/dropdown-option/response-dropdown-option.dto';
 import { PaginationResponseDto } from 'src/common/pagination/dto/pagination-response.dto';
 import { paginate } from 'src/common/pagination/paginate.service';
 import { DropdownService } from './dropdown.service';

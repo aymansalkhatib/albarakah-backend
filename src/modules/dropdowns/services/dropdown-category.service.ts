@@ -1,15 +1,15 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { CreateDropdownCategoryDto } from '../dto/dropdown-category/create-dropdown-category.dto';
-import { UpdateDropdownCategoryDto } from '../dto/dropdown-category/update-dropdown-category.dto';
+import { CreateDropdownCategoryDto } from '../dtos/dropdown-category/create-dropdown-category.dto';
+import { UpdateDropdownCategoryDto } from '../dtos/dropdown-category/update-dropdown-category.dto';
 import { DropdownCategory } from '../entities/dropdown-category.entity';
-import { FilterDropdownCategoryDto } from '../dto/dropdown-category/filter-dropdown-category.dto';
+import { FilterDropdownCategoryDto } from '../dtos/dropdown-category/filter-dropdown-category.dto';
 
 import { Not, Repository } from 'typeorm';
 import { PaginationDto } from 'src/common/pagination/dto/pagination.dto';
 import { PaginationResponseDto } from 'src/common/pagination/dto/pagination-response.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { paginate } from 'src/common/pagination/paginate.service';
-import { ResponseDropdownCategoryDto } from '../dto/dropdown-category/response-dropdown-category.dto';
+import { ResponseDropdownCategoryDto } from '../dtos/dropdown-category/response-dropdown-category.dto';
 import { TranslateHelper } from 'src/shared/modules/app-i18n/translate.helper';
 
 @Injectable()

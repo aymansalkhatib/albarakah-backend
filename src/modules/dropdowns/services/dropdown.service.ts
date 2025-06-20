@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { UpdateDropdownDto } from '../dto/dropdown/update-dropdown.dto';
+import { UpdateDropdownDto } from '../dtos/dropdown/update-dropdown.dto';
 import { Dropdown } from '../entities/dropdown.entity';
 import { PaginationDto } from 'src/common/pagination/dto/pagination.dto';
 import { PaginationResponseDto } from 'src/common/pagination/dto/pagination-response.dto';
@@ -8,9 +8,9 @@ import { Repository } from 'typeorm';
 import { DropdownCategory } from '../entities/dropdown-category.entity';
 import { paginate } from 'src/common/pagination/paginate.service';
 import { DropdownCategoryService } from './dropdown-category.service';
-import { FilterDropdownDto } from '../dto/dropdown/filter-dropdown.dto';
-import { CreateDropdownDto } from '../dto/dropdown/create-dropdown.dto';
-import { ResponseDropdownDto } from '../dto/dropdown/response-dropdown.dto';
+import { FilterDropdownDto } from '../dtos/dropdown/filter-dropdown.dto';
+import { CreateDropdownDto } from '../dtos/dropdown/create-dropdown.dto';
+import { ResponseDropdownDto } from '../dtos/dropdown/response-dropdown.dto';
 import { TranslateHelper } from 'src/shared/modules/app-i18n/translate.helper';
 
 @Injectable()

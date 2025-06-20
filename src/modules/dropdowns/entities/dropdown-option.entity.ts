@@ -9,7 +9,7 @@ import {
   Unique,
 } from 'typeorm';
 import { Dropdown } from './dropdown.entity';
-import { DropdownSelection } from './dropdown-selection.entity';
+import { SelectedDropdownOption } from './selected-dropdown-option.entity';
 
 @Entity('dropdown_options')
 @Unique('UQ_dropdown_option_name_dropdown', ['name', 'dropdownId'])
@@ -38,6 +38,6 @@ export class DropdownOption {
   @JoinColumn({ name: 'dropdown_id' })
   dropdown: Dropdown;
 
-  @OneToMany(() => DropdownSelection, (selection) => selection.selectedOption)
-  selections: DropdownSelection[];
+  @OneToMany(() => SelectedDropdownOption, (selection) => selection.selectedOption)
+  selections: SelectedDropdownOption[];
 }
