@@ -12,6 +12,7 @@
         "option_has_selections": "Cannot delete option that is being used in selections. Remove selections first.",
         "selection_not_found": "Dropdown selection with ID {id} not found",
         "single_selection_exists": "Single selection dropdown already has a selection for this record. Update the existing selection instead.",
-        "option_not_in_dropdown": "Option with ID {optionId} does not belong to dropdown with ID {dropdownId}"
+        "option_not_in_dropdown": "Option with ID {optionId} does not belong to dropdown with ID {dropdownId}",
+        "max_depth_exceeded": "Cannot create category. Maximum depth of {maxDepth} exceeded."
     }
 }

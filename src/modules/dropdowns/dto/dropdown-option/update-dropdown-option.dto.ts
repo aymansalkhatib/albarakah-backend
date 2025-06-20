@@ -7,4 +7,7 @@ export class UpdateDropdownOptionDto {
   @MaxLength(100)
   @Expose()
   name?: string;
+
+  @Expose()
+  isActive?: boolean;
 }

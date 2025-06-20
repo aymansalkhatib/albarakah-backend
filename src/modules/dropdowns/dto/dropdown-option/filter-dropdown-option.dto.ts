@@ -11,4 +11,7 @@ export class FilterDropdownOptionDto extends PaginationDto {
   @IsString()
   @MaxLength(100)
   name?: string;
+
+  @IsOptional()
+  isActive?: boolean;
 }

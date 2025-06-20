@@ -21,7 +21,6 @@ export class DropdownCategoryService {
   ) {}
 
   async create(createDto: CreateDropdownCategoryDto): Promise<DropdownCategory> {
-    //TODO check levels 1- name entity  2- parent -3 child
     // Check if parent exists if parentId is provided
     if (createDto.parentId) {
       const parentExists = await this.dropdownCategoryRepository.findOne({
@@ -32,6 +31,12 @@ export class DropdownCategoryService {
           this.translateHelper.tr('dropdowns.errors.category_not_found', {
             id: createDto.parentId,
           }),
+        );
+      }
+      const depth = await this.getCategoryDepth(createDto.parentId);
+      if (depth >= 4) {
+        throw new BadRequestException(
+          this.translateHelper.tr('dropdowns.errors.max_depth_exceeded', { maxDepth: 4 }),
         );
       }
     }
@@ -215,5 +220,22 @@ export class DropdownCategoryService {
         this.translateHelper.tr('dropdowns.errors.category_not_found', { id }),
       );
     }
+  }
+
+  private async getCategoryDepth(categoryId: number): Promise<number> {
+    const query = `
+      WITH RECURSIVE category_path (id, parent_id, depth) AS (
+        SELECT id, parent_id, 1
+        FROM dropdown_category
+        WHERE id = $1
+        UNION ALL
+        SELECT c.id, c.parent_id, cp.depth + 1
+        FROM category_path AS cp
+        JOIN dropdown_category AS c ON cp.parent_id = c.id
+      )
+      SELECT depth FROM category_path ORDER BY depth DESC LIMIT 1;
+    `;
+    const result = await this.dropdownCategoryRepository.query(query, [categoryId]);
+    return result.length > 0 ? parseInt(result[0].depth, 10) : 0;
   }
 }

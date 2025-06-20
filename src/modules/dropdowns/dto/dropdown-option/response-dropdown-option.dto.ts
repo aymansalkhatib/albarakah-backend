@@ -13,4 +13,7 @@ export class ResponseDropdownOptionDto {
   @Expose()
   @Type(() => Date)
   createdAt: Date;
+
+  @Expose()
+  isActive: boolean;
 }

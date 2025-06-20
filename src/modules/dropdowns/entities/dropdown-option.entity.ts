@@ -26,6 +26,9 @@ export class DropdownOption {
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;
 
+  @Column({ name: 'is_active', type: 'boolean', default: true })
+  isActive: boolean;
+
   // Relationships
 
   @ManyToOne(() => Dropdown, (dropdown) => dropdown.options, {

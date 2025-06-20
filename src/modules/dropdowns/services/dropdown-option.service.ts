@@ -25,7 +25,10 @@ export class DropdownOptionService {
   async create(createDto: CreateDropdownOptionDto): Promise<DropdownOption> {
     await this.dropdownService.ensureExists(createDto.dropdownId);
     await this.checkDuplicateName(createDto.name, createDto.dropdownId);
-    const option = this.dropdownOptionRepository.create(createDto);
+    const option = this.dropdownOptionRepository.create({
+      ...createDto,
+      isActive: createDto.isActive !== undefined ? createDto.isActive : true,
+    });
     return this.dropdownOptionRepository.save(option);
   }
 
@@ -57,6 +60,9 @@ export class DropdownOptionService {
     }
     if (filter.name) {
       queryBuilder.andWhere('option.name LIKE :name', { name: `%${filter.name}%` });
+    }
+    if (filter.isActive !== undefined) {
+      queryBuilder.andWhere('option.isActive = :isActive', { isActive: filter.isActive });
     }
     return paginate(queryBuilder, filter, ResponseDropdownOptionDto);
   }
