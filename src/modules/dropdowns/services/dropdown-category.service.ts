@@ -140,7 +140,7 @@ export class DropdownCategoryService {
     // Map categories by id for quick lookup
     const categoryMap = new Map<number, DropdownCategory>();
     categories.forEach((cat) => {
-      categoryMap.set(cat.id, { ...cat, children: [] });
+      categoryMap.set(cat.id, Object.assign(new DropdownCategory(), { ...cat, children: [] }));
     });
 
     // Build the tree
@@ -187,15 +187,18 @@ export class DropdownCategoryService {
     const categoryMap = new Map<number, DropdownCategory>();
 
     flatCategories.forEach((cat) => {
-      categoryMap.set(cat.id, {
-        id: cat.id,
-        name: cat.name,
-        parentId: cat.parent_id,
-        createdAt: cat.created_at,
-        updatedAt: cat.updated_at,
-        children: [],
-        dropdowns: [],
-      });
+      categoryMap.set(
+        cat.id,
+        Object.assign(new DropdownCategory(), {
+          id: cat.id,
+          name: cat.name,
+          parentId: cat.parent_id,
+          createdAt: cat.created_at,
+          updatedAt: cat.updated_at,
+          children: [],
+          dropdowns: [],
+        }),
+      );
     });
 
     const roots: DropdownCategory[] = [];
@@ -213,13 +216,14 @@ export class DropdownCategoryService {
     return roots;
   }
 
-  async ensureExists(id: number): Promise<void> {
+  async ensureExists(id: number): Promise<DropdownCategory> {
     const exists = await this.dropdownCategoryRepository.findOne({ where: { id } });
     if (!exists) {
       throw new NotFoundException(
         this.translateHelper.tr('dropdowns.errors.category_not_found', { id }),
       );
     }
+    return exists;
   }
 
   private async getCategoryDepth(categoryId: number): Promise<number> {

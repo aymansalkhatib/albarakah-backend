@@ -15,6 +15,7 @@ import { DropdownOption } from './dropdown-option.entity';
 export enum DropdownSelectionType {
   SINGLE = 'single',
   MULTIPLE = 'multiple',
+  MULTIPLE_DUPLICATED = 'multiple_with_duplicated',
 }
 
 @Entity('dropdown')
@@ -32,13 +33,9 @@ export class Dropdown {
   @Column({
     type: 'enum',
     enum: DropdownSelectionType,
-    default: DropdownSelectionType.SINGLE,
     name: 'selection_type',
   })
   selectionType: DropdownSelectionType;
-
-  @Column({ default: false, name: 'allow_duplicates' })
-  allowDuplicates: boolean;
 
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;

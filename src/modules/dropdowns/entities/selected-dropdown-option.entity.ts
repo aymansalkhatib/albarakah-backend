@@ -9,6 +9,8 @@ import {
 } from 'typeorm';
 import { DropdownOption } from './dropdown-option.entity';
 import { Dropdown } from './dropdown.entity';
+import { DropdownCategory } from './dropdown-category.entity';
+import { RecordType } from '../enums/recored-type.enums';
 
 @Entity('selected_dropdown_options')
 export class SelectedDropdownOption {
@@ -18,11 +20,14 @@ export class SelectedDropdownOption {
   @Column({ name: 'record_id' })
   recordId: number;
 
-  @Column({ length: 50, name: 'record_type' })
-  recordType: string;
+  @Column({ type: 'enum', enum: RecordType, name: 'record_type' })
+  recordType: RecordType;
 
   @Column({ name: 'dropdown_id' })
   dropdownId: number;
+
+  @Column({ name: 'category_id' })
+  categoryId: number;
 
   @Column({ name: 'selected_option_id' })
   selectedOptionId: number;
@@ -38,6 +43,10 @@ export class SelectedDropdownOption {
   @ManyToOne(() => Dropdown, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'dropdown_id' })
   dropdown: Dropdown;
+
+  @ManyToOne(() => DropdownCategory, { nullable: false, onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'category_id' })
+  category: DropdownCategory;
 
   @ManyToOne(() => DropdownOption, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'selected_option_id' })

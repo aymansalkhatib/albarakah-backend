@@ -40,6 +40,10 @@ interface DropdownsErrorsMaxdepthexceededParams {
   maxDepth: string | number
 }
 
+interface DropdownsErrorsCategorymismatchParams {
+  categoryId: string | number; dropdownCategoryId: string | number
+}
+
 interface SelecteddropdownoptionsErrorsSelectionnotfoundParams {
   id: string | number
 }
@@ -49,18 +53,23 @@ const TranslationKeys = {
   'dropdown-option-selections.errors.selection_not_found': 'dropdown-option-selections.errors.selection_not_found',
   'dropdowns.errors.category_has_children': 'dropdowns.errors.category_has_children',
   'dropdowns.errors.category_has_dropdowns': 'dropdowns.errors.category_has_dropdowns',
+  'dropdowns.errors.category_mismatch': 'dropdowns.errors.category_mismatch',
   'dropdowns.errors.category_name_exists': 'dropdowns.errors.category_name_exists',
   'dropdowns.errors.category_not_found': 'dropdowns.errors.category_not_found',
   'dropdowns.errors.dropdown_has_options': 'dropdowns.errors.dropdown_has_options',
   'dropdowns.errors.dropdown_name_exists': 'dropdowns.errors.dropdown_name_exists',
   'dropdowns.errors.dropdown_not_found': 'dropdowns.errors.dropdown_not_found',
+  'dropdowns.errors.duplicate_options_not_allowed': 'dropdowns.errors.duplicate_options_not_allowed',
+  'dropdowns.errors.invalid_selection_type': 'dropdowns.errors.invalid_selection_type',
   'dropdowns.errors.max_depth_exceeded': 'dropdowns.errors.max_depth_exceeded',
+  'dropdowns.errors.multiple_selection_requires_at_least_one_option': 'dropdowns.errors.multiple_selection_requires_at_least_one_option',
   'dropdowns.errors.option_has_selections': 'dropdowns.errors.option_has_selections',
   'dropdowns.errors.option_name_exists': 'dropdowns.errors.option_name_exists',
   'dropdowns.errors.option_not_found': 'dropdowns.errors.option_not_found',
   'dropdowns.errors.option_not_in_dropdown': 'dropdowns.errors.option_not_in_dropdown',
   'dropdowns.errors.selection_not_found': 'dropdowns.errors.selection_not_found',
   'dropdowns.errors.single_selection_exists': 'dropdowns.errors.single_selection_exists',
+  'dropdowns.errors.single_selection_requires_one_option': 'dropdowns.errors.single_selection_requires_one_option',
   'selected-dropdown-options.errors.inactive_option': 'selected-dropdown-options.errors.inactive_option',
   'selected-dropdown-options.errors.selection_not_found': 'selected-dropdown-options.errors.selection_not_found'
 } as const;
@@ -76,18 +85,23 @@ export interface TranslationInterpolations {
   'dropdown-option-selections.errors.selection_not_found': DropdownoptionselectionsErrorsSelectionnotfoundParams;
   'dropdowns.errors.category_has_children': NoParams;
   'dropdowns.errors.category_has_dropdowns': NoParams;
+  'dropdowns.errors.category_mismatch': DropdownsErrorsCategorymismatchParams;
   'dropdowns.errors.category_name_exists': DropdownsErrorsCategorynameexistsParams;
   'dropdowns.errors.category_not_found': DropdownsErrorsCategorynotfoundParams;
   'dropdowns.errors.dropdown_has_options': NoParams;
   'dropdowns.errors.dropdown_name_exists': DropdownsErrorsDropdownnameexistsParams;
   'dropdowns.errors.dropdown_not_found': DropdownsErrorsDropdownnotfoundParams;
+  'dropdowns.errors.duplicate_options_not_allowed': NoParams;
+  'dropdowns.errors.invalid_selection_type': NoParams;
   'dropdowns.errors.max_depth_exceeded': DropdownsErrorsMaxdepthexceededParams;
+  'dropdowns.errors.multiple_selection_requires_at_least_one_option': NoParams;
   'dropdowns.errors.option_has_selections': NoParams;
   'dropdowns.errors.option_name_exists': DropdownsErrorsOptionnameexistsParams;
   'dropdowns.errors.option_not_found': DropdownsErrorsOptionnotfoundParams;
   'dropdowns.errors.option_not_in_dropdown': DropdownsErrorsOptionnotindropdownParams;
   'dropdowns.errors.selection_not_found': DropdownsErrorsSelectionnotfoundParams;
   'dropdowns.errors.single_selection_exists': NoParams;
+  'dropdowns.errors.single_selection_requires_one_option': NoParams;
   'selected-dropdown-options.errors.inactive_option': NoParams;
   'selected-dropdown-options.errors.selection_not_found': SelecteddropdownoptionsErrorsSelectionnotfoundParams;
 }

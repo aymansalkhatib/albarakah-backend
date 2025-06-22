@@ -13,6 +13,11 @@
         "selection_not_found": "Dropdown selection with ID {id} not found",
         "single_selection_exists": "Single selection dropdown already has a selection for this record. Update the existing selection instead.",
         "option_not_in_dropdown": "Option with ID {optionId} does not belong to dropdown with ID {dropdownId}",
-        "max_depth_exceeded": "Cannot create category. Maximum depth of {maxDepth} exceeded."
+        "max_depth_exceeded": "Cannot create category. Maximum depth of {maxDepth} exceeded.",
+        "invalid_selection_type": "Invalid dropdown selection type",
+        "single_selection_requires_one_option": "Single selection dropdown requires exactly one option",
+        "multiple_selection_requires_at_least_one_option": "Multiple selection dropdown requires at least one option",
+        "category_mismatch": "Category ID {categoryId} does not match dropdown category ID {dropdownCategoryId}",
+        "duplicate_options_not_allowed": "Duplicate options are not allowed for this dropdown type"
     }
 }

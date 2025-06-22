@@ -8,7 +8,6 @@ export class CreateDropdownCategoryDto {
   @MaxLength(200)
   name: string;
 
-  @IsOptional()
   @PositiveIntegerId()
   parentId?: number;
 }

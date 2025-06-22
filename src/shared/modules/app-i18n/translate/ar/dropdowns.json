@@ -13,6 +13,11 @@
         "selection_not_found": "تحديد القائمة المنسدلة ذو المعرف {id} غير موجود",
         "single_selection_exists": "القائمة المنسدلة ذات التحديد الفردي لديها بالفعل تحديد لهذا السجل. قم بتحديث التحديد الموجود بدلاً من ذلك.",
         "option_not_in_dropdown": "الخيار ذو المعرف {optionId} لا ينتمي إلى القائمة المنسدلة ذات المعرف {dropdownId}",
-        "max_depth_exceeded": "لا يمكن إنشاء الفئة. تم تجاوز الحد الأقصى للعمق {maxDepth}."
+        "max_depth_exceeded": "لا يمكن إنشاء الفئة. تم تجاوز الحد الأقصى للعمق {maxDepth}.",
+        "invalid_selection_type": "نوع تحديد القائمة المنسدلة غير صحيح",
+        "single_selection_requires_one_option": "القائمة المنسدلة ذات التحديد الفردي تتطلب خياراً واحداً بالضبط",
+        "multiple_selection_requires_at_least_one_option": "القائمة المنسدلة ذات التحديد المتعدد تتطلب خياراً واحداً على الأقل",
+        "category_mismatch": "معرف الفئة {categoryId} لا يتطابق مع معرف فئة القائمة المنسدلة {dropdownCategoryId}",
+        "duplicate_options_not_allowed": "الخيارات المكررة غير مسموح بها لهذا النوع من القوائم المنسدلة"
     }
 }

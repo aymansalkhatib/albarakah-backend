@@ -19,9 +19,6 @@ export class ResponseDropdownDto {
   selectionType: DropdownSelectionType;
 
   @Expose()
-  allowDuplicates: boolean;
-
-  @Expose()
   createdAt: Date;
 
   @Expose()

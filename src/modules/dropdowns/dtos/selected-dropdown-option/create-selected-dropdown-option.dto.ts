@@ -1,25 +1,24 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsNumber } from 'class-validator';
 import { Expose } from 'class-transformer';
 import { PositiveIntegerId } from 'src/common/decorators/positive-integer-id.decorator';
-import { StrictBoolean } from 'src/common/decorators/strict-boolean.decorator';
+import { RecordType } from '../../enums/recored-type.enums';
 
 export class CreateSelectedDropdownOptionDto {
   @IsNumber()
   @IsNotEmpty()
-  @Expose()
   recordId: number;
 
-  @IsString()
+  @IsEnum(RecordType)
   @IsNotEmpty()
-  @MaxLength(50)
-  @Expose()
-  recordType: string;
+  recordType: RecordType;
 
   @PositiveIntegerId()
-  @Expose()
   dropdownId: number;
 
   @PositiveIntegerId()
-  @Expose()
-  selectedOptionId: number;
+  categoryId: number;
+
+  @IsNumber({}, { each: true })
+  @IsNotEmpty()
+  selectedOptionId: number[];
 }
