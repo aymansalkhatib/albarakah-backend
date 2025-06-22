@@ -3,8 +3,6 @@ import { DropdownSelectionType } from '../../entities/dropdown.entity';
 import { ResponseDropdownCategoryDto } from '../dropdown-category/response-dropdown-category.dto';
 import { ResponseDropdownOptionDto } from '../dropdown-option/response-dropdown-option.dto';
 
-// Optionally import related DTOs if needed
-
 export class ResponseDropdownDto {
   @Expose()
   id: number;

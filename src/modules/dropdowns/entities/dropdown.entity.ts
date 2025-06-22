@@ -27,7 +27,7 @@ export class Dropdown {
   @Column({ name: 'dropdown_category_id' })
   dropdownCategoryId: number;
 
-  @Column({ length: 100, unique: true, name: 'dropdown_name' })
+  @Column({ length: 100, name: 'dropdown_name' })
   dropdownName: string;
 
   @Column({

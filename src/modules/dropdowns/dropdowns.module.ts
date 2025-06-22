@@ -8,7 +8,6 @@ import { DropdownCategoryController } from './controllers/dropdown-category.cont
 import { DropdownService } from './services/dropdown.service';
 import { DropdownController } from './controllers/dropdown.controller';
 import { DropdownOptionService } from './services/dropdown-option.service';
-import { DropdownOptionController } from './controllers/dropdown-option.controller';
 import { SelectedDropdownOption } from './entities/selected-dropdown-option.entity';
 import { SelectedDropdownOptionService } from './services/selected-dropdown-option.service';
 import { SelectedDropdownOptionController } from './controllers/selected-dropdown-option.controller';
@@ -23,11 +22,6 @@ import { SelectedDropdownOptionController } from './controllers/selected-dropdow
     DropdownOptionService,
     SelectedDropdownOptionService,
   ],
-  controllers: [
-    DropdownCategoryController,
-    DropdownController,
-    DropdownOptionController,
-    SelectedDropdownOptionController,
-  ],
+  controllers: [DropdownCategoryController, DropdownController, SelectedDropdownOptionController],
 })
 export class DropdownsModule {}

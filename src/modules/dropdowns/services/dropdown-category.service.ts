@@ -100,6 +100,27 @@ export class DropdownCategoryService {
     return category;
   }
 
+  async findAll(
+    filter: FilterDropdownCategoryDto,
+  ): Promise<PaginationResponseDto<ResponseDropdownCategoryDto>> {
+    const qb = this.dropdownCategoryRepository.createQueryBuilder('category');
+
+    if (filter.name) {
+      qb.andWhere('LOWER(category.name) LIKE LOWER(:name)', {
+        name: `%${filter.name}%`,
+      });
+    }
+
+    if (filter.parentId !== undefined) {
+      if (filter.parentId === null) {
+        qb.andWhere('category.parentId IS NULL');
+      } else {
+        qb.andWhere('category.parentId = :parentId', { parentId: filter.parentId });
+      }
+    }
+    return paginate(qb, filter, ResponseDropdownCategoryDto);
+  }
+
   async ensureExists(id: number): Promise<DropdownCategory> {
     const exists = await this.dropdownCategoryRepository.findOne({ where: { id } });
     if (!exists) {
@@ -124,28 +145,5 @@ export class DropdownCategoryService {
         }),
       );
     }
-  }
-
-  // File: dropdown-category.service.ts
-
-  async findAll(
-    filter: FilterDropdownCategoryDto,
-  ): Promise<PaginationResponseDto<ResponseDropdownCategoryDto>> {
-    const qb = this.dropdownCategoryRepository.createQueryBuilder('category');
-
-    if (filter.name) {
-      qb.andWhere('LOWER(category.name) LIKE LOWER(:name)', {
-        name: `%${filter.name}%`,
-      });
-    }
-
-    if (filter.parentId !== undefined) {
-      if (filter.parentId === null) {
-        qb.andWhere('category.parentId IS NULL');
-      } else {
-        qb.andWhere('category.parentId = :parentId', { parentId: filter.parentId });
-      }
-    }
-    return paginate(qb, filter, ResponseDropdownCategoryDto);
   }
 }
