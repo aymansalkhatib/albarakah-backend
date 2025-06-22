@@ -48,7 +48,7 @@ export class DropdownCategoryController {
   @Get(':id')
   @SerializeResponse(ResponseDropdownCategoryDto)
   findOne(@Param('id', ParseIntPipe) id: number): Promise<DropdownCategory> {
-    return this.dropdownCategoryService.findOne(id);
+    return this.dropdownCategoryService.findOne(id, { relations: ['dropdowns', 'children'] });
   }
 
   @Get()
