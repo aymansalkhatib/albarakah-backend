@@ -40,7 +40,6 @@ import { DropdownsModule } from './modules/dropdowns/dropdowns.module';
 
   providers: [
     AppService,
-    WinstonLoggerService,
     ErrorHandlerFactory,
     {
       provide: APP_FILTER,
@@ -52,7 +51,7 @@ import { DropdownsModule } from './modules/dropdowns/dropdowns.module';
     },
   ],
 })
-export class AppModule implements NestModule {
+export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(AppLoggerMiddleware).forRoutes('*all');
   }

@@ -64,7 +64,7 @@ export class WinstonLoggerService implements LoggerService, ILogger {
               }),
             ]
           : []),
-        ...createFileTransports(customFormatWithoutColor),
+        // ...createFileTransports(customFormatWithoutColor),
       ],
     });
   }
