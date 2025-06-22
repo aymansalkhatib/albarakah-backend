@@ -132,6 +132,4 @@ export class SelectedDropdownOptionService {
 
     return this.selectedDropdownOptionRepository.save(selections);
   }
-
-   
 }
