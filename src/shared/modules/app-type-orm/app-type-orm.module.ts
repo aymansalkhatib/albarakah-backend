@@ -9,17 +9,34 @@ import { Client } from 'pg';
   imports: [
     TypeOrmModule.forRootAsync({
       async useFactory(configService: ConfigService<EnvironmentConfig>) {
-        await createDatabaseIfNotExists(); // 🛠 تأكد القاعدة موجودة قبل الاتصال
-        return {
+        await createDatabaseIfNotExists(configService); // 🛠 تأكد القاعدة موجودة قبل الاتصال
+        const postgresUrl = configService.get('POSTGRES_URL');
+
+        // تحقق من نوع قاعدة البيانات
+        const isSupabase = postgresUrl?.includes('supabase.com');
+
+        let config: any = {
           type: 'postgres',
-          host: configService.get('POSTGRES_HOST'),
-          port: parseInt(configService.get('POSTGRES_PORT'), 10),
-          username: configService.get('POSTGRES_USER'),
-          password: configService.get('POSTGRES_PASSWORD'),
-          database: configService.get('POSTGRES_DB'),
+          url: postgresUrl,
           entities: ['dist/**/*.entity{.ts,.js}'],
           synchronize: configService.get<string>('NODE_ENV') !== Environment.PRODUCTION,
         };
+
+        if (isSupabase) {
+          config = {
+            ...config,
+            ssl: {
+              rejectUnauthorized: false,
+            },
+            extra: {
+              ssl: {
+                rejectUnauthorized: false,
+              },
+            },
+          };
+        }
+
+        return config;
       },
       inject: [ConfigService],
     }),
@@ -27,13 +44,16 @@ import { Client } from 'pg';
 })
 export class AppTypeOrmModule {}
 
-async function createDatabaseIfNotExists() {
+async function createDatabaseIfNotExists(configService: ConfigService<EnvironmentConfig>) {
+  const postgresUrl = configService.get('POSTGRES_URL');
+  const isSupabase = postgresUrl?.includes('supabase.com');
+  if (isSupabase) {
+    console.log('⚠️  Skipping database creation for Supabase (managed externally)');
+    return;
+  }
+
   const client = new Client({
-    host: process.env.POSTGRES_HOST,
-    port: parseInt(process.env.POSTGRES_PORT, 10),
-    user: process.env.POSTGRES_USER,
-    password: process.env.POSTGRES_PASSWORD,
-    database: 'postgres', // اتصال على database موجودة أكيد (postgres default)
+    url: configService.get('POSTGRES_URL'),
   });
 
   try {

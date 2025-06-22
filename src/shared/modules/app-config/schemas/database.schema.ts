@@ -26,7 +26,9 @@ export const databaseSchema = z.object({
 
   POSTGRES_PASSWORD: z.string().min(1, 'POSTGRES_PASSWORD is required'),
 
-  POSTGRES_DB: z.string().min(1, 'POSTGRES_DB is required'),
+  POSTGRES_DATABASE: z.string().min(1, 'POSTGRES_DATABASE is required'),
+  
+  POSTGRES_URL: z.string().min(1, 'POSTGRES_URL is required'),
 
   // Max sessions per user
   MAX_SESSIONS_PER_USER: z
