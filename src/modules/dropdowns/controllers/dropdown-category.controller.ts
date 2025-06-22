@@ -15,10 +15,10 @@ import { DropdownCategoryService } from '../services/dropdown-category.service';
 import { CreateDropdownCategoryDto } from '../dtos/dropdown-category/create-dropdown-category.dto';
 import { UpdateDropdownCategoryDto } from '../dtos/dropdown-category/update-dropdown-category.dto';
 import { DropdownCategory } from '../entities/dropdown-category.entity';
-import { FilterDropdownCategoryDto } from '../dtos/dropdown-category/filter-dropdown-category.dto';
-import { PaginationResponseDto } from 'src/common/pagination/dto/pagination-response.dto';
 import { ResponseDropdownCategoryDto } from '../dtos/dropdown-category/response-dropdown-category.dto';
 import { SerializeResponse } from 'src/common/decorators/serialize-response.decorator';
+import { FilterDropdownCategoryDto } from '../dtos/dropdown-category/filter-dropdown-category.dto';
+import { PaginationResponseDto } from 'src/common/pagination/dto/pagination-response.dto';
 
 @Controller('dropdown-categories')
 export class DropdownCategoryController {
@@ -45,28 +45,16 @@ export class DropdownCategoryController {
     return this.dropdownCategoryService.delete(id);
   }
 
-  @Get()
-  findAll(
-    @Query() filter: FilterDropdownCategoryDto,
-  ): Promise<PaginationResponseDto<ResponseDropdownCategoryDto>> {
-    return this.dropdownCategoryService.findAll(filter);
-  }
-
-  @Get('tree/:id')
-  @SerializeResponse(ResponseDropdownCategoryDto)
-  getCategoryTree(@Param('id', ParseIntPipe) id: number): Promise<DropdownCategory[]> {
-    return this.dropdownCategoryService.getCategoryTree(id);
-  }
-
-  @Get('tree')
-  @SerializeResponse(ResponseDropdownCategoryDto)
-  getCategoriesTree(): Promise<DropdownCategory[]> {
-    return this.dropdownCategoryService.getCategoriesTree();
-  }
-
   @Get(':id')
   @SerializeResponse(ResponseDropdownCategoryDto)
   findOne(@Param('id', ParseIntPipe) id: number): Promise<DropdownCategory> {
     return this.dropdownCategoryService.findOne(id);
+  }
+
+  @Get()
+  async findAll(
+    @Query() filter: FilterDropdownCategoryDto,
+  ): Promise<PaginationResponseDto<ResponseDropdownCategoryDto>> {
+    return this.dropdownCategoryService.findAll(filter);
   }
 }

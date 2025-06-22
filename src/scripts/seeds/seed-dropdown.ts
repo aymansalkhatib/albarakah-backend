@@ -169,4 +169,10 @@ export async function seedDropdowns(queryRunner: QueryRunner) {
     });
     await dropdownOptionRepo.save(option);
   }
+
+  await categoryRepo.save({
+    ...profileCategory,
+    isDropdownCreationEnabled: false,
+    isSubcategoryCreationEnabled: false,
+  });
 }

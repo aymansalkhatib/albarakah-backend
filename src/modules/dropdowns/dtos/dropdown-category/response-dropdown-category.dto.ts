@@ -1,4 +1,5 @@
 import { Expose, Type } from 'class-transformer';
+import { ResponseDropdownDto } from '../dropdown/response-dropdown.dto';
 
 export class ResponseDropdownCategoryDto {
   @Expose()
@@ -11,6 +12,12 @@ export class ResponseDropdownCategoryDto {
   name: string;
 
   @Expose()
+  isSubcategoryCreationEnabled: boolean;
+
+  @Expose()
+  isDropdownCreationEnabled: boolean;
+
+  @Expose()
   createdAt: Date;
 
   @Expose()
@@ -19,6 +26,10 @@ export class ResponseDropdownCategoryDto {
   @Expose()
   @Type(() => ResponseDropdownCategoryDto)
   children?: ResponseDropdownCategoryDto[];
+
+  @Expose()
+  @Type(() => ResponseDropdownDto)
+  dropdowns?: ResponseDropdownDto[];
 
   @Expose()
   @Type(() => ResponseDropdownCategoryDto)

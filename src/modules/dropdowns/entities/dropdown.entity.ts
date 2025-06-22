@@ -48,7 +48,10 @@ export class Dropdown {
 
   // Relationships
 
-  @ManyToOne(() => DropdownCategory, { nullable: false, onDelete: 'RESTRICT' })
+  @ManyToOne(() => DropdownCategory, (category) => category.dropdowns, {
+    nullable: false,
+    onDelete: 'RESTRICT',
+  })
   @JoinColumn({ name: 'dropdown_category_id' })
   dropdownCategory: DropdownCategory;
 }

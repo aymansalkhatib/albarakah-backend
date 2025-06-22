@@ -51,6 +51,7 @@ interface SelecteddropdownoptionsErrorsSelectionnotfoundParams {
 const TranslationKeys = {
   'dropdown-option-selections.errors.inactive_option': 'dropdown-option-selections.errors.inactive_option',
   'dropdown-option-selections.errors.selection_not_found': 'dropdown-option-selections.errors.selection_not_found',
+  'dropdowns.errors.cannot_create_subcategory': 'dropdowns.errors.cannot_create_subcategory',
   'dropdowns.errors.category_has_children': 'dropdowns.errors.category_has_children',
   'dropdowns.errors.category_has_dropdowns': 'dropdowns.errors.category_has_dropdowns',
   'dropdowns.errors.category_mismatch': 'dropdowns.errors.category_mismatch',
@@ -83,6 +84,7 @@ type NoParams = undefined;
 export interface TranslationInterpolations {
   'dropdown-option-selections.errors.inactive_option': NoParams;
   'dropdown-option-selections.errors.selection_not_found': DropdownoptionselectionsErrorsSelectionnotfoundParams;
+  'dropdowns.errors.cannot_create_subcategory': NoParams;
   'dropdowns.errors.category_has_children': NoParams;
   'dropdowns.errors.category_has_dropdowns': NoParams;
   'dropdowns.errors.category_mismatch': DropdownsErrorsCategorymismatchParams;

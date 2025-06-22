@@ -14,7 +14,7 @@ import {
 import { Dropdown } from './dropdown.entity';
 
 @Entity('dropdown_category')
-@Index('IDX_DROPDOWN_CATEGORY_NAME', ['name'], { unique: true })
+@Index('IDX_DROPDOWN_CATEGORY_PARENT_NAME', ['parentId', 'name'], { unique: true })
 export class DropdownCategory extends BaseEntity {
   static readonly MAX_DEPTH = 3;
 
