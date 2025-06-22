@@ -45,15 +45,12 @@ import { Client } from 'pg';
 export class AppTypeOrmModule {}
 
 async function createDatabaseIfNotExists(configService: ConfigService<EnvironmentConfig>) {
-  const postgresUrl = configService.get('POSTGRES_URL');
-  const isSupabase = postgresUrl?.includes('supabase.com');
-  if (isSupabase) {
-    console.log('⚠️  Skipping database creation for Supabase (managed externally)');
-    return;
-  }
-
   const client = new Client({
-    url: configService.get('POSTGRES_URL'),
+    host: configService.get('POSTGRES_HOST'),
+    port: parseInt(configService.get('POSTGRES_PORT'), 10),
+    user: configService.get('POSTGRES_USER'),
+    password: configService.get('POSTGRES_PASSWORD'),
+    database: 'postgres',
   });
 
   try {
