@@ -7,14 +7,12 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  UseInterceptors,
   Query,
-  ValidationPipe,
+  UseInterceptors,
 } from '@nestjs/common';
 import { EmployeesService } from './employee.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
-import { toDto } from 'src/common/helpers/to-dto';
 import { EmployeeResponseDto } from './dto/employee-response.dto';
 import { FilterEmployeeDto } from './dto/filter-employee.dto';
 

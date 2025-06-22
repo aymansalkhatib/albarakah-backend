@@ -1,5 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
-import { Expose } from 'class-transformer';
+import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
 import { PositiveIntegerId } from 'src/common/decorators/positive-integer-id.decorator';
 
 export class CreateDropdownCategoryDto {

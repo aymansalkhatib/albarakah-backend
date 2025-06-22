@@ -5,7 +5,6 @@ import helmet from 'helmet';
 import * as compression from 'compression';
 import { i18nValidationErrorFactory, I18nValidationExceptionFilter } from 'nestjs-i18n';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { urlencoded } from 'express';
 import { parse } from 'qs';
 
 async function bootstrap() {

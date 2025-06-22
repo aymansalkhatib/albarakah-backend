@@ -3,7 +3,7 @@ import { CreateDropdownCategoryDto } from '../dtos/dropdown-category/create-drop
 import { UpdateDropdownCategoryDto } from '../dtos/dropdown-category/update-dropdown-category.dto';
 import { DropdownCategory } from '../entities/dropdown-category.entity';
 
-import { ILike, IsNull, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TranslateHelper } from 'src/shared/modules/app-i18n/translate.helper';
 import { FilterDropdownCategoryDto } from '../dtos/dropdown-category/filter-dropdown-category.dto';

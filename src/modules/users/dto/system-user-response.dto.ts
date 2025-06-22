@@ -1,6 +1,5 @@
 import { Exclude, Expose, Type } from 'class-transformer';
 import { EmployeeResponseDto } from '../../employees/dto/employee-response.dto';
-import { Role } from 'src/modules/roles/entities/roles.entity';
 import { ResponseRoleDto } from 'src/modules/roles/dto/response/response-role.dto';
 
 @Exclude()

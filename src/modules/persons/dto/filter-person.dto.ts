@@ -1,18 +1,16 @@
 import {
+  IsDate,
+  IsEnum,
+  IsInt,
   IsOptional,
   IsString,
-  IsDateString,
-  IsEnum,
   Length,
-  IsInt,
-  Min,
   Max,
-  IsNotEmpty,
   MaxDate,
+  Min,
   MinDate,
-  IsDate,
 } from 'class-validator';
-import { Transform, Type } from 'class-transformer';
+import { Transform } from 'class-transformer';
 import { GenderType } from '../enums/gender-type.enum';
 import { ClothingSize } from '../enums/clothing-size.enum';
 import { IsAfterDate } from 'src/common/decorators/is-after-date.decorator';

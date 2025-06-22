@@ -1,4 +1,4 @@
-import { IsString, IsOptional, ValidateIf, Min } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 import { PaginationDto } from 'src/common/pagination/dto/pagination.dto';
 import { PositiveIntegerId } from 'src/common/decorators/positive-integer-id.decorator';
 

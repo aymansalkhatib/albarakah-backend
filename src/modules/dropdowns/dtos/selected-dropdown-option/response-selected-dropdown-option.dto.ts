@@ -1,6 +1,5 @@
 import { Expose, Type } from 'class-transformer';
 import { ResponseDropdownDto } from '../dropdown/response-dropdown.dto';
-import { ResponseDecoratorOptions } from '@nestjs/common';
 import { ResponseDropdownOptionDto } from '../dropdown-option/response-dropdown-option.dto';
 
 export class ResponseSelectedDropdownOptionDto {

@@ -4,7 +4,6 @@ import { UserPermission } from 'src/modules/roles/entities/user-permission.entit
 import {
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   Index,
   JoinColumn,

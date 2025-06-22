@@ -2,7 +2,6 @@ import { Person } from 'src/modules/persons/entities/person.entity';
 import {
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   Index,
   JoinColumn,

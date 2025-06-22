@@ -18,22 +18,6 @@ export class SupportersService {
     private readonly personsService: PersonsService,
   ) {}
 
-  private transformToDto(supporter: Supporter): ResponseSupporterDto {
-    return plainToInstance(
-      ResponseSupporterDto,
-      {
-        ...supporter,
-        supportStartDate: supporter.supportStartDate.toISOString().split('T')[0],
-        supportEndDate: supporter.supportEndDate?.toISOString().split('T')[0],
-      },
-      { excludeExtraneousValues: true },
-    );
-  }
-
-  private transformToDtoArray(supporters: Supporter[]): ResponseSupporterDto[] {
-    return supporters.map((supporter) => this.transformToDto(supporter));
-  }
-
   async create(createSupporterDto: CreateSupporterDto): Promise<ResponseSupporterDto> {
     let person: Person;
 
@@ -226,5 +210,21 @@ export class SupportersService {
       relations: ['person'],
     });
     return this.transformToDtoArray(supporters);
+  }
+
+  private transformToDto(supporter: Supporter): ResponseSupporterDto {
+    return plainToInstance(
+      ResponseSupporterDto,
+      {
+        ...supporter,
+        supportStartDate: supporter.supportStartDate.toISOString().split('T')[0],
+        supportEndDate: supporter.supportEndDate?.toISOString().split('T')[0],
+      },
+      { excludeExtraneousValues: true },
+    );
+  }
+
+  private transformToDtoArray(supporters: Supporter[]): ResponseSupporterDto[] {
+    return supporters.map((supporter) => this.transformToDto(supporter));
   }
 }

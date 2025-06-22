@@ -1,6 +1,0 @@
-{
-    "errors": {
-        "selection_not_found": "Dropdown option selection with ID {id} not found",
-        "inactive_option": "Cannot select an inactive dropdown option"
-    }
-}

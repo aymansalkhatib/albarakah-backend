@@ -1,11 +1,11 @@
-import { ConflictException, GoneException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Person } from './entities/person.entity';
 import { CreatePersonDto } from './dto/create-person.dto';
 import { UpdatePersonDto } from './dto/update-person.dto';
 import { FilterPersonDto } from './dto/filter-person.dto';
-import { validatePersonUniqueness, validateFamilyRelationships } from './utils/person.validation';
+import { validateFamilyRelationships, validatePersonUniqueness } from './utils/person.validation';
 
 @Injectable()
 export class PersonsService {

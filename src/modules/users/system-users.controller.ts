@@ -1,16 +1,15 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
-  ParseIntPipe,
+  Get,
   NotFoundException,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
   Query,
 } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
 import { UpdateSystemUserDto } from './dto/update-user-account.dto';
 import { toDto } from 'src/common/helpers/to-dto';
 import { SystemUserResponseDto } from './dto/system-user-response.dto';

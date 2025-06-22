@@ -8,7 +8,7 @@ import { CreateRoleDto } from './dto/request/create-role.dto';
 import { UpdateRoleDto } from './dto/request/update-role.dto';
 import { FilterRoleDto } from './dto/query/filter-role.dto';
 import { CreatePermissionDto } from './dto/request/create-permission.dto';
-import { UserRole, ROLE_HIERARCHY } from 'src/modules/roles/enums/role.enum';
+import { ROLE_HIERARCHY, UserRole } from 'src/modules/roles/enums/role.enum';
 import { UpdatePermissionDto } from './dto/request/update-permission.dto';
 import { FilterPermissionDto } from './dto/query/filter-permission.dto';
 import { Permission } from './enums/permission.enum';
@@ -246,7 +246,6 @@ export class RolesService {
         permissions.forEach((p) => userPermissions.add(p.name));
       } catch (error) {
         // إذا لم يتم العثور على الدور، نتجاهل الخطأ ونستمر
-
       }
     }
 
@@ -263,7 +262,6 @@ export class RolesService {
         permissions.forEach((p) => userPermissions.add(p.name));
       } catch (error) {
         // إذا لم يتم العثور على الدور، نتجاهل الخطأ ونستمر
-
       }
     }
 

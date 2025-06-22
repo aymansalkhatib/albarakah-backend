@@ -8,8 +8,6 @@ import {
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
-  Unique,
-  UpdateDateColumn,
 } from 'typeorm';
 import { DropdownOption } from '../../dropdowns/entities/dropdown-option.entity';
 import { GenderType } from '../enums/gender-type.enum';

@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { FamilyMember } from './entities/family-members.entity';
 import { CreateFamilyMemberDto } from './dto/create-family-member.dto';
 import { FamilyRelationType } from './enums/family-relation-type.enum';
-import { In } from 'typeorm';
 
 @Injectable()
 export class FamilyMemberRepository extends Repository<FamilyMember> {

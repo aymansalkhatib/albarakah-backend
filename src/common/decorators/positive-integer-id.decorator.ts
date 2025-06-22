@@ -1,6 +1,6 @@
 import { applyDecorators } from '@nestjs/common';
 import { Transform } from 'class-transformer';
-import { IsOptional, IsInt, Min, IsNotEmpty } from 'class-validator';
+import { IsInt, IsNotEmpty, Min } from 'class-validator';
 
 export function PositiveIntegerId({ nullable = false }: { nullable?: boolean } = {}) {
   return applyDecorators(

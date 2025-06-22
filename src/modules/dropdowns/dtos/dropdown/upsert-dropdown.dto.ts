@@ -6,7 +6,7 @@ import {
   MaxLength,
   ValidateNested,
 } from 'class-validator';
-import { Expose, Type } from 'class-transformer';
+import { Type } from 'class-transformer';
 import { DropdownSelectionType } from '../../entities/dropdown.entity';
 import { PositiveIntegerId } from 'src/common/decorators/positive-integer-id.decorator';
 import { UpsertDropdownOptionDto } from '../dropdown-option/create-dropdown-option.dto';

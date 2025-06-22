@@ -41,7 +41,9 @@ async function createDatabaseIfNotExists() {
 
     const dbName = process.env.POSTGRES_DB;
 
-    const result = await client.query(`SELECT 1 FROM pg_database WHERE datname='${dbName}'`);
+    const result = await client.query(`SELECT 1
+                                       FROM pg_database
+                                       WHERE datname = '${dbName}'`);
     if (result.rowCount === 0) {
       await client.query(`CREATE DATABASE "${dbName}"`);
       console.log(`✅ Database "${dbName}" created successfully.`);

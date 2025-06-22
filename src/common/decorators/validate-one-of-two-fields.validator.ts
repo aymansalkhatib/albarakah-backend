@@ -1,9 +1,9 @@
 import {
+  registerDecorator,
+  ValidationArguments,
+  ValidationOptions,
   ValidatorConstraint,
   ValidatorConstraintInterface,
-  ValidationArguments,
-  registerDecorator,
-  ValidationOptions,
 } from 'class-validator';
 
 type InvalidField = [string, string];

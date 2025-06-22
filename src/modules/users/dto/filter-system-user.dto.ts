@@ -1,6 +1,6 @@
 import 'reflect-metadata';
-import { IsOptional, IsString, IsNumber, IsBoolean, ValidateNested } from 'class-validator';
-import { Transform, Type } from 'class-transformer';
+import { IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
 import { FilterRoleDto } from 'src/modules/roles/dto/query/filter-role.dto';
 import { FilterEmployeeDto } from 'src/modules/employees/dto/filter-employee.dto';
 

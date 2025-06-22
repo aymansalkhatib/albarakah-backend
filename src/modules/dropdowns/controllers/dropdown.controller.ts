@@ -7,9 +7,7 @@ import {
   HttpStatus,
   Param,
   ParseIntPipe,
-  Patch,
   Post,
-  Query,
 } from '@nestjs/common';
 import { DropdownService } from '../services/dropdown.service';
 import { Dropdown } from '../entities/dropdown.entity';

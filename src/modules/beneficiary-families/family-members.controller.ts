@@ -1,17 +1,6 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  ParseIntPipe,
-  Post,
-  Put,
-  Query,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
 import { FamilyMembersService } from './family-members.service';
 import { CreateFamilyMemberDto } from './dto/create-family-member.dto';
-import { FamilyMember } from './entities/family-members.entity';
 import { toDto } from 'src/common/helpers/to-dto';
 import { FamilyMemberResponseDto } from './dto/family-member-response.dto';
 
