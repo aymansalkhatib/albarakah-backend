@@ -4,7 +4,6 @@ import { randomUUID } from 'crypto';
 import { ErrorHandlerFactory } from './error-handler.factory';
 import { extractRequestMetadata, getErrorStatus } from './utils/request-metadata.util';
 import { LogMetadata } from '../modules/app-logging/interfaces/logger.interface';
-import { WinstonLoggerService } from '../modules/app-logging/winston-logger.service';
 
 /**
  * Global exception filter that handles all unhandled exceptions in the application
@@ -14,7 +13,7 @@ import { WinstonLoggerService } from '../modules/app-logging/winston-logger.serv
 export class GlobalExceptionFilter implements ExceptionFilter {
   constructor(
     private readonly errorHandlerFactory: ErrorHandlerFactory,
-    private readonly logger: WinstonLoggerService,
+    // private readonly logger: WinstonLoggerService,
   ) {}
 
   catch(exception: any, host: ArgumentsHost): void {
@@ -54,11 +53,11 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       }
     } catch (error: any) {
       // Handle errors that occur during error handling
-      this.logger.error('Error in exception filter', {
-        error,
-        traceId,
-        responseTime: new Date().toISOString(),
-      });
+      // this.logger.error('Error in exception filter', {
+      //   error,
+      //   traceId,
+      //   responseTime: new Date().toISOString(),
+      // });
       if (developerMode) {
         response.status(500).json({
           status: 'error',
@@ -84,16 +83,16 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     const metadata: LogMetadata = extractRequestMetadata(request);
     const status = getErrorStatus(exception);
 
-    this.logger.error(`Request failed: ${request.method} ${request.url}`, {
-      ...metadata,
-      statusCode: status,
-      levelLog: 'ERROR',
-      error: {
-        name: exception.name,
-        message: exception.message,
-        stack: exception.stack,
-      },
-      traceId,
-    });
+    // this.logger.error(`Request failed: ${request.method} ${request.url}`, {
+    //   ...metadata,
+    //   statusCode: status,
+    //   levelLog: 'ERROR',
+    //   error: {
+    //     name: exception.name,
+    //     message: exception.message,
+    //     stack: exception.stack,
+    //   },
+    //   traceId,
+    // });
   }
 }

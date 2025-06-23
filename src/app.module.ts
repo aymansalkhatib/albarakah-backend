@@ -4,8 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AppLoggerModule } from './shared/modules/app-logging/app-logger.module';
 import { AppLoggerMiddleware } from './shared/modules/app-logging/app-logger.middleware';
-import { WinstonLoggerService } from './shared/modules/app-logging/winston-logger.service';
-import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+ import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { ErrorHandlerFactory } from './shared/exceptions-filter/error-handler.factory';
 import { GlobalExceptionFilter } from './shared/exceptions-filter/global-exception.filter';
 // import { NotificationModule } from './services/notifications/notification.module';
@@ -21,7 +20,7 @@ import { DropdownsModule } from './modules/dropdowns/dropdowns.module';
 @Module({
   imports: [
     AppConfigModel,
-    AppLoggerModule,
+    // AppLoggerModule,
     // NotificationModule,
     AppI18nModule,
     AppTypeOrmModule,
@@ -51,8 +50,8 @@ import { DropdownsModule } from './modules/dropdowns/dropdowns.module';
     },
   ],
 })
-export class AppModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AppLoggerMiddleware).forRoutes('*all');
-  }
+export class AppModule  {
+  // configure(consumer: MiddlewareConsumer) {
+  //   consumer.apply(AppLoggerMiddleware).forRoutes('*all');
+  // }
 }
