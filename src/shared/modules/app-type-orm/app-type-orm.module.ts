@@ -30,7 +30,7 @@ import { Client } from 'pg';
               }
             : {}),
 
-          synchronize: isDev,
+          synchronize: true,
         };
       },
       inject: [ConfigService],

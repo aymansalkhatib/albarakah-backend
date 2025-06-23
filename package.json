@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "main": "dist/main.js",
   "scripts": {
-    "build": "node --max-old-space-size=4096 node_modules/@nestjs/cli/bin/nest.js build",
+    "build": "tsc && tsc-alias",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "node dist/main.js",
     "start:dev": "cross-env NODE_ENV=development nest start --watch",
@@ -90,6 +90,7 @@
     "ts-jest": "^29.3.4",
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.16",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.8.3"
   },

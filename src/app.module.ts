@@ -2,9 +2,7 @@ import { BeneficiaryFamiliesModule } from './modules/beneficiary-families/benefi
 import { ClassSerializerInterceptor, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AppLoggerModule } from './shared/modules/app-logging/app-logger.module';
-import { AppLoggerMiddleware } from './shared/modules/app-logging/app-logger.middleware';
- import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { ErrorHandlerFactory } from './shared/exceptions-filter/error-handler.factory';
 import { GlobalExceptionFilter } from './shared/exceptions-filter/global-exception.filter';
 // import { NotificationModule } from './services/notifications/notification.module';
@@ -50,7 +48,7 @@ import { DropdownsModule } from './modules/dropdowns/dropdowns.module';
     },
   ],
 })
-export class AppModule  {
+export class AppModule {
   // configure(consumer: MiddlewareConsumer) {
   //   consumer.apply(AppLoggerMiddleware).forRoutes('*all');
   // }
