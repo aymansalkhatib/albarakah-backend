@@ -18,7 +18,7 @@ import { Client } from 'pg';
         let config: any = {
           type: 'postgres',
           url: postgresUrl,
-          entities: ['dist/**/*.entity{.ts,.js}'],
+          entities: [__dirname + '/**/*.entity{.ts,.js}'],
           synchronize: configService.get<string>('NODE_ENV') !== Environment.PRODUCTION,
         };
 
