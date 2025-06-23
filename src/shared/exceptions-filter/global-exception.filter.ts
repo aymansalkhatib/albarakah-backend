@@ -24,8 +24,10 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     // Generate a unique trace ID for error tracking
     const traceId = randomUUID();
 
-    const developerMode: boolean =
-      request.headers['developer-mode'] === 'true' && process.env.NODE_ENV === 'development';
+    // const developerMode: boolean =
+    //   request.headers['developer-mode'] === 'true' && process.env.NODE_ENV === 'development';
+
+    const developerMode = true;
 
     try {
       // Get the appropriate handler for this type of error
@@ -58,6 +60,8 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       //   traceId,
       //   responseTime: new Date().toISOString(),
       // });
+
+      console.error(error.toString());
       if (developerMode) {
         response.status(500).json({
           status: 'error',
@@ -94,5 +98,6 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     //   },
     //   traceId,
     // });
+    console.error(exception.stack.toString());
   }
 }
