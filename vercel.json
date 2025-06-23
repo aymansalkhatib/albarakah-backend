@@ -1,15 +1,17 @@
 {
     "version": 2,
-    "builds": [
-        {
-            "src": "package.json",
-            "use": "@vercel/node"
+    "buildCommand": "npm run build",
+    "devCommand": "npm run start:prod",
+    "installCommand": "npm install",
+    "functions": {
+        "dist/main.js": {
+            "runtime": "@vercel/node@18"
         }
-    ],
-    "routes": [
+    },
+    "rewrites": [
         {
-            "src": "/(.*)",
-            "dest": "/dist/main.js"
+            "source": "/(.*)",
+            "destination": "/dist/main.js"
         }
     ]
 }

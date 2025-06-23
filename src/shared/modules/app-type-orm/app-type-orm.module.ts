@@ -10,33 +10,28 @@ import { Client } from 'pg';
     TypeOrmModule.forRootAsync({
       async useFactory(configService: ConfigService<EnvironmentConfig>) {
         await createDatabaseIfNotExists(configService); // 🛠 تأكد القاعدة موجودة قبل الاتصال
-        const postgresUrl = configService.get('POSTGRES_URL');
 
-        // تحقق من نوع قاعدة البيانات
-        const isSupabase = postgresUrl?.includes('supabase.com');
+        const isDev = configService.get<string>('NODE_ENV') !== Environment.PRODUCTION;
 
-        let config: any = {
+        return {
           type: 'postgres',
-          url: postgresUrl,
-          entities: [__dirname + '/**/*.entity{.ts,.js}'],
-          synchronize: configService.get<string>('NODE_ENV') !== Environment.PRODUCTION,
+          host: configService.get('POSTGRES_HOST'),
+          port: parseInt(configService.get('POSTGRES_PORT'), 10),
+          username: configService.get('POSTGRES_USER'),
+          password: configService.get('POSTGRES_PASSWORD'),
+          database: configService.get('POSTGRES_DATABASE'),
+          entities: ['dist/**/*.entity{.ts,.js}'],
+
+          ...(!isDev
+            ? {
+                ssl: {
+                  rejectUnauthorized: false,
+                },
+              }
+            : {}),
+
+          synchronize: isDev,
         };
-
-        if (isSupabase) {
-          config = {
-            ...config,
-            ssl: {
-              rejectUnauthorized: false,
-            },
-            extra: {
-              ssl: {
-                rejectUnauthorized: false,
-              },
-            },
-          };
-        }
-
-        return config;
       },
       inject: [ConfigService],
     }),
@@ -56,7 +51,7 @@ async function createDatabaseIfNotExists(configService: ConfigService<Environmen
   try {
     await client.connect();
 
-    const dbName = process.env.POSTGRES_DB;
+    const dbName = configService.get('POSTGRES_DATABASE');
 
     const result = await client.query(`SELECT 1
                                        FROM pg_database
