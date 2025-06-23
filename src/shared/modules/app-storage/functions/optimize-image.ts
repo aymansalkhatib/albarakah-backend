@@ -1,12 +1,17 @@
-import * as bytes from 'bytes';
-import * as sharp from 'sharp';
+import bytes from 'bytes';
+import sharp from 'sharp';
 import {
   DEFAULT_COMPRESSION_OPTIONS,
   FORMAT_PRIORITIES,
   SHARP_SUPPORTED_FORMATS,
 } from '../constants/file-validation.constants';
 import { extractFileExtension } from './file-helper.functions';
-import { FileSizeUnit, ImageCompressionOptions, ImageDimensions, ImageFormat } from '../types/index';
+import {
+  FileSizeUnit,
+  ImageCompressionOptions,
+  ImageDimensions,
+  ImageFormat,
+} from '../types/index';
 
 /**
  * Optimizes an image by finding the best balance between quality and file size

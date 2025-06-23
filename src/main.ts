@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import helmet from 'helmet';
-import compression = require('compression');
+import compression from 'compression';
 import { i18nValidationErrorFactory, I18nValidationExceptionFilter } from 'nestjs-i18n';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { parse } from 'qs';
