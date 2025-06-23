@@ -36,6 +36,8 @@
     "@nestjs/platform-express": "^11.1.2",
     "@nestjs/typeorm": "^11.0.0",
     "@supabase/supabase-js": "^2.49.8",
+    "aws-lambda": "^1.0.7",
+    "aws-serverless-express": "^3.4.0",
     "bcrypt": "^6.0.0",
     "chalk": "^5.4.1",
     "class-transformer": "^0.5.1",
