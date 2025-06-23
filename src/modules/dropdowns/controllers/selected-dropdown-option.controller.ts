@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { SerializeResponse } from 'src/common/decorators/serialize-response.decorator';
+import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
 import { CreateSelectedDropdownOptionDto } from '../dtos/selected-dropdown-option/create-selected-dropdown-option.dto';
 import { ResponseSelectedDropdownOptionDto } from '../dtos/selected-dropdown-option/response-selected-dropdown-option.dto';
 import { SelectedDropdownOptionService } from '../services/selected-dropdown-option.service';

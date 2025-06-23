@@ -1,6 +1,6 @@
-import { Employee } from 'src/modules/employees/entities/employee.entity';
-import { Role } from 'src/modules/roles/entities/roles.entity';
-import { UserPermission } from 'src/modules/roles/entities/user-permission.entity';
+import { Employee } from '../../employees/entities/employee.entity';
+import { Role } from '../../roles/entities/roles.entity';
+import { UserPermission } from '../../roles/entities/user-permission.entity';
 import {
   Column,
   CreateDateColumn,

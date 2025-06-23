@@ -1,4 +1,4 @@
-import { Person } from 'src/modules/persons/entities/person.entity';
+import { Person } from '../../persons/entities/person.entity';
 import {
   Column,
   CreateDateColumn,
@@ -12,7 +12,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Interview } from '../../interviews/entities/interview.entity';
-import { SystemUser } from 'src/modules/users/entities/system-user.entity';
+import { SystemUser } from '../../users/entities/system-user.entity';
 
 @Entity('employees')
 @Index('idx_employees_person_id', ['personId'], { unique: true })

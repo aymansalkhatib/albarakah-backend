@@ -8,7 +8,7 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { FilterPersonDto } from '../../persons/dto/filter-person.dto';
-import { IsAfterDate } from 'src/common/decorators/is-after-date.decorator';
+import { IsAfterDate } from '../../../common/decorators/is-after-date.decorator';
 
 export class FilterEmployeeDto {
   @IsOptional()

@@ -8,7 +8,7 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { FilterPersonDto } from '../../persons/dto/filter-person.dto';
-import { IsAfterDate } from 'src/common/decorators/is-after-date.decorator';
+import { IsAfterDate } from '../../../common/decorators/is-after-date.decorator';
 import { SupportType } from '../enums/support-type';
 
 export class FilterSupporterDto {

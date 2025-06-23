@@ -1,5 +1,5 @@
 import { Exclude, Expose, Type } from 'class-transformer';
-import { Person } from 'src/modules/persons/entities/person.entity';
+import { Person } from '../../persons/entities/person.entity';
 import { SupportType } from '../enums/support-type';
 
 @Exclude()

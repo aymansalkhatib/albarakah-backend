@@ -1,8 +1,8 @@
-import { DropdownCategory } from 'src/modules/dropdowns/entities/dropdown-category.entity';
-import { DropdownOption } from 'src/modules/dropdowns/entities/dropdown-option.entity';
-import { Dropdown, DropdownSelectionType } from 'src/modules/dropdowns/entities/dropdown.entity';
-import { SelectedDropdownOption } from 'src/modules/dropdowns/entities/selected-dropdown-option.entity';
-import { RecordType } from 'src/modules/dropdowns/enums/recored-type.enums';
+import { DropdownCategory } from '../../modules/dropdowns/entities/dropdown-category.entity';
+import { DropdownOption } from '../../modules/dropdowns/entities/dropdown-option.entity';
+import { Dropdown, DropdownSelectionType } from '../../modules/dropdowns/entities/dropdown.entity';
+import { SelectedDropdownOption } from '../../modules/dropdowns/entities/selected-dropdown-option.entity';
+import { RecordType } from '../../modules/dropdowns/enums/recored-type.enums';
 import { QueryRunner } from 'typeorm';
 
 export async function seedDropdowns(queryRunner: QueryRunner) {

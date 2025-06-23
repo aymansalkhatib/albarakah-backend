@@ -1,6 +1,6 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 //TODO: CHANGE TO USER RESPONSE DTO INSTEAD OF USER ENTITY
-// import { UserResponseDto } from 'src/modules/auth/dto/response';
+// import { UserResponseDto } from '../../modules/auth/dto/response';
 
 export const CurrentUser = createParamDecorator(
   (data: string, ctx: ExecutionContext): any | undefined => {

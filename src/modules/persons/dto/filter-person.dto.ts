@@ -13,8 +13,8 @@ import {
 import { Transform } from 'class-transformer';
 import { GenderType } from '../enums/gender-type.enum';
 import { ClothingSize } from '../enums/clothing-size.enum';
-import { IsAfterDate } from 'src/common/decorators/is-after-date.decorator';
-import { StrictBoolean } from 'src/common/decorators/strict-boolean.decorator';
+import { IsAfterDate } from '../../../common/decorators/is-after-date.decorator';
+import { StrictBoolean } from '../../../common/decorators/strict-boolean.decorator';
 
 export class FilterPersonDto {
   @IsOptional()

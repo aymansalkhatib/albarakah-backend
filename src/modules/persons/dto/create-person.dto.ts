@@ -14,8 +14,8 @@ import {
 import { Transform } from 'class-transformer';
 import { GenderType } from '../enums/gender-type.enum';
 import { ClothingSize } from '../enums/clothing-size.enum';
-import { StrictBoolean } from 'src/common/decorators/strict-boolean.decorator';
-import { NotEqualTo } from 'src/common/decorators/not-equal-to.decorator';
+import { StrictBoolean } from '../../../common/decorators/strict-boolean.decorator';
+import { NotEqualTo } from '../../../common/decorators/not-equal-to.decorator';
 
 export class CreatePersonDto {
   @IsOptional()

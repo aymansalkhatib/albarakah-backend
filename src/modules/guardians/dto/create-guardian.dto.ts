@@ -1,8 +1,8 @@
 import { IsDate, IsEnum, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
-import { FamilyRelationType } from 'src/modules/beneficiary-families/enums/family-relation-type.enum';
+import { FamilyRelationType } from '../../beneficiary-families/enums/family-relation-type.enum';
 import { Type } from 'class-transformer';
-import { OnlyOneOf } from 'src/common/decorators/validate-one-of-two-fields.validator';
-import { CreatePersonDto } from 'src/modules/persons/dto/create-person.dto';
+import { OnlyOneOf } from '../../../common/decorators/validate-one-of-two-fields.validator';
+import { CreatePersonDto } from '../../persons/dto/create-person.dto';
 
 @OnlyOneOf([
   {

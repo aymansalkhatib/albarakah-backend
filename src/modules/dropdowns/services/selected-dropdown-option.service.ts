@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SelectedDropdownOption } from '../entities/selected-dropdown-option.entity';
 import { CreateSelectedDropdownOptionDto } from '../dtos/selected-dropdown-option/create-selected-dropdown-option.dto';
-import { TranslateHelper } from 'src/shared/modules/app-i18n/translate.helper';
+import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
 import { DropdownService } from './dropdown.service';
 import { DropdownOptionService } from './dropdown-option.service';
 import { DropdownSelectionType } from '../entities/dropdown.entity';

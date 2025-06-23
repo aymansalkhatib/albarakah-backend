@@ -8,7 +8,7 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { CreateEmployeeDto } from '../../employees/dto/create-employee.dto';
-import { OnlyOneOf } from 'src/common/decorators/validate-one-of-two-fields.validator';
+import { OnlyOneOf } from '../../../common/decorators/validate-one-of-two-fields.validator';
 
 @OnlyOneOf([
   {

@@ -9,7 +9,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { BeneficiaryFamily } from 'src/modules/beneficiary-families/entities/beneficiary-families.entity';
+import { BeneficiaryFamily } from '../../beneficiary-families/entities/beneficiary-families.entity';
 
 @Entity('visits')
 @Index(['visitDate'])

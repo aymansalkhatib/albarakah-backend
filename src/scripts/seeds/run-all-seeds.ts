@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { DataSource } from 'typeorm';
-import { AppModule } from 'src/app.module';
+import { AppModule } from '../../app.module';
 import { seedDropdowns } from './seed-dropdown';
 
 async function bootstrap() {

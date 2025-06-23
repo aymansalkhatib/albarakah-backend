@@ -8,9 +8,9 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { DropdownSelectionType } from '../../entities/dropdown.entity';
-import { PositiveIntegerId } from 'src/common/decorators/positive-integer-id.decorator';
+import { PositiveIntegerId } from '../../../../common/decorators/positive-integer-id.decorator';
 import { UpsertDropdownOptionDto } from '../dropdown-option/create-dropdown-option.dto';
-import { OnlyOneOf } from 'src/common/decorators/validate-one-of-two-fields.validator';
+import { OnlyOneOf } from '../../../../common/decorators/validate-one-of-two-fields.validator';
 
 @OnlyOneOf([{ fields: ['id', 'dropdownCategoryId'], isRequired: true }], {})
 export class UpsertDropdownDto {

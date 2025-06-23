@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { FamilyIncomeService } from './family-income.service';
 import { CreateFamilyIncomeDto } from './dto/create-family-income.dto';
-import { toDto } from 'src/common/helpers/to-dto';
+import { toDto } from '../../common/helpers/to-dto';
 import { FamilyIncomeResponseDto } from './dto/family-income-response.dto';
 
 @Controller('family-income')

@@ -11,7 +11,7 @@ import {
 } from 'typeorm';
 import { BeneficiaryFamily } from '../../beneficiary-families/entities/beneficiary-families.entity';
 import { AssistanceType } from '../enums/assistance-type.enum';
-import { Child } from 'src/modules/children/entities/children.entity';
+import { Child } from '../../children/entities/children.entity';
 
 @Entity('received_assistance')
 @Index(['childId'])

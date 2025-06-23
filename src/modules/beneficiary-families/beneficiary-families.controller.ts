@@ -14,7 +14,7 @@ import { CreateBeneficiaryFamilyDto } from './dto/create-beneficiary-family-dto'
 import { UpdateBeneficiaryFamilyDto } from './dto/update-beneficiary-family-dto';
 import { BeneficiaryFamilyResponseDto } from './dto/beneficiary-family-response.dto';
 
-import { toDto } from 'src/common/helpers/to-dto';
+import { toDto } from '../../common/helpers/to-dto';
 import { FilterBeneficiaryFamilyDto } from './dto/filter-beneficiary-family.dto';
 
 @Controller('beneficiary-families')

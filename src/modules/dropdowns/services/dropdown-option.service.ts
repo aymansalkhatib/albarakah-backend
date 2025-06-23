@@ -2,7 +2,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { DropdownOption } from '../entities/dropdown-option.entity';
 
-import { TranslateHelper } from 'src/shared/modules/app-i18n/translate.helper';
+import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
 import { Injectable, NotFoundException } from '@nestjs/common';
 
 @Injectable()

@@ -9,7 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Not, Repository } from 'typeorm';
 import { DropdownCategoryService } from './dropdown-category.service';
 import { UpsertDropdownDto } from '../dtos/dropdown/upsert-dropdown.dto';
-import { TranslateHelper } from 'src/shared/modules/app-i18n/translate.helper';
+import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
 import { DropdownOption } from '../entities/dropdown-option.entity';
 
 @Injectable()

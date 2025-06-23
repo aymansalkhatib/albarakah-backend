@@ -1,11 +1,11 @@
 import { Global, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { EnvironmentConfig } from 'src/shared/modules/app-config/env.schema';
+import { EnvironmentConfig } from '../app-config/env.schema';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { AppJwtService } from './app-jwt.service';
-// import { User } from 'src/modules/users/entities/base/user.entity';
-// import { Session } from 'src/modules/auth/session.entity';
+// import { User } from '../../../modules/users/entities/base/user.entity';
+// import { Session } from '../../../modules/auth/session.entity';
 
 /**
  * Module for JWT authentication and authorization

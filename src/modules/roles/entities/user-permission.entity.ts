@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { PermissionEntity } from './permissions.entity';
-import { SystemUser } from 'src/modules/users/entities/system-user.entity';
+import { SystemUser } from '../../users/entities/system-user.entity';
 
 @Entity('user_permissions')
 export class UserPermission {

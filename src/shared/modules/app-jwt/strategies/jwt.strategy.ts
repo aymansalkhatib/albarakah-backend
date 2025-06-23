@@ -3,8 +3,8 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigService } from '@nestjs/config';
 import { EnvironmentConfig } from '../../app-config/env.schema';
-// import { User } from 'src/modules/users/entities/base/user.entity';
-// import { Session } from 'src/modules/auth/session.entity';
+// import { User } from '../../../../modules/users/entities/base/user.entity';
+// import { Session } from '../../../../modules/auth/session.entity';
 import { AppJwtService } from '../app-jwt.service';
 import { DecodedAccessTokenPayload } from '../interfaces';
 

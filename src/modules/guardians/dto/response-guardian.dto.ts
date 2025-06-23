@@ -1,7 +1,7 @@
-import { FamilyRelationType } from 'src/modules/beneficiary-families/enums/family-relation-type.enum';
+import { FamilyRelationType } from '../../beneficiary-families/enums/family-relation-type.enum';
 import { Exclude, Expose, Type } from 'class-transformer';
-import { Person } from 'src/modules/persons/entities/person.entity';
-import { BeneficiaryFamily } from 'src/modules/beneficiary-families/entities/beneficiary-families.entity';
+import { Person } from '../../persons/entities/person.entity';
+import { BeneficiaryFamily } from '../../beneficiary-families/entities/beneficiary-families.entity';
 
 @Exclude()
 export class ResponseGuardianDto {

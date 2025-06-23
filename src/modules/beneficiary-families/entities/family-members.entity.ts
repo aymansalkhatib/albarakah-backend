@@ -1,4 +1,4 @@
-import { Person } from 'src/modules/persons/entities/person.entity';
+import { Person } from '../../persons/entities/person.entity';
 import {
   Column,
   CreateDateColumn,
@@ -13,7 +13,7 @@ import {
 } from 'typeorm';
 import { FamilyRelationType } from '../enums/family-relation-type.enum';
 import { BeneficiaryFamily } from './beneficiary-families.entity';
-import { CallLog } from 'src/modules/call-logs/entities/call-log.entity';
+import { CallLog } from '../../call-logs/entities/call-log.entity';
 import { PersonCourseBatch } from '../../training-courses/entities/person-course-batch.entity';
 
 @Entity('family_members')

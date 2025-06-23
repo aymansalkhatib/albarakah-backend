@@ -12,7 +12,7 @@ import {
 import { DropdownService } from '../services/dropdown.service';
 import { Dropdown } from '../entities/dropdown.entity';
 import { UpsertDropdownDto } from '../dtos/dropdown/upsert-dropdown.dto';
-import { SerializeResponse } from 'src/common/decorators/serialize-response.decorator';
+import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
 import { ResponseDropdownDto } from '../dtos/dropdown/response-dropdown.dto';
 
 @Controller('dropdowns')

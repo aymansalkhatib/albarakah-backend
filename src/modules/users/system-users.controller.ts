@@ -11,7 +11,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { UpdateSystemUserDto } from './dto/update-user-account.dto';
-import { toDto } from 'src/common/helpers/to-dto';
+import { toDto } from '../../common/helpers/to-dto';
 import { SystemUserResponseDto } from './dto/system-user-response.dto';
 import { CreateSystemUserDto } from './dto/create-system-user.dto';
 import { SystemUsersService } from './system-users.service';

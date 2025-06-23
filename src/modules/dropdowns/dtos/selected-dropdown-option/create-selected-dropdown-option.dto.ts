@@ -1,5 +1,5 @@
 import { IsEnum, IsNotEmpty, IsNumber } from 'class-validator';
-import { PositiveIntegerId } from 'src/common/decorators/positive-integer-id.decorator';
+import { PositiveIntegerId } from '../../../../common/decorators/positive-integer-id.decorator';
 import { RecordType } from '../../enums/recored-type.enums';
 
 export class CreateSelectedDropdownOptionDto {

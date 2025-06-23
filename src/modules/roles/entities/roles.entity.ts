@@ -1,6 +1,6 @@
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { RolePermission } from './role-permission.entity';
-import { SystemUser } from 'src/modules/users/entities/system-user.entity';
+import { SystemUser } from '../../users/entities/system-user.entity';
 
 @Entity('roles')
 @Index('idx_roles_name', ['name'], { unique: true })

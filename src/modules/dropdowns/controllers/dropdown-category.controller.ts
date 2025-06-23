@@ -16,9 +16,9 @@ import { CreateDropdownCategoryDto } from '../dtos/dropdown-category/create-drop
 import { UpdateDropdownCategoryDto } from '../dtos/dropdown-category/update-dropdown-category.dto';
 import { DropdownCategory } from '../entities/dropdown-category.entity';
 import { ResponseDropdownCategoryDto } from '../dtos/dropdown-category/response-dropdown-category.dto';
-import { SerializeResponse } from 'src/common/decorators/serialize-response.decorator';
+import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
 import { FilterDropdownCategoryDto } from '../dtos/dropdown-category/filter-dropdown-category.dto';
-import { PaginationResponseDto } from 'src/common/pagination/dto/pagination-response.dto';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 
 @Controller('dropdown-categories')
 export class DropdownCategoryController {

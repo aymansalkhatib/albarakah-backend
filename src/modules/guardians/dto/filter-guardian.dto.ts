@@ -8,8 +8,8 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { FilterPersonDto } from '../../persons/dto/filter-person.dto';
-import { IsAfterDate } from 'src/common/decorators/is-after-date.decorator';
-import { FamilyRelationType } from 'src/modules/beneficiary-families/enums/family-relation-type.enum';
+import { IsAfterDate } from '../../../common/decorators/is-after-date.decorator';
+import { FamilyRelationType } from '../../beneficiary-families/enums/family-relation-type.enum';
 
 export class FilterGuardianDto {
   @IsOptional()
