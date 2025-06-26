@@ -3,7 +3,7 @@ import { Request } from 'express';
 import { LogMetadata } from '../../modules/app-logging/interfaces/logger.interface';
 
 /**
- * Extracts metadata from an HTTP request for logging purposes
+ * Extracts metadata from an HTTP requests for logging purposes
  * Sanitizes sensitive information and handles empty values gracefully
  */
 export function extractRequestMetadata(request: Request): LogMetadata {
@@ -18,7 +18,7 @@ export function extractRequestMetadata(request: Request): LogMetadata {
     contentLength: `${request.get('content-length') || '0'}B`,
     body: sanitizeRequestBody(request.body, 'No body parameters'),
     headers: sanitizeHeaders(request.headers),
-    query: Object.keys(request.query).length > 0 ? request.query : 'No query parameters',
+    query: Object.keys(request.query).length > 0 ? request.query : 'No queries parameters',
     params: Object.keys(request.params).length > 0 ? request.params : 'No params parameters',
     requestTime: 'Unknown',
     responseTime: endTime.toISOString(),
@@ -27,7 +27,7 @@ export function extractRequestMetadata(request: Request): LogMetadata {
 }
 
 /**
- * Sanitizes request body by redacting sensitive fields
+ * Sanitizes requests body by redacting sensitive fields
  */
 function sanitizeRequestBody(body: any, message: string): any {
   if (!body || Object.keys(body).length === 0) {
@@ -56,7 +56,7 @@ function sanitizeRequestBody(body: any, message: string): any {
 }
 
 /**
- * Sanitizes request headers by redacting sensitive information
+ * Sanitizes requests headers by redacting sensitive information
  */
 function sanitizeHeaders(headers: any): any {
   if (!headers || Object.keys(headers).length === 0) {

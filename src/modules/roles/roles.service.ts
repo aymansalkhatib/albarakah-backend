@@ -4,13 +4,13 @@ import { Repository } from 'typeorm';
 import { Role } from './entities/roles.entity';
 import { PermissionEntity } from './entities/permissions.entity';
 import { RolePermission } from './entities/role-permission.entity';
-import { CreateRoleDto } from './dto/request/create-role.dto';
-import { UpdateRoleDto } from './dto/request/update-role.dto';
-import { FilterRoleDto } from './dto/query/filter-role.dto';
-import { CreatePermissionDto } from './dto/request/create-permission.dto';
+import { CreateRoleDto } from '@app/modules/roles/dtos/requests/create-role.dto';
+import { UpdateRoleDto } from '@app/modules/roles/dtos/requests/update-role.dto';
+import { FilterRoleDto } from '@app/modules/roles/dtos/queries/filter-role.dto';
+import { CreatePermissionDto } from '@app/modules/roles/dtos/requests/create-permission.dto';
 import { ROLE_HIERARCHY, UserRole } from './enums/role.enum';
-import { UpdatePermissionDto } from './dto/request/update-permission.dto';
-import { FilterPermissionDto } from './dto/query/filter-permission.dto';
+import { UpdatePermissionDto } from '@app/modules/roles/dtos/requests/update-permission.dto';
+import { FilterPermissionDto } from '@app/modules/roles/dtos/queries/filter-permission.dto';
 import { Permission } from './enums/permission.enum';
 
 @Injectable()

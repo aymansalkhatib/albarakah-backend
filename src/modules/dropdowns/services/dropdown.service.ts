@@ -142,7 +142,7 @@ export class DropdownService {
     optionsDto: any[],
     manager: any,
   ): Promise<void> {
-    // Validate duplicates in request
+    // Validate duplicates in requests
     this.validateDuplicateOptionsInRequest(optionsDto);
 
     // Get existing options for this dropdown
@@ -169,7 +169,7 @@ export class DropdownService {
     // Save all options
     await manager.save(DropdownOption, optionsToUpsert);
 
-    // Handle deletion of options not present in the request
+    // Handle deletion of options not present in the requests
     await this.handleOptionsDelete(optionsDto, existingOptions, manager);
   }
 

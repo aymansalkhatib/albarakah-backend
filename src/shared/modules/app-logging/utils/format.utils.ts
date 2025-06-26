@@ -76,7 +76,7 @@ ${this.colorize('╠═' + '═'.repeat(100), color, showColor)}`;
         return value.toString();
       }
 
-      // Format as JSON for body and query
+      // Format as JSON for body and queries
       if (key === 'body' || key === 'query' || 'params' || 'params') {
         return this.formatJson(value);
       }
@@ -88,7 +88,7 @@ ${this.colorize('╠═' + '═'.repeat(100), color, showColor)}`;
       .map(([key, value]) => {
         const formattedValue = formatValue(key, value);
 
-        // Special box formatting for body and query
+        // Special box formatting for body and queries
         if (key === 'body' || key === 'query' || 'params' || 'params') {
           return this.drawBox(key, formattedValue, color, showColor);
         }

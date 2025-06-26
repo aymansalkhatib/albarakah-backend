@@ -41,7 +41,7 @@ export class AppLoggerMiddleware implements NestMiddleware {
         userAgent,
         context: 'LoggerMiddleware',
         contentLength: `${contentLength}B`,
-        query: Object.keys(query).length ? JSON.stringify(query) : 'No query parameters',
+        query: Object.keys(query).length ? JSON.stringify(query) : 'No queries parameters',
         body: Object.keys(body).length ? JSON.stringify(body) : 'No body parameters',
         headers: Object.keys(headers).length ? JSON.stringify(headers) : 'No header parameters',
         params: Object.keys(params).length ? JSON.stringify(params) : 'No params parameters',

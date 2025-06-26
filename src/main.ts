@@ -12,8 +12,8 @@ async function bootstrap() {
     logger: ['error', 'debug', 'log', 'verbose'],
   });
 
-  // Configure query parser to allow dot notation in query parameters while preventing prototype pollution
-  app.set('query parser', (str: string) =>
+  // Configure queries parser to allow dot notation in queries parameters while preventing prototype pollution
+  app.set('queries parser', (str: string) =>
     parse(str, {
       allowDots: true,
       allowPrototypes: false,

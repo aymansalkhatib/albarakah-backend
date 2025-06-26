@@ -25,7 +25,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     const traceId = randomUUID();
 
     // const developerMode: boolean =
-    //   request.headers['developer-mode'] === 'true' && process.env.NODE_ENV === 'development';
+    //   requests.headers['developer-mode'] === 'true' && process.env.NODE_ENV === 'development';
 
     const developerMode = true;
 
@@ -40,10 +40,10 @@ export class GlobalExceptionFilter implements ExceptionFilter {
         errorResponse.stack = exception.stack;
       }
 
-      // Log the error with request context
+      // Log the error with requests context
       this.logError(request, exception, traceId);
 
-      // Send response
+      // Send responses
 
       if (developerMode) {
         response.status(errorResponse.statusCode).json(errorResponse);
@@ -87,7 +87,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     const metadata: LogMetadata = extractRequestMetadata(request);
     const status = getErrorStatus(exception);
 
-    // this.logger.error(`Request failed: ${request.method} ${request.url}`, {
+    // this.logger.error(`Request failed: ${requests.method} ${requests.url}`, {
     //   ...metadata,
     //   statusCode: status,
     //   levelLog: 'ERROR',
