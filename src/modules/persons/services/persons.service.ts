@@ -7,6 +7,9 @@ import { validateFamilyRelationships, validatePersonUniqueness } from '../utils/
 import { FilterPersonDto } from '../dtos/queries/filter-person.dto';
 import { CreatePersonDto } from '../dtos/requests/create-person.dto';
 import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
+import { DropdownService } from '@app/modules/dropdowns/services/dropdown.service';
+import { DropdownOptionService } from '@app/modules/dropdowns/services/dropdown-option.service';
+import { PersonDropdown } from '../enums/type-dropdown.enum';
 
 @Injectable()
 export class PersonsService {
@@ -14,6 +17,7 @@ export class PersonsService {
     @InjectRepository(Person)
     private readonly personRepository: Repository<Person>,
     private readonly translateHelper: TranslateHelper,
+    private readonly dropdownService: DropdownService,
   ) {}
 
   async create(createPersonDto: CreatePersonDto): Promise<Person> {
@@ -208,5 +212,47 @@ export class PersonsService {
     }
 
     return await queryBuilder.getMany();
+  }
+
+  async validateDropdownFields(dto: CreatePersonDto | UpdatePersonDto) {
+    if (dto.healthStatusId) {
+      await this.dropdownService.findDropdownWithOptionCheck({
+        categoryName: Person.name,
+        dropdownName: PersonDropdown.HEALTH_STATUS,
+        optionId: dto.healthStatusId,
+      });
+    }
+
+    if (dto.educationLevelId) {
+      await this.dropdownService.findDropdownWithOptionCheck({
+        categoryName: Person.name,
+        dropdownName: PersonDropdown.EDUCATION_LEVEL,
+        optionId: dto.educationLevelId,
+      });
+    }
+
+    if (dto.schoolTypeId) {
+      await this.dropdownService.findDropdownWithOptionCheck({
+        categoryName: Person.name,
+        dropdownName: PersonDropdown.SCHOOL_TYPE,
+        optionId: dto.schoolTypeId,
+      });
+    }
+
+    if (dto.personStatusId) {
+      await this.dropdownService.findDropdownWithOptionCheck({
+        categoryName: Person.name,
+        dropdownName: PersonDropdown.PERSON_STATUS,
+        optionId: dto.personStatusId,
+      });
+    }
+
+    if (dto.maritalStatusId) {
+      await this.dropdownService.findDropdownWithOptionCheck({
+        categoryName: Person.name,
+        dropdownName: PersonDropdown.MARITAL_STATUS,
+        optionId: dto.maritalStatusId,
+      });
+    }
   }
 }

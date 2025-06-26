@@ -10,7 +10,7 @@ export class FilterSelectedDropdownOptionDto extends PaginationDto {
   @IsOptional()
   @IsString()
   @MaxLength(50)
-  recordType?: string;
+  entityType?: string;
 
   @IsOptional()
   @PositiveIntegerId()

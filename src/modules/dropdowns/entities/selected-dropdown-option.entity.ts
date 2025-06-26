@@ -10,7 +10,7 @@ import {
 import { DropdownOption } from './dropdown-option.entity';
 import { Dropdown } from './dropdown.entity';
 import { DropdownCategory } from './dropdown-category.entity';
-import { RecordType } from '../enums/recored-type.enums';
+import { EntityType } from '../enums/entity-type.const';
 
 @Entity('selected_dropdown_options')
 export class SelectedDropdownOption {
@@ -20,8 +20,8 @@ export class SelectedDropdownOption {
   @Column({ name: 'record_id' })
   recordId: number;
 
-  @Column({ type: 'enum', enum: RecordType, name: 'record_type' })
-  recordType: RecordType;
+  @Column({ type: 'enum', enum: EntityType, name: 'entity_type' })
+  entityType: EntityType;
 
   @Column({ name: 'dropdown_id' })
   dropdownId: number;

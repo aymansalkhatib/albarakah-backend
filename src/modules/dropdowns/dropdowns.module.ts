@@ -23,5 +23,12 @@ import { SelectedDropdownOptionController } from './controllers/selected-dropdow
     SelectedDropdownOptionService,
   ],
   controllers: [DropdownCategoryController, DropdownController, SelectedDropdownOptionController],
+
+  exports: [
+    DropdownCategoryService,
+    DropdownService,
+    DropdownOptionService,
+    SelectedDropdownOptionService,
+  ],
 })
 export class DropdownsModule {}

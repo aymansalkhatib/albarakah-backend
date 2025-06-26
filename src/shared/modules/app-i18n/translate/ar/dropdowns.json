@@ -19,6 +19,8 @@
     "multiple_selection_requires_at_least_one_option": "القائمة المنسدلة ذات التحديد المتعدد تتطلب خياراً واحداً على الأقل",
     "category_mismatch": "معرف الفئة {categoryId} لا يتطابق مع معرف فئة القائمة المنسدلة {dropdownCategoryId}",
     "duplicate_options_not_allowed": "الخيارات المكررة غير مسموح بها لهذا النوع من القوائم المنسدلة",
-    "cannot_create_subcategory": "لا يمكن إنشاء فئة فرعية لهذه الفئة."
+    "cannot_create_subcategory": "لا يمكن إنشاء فئة فرعية لهذه الفئة.",
+    "option_not_found_in_dropdown": "الخيار ذو المعرف {optionId} غير موجود في القائمة المنسدلة '{dropdownName}'",
+    "dropdown_not_found_in_category": "القائمة المنسدلة '{dropdownName}' في الفئة '{categoryName}' غير موجودة"
   }
 }

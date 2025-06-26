@@ -3,7 +3,8 @@ import { DropdownCategory } from '../../modules/dropdowns/entities/dropdown-cate
 import { DropdownOption } from '../../modules/dropdowns/entities/dropdown-option.entity';
 import { Dropdown, DropdownSelectionType } from '../../modules/dropdowns/entities/dropdown.entity';
 import { SelectedDropdownOption } from '../../modules/dropdowns/entities/selected-dropdown-option.entity';
-import { RecordType } from '../../modules/dropdowns/enums/recored-type.enums';
+import { Person } from '../../modules/persons/entities/person.entity';
+import { House } from '../../modules/houses/entities/house.entity';
 import { QueryRunner } from 'typeorm';
 
 export async function seedDropdowns(queryRunner: QueryRunner) {
@@ -21,8 +22,8 @@ export async function seedDropdowns(queryRunner: QueryRunner) {
 
   // Profile
   // Create a new category with the name 'profile'
-  const profileCategory = await categoryRepo.create({ name: RecordType.Profile }).save();
-  const homeCategory = await categoryRepo.create({ name: RecordType.Home }).save();
+  const profileCategory = await categoryRepo.create({ name: Person.name }).save();
+  const homeCategory = await categoryRepo.create({ name: House.name }).save();
 
   // Marital Status
   const maritalStatusDropdown = dropdownRepo.create({

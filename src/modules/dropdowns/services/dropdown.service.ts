@@ -16,7 +16,7 @@ import { DropdownOption } from '../entities/dropdown-option.entity';
 export class DropdownService {
   constructor(
     @InjectRepository(Dropdown)
-    private readonly dropdownRepository: Repository<Dropdown>,
+    public readonly dropdownRepository: Repository<Dropdown>,
     @InjectRepository(DropdownOption)
     private readonly dropdownOptionRepository: Repository<DropdownOption>,
     private readonly dropdownCategoryService: DropdownCategoryService,
@@ -277,5 +277,63 @@ export class DropdownService {
         );
       }
     }
+  }
+
+  async findDropdownWithOptionCheck(params: {
+    dropdownName: string;
+    categoryName: string;
+    optionId: number;
+    categoryParentId?: number;
+  }): Promise<Dropdown> {
+    const { dropdownName, categoryName, optionId, categoryParentId } = params;
+    let query = this.dropdownRepository
+      .createQueryBuilder('dropdown')
+      .leftJoin('dropdown.dropdownCategory', 'category')
+      .select([
+        'dropdown.id',
+        'dropdown.dropdownName',
+        'category.id',
+        'category.name',
+        'category.parentId',
+      ])
+      .where('dropdown.dropdownName = :dropdownName', { dropdownName })
+      .andWhere('category.name = :categoryName', { categoryName })
+      .andWhere('EXISTS (SELECT 1 FROM dropdown.options opt WHERE opt.id = :optionId)', {
+        optionId,
+      });
+
+    if (categoryParentId !== undefined && categoryParentId !== null) {
+      query = query.andWhere('category.parentId = :parentId', { parentId: categoryParentId });
+    }
+
+    const dropdown = await query.getOne();
+
+    if (!dropdown) {
+      // Check what specifically is missing for better error message
+      const dropdownOnlyCheck = await this.dropdownRepository
+        .createQueryBuilder('dropdown')
+        .leftJoin('dropdown.dropdownCategory', 'category')
+        .where('dropdown.dropdownName = :dropdownName', { dropdownName })
+        .andWhere('category.name = :categoryName', { categoryName })
+        .getOne();
+
+      if (!dropdownOnlyCheck) {
+        throw new NotFoundException(
+          this.translateHelper.tr('dropdowns.errors.dropdown_not_found_in_category', {
+            dropdownName,
+            categoryName,
+          }),
+        );
+      } else {
+        throw new NotFoundException(
+          this.translateHelper.tr('dropdowns.errors.option_not_found_in_dropdown', {
+            optionId,
+            dropdownName,
+          }),
+        );
+      }
+    }
+
+    return dropdown;
   }
 }

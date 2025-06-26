@@ -1,15 +1,15 @@
 import { IsEnum, IsNotEmpty, IsNumber } from 'class-validator';
 import { PositiveIntegerId } from '../../../../common/decorators/positive-integer-id.decorator';
-import { RecordType } from '../../enums/recored-type.enums';
+import { EntityType } from '../../enums/entity-type.const';
 
 export class CreateSelectedDropdownOptionDto {
   @IsNumber()
   @IsNotEmpty()
   recordId: number;
 
-  @IsEnum(RecordType)
+  @IsEnum(EntityType)
   @IsNotEmpty()
-  recordType: RecordType;
+  entityType: EntityType;
 
   @PositiveIntegerId()
   dropdownId: number;

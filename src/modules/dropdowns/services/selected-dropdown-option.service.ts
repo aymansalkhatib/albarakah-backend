@@ -65,7 +65,7 @@ export class SelectedDropdownOptionService {
     const existingSelection = await this.selectedDropdownOptionRepository
       .createQueryBuilder('selection')
       .where('selection.recordId = :recordId', { recordId: createDto.recordId })
-      .andWhere('selection.recordType = :recordType', { recordType: createDto.recordType })
+      .andWhere('selection.entityType = :entityType', { entityType: createDto.entityType })
       .andWhere('selection.dropdownId = :dropdownId', { dropdownId: createDto.dropdownId })
       .andWhere('selection.categoryId = :categoryId', { categoryId: createDto.categoryId })
       .getOne();
@@ -78,7 +78,7 @@ export class SelectedDropdownOptionService {
       // Create new selection
       const selection = this.selectedDropdownOptionRepository.create({
         recordId: createDto.recordId,
-        recordType: createDto.recordType,
+        entityType: createDto.entityType,
         dropdownId: createDto.dropdownId,
         categoryId: createDto.categoryId,
         selectedOptionId: createDto.selectedOptionId[0],
@@ -112,7 +112,7 @@ export class SelectedDropdownOptionService {
       .delete()
       .from(SelectedDropdownOption)
       .where('recordId = :recordId', { recordId: createDto.recordId })
-      .andWhere('recordType = :recordType', { recordType: createDto.recordType })
+      .andWhere('entityType = :entityType', { entityType: createDto.entityType })
       .andWhere('dropdownId = :dropdownId', { dropdownId: createDto.dropdownId })
       .andWhere('categoryId = :categoryId', { categoryId: createDto.categoryId })
       .execute();
@@ -122,7 +122,7 @@ export class SelectedDropdownOptionService {
     for (const optionId of createDto.selectedOptionId) {
       const selection = this.selectedDropdownOptionRepository.create({
         recordId: createDto.recordId,
-        recordType: createDto.recordType,
+        entityType: createDto.entityType,
         dropdownId: createDto.dropdownId,
         categoryId: createDto.categoryId,
         selectedOptionId: optionId,

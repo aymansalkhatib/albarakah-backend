@@ -10,7 +10,7 @@ export class ResponseSelectedDropdownOptionDto {
   recordId: number;
 
   @Expose()
-  recordType: string;
+  entityType: string;
 
   @Expose()
   dropdownId: number;
