@@ -40,6 +40,14 @@ interface DropdownsErrorsCategorymismatchParams {
   categoryId: string | number; dropdownCategoryId: string | number
 }
 
+interface EmployeesErrorsNotfoundParams {
+  id: string | number
+}
+
+interface EmployeesSuccessDeletedParams {
+  firstName: string | number; lastName: string | number
+}
+
 interface PersonsErrorsEmailexistsParams {
   email: string | number
 }
@@ -97,6 +105,10 @@ const TranslationKeys = {
   'dropdowns.errors.selection_not_found': 'dropdowns.errors.selection_not_found',
   'dropdowns.errors.single_selection_exists': 'dropdowns.errors.single_selection_exists',
   'dropdowns.errors.single_selection_requires_one_option': 'dropdowns.errors.single_selection_requires_one_option',
+  'employees.errors.already_employee': 'employees.errors.already_employee',
+  'employees.errors.cannot_delete_with_system_account': 'employees.errors.cannot_delete_with_system_account',
+  'employees.errors.not_found': 'employees.errors.not_found',
+  'employees.success.deleted': 'employees.success.deleted',
   'persons.errors.cannot_delete_related': 'persons.errors.cannot_delete_related',
   'persons.errors.email_exists': 'persons.errors.email_exists',
   'persons.errors.father_name_exists': 'persons.errors.father_name_exists',
@@ -142,6 +154,10 @@ export interface TranslationInterpolations {
   'dropdowns.errors.selection_not_found': DropdownsErrorsSelectionnotfoundParams;
   'dropdowns.errors.single_selection_exists': NoParams;
   'dropdowns.errors.single_selection_requires_one_option': NoParams;
+  'employees.errors.already_employee': NoParams;
+  'employees.errors.cannot_delete_with_system_account': NoParams;
+  'employees.errors.not_found': EmployeesErrorsNotfoundParams;
+  'employees.success.deleted': EmployeesSuccessDeletedParams;
   'persons.errors.cannot_delete_related': PersonsErrorsCannotdeleterelatedParams;
   'persons.errors.email_exists': PersonsErrorsEmailexistsParams;
   'persons.errors.father_name_exists': PersonsErrorsFathernameexistsParams;

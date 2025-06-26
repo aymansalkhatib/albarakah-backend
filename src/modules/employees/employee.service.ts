@@ -7,6 +7,7 @@ import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { PersonsService } from '../persons/services/persons.service';
 import { FilterEmployeeDto } from './dto/filter-employee.dto';
 import { Person } from '../persons/entities/person.entity';
+import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
 
 @Injectable()
 export class EmployeesService {
@@ -14,6 +15,7 @@ export class EmployeesService {
     @InjectRepository(Employee)
     private readonly employeeRepository: Repository<Employee>,
     private readonly personsService: PersonsService,
+    private readonly translateHelper: TranslateHelper,
   ) {}
 
   async create(createEmployeeDto: CreateEmployeeDto): Promise<Employee> {
@@ -25,7 +27,7 @@ export class EmployeesService {
       });
 
       if (person.employee) {
-        throw new ConflictException('This person is already an employee');
+        throw new ConflictException(this.translateHelper.tr('employees.errors.already_employee'));
       }
     } else {
       person = await this.personsService.create(createEmployeeDto.person);
@@ -58,16 +60,17 @@ export class EmployeesService {
 
   async delete(id: number): Promise<{ message: string }> {
     const employee = await this.findOne(id, { relations: ['systemUser'] });
-    console.log(employee);
-
     if (employee.systemUser) {
       throw new ConflictException(
-        'Cannot delete employee with system account. Please delete the system account first.',
+        this.translateHelper.tr('employees.errors.cannot_delete_with_system_account'),
       );
     }
     await this.employeeRepository.delete(id);
     return {
-      message: `Employee ${employee.person?.firstName} ${employee.person?.lastName} has been deleted`,
+      message: this.translateHelper.tr('employees.success.deleted', {
+        firstName: employee.person?.firstName,
+        lastName: employee.person?.lastName,
+      }),
     };
   }
 
@@ -78,7 +81,7 @@ export class EmployeesService {
     });
 
     if (!employee) {
-      throw new NotFoundException(`Employee with ID ${id} not found`);
+      throw new NotFoundException(this.translateHelper.tr('employees.errors.not_found', { id }));
     }
 
     return employee;
