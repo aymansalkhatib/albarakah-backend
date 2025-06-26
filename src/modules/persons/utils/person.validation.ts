@@ -35,6 +35,11 @@ export async function validatePersonUniqueness(
         });
       }
     });
+
+    conditions.push({
+      firstName: dto.firstName,
+      lastName: dto.lastName,
+    });
   }
 
   if (conditions.length === 0) return;
@@ -116,6 +121,11 @@ export async function validatePersonUniqueness(
     }
 
     // Check for name + no parent info conflict
+    console.log(existingPerson.fatherId);
+    console.log(existingPerson.motherId);
+    console.log(existingPerson.firstName);
+    console.log(existingPerson.lastName);
+
     if (
       existingPerson.fatherId == null &&
       existingPerson.motherId == null &&

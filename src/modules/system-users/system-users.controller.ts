@@ -16,10 +16,14 @@ import { CreateSystemUserDto } from './dtos/requests/create-system-user.dto';
 import { SystemUsersService } from './system-users.service';
 import { FilterSystemUserDto } from './dtos/queries/filter-system-user.dto';
 import { UpdateSystemUserDto } from './dtos/requests/update-system-user.dto';
+import { TranslateHelper } from '../../shared/modules/app-i18n/translate.helper';
 
 @Controller('system-users')
 export class SystemUsersController {
-  constructor(private readonly systemUsersService: SystemUsersService) {}
+  constructor(
+    private readonly systemUsersService: SystemUsersService,
+    private readonly translateHelper: TranslateHelper,
+  ) {}
 
   @Post()
   async create(@Body() createUserAccountDto: CreateSystemUserDto): Promise<SystemUserResponseDto> {
@@ -40,10 +44,10 @@ export class SystemUsersController {
   async remove(@Param('id', ParseIntPipe) id: number): Promise<{ message: string }> {
     const systemUser = await this.systemUsersService.findOne(id);
     if (!systemUser) {
-      throw new NotFoundException(`System user with ID ${id} not found`);
+      throw new NotFoundException(this.translateHelper.tr('system-users.errors.not_found', { id }));
     }
     await this.systemUsersService.remove(id);
-    return { message: `System user with ID ${id} has been deleted successfully` };
+    return { message: this.translateHelper.tr('system-users.success.deleted', { id }) };
   }
 
   @Get(':id')

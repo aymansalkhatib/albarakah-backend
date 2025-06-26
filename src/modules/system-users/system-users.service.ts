@@ -7,6 +7,7 @@ import { SystemUser } from './entities/system-user.entity';
 import { CreateSystemUserDto } from './dtos/requests/create-system-user.dto';
 import { FilterSystemUserDto } from './dtos/queries/filter-system-user.dto';
 import { UpdateSystemUserDto } from './dtos/requests/update-system-user.dto';
+import { TranslateHelper } from '../../shared/modules/app-i18n/translate.helper';
 
 @Injectable()
 export class SystemUsersService {
@@ -14,6 +15,7 @@ export class SystemUsersService {
     private readonly employeesService: EmployeesService,
     @InjectRepository(SystemUser)
     private readonly systemUserRepository: Repository<SystemUser>,
+    private readonly translateHelper: TranslateHelper,
   ) {}
 
   async create(createUserAccountDto: CreateSystemUserDto): Promise<SystemUser> {
@@ -24,7 +26,7 @@ export class SystemUsersService {
     });
 
     if (existingUser) {
-      throw new ConflictException('Username is already taken');
+      throw new ConflictException(this.translateHelper.tr('system-users.errors.username_taken'));
     }
 
     if (createUserAccountDto.employeeId) {
@@ -33,7 +35,9 @@ export class SystemUsersService {
       });
 
       if (employee.systemUser) {
-        throw new ConflictException('This employee already has a system user account');
+        throw new ConflictException(
+          this.translateHelper.tr('system-users.errors.employee_has_system_account'),
+        );
       }
     } else {
       employee = await this.employeesService.create(createUserAccountDto.employee);
@@ -55,7 +59,7 @@ export class SystemUsersService {
         },
       });
       if (existingUser) {
-        throw new ConflictException('Username is already taken');
+        throw new ConflictException(this.translateHelper.tr('system-users.errors.username_taken'));
       }
     }
 
@@ -86,7 +90,7 @@ export class SystemUsersService {
     });
 
     if (!systemUser) {
-      throw new NotFoundException(`System user with ID ${id} not found`);
+      throw new NotFoundException(this.translateHelper.tr('system-users.errors.not_found', { id }));
     }
 
     return systemUser;
