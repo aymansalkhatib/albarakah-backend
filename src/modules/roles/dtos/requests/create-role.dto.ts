@@ -1,4 +1,5 @@
-import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { PositiveIntegerIdArray } from '../../../../common/decorators/positive-integer-id-array.decorator';
 
 export class CreateRoleDto {
   @IsNotEmpty()
@@ -10,7 +11,6 @@ export class CreateRoleDto {
   description?: string;
 
   @IsOptional()
-  @IsArray()
-  @IsNumber({}, { each: true })
+  @PositiveIntegerIdArray()
   permissionIds?: number[];
 }

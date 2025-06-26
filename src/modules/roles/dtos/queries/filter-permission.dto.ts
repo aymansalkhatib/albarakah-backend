@@ -1,13 +1,12 @@
-import { Transform } from 'class-transformer';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
+import { PositiveIntegerId } from '../../../../common/decorators/positive-integer-id.decorator';
 
 export class FilterPermissionDto {
   @IsOptional()
-  @IsNumber()
-  @Transform(({ value }) => Number(value))
+  @PositiveIntegerId({ nullable: true })
   id?: number;
 
   @IsOptional()
   @IsString()
-  search?: string;
+  name?: string;
 }

@@ -8,7 +8,6 @@ import { CreateRoleDto } from '@app/modules/roles/dtos/requests/create-role.dto'
 import { UpdateRoleDto } from '@app/modules/roles/dtos/requests/update-role.dto';
 import { FilterRoleDto } from '@app/modules/roles/dtos/queries/filter-role.dto';
 import { CreatePermissionDto } from '@app/modules/roles/dtos/requests/create-permission.dto';
-import { ROLE_HIERARCHY, UserRole } from './enums/role.enum';
 import { UpdatePermissionDto } from '@app/modules/roles/dtos/requests/update-permission.dto';
 import { FilterPermissionDto } from '@app/modules/roles/dtos/queries/filter-permission.dto';
 import { Permission } from './enums/permission.enum';
@@ -53,9 +52,9 @@ export class RolesService {
       queryBuilder.andWhere('role.name LIKE :name', { name: `%${filterDto.name}%` });
     }
 
-    if (filterDto.search) {
-      queryBuilder.andWhere('(role.name LIKE :search OR role.description LIKE :search)', {
-        search: `%${filterDto.search}%`,
+    if (filterDto.name) {
+      queryBuilder.andWhere('(role.name LIKE :name)', {
+        search: `%${filterDto.name}%`,
       });
     }
 
@@ -135,11 +134,10 @@ export class RolesService {
       queryBuilder.andWhere('permission.id = :id', { id: filterDto.id });
     }
 
-    if (filterDto.search) {
-      queryBuilder.andWhere(
-        '(permission.name LIKE :search OR permission.description LIKE :search)',
-        { search: `%${filterDto.search}%` },
-      );
+    if (filterDto.name) {
+      queryBuilder.andWhere('(permission.name LIKE :name)', {
+        name: `%${filterDto.name}%`,
+      });
     }
 
     return queryBuilder.getMany();
@@ -215,56 +213,5 @@ export class RolesService {
     }
 
     return role.rolePermissions.map((rp) => rp.permission);
-  }
-
-  // تحقق ما إذا كان المستخدم يمتلك دورًا معينًا
-  hasRole(userRoles: UserRole[], requiredRole: UserRole): boolean {
-    return userRoles.some(
-      (userRole) =>
-        userRole === requiredRole ||
-        (ROLE_HIERARCHY[userRole] && ROLE_HIERARCHY[userRole].includes(requiredRole)),
-    );
-  }
-
-  // تحقق ما إذا كان المستخدم يمتلك أي من الأدوار المطلوبة
-  hasAnyRole(userRoles: UserRole[], requiredRoles: UserRole[]): boolean {
-    return requiredRoles.some((required) => this.hasRole(userRoles, required));
-  }
-
-  // تحقق ما إذا كان المستخدم يمتلك جميع الأدوار المطلوبة
-  hasAllRoles(userRoles: UserRole[], requiredRoles: UserRole[]): boolean {
-    return requiredRoles.every((required) => this.hasRole(userRoles, required));
-  }
-
-  // تحقق ما إذا كان المستخدم يمتلك جميع الصلاحيات المطلوبة
-  async hasAllPermissions(userRoles: UserRole[], requiredPermissions: string[]): Promise<boolean> {
-    const userPermissions = new Set<string>();
-
-    for (const role of userRoles) {
-      try {
-        const permissions = await this.getPermissionsForRoleName(role);
-        permissions.forEach((p) => userPermissions.add(p.name));
-      } catch (error) {
-        // إذا لم يتم العثور على الدور، نتجاهل الخطأ ونستمر
-      }
-    }
-
-    return requiredPermissions.every((p) => userPermissions.has(p));
-  }
-
-  // تحقق ما إذا كان المستخدم يمتلك أي من الصلاحيات المطلوبة
-  async hasAnyPermission(userRoles: UserRole[], requiredPermissions: string[]): Promise<boolean> {
-    const userPermissions = new Set<string>();
-
-    for (const role of userRoles) {
-      try {
-        const permissions = await this.getPermissionsForRoleName(role);
-        permissions.forEach((p) => userPermissions.add(p.name));
-      } catch (error) {
-        // إذا لم يتم العثور على الدور، نتجاهل الخطأ ونستمر
-      }
-    }
-
-    return requiredPermissions.some((p) => userPermissions.has(p));
   }
 }

@@ -135,11 +135,10 @@ export class SystemUsersService {
         });
       }
 
-      if (filterDto.role.search) {
-        queryBuilder.andWhere(
-          '(role.name ILIKE :roleSearch OR role.description ILIKE :roleSearch)',
-          { roleSearch: `%${filterDto.role.search}%` },
-        );
+      if (filterDto.role.name) {
+        queryBuilder.andWhere('(role.name ILIKE :name)', {
+          name: `%${filterDto.role.name}%`,
+        });
       }
     }
 
