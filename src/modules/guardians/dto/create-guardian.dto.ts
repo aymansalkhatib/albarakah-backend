@@ -2,7 +2,7 @@ import { IsDate, IsEnum, IsNumber, IsOptional, IsString, ValidateNested } from '
 import { FamilyRelationType } from '../../beneficiary-families/enums/family-relation-type.enum';
 import { Type } from 'class-transformer';
 import { OnlyOneOf } from '../../../common/decorators/validate-one-of-two-fields.validator';
-import { CreatePersonDto } from '../../persons/dto/create-person.dto';
+import { CreatePersonDto } from '@app/modules/persons/dtos/requests/create-person.dto';
 
 @OnlyOneOf([
   {

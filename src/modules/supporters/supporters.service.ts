@@ -5,7 +5,7 @@ import { Supporter } from './entities/supporters.entity';
 import { CreateSupporterDto } from './dto/create-supporter.dto';
 import { UpdateSupporterDto } from './dto/update-supporter.dto';
 import { FilterSupporterDto } from './dto/filter-supporter.dto';
-import { PersonsService } from '../persons/persons.service';
+import { PersonsService } from '../persons/services/persons.service';
 import { Person } from '../persons/entities/person.entity';
 import { plainToInstance } from 'class-transformer';
 import { ResponseSupporterDto } from './dto/response-supporter.dto';

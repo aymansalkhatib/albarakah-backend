@@ -1,3 +1,4 @@
+import { PersonDropdown } from '@app/modules/persons/enums/type-dropdown.enum';
 import { DropdownCategory } from '../../modules/dropdowns/entities/dropdown-category.entity';
 import { DropdownOption } from '../../modules/dropdowns/entities/dropdown-option.entity';
 import { Dropdown, DropdownSelectionType } from '../../modules/dropdowns/entities/dropdown.entity';
@@ -25,7 +26,7 @@ export async function seedDropdowns(queryRunner: QueryRunner) {
 
   // Marital Status
   const maritalStatusDropdown = dropdownRepo.create({
-    dropdownName: 'Marital Status',
+    dropdownName: PersonDropdown.MARITAL_STATUS,
     dropdownCategory: profileCategory,
     selectionType: DropdownSelectionType.SINGLE,
   });
@@ -42,7 +43,7 @@ export async function seedDropdowns(queryRunner: QueryRunner) {
 
   // Health Status
   const healthStatusDropdown = dropdownRepo.create({
-    dropdownName: 'Health Status',
+    dropdownName: PersonDropdown.HEALTH_STATUS,
     dropdownCategory: profileCategory,
     selectionType: DropdownSelectionType.SINGLE,
   });
@@ -68,7 +69,7 @@ export async function seedDropdowns(queryRunner: QueryRunner) {
 
   // Education Level
   const educationLevelDropdown = dropdownRepo.create({
-    dropdownName: 'Education Level',
+    dropdownName: PersonDropdown.EDUCATION_LEVEL,
     dropdownCategory: profileCategory,
     selectionType: DropdownSelectionType.SINGLE,
   });
@@ -96,7 +97,7 @@ export async function seedDropdowns(queryRunner: QueryRunner) {
 
   // School Type
   const schoolTypeDropdown = dropdownRepo.create({
-    dropdownName: 'School Type',
+    dropdownName: PersonDropdown.SCHOOL_TYPE,
     dropdownCategory: profileCategory,
     selectionType: DropdownSelectionType.SINGLE,
   });
@@ -124,7 +125,7 @@ export async function seedDropdowns(queryRunner: QueryRunner) {
 
   // Grade Level
   const gradeLevelDropdown = dropdownRepo.create({
-    dropdownName: 'Grade Level',
+    dropdownName: PersonDropdown.GRADE_LEVEL,
     dropdownCategory: profileCategory,
     selectionType: DropdownSelectionType.SINGLE,
   });

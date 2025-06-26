@@ -5,7 +5,7 @@ import { Guardian } from './entities/guardian.entity';
 import { CreateGuardianDto } from './dto/create-guardian.dto';
 import { UpdateGuardianDto } from './dto/update-guardian.dto';
 import { FilterGuardianDto } from './dto/filter-guardian.dto';
-import { PersonsService } from '../persons/persons.service';
+import { PersonsService } from '../persons/services/persons.service';
 import { Person } from '../persons/entities/person.entity';
 
 @Injectable()

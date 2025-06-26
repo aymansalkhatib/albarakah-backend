@@ -7,9 +7,9 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { FilterPersonDto } from '../../persons/dto/filter-person.dto';
 import { IsAfterDate } from '../../../common/decorators/is-after-date.decorator';
 import { FamilyRelationType } from '../../beneficiary-families/enums/family-relation-type.enum';
+import { FilterPersonDto } from '@app/modules/persons/dtos/queries/filter-person.dto';
 
 export class FilterGuardianDto {
   @IsOptional()

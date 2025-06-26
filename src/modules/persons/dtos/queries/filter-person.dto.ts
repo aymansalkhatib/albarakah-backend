@@ -11,10 +11,10 @@ import {
   MinDate,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { GenderType } from '../enums/gender-type.enum';
-import { ClothingSize } from '../enums/clothing-size.enum';
-import { IsAfterDate } from '../../../common/decorators/is-after-date.decorator';
-import { StrictBoolean } from '../../../common/decorators/strict-boolean.decorator';
+import { IsAfterDate } from '@app/common/decorators/is-after-date.decorator';
+import { StrictBoolean } from '@app/common/decorators/strict-boolean.decorator';
+import { ClothingSize } from '../../enums/clothing-size.enum';
+import { GenderType } from '../../enums/gender-type.enum';
 
 export class FilterPersonDto {
   @IsOptional()

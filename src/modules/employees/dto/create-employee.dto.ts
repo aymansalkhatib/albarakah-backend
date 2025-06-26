@@ -6,9 +6,9 @@ import {
   Length,
   ValidateNested,
 } from 'class-validator';
-import { CreatePersonDto } from '../../persons/dto/create-person.dto';
 import { Type } from 'class-transformer';
 import { OnlyOneOf } from '../../../common/decorators/validate-one-of-two-fields.validator';
+import { CreatePersonDto } from '@app/modules/persons/dtos/requests/create-person.dto';
 
 @OnlyOneOf([
   {

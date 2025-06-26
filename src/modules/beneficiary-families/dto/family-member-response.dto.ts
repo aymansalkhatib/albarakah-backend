@@ -1,7 +1,7 @@
 import { Expose, Type } from 'class-transformer';
 import { CreateFamilyMemberDto } from './create-family-member.dto';
-import { PersonResponseDto } from '../../persons/dto/person-response.dto';
 import { BeneficiaryFamilyResponseDto } from './beneficiary-family-response.dto';
+import { PersonResponseDto } from '@app/modules/persons/dtos/responses/person-response.dto';
 
 export class FamilyMemberResponseDto extends CreateFamilyMemberDto {
   @Expose()

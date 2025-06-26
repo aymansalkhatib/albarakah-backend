@@ -10,11 +10,11 @@ import {
   Query,
   UseInterceptors,
 } from '@nestjs/common';
-import { PersonsService } from './persons.service';
-import { CreatePersonDto } from './dto/create-person.dto';
-import { UpdatePersonDto } from './dto/update-person.dto';
-import { PersonResponseDto } from './dto/person-response.dto';
-import { FilterPersonDto } from './dto/filter-person.dto';
+import { PersonsService } from '../services/persons.service';
+import { UpdatePersonDto } from '../dtos/requests/update-person.dto';
+import { FilterPersonDto } from '../dtos/queries/filter-person.dto';
+import { CreatePersonDto } from '../dtos/requests/create-person.dto';
+import { PersonResponseDto } from '../dtos/responses/person-response.dto';
 
 @Controller('persons')
 @UseInterceptors(PersonResponseDto)

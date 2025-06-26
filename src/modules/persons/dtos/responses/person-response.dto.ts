@@ -1,6 +1,6 @@
-import { GenderType } from '../enums/gender-type.enum';
-import { ClothingSize } from '../enums/clothing-size.enum';
 import { Exclude, Expose, Type } from 'class-transformer';
+import { GenderType } from '../../enums/gender-type.enum';
+import { ClothingSize } from '../../enums/clothing-size.enum';
 
 @Exclude()
 export class PersonResponseDto {

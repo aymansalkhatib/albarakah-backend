@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { Employee } from './entities/employee.entity';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
-import { PersonsService } from '../persons/persons.service';
+import { PersonsService } from '../persons/services/persons.service';
 import { FilterEmployeeDto } from './dto/filter-employee.dto';
 import { Person } from '../persons/entities/person.entity';
 

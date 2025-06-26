@@ -1,8 +1,8 @@
 import { BadRequestException, ConflictException } from '@nestjs/common';
-import { CreatePersonDto } from '../dto/create-person.dto';
-import { UpdatePersonDto } from '../dto/update-person.dto';
+import { UpdatePersonDto } from '../dtos/requests/update-person.dto';
 import { Person } from '../entities/person.entity';
 import { Not, Repository } from 'typeorm';
+import { CreatePersonDto } from '../dtos/requests/create-person.dto';
 
 export async function validatePersonUniqueness(
   personRepository: Repository<Person>,

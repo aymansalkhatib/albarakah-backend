@@ -1,4 +1,3 @@
-// person.entity.ts
 import {
   Check,
   Column,

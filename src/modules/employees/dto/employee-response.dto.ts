@@ -1,5 +1,5 @@
+import { PersonResponseDto } from '@app/modules/persons/dtos/responses/person-response.dto';
 import { Exclude, Expose, Type } from 'class-transformer';
-import { PersonResponseDto } from '../../persons/dto/person-response.dto';
 
 @Exclude()
 export class EmployeeResponseDto {
