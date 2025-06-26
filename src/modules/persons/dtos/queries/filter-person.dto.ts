@@ -99,6 +99,11 @@ export class FilterPersonDto {
   maritalStatusId?: number;
 
   @IsOptional()
+  @IsInt()
+  @Min(1)
+  gradeLevelId?: number;
+
+  @IsOptional()
   @IsString()
   @Length(1, 150)
   universityMajor?: string;

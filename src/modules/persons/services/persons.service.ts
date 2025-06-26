@@ -46,6 +46,8 @@ export class PersonsService {
       if (r.status === 'rejected') throw r.reason;
     });
 
+    await this.validateDropdownFields(createPersonDto);
+
     const person = this.personRepository.create(createPersonDto);
     const savedPerson = await this.personRepository.save(person);
     return this.findOne(savedPerson.id, { relations: ['father', 'mother'] });
@@ -72,6 +74,8 @@ export class PersonsService {
     (await Promise.allSettled(validationPromises)).forEach((r) => {
       if (r.status === 'rejected') throw r.reason;
     });
+
+    await this.validateDropdownFields(updatePersonDto);
 
     const savedPerson = await this.personRepository.save(mergedPerson);
     return this.findOne(savedPerson.id, { relations: ['father', 'mother'] });
@@ -252,6 +256,14 @@ export class PersonsService {
         categoryName: Person.name,
         dropdownName: PersonDropdown.MARITAL_STATUS,
         optionId: dto.maritalStatusId,
+      });
+    }
+
+    if (dto.gradeLevelId) {
+      await this.dropdownService.findDropdownWithOptionCheck({
+        categoryName: Person.name,
+        dropdownName: PersonDropdown.GRADE_LEVEL,
+        optionId: dto.gradeLevelId,
       });
     }
   }

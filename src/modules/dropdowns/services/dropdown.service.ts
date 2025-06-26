@@ -286,52 +286,49 @@ export class DropdownService {
     categoryParentId?: number;
   }): Promise<Dropdown> {
     const { dropdownName, categoryName, optionId, categoryParentId } = params;
-    let query = this.dropdownRepository
-      .createQueryBuilder('dropdown')
-      .leftJoin('dropdown.dropdownCategory', 'category')
-      .select([
-        'dropdown.id',
-        'dropdown.dropdownName',
-        'category.id',
-        'category.name',
-        'category.parentId',
-      ])
-      .where('dropdown.dropdownName = :dropdownName', { dropdownName })
-      .andWhere('category.name = :categoryName', { categoryName })
-      .andWhere('EXISTS (SELECT 1 FROM dropdown.options opt WHERE opt.id = :optionId)', {
-        optionId,
-      });
 
-    if (categoryParentId !== undefined && categoryParentId !== null) {
-      query = query.andWhere('category.parentId = :parentId', { parentId: categoryParentId });
-    }
+    const whereConditions = {
+      dropdownName,
+      dropdownCategory: {
+        name: categoryName,
+        ...(categoryParentId !== undefined &&
+          categoryParentId !== null && {
+            parentId: categoryParentId,
+          }),
+      },
+    };
 
-    const dropdown = await query.getOne();
+    const dropdown = await this.dropdownRepository.findOne({
+      where: whereConditions,
+      relations: ['dropdownCategory', 'options'],
+      select: {
+        id: true,
+        dropdownName: true,
+        dropdownCategory: {
+          id: true,
+          name: true,
+          parentId: true,
+        },
+      },
+    });
 
     if (!dropdown) {
-      // Check what specifically is missing for better error message
-      const dropdownOnlyCheck = await this.dropdownRepository
-        .createQueryBuilder('dropdown')
-        .leftJoin('dropdown.dropdownCategory', 'category')
-        .where('dropdown.dropdownName = :dropdownName', { dropdownName })
-        .andWhere('category.name = :categoryName', { categoryName })
-        .getOne();
+      throw new NotFoundException(
+        this.translateHelper.tr('dropdowns.errors.dropdown_not_found', {
+          id: dropdownName,
+        }),
+      );
+    }
 
-      if (!dropdownOnlyCheck) {
-        throw new NotFoundException(
-          this.translateHelper.tr('dropdowns.errors.dropdown_not_found_in_category', {
-            dropdownName,
-            categoryName,
-          }),
-        );
-      } else {
-        throw new NotFoundException(
-          this.translateHelper.tr('dropdowns.errors.option_not_found_in_dropdown', {
-            optionId,
-            dropdownName,
-          }),
-        );
-      }
+    const hasOption = dropdown.options?.some((option) => option.id === optionId);
+
+    if (!hasOption) {
+      throw new NotFoundException(
+        this.translateHelper.tr('dropdowns.errors.option_not_found_in_dropdown', {
+          optionId,
+          dropdownName,
+        }),
+      );
     }
 
     return dropdown;

@@ -65,6 +65,9 @@ export class PersonResponseDto {
   maritalStatusId?: number;
 
   @Expose()
+  gradeLevelId?: number;
+
+  @Expose()
   universityMajor?: string;
 
   @Expose()

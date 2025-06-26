@@ -106,6 +106,11 @@ export class CreatePersonDto {
   @IsOptional()
   @IsInt()
   @Min(1)
+  gradeLevelId?: number;
+
+  @IsOptional()
+  @IsInt()
+  @Min(1)
   personStatusId?: number;
 
   @IsOptional()

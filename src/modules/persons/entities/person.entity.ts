@@ -83,6 +83,9 @@ export class Person {
   @Column({ name: 'marital_status_id', nullable: true })
   maritalStatusId: number;
 
+  @Column({ name: 'grade_level_id', nullable: true })
+  gradeLevelId: number;
+
   @Column({ length: 150, nullable: true, name: 'university_major' })
   universityMajor: string;
 
@@ -139,6 +142,10 @@ export class Person {
   @ManyToOne(() => DropdownOption, { nullable: true, onDelete: 'RESTRICT' })
   @JoinColumn({ name: 'health_status_id' })
   healthStatus?: DropdownOption;
+  
+  @ManyToOne(() => DropdownOption, { nullable: true, onDelete: 'RESTRICT' })
+  @JoinColumn({ name: 'grade_level_id' })
+  gradeLevel?: DropdownOption;
 
   // one-to-one relations
   @OneToOne(() => Guardian, (guardian) => guardian.person, {
