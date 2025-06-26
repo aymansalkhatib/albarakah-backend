@@ -5,15 +5,12 @@ import { AppService } from './app.service';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { ErrorHandlerFactory } from './shared/exceptions-filter/error-handler.factory';
 import { GlobalExceptionFilter } from './shared/exceptions-filter/global-exception.filter';
-// import { NotificationModule } from './services/notifications/notification.module';
 import { AppI18nModule } from './shared/modules/app-i18n/i18n.module';
 import { AppConfigModel } from './shared/modules/app-config/app_config.module';
 import { AppTypeOrmModule } from './shared/modules/app-type-orm/app-type-orm.module';
 import { EmployeesModule } from './modules/employees/entities/employee.module';
 import { SystemUsersModule } from './modules/users/system-users.module';
 import { DropdownsModule } from './modules/dropdowns/dropdowns.module';
-
-// import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
