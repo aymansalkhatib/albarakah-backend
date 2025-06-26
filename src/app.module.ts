@@ -9,7 +9,7 @@ import { AppI18nModule } from './shared/modules/app-i18n/i18n.module';
 import { AppConfigModel } from './shared/modules/app-config/app_config.module';
 import { AppTypeOrmModule } from './shared/modules/app-type-orm/app-type-orm.module';
 import { EmployeesModule } from './modules/employees/entities/employee.module';
-import { SystemUsersModule } from './modules/users/system-users.module';
+import { SystemUsersModule } from './modules/system-users/system-users.module';
 import { DropdownsModule } from './modules/dropdowns/dropdowns.module';
 
 @Module({

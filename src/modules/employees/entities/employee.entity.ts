@@ -12,7 +12,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Interview } from '../../interviews/entities/interview.entity';
-import { SystemUser } from '../../users/entities/system-user.entity';
+import { SystemUser } from '../../system-users/entities/system-user.entity';
 
 @Entity('employees')
 @Index('idx_employees_person_id', ['personId'], { unique: true })

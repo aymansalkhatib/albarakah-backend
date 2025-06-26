@@ -31,7 +31,7 @@ import { Supporter } from '../../../modules/supporters/entities/supporters.entit
 import { CourseBatch } from '../../../modules/training-courses/entities/course-batch.entity';
 import { PersonCourseBatch } from '../../../modules/training-courses/entities/person-course-batch.entity';
 import { TrainingCourse } from '../../../modules/training-courses/entities/training-course.entity';
-import { SystemUser } from '../../../modules/users/entities/system-user.entity';
+import { SystemUser } from '../../../modules/system-users/entities/system-user.entity';
 import { Visit } from '../../../modules/visits/entities/visit.entity';
 import { Child } from '../../../modules/children/entities/children.entity';
 import { SupporterChildSponsorship } from '../../../modules/supporters/entities/supporters-children.entity';
