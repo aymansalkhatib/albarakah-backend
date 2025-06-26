@@ -1,6 +1,6 @@
 import { Exclude, Expose, Type } from 'class-transformer';
-import { EmployeeResponseDto } from '../../employees/dto/employee-response.dto';
-import { ResponseRoleDto } from '../../roles/dto/response/response-role.dto';
+import { EmployeeResponseDto } from '../../../employees/dtos/responses/employee-response.dto';
+import { ResponseRoleDto } from '../../../roles/dto/response/response-role.dto';
 
 @Exclude()
 export class SystemUserResponseDto {

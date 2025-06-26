@@ -11,10 +11,10 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { EmployeesService } from './employee.service';
-import { CreateEmployeeDto } from './dto/create-employee.dto';
-import { UpdateEmployeeDto } from './dto/update-employee.dto';
-import { EmployeeResponseDto } from './dto/employee-response.dto';
-import { FilterEmployeeDto } from './dto/filter-employee.dto';
+import { CreateEmployeeDto } from './dtos/requests/create-employee.dto';
+import { EmployeeResponseDto } from './dtos/responses/employee-response.dto';
+import { UpdateEmployeeDto } from './dtos/requests/update-employee.dto';
+import { FilterEmployeeDto } from './dtos/queries/filter-employee.dto';
 
 @Controller('employees')
 @UseInterceptors(EmployeeResponseDto)

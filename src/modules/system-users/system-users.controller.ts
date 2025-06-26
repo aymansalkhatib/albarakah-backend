@@ -10,13 +10,12 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { UpdateSystemUserDto } from './dto/update-user-account.dto';
 import { toDto } from '../../common/helpers/to-dto';
-import { SystemUserResponseDto } from './dto/system-user-response.dto';
-import { CreateSystemUserDto } from './dto/create-system-user.dto';
+import { SystemUserResponseDto } from './dtos/responses/system-user-response.dto';
+import { CreateSystemUserDto } from './dtos/requests/create-system-user.dto';
 import { SystemUsersService } from './system-users.service';
-import { FilterSystemUserDto } from './dto/filter-system-user.dto';
-import 'reflect-metadata';
+import { FilterSystemUserDto } from './dtos/queries/filter-system-user.dto';
+import { UpdateSystemUserDto } from './dtos/requests/update-system-user.dto';
 
 @Controller('system-users')
 export class SystemUsersController {

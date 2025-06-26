@@ -7,8 +7,8 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { CreateEmployeeDto } from '../../employees/dto/create-employee.dto';
-import { OnlyOneOf } from '../../../common/decorators/validate-one-of-two-fields.validator';
+import { CreateEmployeeDto } from '../../../employees/dtos/requests/create-employee.dto';
+import { OnlyOneOf } from '../../../../common/decorators/validate-one-of-two-fields.validator';
 
 @OnlyOneOf([
   {

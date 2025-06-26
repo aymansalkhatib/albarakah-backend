@@ -16,16 +16,15 @@ import { StrictBoolean } from '@app/common/decorators/strict-boolean.decorator';
 import { NotEqualTo } from '@app/common/decorators/not-equal-to.decorator';
 import { ClothingSize } from '../../enums/clothing-size.enum';
 import { GenderType } from '../../enums/gender-type.enum';
+import { PositiveIntegerId } from '@app/common/decorators/positive-integer-id.decorator';
 
 export class CreatePersonDto {
   @IsOptional()
-  @IsInt()
-  @Min(1)
+  @PositiveIntegerId()
   fatherId?: number;
 
   @IsOptional()
-  @IsInt()
-  @Min(1)
+  @PositiveIntegerId()
   @NotEqualTo('fatherId')
   motherId?: number;
 
@@ -89,33 +88,27 @@ export class CreatePersonDto {
   isSmoker?: boolean;
 
   @IsOptional()
-  @IsInt()
-  @Min(1)
+  @PositiveIntegerId()
   healthStatusId?: number;
 
   @IsOptional()
-  @IsInt()
-  @Min(1)
+  @PositiveIntegerId()
   educationLevelId?: number;
 
   @IsOptional()
-  @IsInt()
-  @Min(1)
+  @PositiveIntegerId()
   schoolTypeId?: number;
 
   @IsOptional()
-  @IsInt()
-  @Min(1)
+  @PositiveIntegerId()
   gradeLevelId?: number;
 
   @IsOptional()
-  @IsInt()
-  @Min(1)
+  @PositiveIntegerId()
   personStatusId?: number;
 
   @IsOptional()
-  @IsInt()
-  @Min(1)
+  @PositiveIntegerId()
   maritalStatusId?: number;
 
   @IsOptional()

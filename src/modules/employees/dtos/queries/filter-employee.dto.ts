@@ -7,8 +7,8 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { IsAfterDate } from '../../../common/decorators/is-after-date.decorator';
 import { FilterPersonDto } from '@app/modules/persons/dtos/queries/filter-person.dto';
+import { IsAfterDate } from '@app/common/decorators/is-after-date.decorator';
 
 export class FilterEmployeeDto {
   @IsOptional()

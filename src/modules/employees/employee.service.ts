@@ -2,12 +2,12 @@ import { ConflictException, Injectable, NotFoundException } from '@nestjs/common
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Employee } from './entities/employee.entity';
-import { CreateEmployeeDto } from './dto/create-employee.dto';
-import { UpdateEmployeeDto } from './dto/update-employee.dto';
+import { CreateEmployeeDto } from './dtos/requests/create-employee.dto';
 import { PersonsService } from '../persons/services/persons.service';
-import { FilterEmployeeDto } from './dto/filter-employee.dto';
 import { Person } from '../persons/entities/person.entity';
 import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
+import { FilterEmployeeDto } from './dtos/queries/filter-employee.dto';
+import { UpdateEmployeeDto } from './dtos/requests/update-employee.dto';
 
 @Injectable()
 export class EmployeesService {

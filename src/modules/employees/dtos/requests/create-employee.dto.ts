@@ -7,8 +7,9 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { OnlyOneOf } from '../../../common/decorators/validate-one-of-two-fields.validator';
+import { OnlyOneOf } from '../../../../common/decorators/validate-one-of-two-fields.validator';
 import { CreatePersonDto } from '@app/modules/persons/dtos/requests/create-person.dto';
+import { PositiveIntegerId } from '@app/common/decorators/positive-integer-id.decorator';
 
 @OnlyOneOf([
   {
@@ -40,6 +41,6 @@ export class CreateEmployeeDto {
   person?: CreatePersonDto;
 
   @IsOptional()
-  @IsNumber()
+  @PositiveIntegerId()
   personId?: number;
 }
