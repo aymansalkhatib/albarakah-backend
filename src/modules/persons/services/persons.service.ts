@@ -6,16 +6,18 @@ import { UpdatePersonDto } from '../dtos/requests/update-person.dto';
 import { validateFamilyRelationships, validatePersonUniqueness } from '../utils/person.validation';
 import { FilterPersonDto } from '../dtos/queries/filter-person.dto';
 import { CreatePersonDto } from '../dtos/requests/create-person.dto';
+import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
 
 @Injectable()
 export class PersonsService {
   constructor(
     @InjectRepository(Person)
     private readonly personRepository: Repository<Person>,
+    private readonly translateHelper: TranslateHelper,
   ) {}
 
   async create(createPersonDto: CreatePersonDto): Promise<Person> {
-    validateFamilyRelationships(null, createPersonDto, null);
+    validateFamilyRelationships(this.translateHelper, null, createPersonDto, null);
 
     const validationPromises = [];
 
@@ -27,7 +29,14 @@ export class PersonsService {
       validationPromises.push(this.findOne(createPersonDto.motherId));
     }
 
-    validationPromises.push(validatePersonUniqueness(this.personRepository, createPersonDto));
+    validationPromises.push(
+      validatePersonUniqueness(
+        this.translateHelper,
+        this.personRepository,
+        createPersonDto,
+        undefined,
+      ),
+    );
 
     (await Promise.allSettled(validationPromises)).forEach((r) => {
       if (r.status === 'rejected') throw r.reason;
@@ -42,7 +51,7 @@ export class PersonsService {
     const person = await this.findOne(id);
     const mergedPerson = this.personRepository.merge(person, updatePersonDto);
 
-    validateFamilyRelationships(id, updatePersonDto, person);
+    validateFamilyRelationships(this.translateHelper, id, updatePersonDto, person);
 
     const validationPromises = [];
 
@@ -52,7 +61,9 @@ export class PersonsService {
     if (updatePersonDto.motherId) {
       validationPromises.push(this.findOne(updatePersonDto.motherId));
     }
-    validationPromises.push(validatePersonUniqueness(this.personRepository, mergedPerson, id));
+    validationPromises.push(
+      validatePersonUniqueness(this.translateHelper, this.personRepository, mergedPerson, id),
+    );
 
     (await Promise.allSettled(validationPromises)).forEach((r) => {
       if (r.status === 'rejected') throw r.reason;
@@ -81,13 +92,20 @@ export class PersonsService {
     if (relatedData.length > 0) {
       const relationsList = relatedData.join(', ');
       throw new ConflictException(
-        `Cannot delete person "${person.firstName} ${person.lastName}" because they have the following related records: ${relationsList}. Please remove these relationships first.`,
+        this.translateHelper.tr('persons.errors.cannot_delete_related', {
+          firstName: person.firstName,
+          lastName: person.lastName,
+          relationsList,
+        }),
       );
     }
 
     await this.personRepository.delete(id);
     return {
-      message: `Person "${person.firstName} ${person.lastName}" has been successfully deleted`,
+      message: this.translateHelper.tr('persons.success.deleted', {
+        firstName: person.firstName,
+        lastName: person.lastName,
+      }),
     };
   }
 
@@ -98,7 +116,7 @@ export class PersonsService {
     });
 
     if (!person) {
-      throw new NotFoundException(`Person with ID ${id} not found`);
+      throw new NotFoundException(this.translateHelper.tr('persons.errors.not_found', { id }));
     }
 
     return person;

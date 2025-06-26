@@ -40,6 +40,42 @@ interface DropdownsErrorsCategorymismatchParams {
   categoryId: string | number; dropdownCategoryId: string | number
 }
 
+interface PersonsErrorsEmailexistsParams {
+  email: string | number
+}
+
+interface PersonsErrorsNationalidexistsParams {
+  nationalId: string | number
+}
+
+interface PersonsErrorsFathernameexistsParams {
+  firstName: string | number; lastName: string | number
+}
+
+interface PersonsErrorsMothernameexistsParams {
+  firstName: string | number; lastName: string | number
+}
+
+interface PersonsErrorsNamenoparentexistsParams {
+  firstName: string | number; lastName: string | number
+}
+
+interface PersonsErrorsCannotdeleterelatedParams {
+  firstName: string | number; lastName: string | number; relationsList: string | number
+}
+
+interface PersonsErrorsNotfoundParams {
+  id: string | number
+}
+
+interface PersonsErrorsNamebirthdateexistsParams {
+  firstName: string | number; lastName: string | number; birthDate: string | number
+}
+
+interface PersonsSuccessDeletedParams {
+  firstName: string | number; lastName: string | number
+}
+
 const TranslationKeys = {
   'dropdowns.errors.cannot_create_subcategory': 'dropdowns.errors.cannot_create_subcategory',
   'dropdowns.errors.category_has_children': 'dropdowns.errors.category_has_children',
@@ -60,7 +96,23 @@ const TranslationKeys = {
   'dropdowns.errors.option_not_in_dropdown': 'dropdowns.errors.option_not_in_dropdown',
   'dropdowns.errors.selection_not_found': 'dropdowns.errors.selection_not_found',
   'dropdowns.errors.single_selection_exists': 'dropdowns.errors.single_selection_exists',
-  'dropdowns.errors.single_selection_requires_one_option': 'dropdowns.errors.single_selection_requires_one_option'
+  'dropdowns.errors.single_selection_requires_one_option': 'dropdowns.errors.single_selection_requires_one_option',
+  'persons.errors.cannot_delete_related': 'persons.errors.cannot_delete_related',
+  'persons.errors.email_exists': 'persons.errors.email_exists',
+  'persons.errors.father_name_exists': 'persons.errors.father_name_exists',
+  'persons.errors.mother_name_exists': 'persons.errors.mother_name_exists',
+  'persons.errors.name_birthdate_exists': 'persons.errors.name_birthdate_exists',
+  'persons.errors.name_no_parent_exists': 'persons.errors.name_no_parent_exists',
+  'persons.errors.national_id_exists': 'persons.errors.national_id_exists',
+  'persons.errors.not_found': 'persons.errors.not_found',
+  'persons.errors.person_details_exists': 'persons.errors.person_details_exists',
+  'persons.errors.same_father_mother': 'persons.errors.same_father_mother',
+  'persons.errors.self_father': 'persons.errors.self_father',
+  'persons.errors.self_mother': 'persons.errors.self_mother',
+  'persons.success.deleted': 'persons.success.deleted',
+  'persons.validation.birth_date_max': 'persons.validation.birth_date_max',
+  'persons.validation.birth_date_min': 'persons.validation.birth_date_min',
+  'persons.validation.national_id_length': 'persons.validation.national_id_length'
 } as const;
 
 export type TranslationKey = keyof typeof TranslationKeys;
@@ -90,4 +142,20 @@ export interface TranslationInterpolations {
   'dropdowns.errors.selection_not_found': DropdownsErrorsSelectionnotfoundParams;
   'dropdowns.errors.single_selection_exists': NoParams;
   'dropdowns.errors.single_selection_requires_one_option': NoParams;
+  'persons.errors.cannot_delete_related': PersonsErrorsCannotdeleterelatedParams;
+  'persons.errors.email_exists': PersonsErrorsEmailexistsParams;
+  'persons.errors.father_name_exists': PersonsErrorsFathernameexistsParams;
+  'persons.errors.mother_name_exists': PersonsErrorsMothernameexistsParams;
+  'persons.errors.name_birthdate_exists': PersonsErrorsNamebirthdateexistsParams;
+  'persons.errors.name_no_parent_exists': PersonsErrorsNamenoparentexistsParams;
+  'persons.errors.national_id_exists': PersonsErrorsNationalidexistsParams;
+  'persons.errors.not_found': PersonsErrorsNotfoundParams;
+  'persons.errors.person_details_exists': NoParams;
+  'persons.errors.same_father_mother': NoParams;
+  'persons.errors.self_father': NoParams;
+  'persons.errors.self_mother': NoParams;
+  'persons.success.deleted': PersonsSuccessDeletedParams;
+  'persons.validation.birth_date_max': NoParams;
+  'persons.validation.birth_date_min': NoParams;
+  'persons.validation.national_id_length': NoParams;
 }

@@ -3,8 +3,10 @@ import { UpdatePersonDto } from '../dtos/requests/update-person.dto';
 import { Person } from '../entities/person.entity';
 import { Not, Repository } from 'typeorm';
 import { CreatePersonDto } from '../dtos/requests/create-person.dto';
+import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
 
 export async function validatePersonUniqueness(
+  translateHelper: TranslateHelper,
   personRepository: Repository<Person>,
   dto: CreatePersonDto | UpdatePersonDto,
   excludeId?: number,
@@ -21,19 +23,17 @@ export async function validatePersonUniqueness(
     conditions.push({ nationalId: dto.nationalId });
   }
 
-  if (dto.firstName || dto.lastName || dto.motherId || dto.fatherId) {
-    // Name + Father combination check
-    conditions.push({
-      firstName: dto.firstName,
-      lastName: dto.lastName,
-      fatherId: dto.fatherId,
-    });
+  if (dto.firstName && dto.lastName) {
+    const additionalFields = ['fatherId', 'motherId', 'birthDate'];
 
-    // Name + Mother combination check
-    conditions.push({
-      firstName: dto.firstName,
-      lastName: dto.lastName,
-      motherId: dto.motherId,
+    additionalFields.forEach((field) => {
+      if (dto[field]) {
+        conditions.push({
+          firstName: dto.firstName,
+          lastName: dto.lastName,
+          [field]: dto[field],
+        });
+      }
     });
   }
 
@@ -52,11 +52,15 @@ export async function validatePersonUniqueness(
   if (existingPerson) {
     // Provide specific error messages based on conflict type
     if (dto.email && existingPerson.email === dto.email) {
-      throw new ConflictException(`A person with email "${dto.email}" already exists`);
+      throw new ConflictException(
+        translateHelper.tr('persons.errors.email_exists', { email: dto.email }),
+      );
     }
 
     if (dto.nationalId && existingPerson.nationalId === dto.nationalId) {
-      throw new ConflictException(`A person with national ID "${dto.nationalId}" already exists`);
+      throw new ConflictException(
+        translateHelper.tr('persons.errors.national_id_exists', { nationalId: dto.nationalId }),
+      );
     }
 
     // Check for father-based conflict
@@ -66,7 +70,10 @@ export async function validatePersonUniqueness(
       existingPerson.lastName === dto.lastName
     ) {
       throw new ConflictException(
-        `A person named "${dto.firstName} ${dto.lastName}" with the same father already exists`,
+        translateHelper.tr('persons.errors.father_name_exists', {
+          firstName: dto.firstName,
+          lastName: dto.lastName,
+        }),
       );
     }
 
@@ -77,7 +84,34 @@ export async function validatePersonUniqueness(
       existingPerson.lastName === dto.lastName
     ) {
       throw new ConflictException(
-        `A person named "${dto.firstName} ${dto.lastName}" with the same mother already exists`,
+        translateHelper.tr('persons.errors.mother_name_exists', {
+          firstName: dto.firstName,
+          lastName: dto.lastName,
+        }),
+      );
+    }
+
+    // Name and birthDate-based uniqueness conflict
+    const existingBirthDate = existingPerson.birthDate
+      ? new Date(existingPerson.birthDate).toISOString().split('T')[0]
+      : undefined;
+    const dtoBirthDate = dto.birthDate
+      ? new Date(dto.birthDate).toISOString().split('T')[0]
+      : undefined;
+
+    if (
+      existingBirthDate &&
+      dtoBirthDate &&
+      existingBirthDate === dtoBirthDate &&
+      existingPerson.firstName === dto.firstName &&
+      existingPerson.lastName === dto.lastName
+    ) {
+      throw new ConflictException(
+        translateHelper.tr('persons.errors.name_birthdate_exists', {
+          firstName: dto.firstName,
+          lastName: dto.lastName,
+          birthDate: dtoBirthDate,
+        }),
       );
     }
 
@@ -89,17 +123,20 @@ export async function validatePersonUniqueness(
       existingPerson.lastName === dto.lastName
     ) {
       throw new ConflictException(
-        `A person named "${dto.firstName} ${dto.lastName}" already exists in the system without any parent information. ` +
-          `To differentiate between individuals with the same name, please provide either the father's ID or the mother's ID.`,
+        translateHelper.tr('persons.errors.name_no_parent_exists', {
+          firstName: dto.firstName,
+          lastName: dto.lastName,
+        }),
       );
     }
 
     // Generic fallback error
-    throw new ConflictException(`A person with these details already exists`);
+    throw new ConflictException(translateHelper.tr('persons.errors.person_details_exists'));
   }
 }
 
 export function validateFamilyRelationships(
+  translateHelper: TranslateHelper,
   id?: number,
   dto?: UpdatePersonDto,
   person?: Person,
@@ -108,14 +145,14 @@ export function validateFamilyRelationships(
   const finalMotherId = dto?.motherId !== undefined ? dto?.motherId : person?.motherId;
 
   if (finalFatherId === id) {
-    throw new BadRequestException('Person cannot be their own father');
+    throw new BadRequestException(translateHelper.tr('persons.errors.self_father'));
   }
 
   if (finalMotherId === id) {
-    throw new BadRequestException('Person cannot be their own mother');
+    throw new BadRequestException(translateHelper.tr('persons.errors.self_mother'));
   }
 
   if (finalFatherId && finalMotherId && finalFatherId === finalMotherId) {
-    throw new BadRequestException('Father and mother cannot be the same person');
+    throw new BadRequestException(translateHelper.tr('persons.errors.same_father_mother'));
   }
 }

@@ -1,0 +1,24 @@
+{
+    "errors": {
+        "email_exists": "A person with email \"{email}\" already exists",
+        "national_id_exists": "A person with national ID \"{nationalId}\" already exists",
+        "father_name_exists": "A person named \"{firstName} {lastName}\" with the same father already exists",
+        "mother_name_exists": "A person named \"{firstName} {lastName}\" with the same mother already exists",
+        "name_no_parent_exists": "A person named \"{firstName} {lastName}\" already exists in the system without any parent information. To differentiate between individuals with the same name, please provide either the father's ID or the mother's ID.",
+        "person_details_exists": "A person with these details already exists",
+        "self_father": "Person cannot be their own father",
+        "self_mother": "Person cannot be their own mother",
+        "same_father_mother": "Father and mother cannot be the same person",
+        "cannot_delete_related": "Cannot delete person \"{firstName} {lastName}\" because they have the following related records: {relationsList}. Please remove these relationships first.",
+        "not_found": "Person with ID {id} not found",
+        "name_birthdate_exists": "A person named \"{firstName} {lastName}\" with the same birth date ({birthDate}) already exists"
+    },
+    "success": {
+        "deleted": "Person \"{firstName} {lastName}\" has been successfully deleted"
+    },
+    "validation": {
+        "birth_date_min": "Birth date must be after 1900-01-01",
+        "birth_date_max": "Birth date must be before today",
+        "national_id_length": "National ID must be exactly 11 characters long"
+    }
+}
