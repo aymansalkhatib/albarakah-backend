@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   ParseIntPipe,
   Patch,
@@ -36,8 +38,9 @@ export class EmployeesController {
   }
 
   @Delete(':id')
-  async delete(@Param('id', ParseIntPipe) id: number): Promise<{ message: string }> {
-    return this.employeesService.delete(id);
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    this.employeesService.delete(id);
   }
 
   @Get(':id')

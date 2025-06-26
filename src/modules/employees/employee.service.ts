@@ -58,7 +58,7 @@ export class EmployeesService {
     return await this.employeeRepository.save(updatedEmployee);
   }
 
-  async delete(id: number): Promise<{ message: string }> {
+  async delete(id: number): Promise<void> {
     const employee = await this.findOne(id, { relations: ['systemUser'] });
     if (employee.systemUser) {
       throw new ConflictException(
@@ -66,12 +66,6 @@ export class EmployeesService {
       );
     }
     await this.employeeRepository.delete(id);
-    return {
-      message: this.translateHelper.tr('employees.success.deleted', {
-        firstName: employee.person?.firstName,
-        lastName: employee.person?.lastName,
-      }),
-    };
   }
 
   async findOne(id: number, { relations }: { relations?: string[] } = {}): Promise<Employee> {

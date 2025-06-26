@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   NotFoundException,
   Param,
   ParseIntPipe,
@@ -17,6 +19,7 @@ import { SystemUsersService } from './system-users.service';
 import { FilterSystemUserDto } from './dtos/queries/filter-system-user.dto';
 import { UpdateSystemUserDto } from './dtos/requests/update-system-user.dto';
 import { TranslateHelper } from '../../shared/modules/app-i18n/translate.helper';
+import { STATUS_CODES } from 'http';
 
 @Controller('system-users')
 export class SystemUsersController {
@@ -41,13 +44,9 @@ export class SystemUsersController {
   }
 
   @Delete(':id')
-  async remove(@Param('id', ParseIntPipe) id: number): Promise<{ message: string }> {
-    const systemUser = await this.systemUsersService.findOne(id);
-    if (!systemUser) {
-      throw new NotFoundException(this.translateHelper.tr('system-users.errors.not_found', { id }));
-    }
-    await this.systemUsersService.remove(id);
-    return { message: this.translateHelper.tr('system-users.success.deleted', { id }) };
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    await this.systemUsersService.delete(id);
   }
 
   @Get(':id')

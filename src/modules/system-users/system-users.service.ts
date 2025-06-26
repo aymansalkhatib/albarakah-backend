@@ -79,8 +79,12 @@ export class SystemUsersService {
     return updatedSystemUser;
   }
 
-  async remove(id: number): Promise<void> {
-    await this.systemUserRepository.delete(id);
+  async delete(id: number): Promise<void> {
+    const result = await this.systemUserRepository.delete(id);
+
+    if (result.affected === 0) {
+      throw new NotFoundException(this.translateHelper.tr('system-users.errors.not_found', { id }));
+    }
   }
 
   async findOne(id: number, { relations }: { relations?: string[] } = {}): Promise<SystemUser> {
@@ -234,7 +238,6 @@ export class SystemUsersService {
       }
     }
 
-    // Add ordering (optional)
     queryBuilder.orderBy('systemUser.createdAt', 'DESC');
 
     return queryBuilder.getMany();

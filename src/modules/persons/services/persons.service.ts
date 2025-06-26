@@ -81,7 +81,7 @@ export class PersonsService {
     return this.findOne(savedPerson.id, { relations: ['father', 'mother'] });
   }
 
-  async delete(id: number): Promise<{ message: string }> {
+  async delete(id: number): Promise<void> {
     const person = await this.findOne(id, {
       relations: ['employee', 'child', 'familyMember', 'guardian'],
     });
@@ -109,12 +109,6 @@ export class PersonsService {
     }
 
     await this.personRepository.delete(id);
-    return {
-      message: this.translateHelper.tr('persons.success.deleted', {
-        firstName: person.firstName,
-        lastName: person.lastName,
-      }),
-    };
   }
 
   async findOne(id: number, { relations }: { relations?: string[] } = {}): Promise<Person> {
