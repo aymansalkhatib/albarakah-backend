@@ -1,4 +1,4 @@
-import { Exclude, Expose, Type } from 'class-transformer';
+import { Exclude, Expose, Transform, Type } from 'class-transformer';
 import { PermissionResponseDto } from './permission-response.dto';
 
 @Exclude()
@@ -12,7 +12,14 @@ export class ResponseRoleDto {
   @Expose()
   description?: string;
 
-  @Expose()
+  @Expose({ name: 'permissions' })
+  @Transform(
+    ({ obj }) => {
+      const permissions = (obj.rolePermissions ?? []).map((e: { permission: any }) => e.permission);
+      return permissions.length > 0 ? permissions : undefined;
+    },
+    { toClassOnly: true },
+  )
   @Type(() => PermissionResponseDto)
-  permissions?: PermissionResponseDto[];
+  rolePermissions?: PermissionResponseDto[];
 }

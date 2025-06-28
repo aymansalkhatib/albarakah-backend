@@ -1,8 +1,9 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Unique } from 'typeorm';
 import { Role } from './roles.entity';
 import { PermissionEntity } from './permissions.entity';
 
 @Entity('role_permissions')
+@Unique('UQ_role_permission_roleId_permissionId', ['roleId', 'permissionId'])
 export class RolePermission {
   @PrimaryGeneratedColumn()
   id: number;

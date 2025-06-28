@@ -1,14 +1,23 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  Index,
+  Unique,
+} from 'typeorm';
 import { PermissionEntity } from './permissions.entity';
 import { SystemUser } from '../../system-users/entities/system-user.entity';
 
 @Entity('user_permissions')
+@Unique(['systemUserId', 'permissionId'])
 export class UserPermission {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'user_accounts_id' })
-  userAccountsId: number;
+  @Column({ name: 'system_user_id' })
+  systemUserId: number;
 
   @Column({ name: 'permission_id' })
   permissionId: number;
@@ -21,7 +30,7 @@ export class UserPermission {
   @ManyToOne(() => SystemUser, (systemUser) => systemUser.userPermissions, {
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'user_accounts_id' })
+  @JoinColumn({ name: 'system_user_id' })
   systemUser: SystemUser;
 
   @ManyToOne(() => PermissionEntity, (permission) => permission.userPermissions, {

@@ -2,8 +2,14 @@ import { NestFactory } from '@nestjs/core';
 import { DataSource } from 'typeorm';
 import { AppModule } from '../../app.module';
 import { seedDropdowns } from './seed-dropdown';
+import { seedRolesAndPermissions } from './seed-roles-permissions';
 
 async function bootstrap() {
+  const args = process.argv.slice(2);
+  const runDropdown = args.includes('dropdown');
+  const runPermission = args.includes('permission');
+  const runAll = args.includes('all');
+
   const app = await NestFactory.create(AppModule);
   const dataSource = app.get(DataSource);
   const queryRunner = dataSource.createQueryRunner();
@@ -12,14 +18,24 @@ async function bootstrap() {
     await queryRunner.connect();
     await queryRunner.startTransaction();
 
-    // -1
-    await seedDropdowns(queryRunner);
-    //
+    if (runDropdown) {
+      await seedDropdowns(queryRunner);
+      console.log('✅ Dropdowns seeded');
+    }
+    if (runPermission) {
+      await seedRolesAndPermissions(queryRunner);
+      console.log('✅ Roles & Permissions seeded');
+    }
+    if (runAll) {
+      await seedDropdowns(queryRunner);
+      await seedRolesAndPermissions(queryRunner);
+      console.log('✅ All seeders ran');
+    }
 
     await queryRunner.commitTransaction();
   } catch (error) {
     await queryRunner.rollbackTransaction();
-    console.error('Error seeding dropdown categories:', error);
+    console.error('Error seeding:', error);
   } finally {
     await queryRunner.release();
     await app.close();
@@ -28,11 +44,10 @@ async function bootstrap() {
 
 bootstrap()
   .then(() => {
-    console.log('✨ Dropdown categories seeder finished successfully');
+    console.log('✨ Seeder finished successfully');
     process.exit(0);
   })
   .catch((error) => {
-    console.error('💥 Dropdown categories seeder failed:', error.message);
-    console.error(error.stack);
+    console.error('💥 Seeder failed:', error.message);
     process.exit(1);
   });

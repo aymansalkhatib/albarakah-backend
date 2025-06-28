@@ -11,23 +11,21 @@ import { AppTypeOrmModule } from './shared/modules/app-type-orm/app-type-orm.mod
 import { EmployeesModule } from './modules/employees/entities/employee.module';
 import { SystemUsersModule } from './modules/system-users/system-users.module';
 import { DropdownsModule } from './modules/dropdowns/dropdowns.module';
+import { AppJwtModule } from './shared/modules/app-jwt/app-jwt.module';
+import { RolesModule } from './modules/roles/roles.module';
 
 @Module({
   imports: [
     AppConfigModel,
-    // AppLoggerModule,
-    // NotificationModule,
     AppI18nModule,
     AppTypeOrmModule,
-    // AppStorageModule.register({ provider: 'local' }),
-    // MailModule,
-
-    // AppJwtModule,
-    // AuthModule,
+    AppJwtModule,
+    //
     DropdownsModule,
     BeneficiaryFamiliesModule,
     EmployeesModule,
     SystemUsersModule,
+    RolesModule
   ],
 
   controllers: [AppController],

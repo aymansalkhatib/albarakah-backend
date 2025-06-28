@@ -12,8 +12,6 @@ import { SystemUser } from '../../system-users/entities/system-user.entity';
 
 @Entity('roles')
 @Index('idx_roles_name', ['name'], { unique: true })
-@Index('idx_roles_is_system', ['isSystem'])
-@Index('idx_roles_is_active', ['isActive'])
 export class Role {
   @PrimaryGeneratedColumn()
   id: number;
@@ -24,12 +22,6 @@ export class Role {
   @Column({ type: 'text', nullable: true })
   description?: string;
 
-  @Column({ name: 'is_system', default: false })
-  isSystem: boolean;
-
-  @Column({ name: 'is_active', default: true })
-  isActive: boolean;
-
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
@@ -38,7 +30,7 @@ export class Role {
 
   // Relationships
 
-  @OneToMany(() => RolePermission, (rolePermission) => rolePermission.role)
+  @OneToMany(() => RolePermission, (rolePermission) => rolePermission.role, { cascade: true })
   rolePermissions: RolePermission[];
 
   @OneToMany(() => SystemUser, (systemUser) => systemUser.role)
