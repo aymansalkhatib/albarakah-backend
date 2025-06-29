@@ -1,12 +1,12 @@
 import { z } from 'zod';
-import { ENV_VALIDATION } from '../env.constant';
 
 export const securitySchema = z.object({
-  JWT_SECRET: z
+  SUPER_ADMIN_PASSWORD: z
     .string()
-    .min(
-      ENV_VALIDATION.MIN_JWT_LENGTH,
-      `JWT secret should be at least ${ENV_VALIDATION.MIN_JWT_LENGTH} characters long`,
+    .min(8, 'SUPER_ADMIN_PASSWORD must be at least 8 characters long')
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
+      'SUPER_ADMIN_PASSWORD must contain at least one lowercase letter, one uppercase letter, one number, and one special character',
     ),
 });
 

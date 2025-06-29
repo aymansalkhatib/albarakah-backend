@@ -8,24 +8,33 @@ import { House } from '../../modules/houses/entities/house.entity';
 import { QueryRunner } from 'typeorm';
 
 export async function seedDropdowns(queryRunner: QueryRunner) {
+  console.log('🌱 Starting dropdown seeding process...');
+
   const selectedDropdownOptionRepo = queryRunner.manager.getRepository(SelectedDropdownOption);
+  console.log('🗑️ Cleaning up selected dropdown options...');
   await selectedDropdownOptionRepo.deleteAll();
 
   const dropdownOptionRepo = queryRunner.manager.getRepository(DropdownOption);
+  console.log('🗑️ Cleaning up dropdown options...');
   await dropdownOptionRepo.deleteAll();
 
   const dropdownRepo = queryRunner.manager.getRepository(Dropdown);
+  console.log('🗑️ Cleaning up dropdowns...');
   await dropdownRepo.deleteAll();
 
   const categoryRepo = queryRunner.manager.getRepository(DropdownCategory);
+  console.log('🗑️ Cleaning up dropdown categories...');
   await categoryRepo.deleteAll();
 
   // Profile
   // Create a new category with the name 'profile'
+  console.log('📁 Creating dropdown categories...');
   const profileCategory = await categoryRepo.create({ name: Person.name }).save();
   const homeCategory = await categoryRepo.create({ name: House.name }).save();
+  console.log(`✅ Created categories: ${Person.name}, ${House.name}`);
 
   // Marital Status
+  console.log('💍 Creating Marital Status dropdown...');
   const maritalStatusDropdown = dropdownRepo.create({
     dropdownName: PersonDropdown.MARITAL_STATUS,
     dropdownCategory: profileCategory,
@@ -41,8 +50,10 @@ export async function seedDropdowns(queryRunner: QueryRunner) {
     });
     await dropdownOptionRepo.save(option);
   }
+  console.log(`✅ Created ${maritalStatus.length} marital status options`);
 
   // Health Status
+  console.log('🏥 Creating Health Status dropdown...');
   const healthStatusDropdown = dropdownRepo.create({
     dropdownName: PersonDropdown.HEALTH_STATUS,
     dropdownCategory: profileCategory,
@@ -67,8 +78,10 @@ export async function seedDropdowns(queryRunner: QueryRunner) {
     });
     await dropdownOptionRepo.save(option);
   }
+  console.log(`✅ Created ${healthStatus.length} health status options`);
 
   // Education Level
+  console.log('🎓 Creating Education Level dropdown...');
   const educationLevelDropdown = dropdownRepo.create({
     dropdownName: PersonDropdown.EDUCATION_LEVEL,
     dropdownCategory: profileCategory,
@@ -95,8 +108,10 @@ export async function seedDropdowns(queryRunner: QueryRunner) {
     });
     await dropdownOptionRepo.save(option);
   }
+  console.log(`✅ Created ${educationLevels.length} education level options`);
 
   // School Type
+  console.log('🏫 Creating School Type dropdown...');
   const schoolTypeDropdown = dropdownRepo.create({
     dropdownName: PersonDropdown.SCHOOL_TYPE,
     dropdownCategory: profileCategory,
@@ -123,8 +138,10 @@ export async function seedDropdowns(queryRunner: QueryRunner) {
     });
     await dropdownOptionRepo.save(option);
   }
+  console.log(`✅ Created ${schoolTypes.length} school type options`);
 
   // Grade Level
+  console.log('📚 Creating Grade Level dropdown...');
   const gradeLevelDropdown = dropdownRepo.create({
     dropdownName: PersonDropdown.GRADE_LEVEL,
     dropdownCategory: profileCategory,
@@ -171,10 +188,17 @@ export async function seedDropdowns(queryRunner: QueryRunner) {
     });
     await dropdownOptionRepo.save(option);
   }
+  console.log(`✅ Created ${gradeLevels.length} grade level options`);
 
+  console.log('🔧 Updating profile category settings...');
   await categoryRepo.save({
     ...profileCategory,
     isDropdownCreationEnabled: false,
     isSubcategoryCreationEnabled: false,
   });
+
+  console.log('🎉 Dropdown seeding completed successfully!');
+  console.log(
+    `📊 Summary: Created 5 dropdowns with ${maritalStatus.length + healthStatus.length + educationLevels.length + schoolTypes.length + gradeLevels.length} total options`,
+  );
 }

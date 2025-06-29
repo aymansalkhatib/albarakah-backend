@@ -7,18 +7,4 @@ export const jwtSchema = z.object({
     .number()
     .int()
     .positive('JWT_ACCESS_EXPIRES_IN_MS must be a positive number'),
-
-  // Refresh Token Configuration
-  JWT_REFRESH_SECRET: z.string().min(1, 'JWT_REFRESH_SECRET is required'),
-  JWT_REFRESH_EXPIRES_IN_MS: z.coerce
-    .number()
-    .int()
-    .positive('JWT_REFRESH_EXPIRES_IN_MS must be a positive number'),
-
-  // Security Token Configuration
-  JWT_SECURITY_SECRET: z.string().min(1, 'JWT_SECURITY_SECRET is required'),
-  JWT_SECURITY_EXPIRES_IN_MS: z.coerce
-    .number()
-    .int()
-    .positive('JWT_SECURITY_EXPIRES_IN_MS must be a positive number'),
 });

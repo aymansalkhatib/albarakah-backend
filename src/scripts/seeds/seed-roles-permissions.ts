@@ -6,6 +6,8 @@ import { QueryRunner } from 'typeorm';
 import { PROTECTED_SYSTEM_USER_PERMISSIONS } from '../../modules/roles/constants/protected-permissions.constant';
 
 export async function seedRolesAndPermissions(queryRunner: QueryRunner) {
+  console.log('🌱 Starting roles and permissions seeding...');
+
   const permissionRepo = queryRunner.manager.getRepository(PermissionEntity);
   const roleRepo = queryRunner.manager.getRepository(Role);
   const rolePermissionRepo = queryRunner.manager.getRepository(RolePermission);
@@ -14,29 +16,35 @@ export async function seedRolesAndPermissions(queryRunner: QueryRunner) {
   const systemUserPermissions = PROTECTED_SYSTEM_USER_PERMISSIONS;
 
   // 1. Insert all permissions if not exist
+  console.log('📋 Creating permissions...');
   const allPermissions = Object.values(Permission);
   for (const perm of allPermissions) {
     let permission = await permissionRepo.findOne({ where: { name: perm } });
     if (!permission) {
       permission = permissionRepo.create({ name: perm, description: perm });
       await permissionRepo.save(permission);
+      console.log(`✅ Created permission: ${perm}`);
     }
   }
 
   // 2. Create roles
+  console.log('👥 Creating roles...');
   let adminRole = await roleRepo.findOne({ where: { name: 'admin' } });
   if (!adminRole) {
     adminRole = roleRepo.create({ name: 'admin', description: 'Admin role' });
     await roleRepo.save(adminRole);
+    console.log('✅ Created admin role');
   }
 
   let superAdminRole = await roleRepo.findOne({ where: { name: 'superadmin' } });
   if (!superAdminRole) {
     superAdminRole = roleRepo.create({ name: 'superadmin', description: 'Super Admin role' });
     await roleRepo.save(superAdminRole);
+    console.log('✅ Created superadmin role');
   }
 
   // 3. Assign permissions
+  console.log('🔗 Assigning permissions...');
   const allPermissionEntities = await permissionRepo.find();
 
   // Assign permissions based on role
@@ -53,6 +61,7 @@ export async function seedRolesAndPermissions(queryRunner: QueryRunner) {
         await rolePermissionRepo.save(
           rolePermissionRepo.create({ roleId: adminRole.id, permissionId: perm.id }),
         );
+        console.log(`👤 Assigned permission ${perm.name} to admin`);
       }
     }
 
@@ -64,6 +73,9 @@ export async function seedRolesAndPermissions(queryRunner: QueryRunner) {
       await rolePermissionRepo.save(
         rolePermissionRepo.create({ roleId: superAdminRole.id, permissionId: perm.id }),
       );
+      console.log(`⭐ Assigned permission ${perm.name} to superadmin`);
     }
   }
+
+  console.log('🎉 Roles and permissions seeding completed');
 }
