@@ -13,6 +13,7 @@ import { SystemUsersModule } from './modules/system-users/system-users.module';
 import { DropdownsModule } from './modules/dropdowns/dropdowns.module';
 import { AppJwtModule } from './shared/modules/app-jwt/app-jwt.module';
 import { RolesModule } from './modules/roles/roles.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -21,11 +22,12 @@ import { RolesModule } from './modules/roles/roles.module';
     AppTypeOrmModule,
     AppJwtModule,
     //
+    AuthModule,
     DropdownsModule,
     BeneficiaryFamiliesModule,
     EmployeesModule,
     SystemUsersModule,
-    RolesModule
+    RolesModule,
   ],
 
   controllers: [AppController],

@@ -1,10 +1,4 @@
 export enum Permission {
-  // User Management
-  CREATE_USER = 'create_user',
-  READ_USER = 'read_user',
-  UPDATE_USER = 'update_user',
-  DELETE_USER = 'delete_user',
-
   // Role Management
   CREATE_ROLE = 'create_role',
   READ_ROLE = 'read_role',
@@ -94,4 +88,10 @@ export enum Permission {
   READ_SUPPORTER = 'read_supporter',
   UPDATE_SUPPORTER = 'update_supporter',
   DELETE_SUPPORTER = 'delete_supporter',
+
+  // System User Management
+  CREATE_SYSTEM_USER = 'create_system_user',
+  READ_SYSTEM_USER = 'read_system_user',
+  UPDATE_SYSTEM_USER = 'update_system_user',
+  DELETE_SYSTEM_USER = 'delete_system_user',
 }

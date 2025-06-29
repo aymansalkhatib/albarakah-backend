@@ -3,11 +3,13 @@ import { DataSource } from 'typeorm';
 import { AppModule } from '../../app.module';
 import { seedDropdowns } from './seed-dropdown';
 import { seedRolesAndPermissions } from './seed-roles-permissions';
+import { seedSystemUsers } from './seed-system-users';
 
 async function bootstrap() {
   const args = process.argv.slice(2);
   const runDropdown = args.includes('dropdown');
   const runPermission = args.includes('permission');
+  const runSystemUsers = args.includes('system-users');
   const runAll = args.includes('all');
 
   const app = await NestFactory.create(AppModule);
@@ -26,9 +28,14 @@ async function bootstrap() {
       await seedRolesAndPermissions(queryRunner);
       console.log('✅ Roles & Permissions seeded');
     }
+    if (runSystemUsers) {
+      await seedSystemUsers(queryRunner);
+      console.log('✅ System Users seeded');
+    }
     if (runAll) {
       await seedDropdowns(queryRunner);
       await seedRolesAndPermissions(queryRunner);
+      await seedSystemUsers(queryRunner);
       console.log('✅ All seeders ran');
     }
 

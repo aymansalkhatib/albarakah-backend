@@ -12,10 +12,10 @@ import { TranslateHelper } from '../../shared/modules/app-i18n/translate.helper'
 @Injectable()
 export class SystemUsersService {
   constructor(
-    private readonly employeesService: EmployeesService,
     @InjectRepository(SystemUser)
     private readonly systemUserRepository: Repository<SystemUser>,
     private readonly translateHelper: TranslateHelper,
+    private readonly employeesService: EmployeesService,
   ) {}
 
   async create(createUserAccountDto: CreateSystemUserDto): Promise<SystemUser> {

@@ -19,7 +19,8 @@ import { SystemUsersService } from './system-users.service';
 import { FilterSystemUserDto } from './dtos/queries/filter-system-user.dto';
 import { UpdateSystemUserDto } from './dtos/requests/update-system-user.dto';
 import { TranslateHelper } from '../../shared/modules/app-i18n/translate.helper';
-import { STATUS_CODES } from 'http';
+import { Permission } from '../roles/enums/permission.enum';
+import { Protected } from '@app/common/decorators/protected.decorator';
 
 @Controller('system-users')
 export class SystemUsersController {
@@ -29,6 +30,7 @@ export class SystemUsersController {
   ) {}
 
   @Post()
+  @Protected(Permission.CREATE_SYSTEM_USER)
   async create(@Body() createUserAccountDto: CreateSystemUserDto): Promise<SystemUserResponseDto> {
     const systemUser = await this.systemUsersService.create(createUserAccountDto);
     return toDto(SystemUserResponseDto, systemUser);

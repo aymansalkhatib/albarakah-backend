@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
 import { UserPermission } from '../entities/user-permission.entity';
@@ -6,6 +11,7 @@ import { PermissionEntity } from '../entities/permissions.entity';
 import { SystemUser } from '../../system-users/entities/system-user.entity';
 import { UserPermissionItemDto } from '../dtos/requests/bulk-assign-user-permissions.dto';
 import { RolePermission } from '../entities/role-permission.entity';
+import { isProtectedSystemUserPermission } from '../constants/protected-permissions.constant';
 
 @Injectable()
 export class UserPermissionsService {
@@ -40,6 +46,8 @@ export class UserPermissionsService {
     const existingPermission = await this.userPermissionRepository.findOne({
       where: { systemUserId, permissionId },
     });
+
+    this.validateSystemUserPermissions([permission]);
 
     if (existingPermission) {
       existingPermission.isAllowed = isAllowed;
@@ -120,6 +128,8 @@ export class UserPermissionsService {
       where: { systemUserId, permissionId: In(permissionIds) },
     });
 
+    this.validateSystemUserPermissions(existingUserPermissions.map((up) => up.permission));
+
     const existingMap = new Map(existingUserPermissions.map((up) => [up.permissionId, up]));
 
     const toCreate: Partial<UserPermission>[] = [];
@@ -154,7 +164,17 @@ export class UserPermissionsService {
     if (!userExists) {
       throw new NotFoundException(`System user with ID ${systemUserId} not found`);
     }
-
     await this.userPermissionRepository.delete({ systemUserId });
+  }
+
+  private validateSystemUserPermissions(permissions: PermissionEntity[]): void {
+    const protectedPermissions = permissions.filter((p) => isProtectedSystemUserPermission(p.name));
+
+    if (protectedPermissions.length > 0) {
+      const protectedNames = protectedPermissions.map((p) => p.name).join(', ');
+      throw new ForbiddenException(
+        `System user management permissions (${protectedNames}) can only be assigned to superadmin role. These permissions are protected and cannot be modified.`,
+      );
+    }
   }
 }
