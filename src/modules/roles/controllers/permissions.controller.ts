@@ -11,7 +11,7 @@ export class PermissionsController {
   @Get()
   async findAllPermissions(@Query() filterDto: FilterPermissionDto) {
     const permissions = await this.permissionsService.findAllPermissions(filterDto);
-    return toDto(PermissionResponseDto, permissions);
+    return permissions;
   }
 
   @Get(':id')

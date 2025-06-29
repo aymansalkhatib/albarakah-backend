@@ -6,6 +6,9 @@ import { FilterPermissionDto } from '../dtos/queries/filter-permission.dto';
 import { Permission } from '../enums/permission.enum';
 import { SystemUser } from '@app/modules/system-users/entities/system-user.entity';
 import { UserPermissionsService } from './user-permissions.service';
+import { paginate } from '@app/common/pagination/paginate.service';
+import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
+import { PermissionResponseDto } from '../dtos/responses/permission-response.dto';
 
 @Injectable()
 export class PermissionsService {
@@ -17,7 +20,9 @@ export class PermissionsService {
     private readonly userPermissionsService: UserPermissionsService,
   ) {}
 
-  async findAllPermissions(filterDto: FilterPermissionDto): Promise<PermissionEntity[]> {
+  async findAllPermissions(
+    filterDto: FilterPermissionDto,
+  ): Promise<PaginationResponseDto<PermissionResponseDto>> {
     const queryBuilder = this.permissionRepository.createQueryBuilder('permission');
 
     if (filterDto.id) {
@@ -30,7 +35,7 @@ export class PermissionsService {
       });
     }
 
-    return queryBuilder.getMany();
+    return paginate(queryBuilder, filterDto, PermissionResponseDto);
   }
 
   async findPermissionById(id: number): Promise<PermissionEntity> {
@@ -86,7 +91,7 @@ export class PermissionsService {
 
     // Combine and remove duplicates based on permission ID
     const allPermissions = [...rolePermissions, ...userPermissionEntities];
-   
+
     const uniquePermissions = allPermissions.filter(
       (permission, index, self) => index === self.findIndex((p) => p.id === permission.id),
     );

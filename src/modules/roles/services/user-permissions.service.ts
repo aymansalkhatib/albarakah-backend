@@ -126,6 +126,7 @@ export class UserPermissionsService {
     // Get existing user permissions for efficient updates
     const existingUserPermissions = await this.userPermissionRepository.find({
       where: { systemUserId, permissionId: In(permissionIds) },
+      relations: ['permission'],
     });
 
     this.validateSystemUserPermissions(existingUserPermissions.map((up) => up.permission));
