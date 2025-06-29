@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, In } from 'typeorm';
+import { Repository, In, Not, IsNull } from 'typeorm';
 import { Role } from '../entities/roles.entity';
 import { PermissionEntity } from '../entities/permissions.entity';
 import { RolePermission } from '../entities/role-permission.entity';
@@ -34,16 +34,13 @@ export class RolesService {
       throw new ConflictException(`Role with name "${createRoleDto.name}" already exists`);
     }
 
-    // If permissionIds are provided, check if all exist
-    if (createRoleDto.permissionIds?.length) {
-      await this.validatePermissions(createRoleDto.permissionIds);
-    }
+    const permissions = await this.validatePermissions(createRoleDto.permissionIds);
 
     const role = this.roleRepository.create({
       name: createRoleDto.name,
       description: createRoleDto.description,
-      rolePermissions: (createRoleDto.permissionIds ?? []).map((permissionId) => ({
-        permissionId,
+      rolePermissions: permissions.map((permission) => ({
+        permission: permission,
       })),
     });
 
@@ -124,6 +121,24 @@ export class RolesService {
   async deleteRole(id: number): Promise<void> {
     const role = await this.findRoleById(id);
     this.validateSuperAdminRoleDeletion(role);
+
+    // Check if role is associated with any users
+    const userCount = await this.roleRepository.count({
+      where: {
+        id,
+        systemUsers: {
+          roleId: id,
+        },
+      },
+    });
+
+    console.log(userCount);
+    if (userCount > 0) {
+      throw new ConflictException(
+        'Cannot delete role because it is associated with one or more users. Please reassign users to different roles before deleting.',
+      );
+    }
+
     await this.roleRepository.remove(role);
   }
 
@@ -158,7 +173,11 @@ export class RolesService {
     }
   }
 
-  private async validatePermissions(permissionIds: number[]): Promise<PermissionEntity[]> {
+  private async validatePermissions(
+    permissionIds: number[] | undefined,
+  ): Promise<PermissionEntity[]> {
+    if (!permissionIds) return [];
+
     const foundPermissions = await this.permissionRepository.find({
       where: { id: In(permissionIds) },
     });

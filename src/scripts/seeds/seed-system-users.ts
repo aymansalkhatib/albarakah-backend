@@ -1,5 +1,4 @@
 import { QueryRunner } from 'typeorm';
-import * as bcrypt from 'bcrypt';
 import { Person } from '../../modules/persons/entities/person.entity';
 import { Employee } from '../../modules/employees/entities/employee.entity';
 import { SystemUser } from '../../modules/system-users/entities/system-user.entity';
@@ -48,54 +47,6 @@ export async function seedSystemUsers(queryRunner: QueryRunner) {
         role: superAdminRole,
       },
     },
-    {
-      person: {
-        firstName: 'Ahmad',
-        lastName: 'Al-Mahmoud',
-        email: 'ahmad.admin@albarakah.org',
-        phone: '+970592345678',
-        nationalId: '987654321',
-        birthDate: new Date('1985-03-20'),
-        gender: GenderType.MALE,
-        isPalestinian: true,
-        address: 'Khan Younis, Gaza',
-        nationality: 'Palestinian',
-      },
-      employee: {
-        position: 'Program Administrator',
-        hireDate: new Date('2024-01-15'),
-        notes: 'Administrator for charity programs',
-      },
-      systemUser: {
-        username: 'ahmad.admin',
-        password: 'AdminPass123!',
-        role: adminRole,
-      },
-    },
-    {
-      person: {
-        firstName: 'Fatima',
-        lastName: 'Al-Zahra',
-        email: 'fatima.admin@albarakah.org',
-        phone: '+970593456789',
-        nationalId: '456789123',
-        birthDate: new Date('1992-07-10'),
-        gender: GenderType.FEMALE,
-        isPalestinian: true,
-        address: 'Rafah, Gaza',
-        nationality: 'Palestinian',
-      },
-      employee: {
-        position: 'Social Worker Administrator',
-        hireDate: new Date('2024-02-01'),
-        notes: 'Administrator specializing in family support programs',
-      },
-      systemUser: {
-        username: 'fatima.admin',
-        password: 'AdminPass123!',
-        role: adminRole,
-      },
-    },
   ];
 
   // Create users
@@ -134,10 +85,9 @@ export async function seedSystemUsers(queryRunner: QueryRunner) {
     const savedEmployee = await employeeRepo.save(employee);
 
     // Hash password and create SystemUser
-    const hashedPassword = await bcrypt.hash(userData.systemUser.password, 10);
     const systemUser = systemUserRepo.create({
       username: userData.systemUser.username,
-      password: hashedPassword,
+      password: userData.systemUser.password,
       employeeId: savedEmployee.id,
       roleId: userData.systemUser.role.id,
     });
