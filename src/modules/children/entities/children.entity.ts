@@ -67,10 +67,5 @@ export class Child {
   @OneToMany(() => ReceivedAssistance, (assistance) => assistance.child, {
     cascade: ['insert', 'update'],
   })
-  @OneToMany(() => CallLog, (callLog) => callLog.child, {
-    cascade: ['insert', 'update'],
-  })
-  callLogs: CallLog[];
-
   receivedAssistance: ReceivedAssistance[];
 }

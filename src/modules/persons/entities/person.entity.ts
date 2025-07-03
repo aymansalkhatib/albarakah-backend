@@ -92,7 +92,7 @@ export class Person {
   @Column({ length: 255, unique: true, nullable: true })
   email: string;
 
-  @Column({ length: 20, nullable: true })
+  @Column({ length: 10, nullable: true })
   phone: string;
 
   @Column({ type: 'text', nullable: true })

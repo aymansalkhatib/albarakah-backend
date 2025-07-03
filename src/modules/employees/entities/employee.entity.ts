@@ -13,6 +13,7 @@ import {
 } from 'typeorm';
 import { Interview } from '../../interviews/entities/interview.entity';
 import { SystemUser } from '../../system-users/entities/system-user.entity';
+import { CallLog } from '@app/modules/call-logs/entities/call-log.entity';
 
 @Entity('employees')
 @Index('idx_employees_person_id', ['personId'], { unique: true })
@@ -59,4 +60,9 @@ export class Employee {
     cascade: true,
   })
   interviews: Interview[];
+
+  @OneToMany(() => CallLog, (callLog) => callLog.employee, {
+    cascade: true,
+  })
+  callLogs: CallLog[];
 }

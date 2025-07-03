@@ -45,8 +45,8 @@ export class BeneficiaryFamily {
   @Column({ name: 'landline_phone', type: 'varchar', length: 10, nullable: true })
   landlinePhone?: string;
 
-  @Column({ name: 'mobile_phone', type: 'varchar', length: 10, nullable: true })
-  mobilePhone?: string;
+  @Column({ name: 'phone', length: 10, nullable: true })
+  phone?: string;
 
   @Column({ name: 'is_displaced', nullable: true })
   isDisplaced?: boolean;
@@ -124,9 +124,6 @@ export class BeneficiaryFamily {
 
   @OneToMany(() => FamilyIncome, (income) => income.family)
   income: FamilyIncome[];
-
-  @OneToMany(() => CallLog, (callLog) => callLog.family)
-  callLogs: CallLog[];
 
   @OneToOne(() => House, (house) => house.family, {
     cascade: ['insert', 'update'],

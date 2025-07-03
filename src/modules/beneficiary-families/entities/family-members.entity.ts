@@ -57,11 +57,6 @@ export class FamilyMember {
   @JoinColumn({ name: 'family_id' })
   family: BeneficiaryFamily;
 
-  @OneToMany(() => CallLog, (callLog) => callLog.familyMember, {
-    cascade: ['insert', 'update'],
-  })
-  callLogs: CallLog[];
-
   @OneToMany(() => PersonCourseBatch, (courseBatch) => courseBatch.familyMember, {
     cascade: ['insert', 'update'],
   })
