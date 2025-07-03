@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -9,6 +10,7 @@ import {
 import { CallStatus } from '../enums/call-status.enum';
 import { CallerType } from '../enums/caller-type.enum';
 import { Employee } from '@app/modules/employees/entities/employee.entity';
+import { Person } from '@app/modules/persons/entities/person.entity';
 
 @Entity('call_logs')
 export class CallLog {
@@ -51,5 +53,10 @@ export class CallLog {
   updatedAt: Date;
 
   @ManyToOne(() => Employee, (employee) => employee.callLogs)
+  @JoinColumn({ name: 'employee_id' })
   employee: Employee;
+
+  @ManyToOne(() => Person, { nullable: true })
+  @JoinColumn({ name: 'receiver_id' })
+  receiver?: Person;
 }
