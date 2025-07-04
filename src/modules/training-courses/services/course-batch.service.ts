@@ -8,12 +8,14 @@ import { FilterCourseBatchDto } from '../dtos/queries/filter-course-batch.dto';
 import { paginate } from '@app/common/pagination/paginate.service';
 import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
 import { CourseBatchResponseDto } from '../dtos/responses/course-batch-response.dto';
+import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
 
 @Injectable()
 export class CourseBatchService {
   constructor(
     @InjectRepository(CourseBatch)
     private readonly courseBatchRepository: Repository<CourseBatch>,
+    private readonly translateHelper: TranslateHelper,
   ) {}
 
   async create(createCourseBatchDto: CreateCourseBatchDto): Promise<CourseBatch> {
@@ -30,7 +32,9 @@ export class CourseBatchService {
   async delete(id: number): Promise<void> {
     const result = await this.courseBatchRepository.delete(id);
     if (result.affected === 0) {
-      throw new NotFoundException(`Course batch with ID ${id} not found`);
+      throw new NotFoundException(
+        this.translateHelper.tr('training-courses.course-batches.errors.not_found', { id }),
+      );
     }
   }
 
@@ -41,7 +45,9 @@ export class CourseBatchService {
     });
 
     if (!courseBatch) {
-      throw new NotFoundException(`Course batch with ID ${id} not found`);
+      throw new NotFoundException(
+        this.translateHelper.tr('training-courses.course-batches.errors.not_found', { id }),
+      );
     }
 
     return courseBatch;

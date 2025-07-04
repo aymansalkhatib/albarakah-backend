@@ -1,0 +1,27 @@
+{
+    "training-courses": {
+        "errors": {
+            "not_found": "Training course with ID {id} not found"
+        },
+        "success": {
+            "deleted": "Training course \"{name}\" has been successfully deleted"
+        }
+    },
+    "course-batches": {
+        "errors": {
+            "not_found": "Course batch with ID {id} not found"
+        },
+        "success": {
+            "deleted": "Course batch #{batchNumber} for \"{trainingCourseName}\" has been successfully deleted"
+        }
+    },
+    "person-course-batches": {
+        "errors": {
+            "not_found": "Person course batch with ID {id} not found",
+            "already_enrolled": "Family member {familyMemberId} is already enrolled in course batch {courseBatchId}"
+        },
+        "success": {
+            "deleted": "Person course batch enrollment has been successfully deleted"
+        }
+    }
+}

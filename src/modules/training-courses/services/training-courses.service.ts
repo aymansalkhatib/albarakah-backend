@@ -8,12 +8,14 @@ import { FilterTrainingCourseDto } from '../dtos/queries/filter-training-course.
 import { paginate } from '@app/common/pagination/paginate.service';
 import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
 import { TrainingCourseResponseDto } from '../dtos/responses/training-course-response.dto';
+import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
 
 @Injectable()
 export class TrainingCoursesService {
   constructor(
     @InjectRepository(TrainingCourse)
     private readonly trainingCourseRepository: Repository<TrainingCourse>,
+    private readonly translateHelper: TranslateHelper,
   ) {}
 
   async create(createTrainingCourseDto: CreateTrainingCourseDto): Promise<TrainingCourse> {
@@ -43,7 +45,9 @@ export class TrainingCoursesService {
     });
 
     if (!trainingCourse) {
-      throw new NotFoundException(`Training course with ID ${id} not found`);
+      throw new NotFoundException(
+        this.translateHelper.tr('training-courses.training-courses.errors.not_found', { id }),
+      );
     }
 
     // Delete with cascade - this will automatically delete related batches and participants
@@ -57,7 +61,9 @@ export class TrainingCoursesService {
     });
 
     if (!trainingCourse) {
-      throw new NotFoundException(`Training course with ID ${id} not found`);
+      throw new NotFoundException(
+        this.translateHelper.tr('training-courses.training-courses.errors.not_found', { id }),
+      );
     }
 
     return trainingCourse;

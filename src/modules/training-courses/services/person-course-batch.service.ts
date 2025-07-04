@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Between, MoreThanOrEqual, LessThanOrEqual } from 'typeorm';
+import { Repository } from 'typeorm';
 import { PersonCourseBatch } from '../entities/person-course-batch.entity';
 import { CreatePersonCourseBatchDto } from '../dtos/requests/create-person-course-batch.dto';
 import { UpdatePersonCourseBatchDto } from '../dtos/requests/update-person-course-batch.dto';
@@ -8,12 +8,14 @@ import { FilterPersonCourseBatchDto } from '../dtos/queries/filter-person-course
 import { paginate } from '@app/common/pagination/paginate.service';
 import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
 import { PersonCourseBatchResponseDto } from '../dtos/responses/person-course-batch-response.dto';
+import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
 
 @Injectable()
 export class PersonCourseBatchService {
   constructor(
     @InjectRepository(PersonCourseBatch)
     private readonly personCourseBatchRepository: Repository<PersonCourseBatch>,
+    private readonly translateHelper: TranslateHelper,
   ) {}
 
   async create(createPersonCourseBatchDto: CreatePersonCourseBatchDto): Promise<PersonCourseBatch> {
@@ -27,7 +29,10 @@ export class PersonCourseBatchService {
 
     if (existingEnrollment) {
       throw new ConflictException(
-        `Family member ${createPersonCourseBatchDto.familyMemberId} is already enrolled in course batch ${createPersonCourseBatchDto.courseBatchId}`,
+        this.translateHelper.tr('training-courses.person-course-batches.errors.already_enrolled', {
+          familyMemberId: createPersonCourseBatchDto.familyMemberId,
+          courseBatchId: createPersonCourseBatchDto.courseBatchId,
+        }),
       );
     }
 
@@ -52,7 +57,9 @@ export class PersonCourseBatchService {
   async delete(id: number): Promise<void> {
     const result = await this.personCourseBatchRepository.delete(id);
     if (result.affected === 0) {
-      throw new NotFoundException(`Person course batch with ID ${id} not found`);
+      throw new NotFoundException(
+        this.translateHelper.tr('training-courses.person-course-batches.errors.not_found', { id }),
+      );
     }
   }
 
@@ -63,7 +70,9 @@ export class PersonCourseBatchService {
     });
 
     if (!personCourseBatch) {
-      throw new NotFoundException(`Person course batch with ID ${id} not found`);
+      throw new NotFoundException(
+        this.translateHelper.tr('training-courses.person-course-batches.errors.not_found', { id }),
+      );
     }
 
     return personCourseBatch;
