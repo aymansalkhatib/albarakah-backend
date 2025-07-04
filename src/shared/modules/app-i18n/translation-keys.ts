@@ -112,6 +112,10 @@ interface TrainingcoursesCoursebatchesErrorsNotfoundParams {
   id: string | number
 }
 
+interface TrainingcoursesCoursebatchesErrorsBatchnumberexistsParams {
+  batchNumber: string | number; courseId: string | number
+}
+
 interface TrainingcoursesCoursebatchesSuccessDeletedParams {
   batchNumber: string | number; trainingCourseName: string | number
 }
@@ -171,6 +175,8 @@ const TranslationKeys = {
   'system-users.errors.not_found': 'system-users.errors.not_found',
   'system-users.errors.username_taken': 'system-users.errors.username_taken',
   'system-users.success.deleted': 'system-users.success.deleted',
+  'training-courses.course-batches.errors.batch_number_exists': 'training-courses.course-batches.errors.batch_number_exists',
+  'training-courses.course-batches.errors.end_date_before_start_date': 'training-courses.course-batches.errors.end_date_before_start_date',
   'training-courses.course-batches.errors.not_found': 'training-courses.course-batches.errors.not_found',
   'training-courses.course-batches.success.deleted': 'training-courses.course-batches.success.deleted',
   'training-courses.person-course-batches.errors.already_enrolled': 'training-courses.person-course-batches.errors.already_enrolled',
@@ -233,6 +239,8 @@ export interface TranslationInterpolations {
   'system-users.errors.not_found': SystemusersErrorsNotfoundParams;
   'system-users.errors.username_taken': NoParams;
   'system-users.success.deleted': SystemusersSuccessDeletedParams;
+  'training-courses.course-batches.errors.batch_number_exists': TrainingcoursesCoursebatchesErrorsBatchnumberexistsParams;
+  'training-courses.course-batches.errors.end_date_before_start_date': NoParams;
   'training-courses.course-batches.errors.not_found': TrainingcoursesCoursebatchesErrorsNotfoundParams;
   'training-courses.course-batches.success.deleted': TrainingcoursesCoursebatchesSuccessDeletedParams;
   'training-courses.person-course-batches.errors.already_enrolled': TrainingcoursesPersoncoursebatchesErrorsAlreadyenrolledParams;

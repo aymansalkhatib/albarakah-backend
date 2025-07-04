@@ -8,12 +8,14 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  Unique,
   UpdateDateColumn,
 } from 'typeorm';
 import { TrainingCourse } from './training-course.entity';
 import { PersonCourseBatch } from './person-course-batch.entity';
 
 @Entity('course_batches')
+@Unique(['batchNumber', 'trainingCourseId'])
 export class CourseBatch {
   @PrimaryGeneratedColumn()
   id: number;

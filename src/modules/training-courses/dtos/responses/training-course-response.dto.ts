@@ -1,6 +1,5 @@
-import { Exclude, Expose, Type } from 'class-transformer';
+import { Expose } from 'class-transformer';
 
-@Exclude()
 export class TrainingCourseResponseDto {
   @Expose()
   id: number;
@@ -19,7 +18,4 @@ export class TrainingCourseResponseDto {
 
   @Expose()
   updatedAt: Date;
-
-  // Note: batches relationship excluded from basic response to avoid circular reference
-  // Include in specific endpoints if needed with separate DTO or relation loading
 }

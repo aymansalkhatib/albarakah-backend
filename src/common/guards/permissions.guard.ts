@@ -1,15 +1,15 @@
 import { CanActivate, ExecutionContext, Injectable, ForbiddenException } from '@nestjs/common';
-import { ModuleRef, Reflector } from '@nestjs/core';
+import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 import { Permission } from '../../modules/roles/enums/permission.enum';
 import { PERMISSIONS_KEY } from '../decorators/protected.decorator';
-import { PermissionsService } from '@app/modules/roles/services/permissions.service';
+import { PermissionsService } from '../../modules/roles/services/permissions.service';
 
 @Injectable()
 export class PermissionsGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
-    private moduleRef: ModuleRef,
+    private readonly permissionsService: PermissionsService,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -31,8 +31,9 @@ export class PermissionsGuard implements CanActivate {
       throw new ForbiddenException('User not authenticated');
     }
 
-    const permissionsService = this.moduleRef.get(PermissionsService, { strict: false });
-    const allowedPermissions = await permissionsService.getAllAllowedPermissionsForUser(user.id);
+    const allowedPermissions = await this.permissionsService.getAllAllowedPermissionsForUser(
+      user.id,
+    );
 
     if (
       !allowedPermissions ||

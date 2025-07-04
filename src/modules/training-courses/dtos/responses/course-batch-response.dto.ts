@@ -1,7 +1,6 @@
-import { Exclude, Expose, Type } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { TrainingCourseResponseDto } from './training-course-response.dto';
 
-@Exclude()
 export class CourseBatchResponseDto {
   @Expose()
   id: number;

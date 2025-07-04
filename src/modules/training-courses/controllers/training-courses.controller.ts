@@ -22,17 +22,18 @@ import { Protected } from '@app/common/decorators/protected.decorator';
 import { Permission } from '../../roles/enums/permission.enum';
 
 @Controller('training-courses')
-@SerializeResponse(TrainingCourseResponseDto)
 export class TrainingCoursesController {
   constructor(private readonly trainingCoursesService: TrainingCoursesService) {}
 
   @Post()
+  @SerializeResponse(TrainingCourseResponseDto)
   @Protected(Permission.CREATE_TRAINING_COURSE)
   async create(@Body() createTrainingCourseDto: CreateTrainingCourseDto) {
     return this.trainingCoursesService.create(createTrainingCourseDto);
   }
 
   @Patch(':id')
+  @SerializeResponse(TrainingCourseResponseDto)
   @Protected(Permission.UPDATE_TRAINING_COURSE)
   async update(
     @Param('id', ParseIntPipe) id: number,
@@ -49,6 +50,7 @@ export class TrainingCoursesController {
   }
 
   @Get(':id')
+  @SerializeResponse(TrainingCourseResponseDto)
   @Protected(Permission.READ_TRAINING_COURSE)
   async findOne(@Param('id', ParseIntPipe) id: number) {
     return this.trainingCoursesService.findOne(id);
@@ -56,7 +58,6 @@ export class TrainingCoursesController {
 
   @Get()
   @Protected(Permission.READ_TRAINING_COURSE)
-  @SerializeResponse(PaginationResponseDto<TrainingCourseResponseDto>)
   async findAll(@Query() filterDto: FilterTrainingCourseDto) {
     return this.trainingCoursesService.findAll(filterDto);
   }

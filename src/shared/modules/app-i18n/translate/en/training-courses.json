@@ -9,7 +9,9 @@
     },
     "course-batches": {
         "errors": {
-            "not_found": "Course batch with ID {id} not found"
+            "not_found": "Course batch with ID {id} not found",
+            "batch_number_exists": "Batch number {batchNumber} already exists for course {courseId}",
+            "end_date_before_start_date": "End date must be after start date"
         },
         "success": {
             "deleted": "Course batch #{batchNumber} for \"{trainingCourseName}\" has been successfully deleted"

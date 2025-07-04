@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, ILike } from 'typeorm';
 import { CourseBatch } from '../entities/course-batch.entity';
@@ -9,6 +9,7 @@ import { paginate } from '@app/common/pagination/paginate.service';
 import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
 import { CourseBatchResponseDto } from '../dtos/responses/course-batch-response.dto';
 import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
+import { normalizeDate } from '@app/common/helpers/date.helper';
 
 @Injectable()
 export class CourseBatchService {
@@ -19,12 +20,47 @@ export class CourseBatchService {
   ) {}
 
   async create(createCourseBatchDto: CreateCourseBatchDto): Promise<CourseBatch> {
+    // If batchNumber is not provided, auto-generate it
+    if (!createCourseBatchDto.batchNumber) {
+      createCourseBatchDto.batchNumber = await this.getNextBatchNumber(
+        createCourseBatchDto.trainingCourseId,
+      );
+    } else {
+      // If batchNumber is provided, check if it already exists for this course
+      const existingBatch = await this.courseBatchRepository.findOne({
+        where: {
+          trainingCourseId: createCourseBatchDto.trainingCourseId,
+          batchNumber: createCourseBatchDto.batchNumber,
+        },
+      });
+
+      if (existingBatch) {
+        throw new BadRequestException(
+          this.translateHelper.tr('training-courses.course-batches.errors.batch_number_exists', {
+            batchNumber: createCourseBatchDto.batchNumber,
+            courseId: createCourseBatchDto.trainingCourseId,
+          }),
+        );
+      }
+    }
+
     const courseBatch = this.courseBatchRepository.create(createCourseBatchDto);
     return await this.courseBatchRepository.save(courseBatch);
   }
 
   async update(id: number, updateCourseBatchDto: UpdateCourseBatchDto): Promise<CourseBatch> {
     const courseBatch = await this.findOne(id);
+
+    if (updateCourseBatchDto.endDate && courseBatch.startDate) {
+      if (normalizeDate(updateCourseBatchDto.endDate) < normalizeDate(courseBatch.startDate)) {
+        throw new BadRequestException(
+          this.translateHelper.tr(
+            'training-courses.course-batches.errors.end_date_before_start_date',
+          ),
+        );
+      }
+    }
+
     const mergedCourseBatch = this.courseBatchRepository.merge(courseBatch, updateCourseBatchDto);
     return await this.courseBatchRepository.save(mergedCourseBatch);
   }
@@ -96,5 +132,14 @@ export class CourseBatchService {
     }
 
     return paginate(queryBuilder, filterDto, CourseBatchResponseDto);
+  }
+
+  private async getNextBatchNumber(trainingCourseId: number): Promise<number> {
+    const lastBatch = await this.courseBatchRepository.findOne({
+      where: { trainingCourseId },
+      order: { batchNumber: 'DESC' },
+    });
+
+    return lastBatch ? lastBatch.batchNumber + 1 : 1;
   }
 }

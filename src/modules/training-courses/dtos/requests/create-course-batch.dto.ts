@@ -1,21 +1,34 @@
-import { IsOptional, IsString, Length, IsInt, IsDateString, IsPositive } from 'class-validator';
+import { IsAfterDate } from '@app/common/decorators/is-after-date.decorator';
+import {
+  IsOptional,
+  IsString,
+  Length,
+  IsInt,
+  IsDateString,
+  IsPositive,
+  IsDate,
+} from 'class-validator';
 
 export class CreateCourseBatchDto {
   @IsInt()
   @IsPositive()
   trainingCourseId: number;
 
+  @IsOptional()
   @IsInt()
   @IsPositive()
   batchNumber: number;
 
   @IsOptional()
-  @IsDateString()
-  startDate?: string;
+  @IsDate()
+  startDate?: Date;
 
   @IsOptional()
-  @IsDateString()
-  endDate?: string;
+  @IsDate()
+  @IsAfterDate('startDate', {
+    message: 'endDate must be after startDate',
+  })
+  endDate?: Date;
 
   @IsOptional()
   @IsString()
