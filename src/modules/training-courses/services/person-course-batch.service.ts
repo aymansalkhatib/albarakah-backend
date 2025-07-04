@@ -77,6 +77,11 @@ export class PersonCourseBatchService {
       .leftJoinAndSelect('personCourseBatch.familyMember', 'familyMember')
       .leftJoinAndSelect('familyMember.person', 'person');
 
+    // Add courseBatch join if trainingCourseId filter is provided
+    if (filterDto.trainingCourseId) {
+      queryBuilder.leftJoinAndSelect('personCourseBatch.courseBatch', 'courseBatch');
+    }
+
     // Apply filters
     if (filterDto.familyMemberId) {
       queryBuilder.andWhere('personCourseBatch.familyMemberId = :familyMemberId', {

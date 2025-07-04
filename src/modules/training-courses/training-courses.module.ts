@@ -9,6 +9,7 @@ import { PersonCourseBatchService } from './services/person-course-batch.service
 import { TrainingCoursesController } from './controllers/training-courses.controller';
 import { CourseBatchController } from './controllers/course-batch.controller';
 import { PersonCourseBatchController } from './controllers/person-course-batch.controller';
+import { SystemUsersService } from '../system-users/system-users.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([TrainingCourse, CourseBatch, PersonCourseBatch])],

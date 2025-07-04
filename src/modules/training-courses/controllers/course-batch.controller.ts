@@ -18,6 +18,8 @@ import { FilterCourseBatchDto } from '../dtos/queries/filter-course-batch.dto';
 import { CourseBatchResponseDto } from '../dtos/responses/course-batch-response.dto';
 import { SerializeResponse } from '@app/common/decorators/serialize-response.decorator';
 import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
+import { Protected } from '@app/common/decorators/protected.decorator';
+import { Permission } from '../../roles/enums/permission.enum';
 
 @Controller('course-batches')
 @SerializeResponse(CourseBatchResponseDto)
@@ -25,11 +27,13 @@ export class CourseBatchController {
   constructor(private readonly courseBatchService: CourseBatchService) {}
 
   @Post()
+  @Protected(Permission.CREATE_TRAINING_COURSE)
   async create(@Body() createCourseBatchDto: CreateCourseBatchDto) {
     return this.courseBatchService.create(createCourseBatchDto);
   }
 
   @Patch(':id')
+  @Protected(Permission.UPDATE_TRAINING_COURSE)
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateCourseBatchDto: UpdateCourseBatchDto,
@@ -38,17 +42,20 @@ export class CourseBatchController {
   }
 
   @Delete(':id')
+  @Protected(Permission.DELETE_TRAINING_COURSE)
   @HttpCode(HttpStatus.NO_CONTENT)
   async delete(@Param('id', ParseIntPipe) id: number) {
     return this.courseBatchService.delete(id);
   }
 
   @Get(':id')
+  @Protected(Permission.READ_TRAINING_COURSE)
   async findOne(@Param('id', ParseIntPipe) id: number) {
     return this.courseBatchService.findOne(id, ['trainingCourse']);
   }
 
   @Get()
+  @Protected(Permission.READ_TRAINING_COURSE)
   @SerializeResponse(PaginationResponseDto<CourseBatchResponseDto>)
   async findAll(@Query() filterDto: FilterCourseBatchDto) {
     return this.courseBatchService.findAll(filterDto);
