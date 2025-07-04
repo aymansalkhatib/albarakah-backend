@@ -20,7 +20,8 @@
     "person-course-batches": {
         "errors": {
             "not_found": "تسجيل الشخص في دفعة الدورة بالمعرف {id} غير موجود",
-            "already_enrolled": "عضو العائلة {familyMemberId} مسجل بالفعل في دفعة الدورة {courseBatchId}"
+            "already_enrolled": "عضو العائلة {familyMemberId} مسجل بالفعل في دفعة الدورة {courseBatchId}",
+            "drop_out_date_before_join_date": "تاريخ الانضمام يجب أن يكون بعد تاريخ الانضمام"
         },
         "success": {
             "deleted": "تم حذف تسجيل الشخص في دفعة الدورة بنجاح"

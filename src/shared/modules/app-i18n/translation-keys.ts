@@ -180,6 +180,7 @@ const TranslationKeys = {
   'training-courses.course-batches.errors.not_found': 'training-courses.course-batches.errors.not_found',
   'training-courses.course-batches.success.deleted': 'training-courses.course-batches.success.deleted',
   'training-courses.person-course-batches.errors.already_enrolled': 'training-courses.person-course-batches.errors.already_enrolled',
+  'training-courses.person-course-batches.errors.drop_out_date_before_join_date': 'training-courses.person-course-batches.errors.drop_out_date_before_join_date',
   'training-courses.person-course-batches.errors.not_found': 'training-courses.person-course-batches.errors.not_found',
   'training-courses.person-course-batches.success.deleted': 'training-courses.person-course-batches.success.deleted',
   'training-courses.training-courses.errors.not_found': 'training-courses.training-courses.errors.not_found',
@@ -244,6 +245,7 @@ export interface TranslationInterpolations {
   'training-courses.course-batches.errors.not_found': TrainingcoursesCoursebatchesErrorsNotfoundParams;
   'training-courses.course-batches.success.deleted': TrainingcoursesCoursebatchesSuccessDeletedParams;
   'training-courses.person-course-batches.errors.already_enrolled': TrainingcoursesPersoncoursebatchesErrorsAlreadyenrolledParams;
+  'training-courses.person-course-batches.errors.drop_out_date_before_join_date': NoParams;
   'training-courses.person-course-batches.errors.not_found': TrainingcoursesPersoncoursebatchesErrorsNotfoundParams;
   'training-courses.person-course-batches.success.deleted': NoParams;
   'training-courses.training-courses.errors.not_found': TrainingcoursesTrainingcoursesErrorsNotfoundParams;

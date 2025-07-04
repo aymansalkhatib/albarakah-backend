@@ -1,6 +1,7 @@
 import { Exclude, Expose, Type } from 'class-transformer';
 import { AttendanceStatus } from '../../enums/attendance-status.enum';
 import { CourseBatchResponseDto } from './course-batch-response.dto';
+import { FamilyMemberResponseDto } from '@app/modules/beneficiary-families/dto/family-member-response.dto';
 
 @Exclude()
 export class PersonCourseBatchResponseDto {
@@ -38,17 +39,7 @@ export class PersonCourseBatchResponseDto {
   @Type(() => CourseBatchResponseDto)
   courseBatch?: CourseBatchResponseDto;
 
-  // Family member info - will be loaded separately to avoid deep nesting
   @Expose()
-  familyMember?: {
-    id: number;
-    personId: number;
-    relationType: string;
-    person?: {
-      id: number;
-      firstName: string;
-      middleName?: string;
-      lastName: string;
-    };
-  };
+  @Type(() => FamilyMemberResponseDto)
+  familyMember?: FamilyMemberResponseDto;
 }

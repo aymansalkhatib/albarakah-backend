@@ -1,5 +1,6 @@
-import { IsOptional, IsString, Length, IsDateString, IsEnum } from 'class-validator';
+import { IsOptional, IsString, Length, IsDateString, IsEnum, IsDate } from 'class-validator';
 import { AttendanceStatus } from '../../enums/attendance-status.enum';
+import { IsAfterDate } from '@app/common/decorators/is-after-date.decorator';
 
 export class UpdatePersonCourseBatchDto {
   @IsOptional()
@@ -12,12 +13,13 @@ export class UpdatePersonCourseBatchDto {
   evaluation?: string;
 
   @IsOptional()
-  @IsDateString()
-  joinDate?: string;
+  @IsDate()
+  joinDate?: Date;
 
   @IsOptional()
-  @IsDateString()
-  dropOutDate?: string;
+  @IsDate()
+  @IsAfterDate('joinDate')
+  dropOutDate?: Date;
 
   @IsOptional()
   @IsString()

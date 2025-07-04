@@ -22,18 +22,19 @@ import { Protected } from '@app/common/decorators/protected.decorator';
 import { Permission } from '../../roles/enums/permission.enum';
 
 @Controller('person-course-batches')
-@SerializeResponse(PersonCourseBatchResponseDto)
 export class PersonCourseBatchController {
   constructor(private readonly personCourseBatchService: PersonCourseBatchService) {}
 
   @Post()
   @Protected(Permission.CREATE_TRAINING_COURSE)
+  @SerializeResponse(PersonCourseBatchResponseDto)
   async create(@Body() createPersonCourseBatchDto: CreatePersonCourseBatchDto) {
     return this.personCourseBatchService.create(createPersonCourseBatchDto);
   }
 
   @Patch(':id')
   @Protected(Permission.UPDATE_TRAINING_COURSE)
+  @SerializeResponse(PersonCourseBatchResponseDto)
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updatePersonCourseBatchDto: UpdatePersonCourseBatchDto,
@@ -50,6 +51,7 @@ export class PersonCourseBatchController {
 
   @Get(':id')
   @Protected(Permission.READ_TRAINING_COURSE)
+  @SerializeResponse(PersonCourseBatchResponseDto)
   async findOne(@Param('id', ParseIntPipe) id: number) {
     return this.personCourseBatchService.findOne(id, [
       'courseBatch',
@@ -61,7 +63,6 @@ export class PersonCourseBatchController {
 
   @Get()
   @Protected(Permission.READ_TRAINING_COURSE)
-  @SerializeResponse(PaginationResponseDto<PersonCourseBatchResponseDto>)
   async findAll(@Query() filterDto: FilterPersonCourseBatchDto) {
     return this.personCourseBatchService.findAll(filterDto);
   }

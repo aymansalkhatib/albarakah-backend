@@ -10,6 +10,7 @@ import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-res
 import { CourseBatchResponseDto } from '../dtos/responses/course-batch-response.dto';
 import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
 import { normalizeDate } from '@app/common/helpers/date.helper';
+import { TrainingCoursesService } from './training-courses.service';
 
 @Injectable()
 export class CourseBatchService {
@@ -17,6 +18,7 @@ export class CourseBatchService {
     @InjectRepository(CourseBatch)
     private readonly courseBatchRepository: Repository<CourseBatch>,
     private readonly translateHelper: TranslateHelper,
+    private readonly trainingCourseService: TrainingCoursesService,
   ) {}
 
   async create(createCourseBatchDto: CreateCourseBatchDto): Promise<CourseBatch> {
@@ -43,6 +45,8 @@ export class CourseBatchService {
         );
       }
     }
+
+    await this.trainingCourseService.findOne(createCourseBatchDto.trainingCourseId);
 
     const courseBatch = this.courseBatchRepository.create(createCourseBatchDto);
     return await this.courseBatchRepository.save(courseBatch);

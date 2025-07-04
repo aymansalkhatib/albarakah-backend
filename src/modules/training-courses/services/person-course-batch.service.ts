@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PersonCourseBatch } from '../entities/person-course-batch.entity';
@@ -9,6 +14,9 @@ import { paginate } from '@app/common/pagination/paginate.service';
 import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
 import { PersonCourseBatchResponseDto } from '../dtos/responses/person-course-batch-response.dto';
 import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
+import { normalizeDate } from '@app/common/helpers/date.helper';
+import { CourseBatchService } from './course-batch.service';
+import { FamilyMembersService } from '@app/modules/beneficiary-families/family-members.service';
 
 @Injectable()
 export class PersonCourseBatchService {
@@ -16,6 +24,8 @@ export class PersonCourseBatchService {
     @InjectRepository(PersonCourseBatch)
     private readonly personCourseBatchRepository: Repository<PersonCourseBatch>,
     private readonly translateHelper: TranslateHelper,
+    private readonly courseBatchService: CourseBatchService,
+    private readonly familyMemberService: FamilyMembersService,
   ) {}
 
   async create(createPersonCourseBatchDto: CreatePersonCourseBatchDto): Promise<PersonCourseBatch> {
@@ -36,6 +46,9 @@ export class PersonCourseBatchService {
       );
     }
 
+    await this.courseBatchService.findOne(createPersonCourseBatchDto.courseBatchId);
+    await this.familyMemberService.findOne(createPersonCourseBatchDto.familyMemberId);
+
     const personCourseBatch = this.personCourseBatchRepository.create(createPersonCourseBatchDto);
     return await this.personCourseBatchRepository.save(personCourseBatch);
   }
@@ -45,6 +58,19 @@ export class PersonCourseBatchService {
     updatePersonCourseBatchDto: UpdatePersonCourseBatchDto,
   ): Promise<PersonCourseBatch> {
     const personCourseBatch = await this.findOne(id);
+
+    if (updatePersonCourseBatchDto.dropOutDate && personCourseBatch.joinDate) {
+      if (
+        normalizeDate(updatePersonCourseBatchDto.dropOutDate) <
+        normalizeDate(personCourseBatch.joinDate)
+      ) {
+        throw new BadRequestException(
+          this.translateHelper.tr(
+            'training-courses.person-course-batches.errors.drop_out_date_before_join_date',
+          ),
+        );
+      }
+    }
 
     const mergedPersonCourseBatch = this.personCourseBatchRepository.merge(
       personCourseBatch,
@@ -83,13 +109,9 @@ export class PersonCourseBatchService {
   ): Promise<PaginationResponseDto<PersonCourseBatchResponseDto>> {
     const queryBuilder = this.personCourseBatchRepository
       .createQueryBuilder('personCourseBatch')
+      .leftJoinAndSelect('personCourseBatch.courseBatch', 'courseBatch')
       .leftJoinAndSelect('personCourseBatch.familyMember', 'familyMember')
       .leftJoinAndSelect('familyMember.person', 'person');
-
-    // Add courseBatch join if trainingCourseId filter is provided
-    if (filterDto.trainingCourseId) {
-      queryBuilder.leftJoinAndSelect('personCourseBatch.courseBatch', 'courseBatch');
-    }
 
     // Apply filters
     if (filterDto.familyMemberId) {

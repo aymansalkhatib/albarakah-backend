@@ -20,7 +20,8 @@
     "person-course-batches": {
         "errors": {
             "not_found": "Person course batch with ID {id} not found",
-            "already_enrolled": "Family member {familyMemberId} is already enrolled in course batch {courseBatchId}"
+            "already_enrolled": "Family member {familyMemberId} is already enrolled in course batch {courseBatchId}",
+            "drop_out_date_before_join_date": "Drop out date must be after join date"
         },
         "success": {
             "deleted": "Person course batch enrollment has been successfully deleted"

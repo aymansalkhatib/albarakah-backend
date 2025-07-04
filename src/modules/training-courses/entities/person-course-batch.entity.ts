@@ -53,9 +53,7 @@ export class PersonCourseBatch {
 
   // Relationships
   @ManyToOne(() => FamilyMember, (familyMember) => familyMember.courseBatches, {
-    onDelete: 'RESTRICT',
-    nullable: false,
-    eager: false,
+    onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'family_member_id' })
   familyMember: FamilyMember;
