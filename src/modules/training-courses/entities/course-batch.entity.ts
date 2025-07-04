@@ -14,10 +14,6 @@ import { TrainingCourse } from './training-course.entity';
 import { PersonCourseBatch } from './person-course-batch.entity';
 
 @Entity('course_batches')
-@Index(['trainingCourseId'])
-@Index(['batchNumber'])
-@Index(['startDate'])
-@Index(['endDate'])
 export class CourseBatch {
   @PrimaryGeneratedColumn()
   id: number;
@@ -46,19 +42,13 @@ export class CourseBatch {
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
-  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
-  deletedAt?: Date;
-
   // Relationships
   @ManyToOne(() => TrainingCourse, (course) => course.batches, {
-    onDelete: 'RESTRICT',
-    nullable: false,
+    onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'training_course_id' })
   trainingCourse: TrainingCourse;
 
-  @OneToMany(() => PersonCourseBatch, (participant) => participant.courseBatch, {
-    cascade: ['insert', 'update'],
-  })
+  @OneToMany(() => PersonCourseBatch, (participant) => participant.courseBatch)
   participants: PersonCourseBatch[];
 }

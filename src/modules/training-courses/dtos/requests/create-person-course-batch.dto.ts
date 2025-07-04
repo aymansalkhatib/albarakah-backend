@@ -1,0 +1,42 @@
+import {
+  IsOptional,
+  IsString,
+  Length,
+  IsInt,
+  IsDateString,
+  IsPositive,
+  IsEnum,
+} from 'class-validator';
+import { AttendanceStatus } from '../../enums/attendance-status.enum';
+
+export class CreatePersonCourseBatchDto {
+  @IsInt()
+  @IsPositive()
+  familyMemberId: number;
+
+  @IsInt()
+  @IsPositive()
+  courseBatchId: number;
+
+  @IsOptional()
+  @IsEnum(AttendanceStatus)
+  attendanceStatus?: AttendanceStatus;
+
+  @IsOptional()
+  @IsString()
+  @Length(1, 4000)
+  evaluation?: string;
+
+  @IsOptional()
+  @IsDateString()
+  joinDate?: string;
+
+  @IsOptional()
+  @IsDateString()
+  dropOutDate?: string;
+
+  @IsOptional()
+  @IsString()
+  @Length(1, 4000)
+  notes?: string;
+}

@@ -1,7 +1,6 @@
 import {
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   Index,
   OneToMany,
@@ -11,10 +10,10 @@ import {
 import { CourseBatch } from './course-batch.entity';
 
 @Entity('training_courses')
-@Index(['name'])
 export class TrainingCourse {
   @PrimaryGeneratedColumn()
   id: number;
+
   @Column({ length: 255 })
   name: string;
 
@@ -30,11 +29,6 @@ export class TrainingCourse {
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
-  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
-  deletedAt?: Date;
-  // Relationships
-  @OneToMany(() => CourseBatch, (batch) => batch.trainingCourse, {
-    cascade: ['insert', 'update'],
-  })
+  @OneToMany(() => CourseBatch, (batch) => batch.trainingCourse)
   batches: CourseBatch[];
 }

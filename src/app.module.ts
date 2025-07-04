@@ -14,6 +14,7 @@ import { DropdownsModule } from './modules/dropdowns/dropdowns.module';
 import { AppJwtModule } from './shared/modules/app-jwt/app-jwt.module';
 import { RolesModule } from './modules/roles/roles.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { TrainingCoursesModule } from './modules/training-courses/training-courses.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { AuthModule } from './modules/auth/auth.module';
     EmployeesModule,
     SystemUsersModule,
     RolesModule,
+    TrainingCoursesModule,
   ],
 
   controllers: [AppController],
