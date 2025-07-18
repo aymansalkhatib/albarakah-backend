@@ -20,17 +20,15 @@ import { Child } from '../../children/entities/children.entity';
 @Entity('person')
 @Index('idx_person_national_id', ['nationalId'], { unique: true, where: 'national_id IS NOT NULL' })
 @Index('idx_person_email', ['email'], { unique: true, where: 'email IS NOT NULL' })
-@Index('idx_person_father', ['firstName', 'lastName', 'fatherId'], { unique: true })
-@Index('idx_person_mother', ['firstName', 'lastName', 'motherId'], { unique: true })
 export class Person {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'father_id', nullable: true })
-  fatherId?: number;
+  @Column({ name: 'father_name', length: 100, nullable: true })
+  fatherName?: string;
 
-  @Column({ name: 'mother_id', nullable: true })
-  motherId?: number;
+  @Column({ name: 'mother_name', length: 100, nullable: true })
+  motherName?: string;
 
   @Column({ length: 100, name: 'first_name' })
   firstName: string;
@@ -115,14 +113,6 @@ export class Person {
 
   // Relationships
 
-  @ManyToOne(() => Person, { nullable: true, onDelete: 'SET NULL', cascade: true })
-  @JoinColumn({ name: 'father_id' })
-  father?: Person;
-
-  @ManyToOne(() => Person, { nullable: true, onDelete: 'SET NULL', cascade: true })
-  @JoinColumn({ name: 'mother_id' })
-  mother?: Person;
-
   @ManyToOne(() => DropdownOption, { nullable: true, onDelete: 'RESTRICT' })
   @JoinColumn({ name: 'education_level_id' })
   educationLevel?: DropdownOption;
@@ -142,7 +132,7 @@ export class Person {
   @ManyToOne(() => DropdownOption, { nullable: true, onDelete: 'RESTRICT' })
   @JoinColumn({ name: 'health_status_id' })
   healthStatus?: DropdownOption;
-  
+
   @ManyToOne(() => DropdownOption, { nullable: true, onDelete: 'RESTRICT' })
   @JoinColumn({ name: 'grade_level_id' })
   gradeLevel?: DropdownOption;

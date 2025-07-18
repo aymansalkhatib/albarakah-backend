@@ -8,10 +8,10 @@ export class PersonResponseDto {
   id: number;
 
   @Expose()
-  fatherId?: number;
+  fatherName?: string;
 
   @Expose()
-  motherId?: number;
+  motherName?: string;
 
   @Expose()
   firstName: string;
@@ -87,13 +87,4 @@ export class PersonResponseDto {
 
   @Expose()
   notes?: string;
-
-  // Relationships
-  @Expose()
-  @Type(() => PersonResponseDto)
-  father?: PersonResponseDto;
-
-  @Expose()
-  @Type(() => PersonResponseDto)
-  mother?: PersonResponseDto;
 }

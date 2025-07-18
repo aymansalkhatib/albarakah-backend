@@ -4,7 +4,7 @@
         "national_id_exists": "يوجد شخص بالفعل برقم الهوية الوطنية \"{nationalId}\"",
         "father_name_exists": "يوجد شخص باسم \"{firstName} {lastName}\" مع نفس الأب بالفعل",
         "mother_name_exists": "يوجد شخص باسم \"{firstName} {lastName}\" مع نفس الأم بالفعل",
-        "name_no_parent_exists": "يوجد شخص باسم \"{firstName} {lastName}\" بالفعل في النظام بدون معلومات عن الوالدين. للتمييز بين الأشخاص بنفس الاسم، يرجى إدخال رقم هوية الأب أو الأم.",
+        "name_no_parent_exists": "يوجد شخص بهذا الاسم بالفعل بدون معلومات عن الوالدين.",
         "person_details_exists": "يوجد شخص بهذه التفاصيل بالفعل",
         "self_father": "لا يمكن أن يكون الشخص أبًا لنفسه",
         "self_mother": "لا يمكن أن يكون الشخص أمًا لنفسه",

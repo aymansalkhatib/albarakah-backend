@@ -4,7 +4,7 @@
         "national_id_exists": "A person with national ID \"{nationalId}\" already exists",
         "father_name_exists": "A person named \"{firstName} {lastName}\" with the same father already exists",
         "mother_name_exists": "A person named \"{firstName} {lastName}\" with the same mother already exists",
-        "name_no_parent_exists": "A person named \"{firstName} {lastName}\" already exists in the system without any parent information. To differentiate between individuals with the same name, please provide either the father's ID or the mother's ID.",
+        "name_no_parent_exists": "A person with this name already exists without parent information.",
         "person_details_exists": "A person with these details already exists",
         "self_father": "Person cannot be their own father",
         "self_mother": "Person cannot be their own mother",

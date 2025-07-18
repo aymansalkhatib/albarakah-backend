@@ -19,12 +19,14 @@ import { PositiveIntegerId } from '@app/common/decorators/positive-integer-id.de
 
 export class FilterPersonDto {
   @IsOptional()
-  @PositiveIntegerId()
-  fatherId?: number;
+  @IsString()
+  @Length(1, 100)
+  fatherName?: string;
 
   @IsOptional()
-  @PositiveIntegerId()
-  motherId?: number;
+  @IsString()
+  @Length(1, 100)
+  motherName?: string;
 
   @IsOptional()
   @IsString()

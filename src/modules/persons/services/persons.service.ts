@@ -3,12 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Person } from '../entities/person.entity';
 import { UpdatePersonDto } from '../dtos/requests/update-person.dto';
-import { validateFamilyRelationships, validatePersonUniqueness } from '../utils/person.validation';
+import { validatePersonUniqueness } from '../utils/person.validation';
 import { FilterPersonDto } from '../dtos/queries/filter-person.dto';
 import { CreatePersonDto } from '../dtos/requests/create-person.dto';
 import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
 import { DropdownService } from '@app/modules/dropdowns/services/dropdown.service';
-import { DropdownOptionService } from '@app/modules/dropdowns/services/dropdown-option.service';
 import { PersonDropdown } from '../enums/type-dropdown.enum';
 
 @Injectable()
@@ -21,51 +20,31 @@ export class PersonsService {
   ) {}
 
   async create(createPersonDto: CreatePersonDto): Promise<Person> {
-    validateFamilyRelationships(this.translateHelper, null, createPersonDto, null);
-
-    const validationPromises = [];
-
-    if (createPersonDto.fatherId) {
-      validationPromises.push(this.findOne(createPersonDto.fatherId));
-    }
-
-    if (createPersonDto.motherId) {
-      validationPromises.push(this.findOne(createPersonDto.motherId));
-    }
-
-    validationPromises.push(
-      validatePersonUniqueness(
-        this.translateHelper,
-        this.personRepository,
-        createPersonDto,
-        undefined,
-      ),
+    await validatePersonUniqueness(
+      this.translateHelper,
+      this.personRepository,
+      createPersonDto,
+      undefined,
     );
-
-    (await Promise.allSettled(validationPromises)).forEach((r) => {
-      if (r.status === 'rejected') throw r.reason;
-    });
 
     await this.validateDropdownFields(createPersonDto);
 
     const person = this.personRepository.create(createPersonDto);
     const savedPerson = await this.personRepository.save(person);
-    return this.findOne(savedPerson.id, { relations: ['father', 'mother'] });
+    return this.findOne(savedPerson.id);
   }
 
   async update(id: number, updatePersonDto: UpdatePersonDto): Promise<Person> {
     const person = await this.findOne(id);
     const mergedPerson = this.personRepository.merge(person, updatePersonDto);
 
-    validateFamilyRelationships(this.translateHelper, id, updatePersonDto, person);
-
     const validationPromises = [];
 
-    if (updatePersonDto.fatherId) {
-      validationPromises.push(this.findOne(updatePersonDto.fatherId));
+    if (updatePersonDto.fatherName) {
+      validationPromises.push(this.findOneByName(updatePersonDto.fatherName));
     }
-    if (updatePersonDto.motherId) {
-      validationPromises.push(this.findOne(updatePersonDto.motherId));
+    if (updatePersonDto.motherName) {
+      validationPromises.push(this.findOneByName(updatePersonDto.motherName));
     }
     validationPromises.push(
       validatePersonUniqueness(this.translateHelper, this.personRepository, mergedPerson, id),
@@ -78,7 +57,7 @@ export class PersonsService {
     await this.validateDropdownFields(updatePersonDto);
 
     const savedPerson = await this.personRepository.save(mergedPerson);
-    return this.findOne(savedPerson.id, { relations: ['father', 'mother'] });
+    return this.findOne(savedPerson.id);
   }
 
   async delete(id: number): Promise<void> {
@@ -197,19 +176,31 @@ export class PersonsService {
       });
     }
 
-    if (filterDto.fatherId) {
-      queryBuilder.andWhere('person.fatherId = :fatherId', {
-        fatherId: filterDto.fatherId,
+    if (filterDto.fatherName) {
+      queryBuilder.andWhere('person.fatherName ILIKE :fatherName', {
+        fatherName: `%${filterDto.fatherName}%`,
       });
     }
 
-    if (filterDto.motherId) {
-      queryBuilder.andWhere('person.motherId = :motherId', {
-        motherId: filterDto.motherId,
+    if (filterDto.motherName) {
+      queryBuilder.andWhere('person.motherName ILIKE :motherName', {
+        motherName: `%${filterDto.motherName}%`,
       });
     }
 
     return await queryBuilder.getMany();
+  }
+
+  async findOneByName(name: string): Promise<Person> {
+    const person = await this.personRepository.findOne({
+      where: { firstName: name },
+    });
+
+    if (!person) {
+      throw new NotFoundException(`Person not found by name: ${name}`);
+    }
+
+    return person;
   }
 
   async validateDropdownFields(dto: CreatePersonDto | UpdatePersonDto) {

@@ -20,13 +20,14 @@ import { PositiveIntegerId } from '@app/common/decorators/positive-integer-id.de
 
 export class CreatePersonDto {
   @IsOptional()
-  @PositiveIntegerId()
-  fatherId?: number;
+  @IsString()
+  @Length(3, 100)
+  fatherName?: string;
 
   @IsOptional()
-  @PositiveIntegerId()
-  @NotEqualTo('fatherId')
-  motherId?: number;
+  @IsString()
+  @Length(3, 100)
+  motherName?: string;
 
   @IsString()
   @Length(3, 100)
