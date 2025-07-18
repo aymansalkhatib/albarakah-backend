@@ -1,7 +1,6 @@
 import {
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   Index,
   JoinColumn,
@@ -18,7 +17,6 @@ import { Child } from '../../children/entities/children.entity';
 @Index(['familyId'])
 @Index(['assistanceType'])
 @Index(['deliveryDate'])
-@Index(['deletedAt'])
 export class ReceivedAssistance {
   @PrimaryGeneratedColumn()
   id: number;
@@ -55,9 +53,6 @@ export class ReceivedAssistance {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
-
-  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
-  deletedAt?: Date;
 
   // Relationships
   @ManyToOne(() => BeneficiaryFamily, (family) => family.receivedAssistance, {

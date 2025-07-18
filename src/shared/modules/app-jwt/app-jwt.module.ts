@@ -3,6 +3,11 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { EnvironmentConfig } from '../app-config/env.schema';
 import { AppJwtService } from './app-jwt.service';
+import { SystemUsersModule } from '../../../modules/system-users/system-users.module';
+import { RolesModule } from '../../../modules/roles/roles.module';
+import { JwtAuthGuard } from '../../../common/guards/jwt-auth.guard';
+import { PermissionsGuard } from '../../../common/guards/permissions.guard';
+
 @Global()
 @Module({
   imports: [
@@ -15,8 +20,10 @@ import { AppJwtService } from './app-jwt.service';
       }),
       inject: [ConfigService],
     }),
+    SystemUsersModule,
+    RolesModule,
   ],
-  exports: [AppJwtService],
-  providers: [AppJwtService],
+  exports: [AppJwtService, SystemUsersModule, RolesModule, JwtAuthGuard, PermissionsGuard],
+  providers: [AppJwtService, JwtAuthGuard, PermissionsGuard],
 })
 export class AppJwtModule {}

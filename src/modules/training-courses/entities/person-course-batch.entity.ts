@@ -1,7 +1,6 @@
 import {
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   Index,
   JoinColumn,
@@ -14,10 +13,7 @@ import { CourseBatch } from './course-batch.entity';
 import { AttendanceStatus } from '../enums/attendance-status.enum';
 
 @Entity('person_course_batches')
-@Index(['familyMemberId'])
-@Index(['courseBatchId'])
-@Index(['attendanceStatus'])
-@Index(['joinDate'])
+@Index(['familyMemberId', 'courseBatchId'], { unique: true })
 export class PersonCourseBatch {
   @PrimaryGeneratedColumn()
   id: number;
@@ -54,20 +50,15 @@ export class PersonCourseBatch {
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
-  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
-  deletedAt?: Date;
-
   // Relationships
   @ManyToOne(() => FamilyMember, (familyMember) => familyMember.courseBatches, {
-    onDelete: 'RESTRICT',
-    nullable: false,
+    onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'family_member_id' })
   familyMember: FamilyMember;
 
   @ManyToOne(() => CourseBatch, (batch) => batch.participants, {
-    onDelete: 'RESTRICT',
-    nullable: false,
+    onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'course_batch_id' })
   courseBatch: CourseBatch;

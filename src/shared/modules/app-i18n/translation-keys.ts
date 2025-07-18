@@ -100,6 +100,34 @@ interface SystemusersSuccessDeletedParams {
   id: string | number
 }
 
+interface TrainingcoursesTrainingcoursesErrorsNotfoundParams {
+  id: string | number
+}
+
+interface TrainingcoursesTrainingcoursesSuccessDeletedParams {
+  name: string | number
+}
+
+interface TrainingcoursesCoursebatchesErrorsNotfoundParams {
+  id: string | number
+}
+
+interface TrainingcoursesCoursebatchesErrorsBatchnumberexistsParams {
+  batchNumber: string | number; courseId: string | number
+}
+
+interface TrainingcoursesCoursebatchesSuccessDeletedParams {
+  batchNumber: string | number; trainingCourseName: string | number
+}
+
+interface TrainingcoursesPersoncoursebatchesErrorsNotfoundParams {
+  id: string | number
+}
+
+interface TrainingcoursesPersoncoursebatchesErrorsAlreadyenrolledParams {
+  familyMemberId: string | number; courseBatchId: string | number
+}
+
 const TranslationKeys = {
   'dropdowns.errors.cannot_create_subcategory': 'dropdowns.errors.cannot_create_subcategory',
   'dropdowns.errors.category_has_children': 'dropdowns.errors.category_has_children',
@@ -146,7 +174,17 @@ const TranslationKeys = {
   'system-users.errors.employee_has_system_account': 'system-users.errors.employee_has_system_account',
   'system-users.errors.not_found': 'system-users.errors.not_found',
   'system-users.errors.username_taken': 'system-users.errors.username_taken',
-  'system-users.success.deleted': 'system-users.success.deleted'
+  'system-users.success.deleted': 'system-users.success.deleted',
+  'training-courses.course-batches.errors.batch_number_exists': 'training-courses.course-batches.errors.batch_number_exists',
+  'training-courses.course-batches.errors.end_date_before_start_date': 'training-courses.course-batches.errors.end_date_before_start_date',
+  'training-courses.course-batches.errors.not_found': 'training-courses.course-batches.errors.not_found',
+  'training-courses.course-batches.success.deleted': 'training-courses.course-batches.success.deleted',
+  'training-courses.person-course-batches.errors.already_enrolled': 'training-courses.person-course-batches.errors.already_enrolled',
+  'training-courses.person-course-batches.errors.drop_out_date_before_join_date': 'training-courses.person-course-batches.errors.drop_out_date_before_join_date',
+  'training-courses.person-course-batches.errors.not_found': 'training-courses.person-course-batches.errors.not_found',
+  'training-courses.person-course-batches.success.deleted': 'training-courses.person-course-batches.success.deleted',
+  'training-courses.training-courses.errors.not_found': 'training-courses.training-courses.errors.not_found',
+  'training-courses.training-courses.success.deleted': 'training-courses.training-courses.success.deleted'
 } as const;
 
 export type TranslationKey = keyof typeof TranslationKeys;
@@ -202,4 +240,14 @@ export interface TranslationInterpolations {
   'system-users.errors.not_found': SystemusersErrorsNotfoundParams;
   'system-users.errors.username_taken': NoParams;
   'system-users.success.deleted': SystemusersSuccessDeletedParams;
+  'training-courses.course-batches.errors.batch_number_exists': TrainingcoursesCoursebatchesErrorsBatchnumberexistsParams;
+  'training-courses.course-batches.errors.end_date_before_start_date': NoParams;
+  'training-courses.course-batches.errors.not_found': TrainingcoursesCoursebatchesErrorsNotfoundParams;
+  'training-courses.course-batches.success.deleted': TrainingcoursesCoursebatchesSuccessDeletedParams;
+  'training-courses.person-course-batches.errors.already_enrolled': TrainingcoursesPersoncoursebatchesErrorsAlreadyenrolledParams;
+  'training-courses.person-course-batches.errors.drop_out_date_before_join_date': NoParams;
+  'training-courses.person-course-batches.errors.not_found': TrainingcoursesPersoncoursebatchesErrorsNotfoundParams;
+  'training-courses.person-course-batches.success.deleted': NoParams;
+  'training-courses.training-courses.errors.not_found': TrainingcoursesTrainingcoursesErrorsNotfoundParams;
+  'training-courses.training-courses.success.deleted': TrainingcoursesTrainingcoursesSuccessDeletedParams;
 }

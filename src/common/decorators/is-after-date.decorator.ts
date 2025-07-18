@@ -25,7 +25,7 @@ export function IsAfterDate(related: string | Date, validationOptions?: Validati
             compareDate = related;
           }
 
-          return valueDate > compareDate;
+          return valueDate >= compareDate;
         },
 
         defaultMessage(args: ValidationArguments) {

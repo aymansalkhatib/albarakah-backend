@@ -2,7 +2,6 @@ import { Person } from '../../persons/entities/person.entity';
 import {
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   Index,
   JoinColumn,
@@ -12,16 +11,14 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { ReceivedAssistance } from '../../received-assistance/entities/received-assistance.entity';
-import { CallLog } from '../../call-logs/entities/call-log.entity';
 import { BeneficiaryFamily } from '../../beneficiary-families/entities/beneficiary-families.entity';
 import { FamilyMember } from '../../beneficiary-families/entities/family-members.entity';
 
 @Entity('children')
-@Index(['personId'], { unique: true, where: 'deleted_at IS NULL' })
+@Index(['personId'], { unique: true })
 @Index(['familyId', 'isSponsored'])
 @Index(['familyMemberId'])
 @Index(['isSponsored'])
-@Index(['deletedAt'])
 export class Child {
   @PrimaryGeneratedColumn()
   id: number;
@@ -46,9 +43,6 @@ export class Child {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
-
-  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
-  deletedAt?: Date;
 
   // Relationships
 

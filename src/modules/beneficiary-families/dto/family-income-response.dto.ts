@@ -15,7 +15,4 @@ export class FamilyIncomeResponseDto extends CreateFamilyIncomeDto {
 
   @Expose()
   updatedAt: Date;
-
-  @Expose()
-  deletedAt?: Date;
 }
