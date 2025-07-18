@@ -4,7 +4,6 @@ import { Person } from '../../persons/entities/person.entity';
 import {
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   Index,
   JoinColumn,
@@ -15,11 +14,10 @@ import {
 } from 'typeorm';
 
 @Entity('guardians')
-@Index(['personId'], { unique: true, where: 'deleted_at IS NULL' })
+@Index(['personId'], { unique: true })
 @Index(['relationType'])
 @Index(['guardianshipStartDate'])
 @Index(['guardianshipEndDate'])
-@Index(['deletedAt'])
 export class Guardian {
   @PrimaryGeneratedColumn()
   id: number;
@@ -44,9 +42,6 @@ export class Guardian {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
-
-  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
-  deletedAt?: Date;
 
   // Relationships
 

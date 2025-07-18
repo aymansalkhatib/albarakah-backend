@@ -100,9 +100,7 @@ export class FamilyMembersService {
 
   private async validateUniquePersonInFamily(personId: number, familyId: number): Promise<void> {
     const existingMembers = await this.familyMemberRepository.findByPersonId(personId);
-    const isPersonInFamily = existingMembers.some(
-      (member) => member.familyId === familyId && !member.deletedAt,
-    );
+    const isPersonInFamily = existingMembers.some((member) => member.familyId === familyId);
 
     if (isPersonInFamily) {
       throw new ConflictException('Person is already a member of this family');

@@ -20,7 +20,4 @@ export class FamilyMemberResponseDto extends CreateFamilyMemberDto {
 
   @Expose()
   updatedAt: Date;
-
-  @Expose()
-  deletedAt?: Date;
 }

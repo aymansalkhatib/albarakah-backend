@@ -1,7 +1,6 @@
 import {
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   Index,
   JoinColumn,
@@ -25,12 +24,11 @@ import { FamilyRegistrationForm } from '../../family-registration-forms/entities
 import { Visit } from '../../visits/entities/visit.entity';
 import { Child } from '../../children/entities/children.entity';
 
-@Index(['familyBookNumber'], { unique: true, where: 'deleted_at IS NULL' })
+@Index(['familyBookNumber'], { unique: true })
 @Index(['familyName'])
 @Index(['registrationDate'])
 @Index(['isDisplaced'])
 @Index(['isExtremelyPoor'])
-@Index(['deletedAt'])
 @Entity('beneficiary_families')
 export class BeneficiaryFamily {
   @PrimaryGeneratedColumn()
@@ -95,9 +93,6 @@ export class BeneficiaryFamily {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
-
-  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
-  deletedAt?: Date;
 
   // Relationships
 

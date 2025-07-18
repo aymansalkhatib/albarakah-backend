@@ -1,7 +1,6 @@
 import {
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   Index,
   JoinColumn,
@@ -15,11 +14,10 @@ import { BeneficiaryFamily } from '../../beneficiary-families/entities/beneficia
 import { SponsorshipStatus } from '../enums/sponsorship-status.enum';
 
 @Entity('supporter_child_sponsorships')
-@Index(['supporterId', 'personId'], { unique: true, where: 'deleted_at IS NULL' })
+@Index(['supporterId', 'personId'], { unique: true })
 @Index(['familyId'])
 @Index(['sponsorshipStatus'])
 @Index(['sponsorshipStartDate', 'sponsorshipEndDate'])
-@Index(['deletedAt'])
 export class SupporterChildSponsorship {
   @PrimaryGeneratedColumn()
   id: number;
@@ -59,9 +57,6 @@ export class SupporterChildSponsorship {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
-
-  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
-  deletedAt?: Date;
 
   // Relationships
   @ManyToOne(() => Supporter, { onDelete: 'RESTRICT' })

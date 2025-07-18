@@ -2,7 +2,6 @@ import { Person } from '../../persons/entities/person.entity';
 import {
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   Index,
   JoinColumn,
@@ -15,7 +14,6 @@ import { SupportType } from '../enums/support-type';
 @Entity('supporters')
 @Index(['personId'])
 @Index(['supportType'])
-@Index(['deletedAt'])
 @Index(['supportStartDate', 'supportEndDate'])
 export class Supporter {
   @PrimaryGeneratedColumn()
@@ -43,9 +41,6 @@ export class Supporter {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
-
-  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
-  deletedAt?: Date;
 
   // Relationships
 

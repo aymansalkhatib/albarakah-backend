@@ -1,7 +1,6 @@
 import {
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   Index,
   JoinColumn,
@@ -17,7 +16,6 @@ import { EmergencyAidRequestStatus } from '../enums/emergency-aid-request-status
 @Index(['requestStatus'])
 @Index(['requestDate'])
 @Index(['disbursementDate'])
-@Index(['deletedAt'])
 export class EmergencyAidRequest {
   @PrimaryGeneratedColumn()
   id: number;
@@ -69,9 +67,6 @@ export class EmergencyAidRequest {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
-
-  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
-  deletedAt?: Date;
 
   // Relationships
   @ManyToOne(() => BeneficiaryFamily, (family) => family.emergencyAidRequests, {
