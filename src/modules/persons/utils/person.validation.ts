@@ -4,6 +4,8 @@ import { Person } from '../entities/person.entity';
 import { Not, Repository } from 'typeorm';
 import { CreatePersonDto } from '../dtos/requests/create-person.dto';
 import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
+import { DropdownService } from '@app/modules/dropdowns/services/dropdown.service';
+import { PersonDropdown } from '../enums/type-dropdown.enum';
 
 export async function validatePersonUniqueness(
   translateHelper: TranslateHelper,
@@ -100,5 +102,55 @@ export async function validatePersonUniqueness(
 
     // Generic fallback error
     throw new ConflictException(translateHelper.tr('persons.errors.person_details_exists'));
+  }
+}
+
+export async function validateDropdownFields(dto: CreatePersonDto | UpdatePersonDto, dropdownService:DropdownService) {
+  if (dto.healthStatusId) {
+    await dropdownService.findDropdownWithOptionCheck({
+      categoryName: Person.name,
+      dropdownName: PersonDropdown.HEALTH_STATUS,
+      optionId: dto.healthStatusId,
+    });
+  }
+
+  if (dto.educationLevelId) {
+    await dropdownService.findDropdownWithOptionCheck({
+      categoryName: Person.name,
+      dropdownName: PersonDropdown.EDUCATION_LEVEL,
+      optionId: dto.educationLevelId,
+    });
+  }
+
+  if (dto.schoolTypeId) {
+    await dropdownService.findDropdownWithOptionCheck({
+      categoryName: Person.name,
+      dropdownName: PersonDropdown.SCHOOL_TYPE,
+      optionId: dto.schoolTypeId,
+    });
+  }
+
+  if (dto.personStatusId) {
+    await dropdownService.findDropdownWithOptionCheck({
+      categoryName: Person.name,
+      dropdownName: PersonDropdown.PERSON_STATUS,
+      optionId: dto.personStatusId,
+    });
+  }
+
+  if (dto.maritalStatusId) {
+    await dropdownService.findDropdownWithOptionCheck({
+      categoryName: Person.name,
+      dropdownName: PersonDropdown.MARITAL_STATUS,
+      optionId: dto.maritalStatusId,
+    });
+  }
+
+  if (dto.gradeLevelId) {
+    await dropdownService.findDropdownWithOptionCheck({
+      categoryName: Person.name,
+      dropdownName: PersonDropdown.GRADE_LEVEL,
+      optionId: dto.gradeLevelId,
+    });
   }
 }

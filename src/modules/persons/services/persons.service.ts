@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Person } from '../entities/person.entity';
 import { UpdatePersonDto } from '../dtos/requests/update-person.dto';
-import { validatePersonUniqueness } from '../utils/person.validation';
+import { validateDropdownFields, validatePersonUniqueness } from '../utils/person.validation';
 import { FilterPersonDto } from '../dtos/queries/filter-person.dto';
 import { CreatePersonDto } from '../dtos/requests/create-person.dto';
 import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
@@ -27,7 +27,7 @@ export class PersonsService {
       undefined,
     );
 
-    await this.validateDropdownFields(createPersonDto);
+    await validateDropdownFields(createPersonDto, this.dropdownService);
 
     const person = this.personRepository.create(createPersonDto);
     const savedPerson = await this.personRepository.save(person);
@@ -38,55 +38,16 @@ export class PersonsService {
     const person = await this.findOne(id);
     const mergedPerson = this.personRepository.merge(person, updatePersonDto);
 
-    const validationPromises = [];
+    await validatePersonUniqueness(this.translateHelper, this.personRepository, mergedPerson, id);
 
-    if (updatePersonDto.fatherName) {
-      validationPromises.push(this.findOneByName(updatePersonDto.fatherName));
-    }
-    if (updatePersonDto.motherName) {
-      validationPromises.push(this.findOneByName(updatePersonDto.motherName));
-    }
-    validationPromises.push(
-      validatePersonUniqueness(this.translateHelper, this.personRepository, mergedPerson, id),
-    );
-
-    (await Promise.allSettled(validationPromises)).forEach((r) => {
-      if (r.status === 'rejected') throw r.reason;
-    });
-
-    await this.validateDropdownFields(updatePersonDto);
+    await validateDropdownFields(updatePersonDto, this.dropdownService);
 
     const savedPerson = await this.personRepository.save(mergedPerson);
     return this.findOne(savedPerson.id);
   }
 
   async delete(id: number): Promise<void> {
-    const person = await this.findOne(id, {
-      relations: ['employee', 'child', 'familyMember', 'guardian'],
-    });
-
-    const relatedData: string[] = [];
-
-    if (person.employee) relatedData.push(`Employee record (ID: ${person.employee.id})`);
-
-    if (person.child) relatedData.push(`Child record (ID: ${person.child.id})`);
-
-    if (person.familyMember)
-      relatedData.push(`Family member record (ID: ${person.familyMember.id})`);
-
-    if (person.guardian) relatedData.push(`Guardian record (ID: ${person.guardian.id})`);
-
-    if (relatedData.length > 0) {
-      const relationsList = relatedData.join(', ');
-      throw new ConflictException(
-        this.translateHelper.tr('persons.errors.cannot_delete_related', {
-          firstName: person.firstName,
-          lastName: person.lastName,
-          relationsList,
-        }),
-      );
-    }
-
+    await this.findOne(id);
     await this.personRepository.delete(id);
   }
 
@@ -201,55 +162,5 @@ export class PersonsService {
     }
 
     return person;
-  }
-
-  async validateDropdownFields(dto: CreatePersonDto | UpdatePersonDto) {
-    if (dto.healthStatusId) {
-      await this.dropdownService.findDropdownWithOptionCheck({
-        categoryName: Person.name,
-        dropdownName: PersonDropdown.HEALTH_STATUS,
-        optionId: dto.healthStatusId,
-      });
-    }
-
-    if (dto.educationLevelId) {
-      await this.dropdownService.findDropdownWithOptionCheck({
-        categoryName: Person.name,
-        dropdownName: PersonDropdown.EDUCATION_LEVEL,
-        optionId: dto.educationLevelId,
-      });
-    }
-
-    if (dto.schoolTypeId) {
-      await this.dropdownService.findDropdownWithOptionCheck({
-        categoryName: Person.name,
-        dropdownName: PersonDropdown.SCHOOL_TYPE,
-        optionId: dto.schoolTypeId,
-      });
-    }
-
-    if (dto.personStatusId) {
-      await this.dropdownService.findDropdownWithOptionCheck({
-        categoryName: Person.name,
-        dropdownName: PersonDropdown.PERSON_STATUS,
-        optionId: dto.personStatusId,
-      });
-    }
-
-    if (dto.maritalStatusId) {
-      await this.dropdownService.findDropdownWithOptionCheck({
-        categoryName: Person.name,
-        dropdownName: PersonDropdown.MARITAL_STATUS,
-        optionId: dto.maritalStatusId,
-      });
-    }
-
-    if (dto.gradeLevelId) {
-      await this.dropdownService.findDropdownWithOptionCheck({
-        categoryName: Person.name,
-        dropdownName: PersonDropdown.GRADE_LEVEL,
-        optionId: dto.gradeLevelId,
-      });
-    }
   }
 }
