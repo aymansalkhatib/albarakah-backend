@@ -56,6 +56,10 @@ interface EmployeesSuccessDeletedParams {
   firstName: string | number; lastName: string | number
 }
 
+interface GuardiansErrorsNotfoundParams {
+  id: string | number
+}
+
 interface PersonsErrorsEmailexistsParams {
   email: string | number
 }
@@ -69,10 +73,6 @@ interface PersonsErrorsFathernameexistsParams {
 }
 
 interface PersonsErrorsMothernameexistsParams {
-  firstName: string | number; lastName: string | number
-}
-
-interface PersonsErrorsNamenoparentexistsParams {
   firstName: string | number; lastName: string | number
 }
 
@@ -155,6 +155,8 @@ const TranslationKeys = {
   'employees.errors.cannot_delete_with_system_account': 'employees.errors.cannot_delete_with_system_account',
   'employees.errors.not_found': 'employees.errors.not_found',
   'employees.success.deleted': 'employees.success.deleted',
+  'guardians.errors.already_guardian': 'guardians.errors.already_guardian',
+  'guardians.errors.not_found': 'guardians.errors.not_found',
   'persons.errors.cannot_delete_related': 'persons.errors.cannot_delete_related',
   'persons.errors.email_exists': 'persons.errors.email_exists',
   'persons.errors.father_name_exists': 'persons.errors.father_name_exists',
@@ -220,12 +222,14 @@ export interface TranslationInterpolations {
   'employees.errors.cannot_delete_with_system_account': NoParams;
   'employees.errors.not_found': EmployeesErrorsNotfoundParams;
   'employees.success.deleted': EmployeesSuccessDeletedParams;
+  'guardians.errors.already_guardian': NoParams;
+  'guardians.errors.not_found': GuardiansErrorsNotfoundParams;
   'persons.errors.cannot_delete_related': PersonsErrorsCannotdeleterelatedParams;
   'persons.errors.email_exists': PersonsErrorsEmailexistsParams;
   'persons.errors.father_name_exists': PersonsErrorsFathernameexistsParams;
   'persons.errors.mother_name_exists': PersonsErrorsMothernameexistsParams;
   'persons.errors.name_birthdate_exists': PersonsErrorsNamebirthdateexistsParams;
-  'persons.errors.name_no_parent_exists': PersonsErrorsNamenoparentexistsParams;
+  'persons.errors.name_no_parent_exists': NoParams;
   'persons.errors.national_id_exists': PersonsErrorsNationalidexistsParams;
   'persons.errors.not_found': PersonsErrorsNotfoundParams;
   'persons.errors.person_details_exists': NoParams;

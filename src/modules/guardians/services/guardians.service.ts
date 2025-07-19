@@ -28,7 +28,9 @@ export class GuardiansService {
       });
 
       if (person.guardian) {
-        throw new ConflictException('This person is already a guardian');
+        throw new ConflictException(
+          this.translateHelper.tr('guardians.errors.already_guardian'),
+        );
       }
     } else {
       person = await this.personsService.create(createGuardianDto.person);
@@ -133,7 +135,7 @@ export class GuardiansService {
     });
 
     if (!guardian) {
-      throw new NotFoundException(`Guardian with ID ${id} not found`);
+      throw new NotFoundException(this.translateHelper.tr('guardians.errors.not_found', { id }));
     }
 
     return guardian;

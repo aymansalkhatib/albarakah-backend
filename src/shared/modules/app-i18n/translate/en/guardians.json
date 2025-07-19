@@ -1,0 +1,6 @@
+{
+    "errors": {
+        "not_found": "Guardian with ID {id} not found",
+        "already_guardian": "This person is already a guardian"
+    }
+}

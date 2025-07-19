@@ -78,12 +78,7 @@ export async function validatePersonUniqueness(
       existingPerson.firstName === dto.firstName &&
       existingPerson.lastName === dto.lastName
     ) {
-      throw new ConflictException(
-        translateHelper.tr('persons.errors.name_no_parent_exists', {
-          firstName: dto.firstName,
-          lastName: dto.lastName,
-        }),
-      );
+      throw new ConflictException(translateHelper.tr('persons.errors.name_no_parent_exists'));
     }
 
     // Check for father-based conflict
@@ -105,7 +100,10 @@ export async function validatePersonUniqueness(
   }
 }
 
-export async function validateDropdownFields(dto: CreatePersonDto | UpdatePersonDto, dropdownService:DropdownService) {
+export async function validateDropdownFields(
+  dto: CreatePersonDto | UpdatePersonDto,
+  dropdownService: DropdownService,
+) {
   if (dto.healthStatusId) {
     await dropdownService.findDropdownWithOptionCheck({
       categoryName: Person.name,
