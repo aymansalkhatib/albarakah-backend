@@ -9,15 +9,13 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('guardians')
 @Index(['personId'], { unique: true })
-@Index(['relationType'])
-@Index(['guardianshipStartDate'])
-@Index(['guardianshipEndDate'])
 export class Guardian {
   @PrimaryGeneratedColumn()
   id: number;
@@ -27,12 +25,6 @@ export class Guardian {
 
   @Column({ name: 'relation_type', type: 'enum', enum: FamilyRelationType, nullable: true })
   relationType?: FamilyRelationType;
-
-  @Column({ name: 'guardianship_start_date', type: 'date' })
-  guardianshipStartDate: string;
-
-  @Column({ name: 'guardianship_end_date', type: 'date', nullable: true })
-  guardianshipEndDate?: string;
 
   @Column({ type: 'text', nullable: true })
   notes?: string;
@@ -49,6 +41,6 @@ export class Guardian {
   @JoinColumn({ name: 'person_id' })
   person: Person;
 
-  @OneToMany(() => BeneficiaryFamily, (family) => family.guardian)
-  families: BeneficiaryFamily[];
+  @OneToOne(() => BeneficiaryFamily, (family) => family.guardian)
+  family: BeneficiaryFamily;
 }

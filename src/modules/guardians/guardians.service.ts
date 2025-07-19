@@ -2,11 +2,11 @@ import { ConflictException, Injectable, NotFoundException } from '@nestjs/common
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Guardian } from './entities/guardian.entity';
-import { CreateGuardianDto } from './dto/create-guardian.dto';
-import { UpdateGuardianDto } from './dto/update-guardian.dto';
-import { FilterGuardianDto } from './dto/filter-guardian.dto';
+import { UpdateGuardianDto } from './dtos/requests/update-guardian.dto';
 import { PersonsService } from '../persons/services/persons.service';
 import { Person } from '../persons/entities/person.entity';
+import { CreateGuardianDto } from './dtos/requests/create-guardian.dto';
+import { FilterGuardianDto } from './dtos/queries/filter-guardian.dto';
 
 @Injectable()
 export class GuardiansService {
@@ -34,8 +34,6 @@ export class GuardiansService {
     const guardianData = {
       ...createGuardianDto,
       personId: person.id,
-      guardianshipStartDate: createGuardianDto.guardianshipStartDate.toISOString().split('T')[0],
-      guardianshipEndDate: createGuardianDto.guardianshipEndDate?.toISOString().split('T')[0],
     };
 
     const guardian = this.guardianRepository.create(guardianData);
@@ -51,30 +49,6 @@ export class GuardiansService {
     if (filterDto.relationType) {
       queryBuilder.andWhere('guardian.relationType = :relationType', {
         relationType: filterDto.relationType,
-      });
-    }
-
-    if (filterDto.guardianshipStartDateFrom) {
-      queryBuilder.andWhere('guardian.guardianshipStartDate >= :from', {
-        from: filterDto.guardianshipStartDateFrom,
-      });
-    }
-
-    if (filterDto.guardianshipStartDateTo) {
-      queryBuilder.andWhere('guardian.guardianshipStartDate <= :to', {
-        to: filterDto.guardianshipStartDateTo,
-      });
-    }
-
-    if (filterDto.guardianshipEndDateFrom) {
-      queryBuilder.andWhere('guardian.guardianshipEndDate >= :from', {
-        from: filterDto.guardianshipEndDateFrom,
-      });
-    }
-
-    if (filterDto.guardianshipEndDateTo) {
-      queryBuilder.andWhere('guardian.guardianshipEndDate <= :to', {
-        to: filterDto.guardianshipEndDateTo,
       });
     }
 
@@ -181,12 +155,6 @@ export class GuardiansService {
     const guardianData = {
       ...guardian,
       ...updateGuardianDto,
-      guardianshipStartDate:
-        updateGuardianDto.guardianshipStartDate?.toISOString().split('T')[0] ||
-        guardian.guardianshipStartDate,
-      guardianshipEndDate:
-        updateGuardianDto.guardianshipEndDate?.toISOString().split('T')[0] ||
-        guardian.guardianshipEndDate,
     };
 
     const updatedGuardian = this.guardianRepository.create(guardianData);

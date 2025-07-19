@@ -17,7 +17,6 @@ import { Guardian } from '../../guardians/entities/guardian.entity';
 import { EmergencyAidRequest } from '../../emergency-aid/entities/emergency-aid-request.entity';
 import { ReceivedAssistance } from '../../received-assistance/entities/received-assistance.entity';
 import { FamilyIncome } from './family-income.entity';
-import { CallLog } from '../../call-logs/entities/call-log.entity';
 import { House } from '../../houses/entities/house.entity';
 import { Interview } from '../../interviews/entities/interview.entity';
 import { FamilyRegistrationForm } from '../../family-registration-forms/entities/family-registration-form.entity';
@@ -94,10 +93,13 @@ export class BeneficiaryFamily {
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
+  @Column({ name: 'guardian_id', type: 'int', nullable: true })
+  guardianId?: number;
+
   // Relationships
 
-  @ManyToOne(() => Guardian, (guardian) => guardian.families, {
-    onDelete: 'RESTRICT',
+  @OneToOne(() => Guardian, (guardian) => guardian.family, {
+    onDelete: 'SET NULL',
   })
   @JoinColumn({ name: 'guardian_id' })
   guardian: Guardian;

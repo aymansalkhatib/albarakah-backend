@@ -9,11 +9,11 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { FilterGuardianDto } from './dtos/queries/filter-guardian.dto';
+import { CreateGuardianDto } from './dtos/requests/create-guardian.dto';
+import { UpdateGuardianDto } from './dtos/requests/update-guardian.dto';
+import { ResponseGuardianDto } from './dtos/responses/response-guardian.dto';
 import { GuardiansService } from './guardians.service';
-import { CreateGuardianDto } from './dto/create-guardian.dto';
-import { UpdateGuardianDto } from './dto/update-guardian.dto';
-import { ResponseGuardianDto } from './dto/response-guardian.dto';
-import { FilterGuardianDto } from './dto/filter-guardian.dto';
 
 @Controller('guardians')
 export class GuardiansController {

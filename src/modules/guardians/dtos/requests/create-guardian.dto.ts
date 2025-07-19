@@ -1,8 +1,8 @@
 import { IsDate, IsEnum, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
-import { FamilyRelationType } from '../../beneficiary-families/enums/family-relation-type.enum';
 import { Type } from 'class-transformer';
-import { OnlyOneOf } from '../../../common/decorators/validate-one-of-two-fields.validator';
 import { CreatePersonDto } from '@app/modules/persons/dtos/requests/create-person.dto';
+import { OnlyOneOf } from '@app/common/decorators/validate-one-of-two-fields.validator';
+import { FamilyRelationType } from '@app/modules/beneficiary-families/enums/family-relation-type.enum';
 
 @OnlyOneOf([
   {
@@ -11,18 +11,13 @@ import { CreatePersonDto } from '@app/modules/persons/dtos/requests/create-perso
   },
 ])
 export class CreateGuardianDto {
+  @IsOptional()
+  @IsNumber()
+  personId?: number;
+
   @IsEnum(FamilyRelationType)
   @IsOptional()
   relationType?: FamilyRelationType;
-
-  @IsDate()
-  @Type(() => Date)
-  guardianshipStartDate: Date;
-
-  @IsDate()
-  @Type(() => Date)
-  @IsOptional()
-  guardianshipEndDate?: Date;
 
   @IsString()
   @IsOptional()
@@ -32,8 +27,4 @@ export class CreateGuardianDto {
   @ValidateNested()
   @Type(() => CreatePersonDto)
   person?: CreatePersonDto;
-
-  @IsOptional()
-  @IsNumber()
-  personId?: number;
 }
