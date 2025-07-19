@@ -9,11 +9,11 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { FilterGuardianDto } from './dtos/queries/filter-guardian.dto';
-import { CreateGuardianDto } from './dtos/requests/create-guardian.dto';
-import { UpdateGuardianDto } from './dtos/requests/update-guardian.dto';
-import { ResponseGuardianDto } from './dtos/responses/response-guardian.dto';
-import { GuardiansService } from './guardians.service';
+import { FilterGuardianDto } from '../dtos/queries/filter-guardian.dto';
+import { CreateGuardianDto } from '../dtos/requests/create-guardian.dto';
+import { UpdateGuardianDto } from '../dtos/requests/update-guardian.dto';
+import { ResponseGuardianDto } from '../dtos/responses/response-guardian.dto';
+import { GuardiansService } from '../services/guardians.service';
 
 @Controller('guardians')
 export class GuardiansController {
@@ -21,8 +21,7 @@ export class GuardiansController {
 
   @Post()
   async create(@Body() createGuardianDto: CreateGuardianDto): Promise<ResponseGuardianDto> {
-    const guardian = await this.guardiansService.create(createGuardianDto);
-    return guardian;
+    return await this.guardiansService.create(createGuardianDto);
   }
 
   @Get()

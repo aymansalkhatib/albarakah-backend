@@ -1,12 +1,12 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Guardian } from './entities/guardian.entity';
-import { UpdateGuardianDto } from './dtos/requests/update-guardian.dto';
-import { PersonsService } from '../persons/services/persons.service';
-import { Person } from '../persons/entities/person.entity';
-import { CreateGuardianDto } from './dtos/requests/create-guardian.dto';
-import { FilterGuardianDto } from './dtos/queries/filter-guardian.dto';
+import { Guardian } from '../entities/guardian.entity';
+import { UpdateGuardianDto } from '../dtos/requests/update-guardian.dto';
+import { PersonsService } from '../../persons/services/persons.service';
+import { Person } from '../../persons/entities/person.entity';
+import { CreateGuardianDto } from '../dtos/requests/create-guardian.dto';
+import { FilterGuardianDto } from '../dtos/queries/filter-guardian.dto';
 
 @Injectable()
 export class GuardiansService {
