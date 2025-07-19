@@ -16,7 +16,6 @@ import { EmployeesService } from '../services/employee.service';
 import { CreateEmployeeDto } from '../dtos/requests/create-employee.dto';
 import { EmployeeResponseDto } from '../dtos/responses/employee-response.dto';
 import { UpdateEmployeeDto } from '../dtos/requests/update-employee.dto';
-import { FilterEmployeeDto } from '../dtos/queries/filter-employee.dto';
 
 @Controller('employees')
 @UseInterceptors(EmployeeResponseDto)
@@ -49,8 +48,6 @@ export class EmployeesController {
 
   @Get()
   async findAll(@Query() filterDto: any) {
-    console.log(filterDto);
-
     return this.employeesService.findAll(filterDto);
   }
 }

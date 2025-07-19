@@ -99,7 +99,13 @@ export class EmployeesService {
 
     if (filterDto.search) {
       queryBuilder.andWhere(
-        '(person.firstName LIKE :search OR person.lastName LIKE :search OR employee.position LIKE :search)',
+        `(
+          person.firstName LIKE :search OR
+          person.lastName LIKE :search OR
+          employee.position LIKE :search OR
+          COALESCE(person.notes, '') LIKE :search OR
+          COALESCE(employee.notes, '') LIKE :search
+        )`,
         { search: `%${filterDto.search}%` },
       );
     }
