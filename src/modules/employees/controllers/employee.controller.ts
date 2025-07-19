@@ -44,11 +44,13 @@ export class EmployeesController {
 
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.employeesService.findOne(id);
+    return this.employeesService.findOne(id, { relations: ['person'] });
   }
 
   @Get()
-  async findAll(@Query() filterDto: FilterEmployeeDto) {
+  async findAll(@Query() filterDto: any) {
+    console.log(filterDto);
+
     return this.employeesService.findAll(filterDto);
   }
 }

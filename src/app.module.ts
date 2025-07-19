@@ -16,6 +16,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { TrainingCoursesModule } from './modules/training-courses/training-courses.module';
 import { GuardiansModule } from './modules/guardians/guardians.module';
 import { EmployeesModule } from './modules/employees/employee.module';
+import { ParseQueryMiddleware } from './common/middlewares/parse-query.middleware';
 
 @Module({
   imports: [
@@ -49,8 +50,8 @@ import { EmployeesModule } from './modules/employees/employee.module';
     },
   ],
 })
-export class AppModule {
-  // configure(consumer: MiddlewareConsumer) {
-  //   consumer.apply(AppLoggerMiddleware).forRoutes('*all');
-  // }
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(ParseQueryMiddleware).forRoutes('*');
+  }
 }

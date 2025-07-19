@@ -8,6 +8,7 @@ import { FilterEmployeeDto } from '../dtos/queries/filter-employee.dto';
 import { CreateEmployeeDto } from '../dtos/requests/create-employee.dto';
 import { UpdateEmployeeDto } from '../dtos/requests/update-employee.dto';
 import { Employee } from '../entities/employee.entity';
+import { PersonRelation } from '@app/modules/persons/enums/person-relation.enum';
 
 @Injectable()
 export class EmployeesService {
@@ -50,22 +51,14 @@ export class EmployeesService {
       delete updateEmployeeDto.person;
     }
 
-    const updatedEmployee = this.employeeRepository.create({
-      ...employee,
-      ...updateEmployeeDto,
-    });
-
+    const updatedEmployee = this.employeeRepository.merge(employee, updateEmployeeDto);
     return await this.employeeRepository.save(updatedEmployee);
   }
 
   async delete(id: number): Promise<void> {
     const employee = await this.findOne(id, { relations: ['systemUser'] });
-    if (employee.systemUser) {
-      throw new ConflictException(
-        this.translateHelper.tr('employees.errors.cannot_delete_with_system_account'),
-      );
-    }
     await this.employeeRepository.delete(id);
+    await this.personsService.deleteIf(employee.personId, PersonRelation.EMPLOYEE);
   }
 
   async findOne(id: number, { relations }: { relations?: string[] } = {}): Promise<Employee> {

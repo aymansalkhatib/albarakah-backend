@@ -13,14 +13,6 @@ async function bootstrap() {
     logger: ['error', 'debug', 'log', 'verbose'],
   });
 
-  // Configure queries parser to allow dot notation in queries parameters while preventing prototype pollution
-  app.set('queries parser', (str: string) =>
-    parse(str, {
-      allowDots: true,
-      allowPrototypes: false,
-    }),
-  );
-
   // Enable CORS
   app.enableCors();
 
