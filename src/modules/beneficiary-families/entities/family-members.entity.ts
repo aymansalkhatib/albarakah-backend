@@ -43,11 +43,11 @@ export class FamilyMember {
 
   // Relationships
 
-  @ManyToOne(() => Person, { onDelete: 'RESTRICT' })
+  @ManyToOne(() => Person, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'person_id' })
   person: Person;
 
-  @ManyToOne(() => BeneficiaryFamily, (family) => family.members, { onDelete: 'RESTRICT' })
+  @ManyToOne(() => BeneficiaryFamily, (family) => family.members, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'family_id' })
   family: BeneficiaryFamily;
 

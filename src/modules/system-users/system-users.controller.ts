@@ -24,10 +24,7 @@ import { Protected } from '@app/common/decorators/protected.decorator';
 
 @Controller('system-users')
 export class SystemUsersController {
-  constructor(
-    private readonly systemUsersService: SystemUsersService,
-    private readonly translateHelper: TranslateHelper,
-  ) {}
+  constructor(private readonly systemUsersService: SystemUsersService) {}
 
   @Post()
   @Protected(Permission.CREATE_SYSTEM_USER)
@@ -47,7 +44,7 @@ export class SystemUsersController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
+  async delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
     await this.systemUsersService.delete(id);
   }
 

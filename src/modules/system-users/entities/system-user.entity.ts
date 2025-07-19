@@ -61,7 +61,7 @@ export class SystemUser {
   userPermissions: UserPermission[];
 
   @OneToOne(() => Employee, (employee) => employee.systemUser, {
-    onDelete: 'RESTRICT',
+    onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'employee_id' })
   employee: Employee;

@@ -45,7 +45,7 @@ export class Guardian {
 
   // Relationships
 
-  @ManyToOne(() => Person, { onDelete: 'RESTRICT' })
+  @ManyToOne(() => Person, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'person_id' })
   person: Person;
 

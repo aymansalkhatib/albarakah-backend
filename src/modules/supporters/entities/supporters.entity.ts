@@ -44,7 +44,7 @@ export class Supporter {
 
   // Relationships
 
-  @OneToOne(() => Person, { nullable: false, onDelete: 'RESTRICT' })
+  @OneToOne(() => Person, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn()
   person: Person;
 }

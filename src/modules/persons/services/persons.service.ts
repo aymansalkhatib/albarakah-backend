@@ -47,8 +47,10 @@ export class PersonsService {
   }
 
   async delete(id: number): Promise<void> {
-    await this.findOne(id);
-    await this.personRepository.delete(id);
+    const result = await this.personRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException(this.translateHelper.tr('persons.errors.not_found', { id }));
+    }
   }
 
   async findOne(id: number, { relations }: { relations?: string[] } = {}): Promise<Person> {
