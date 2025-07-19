@@ -31,14 +31,7 @@ export class GuardiansController {
 
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: number): Promise<ResponseGuardianDto> {
-    return await this.guardiansService.findOne(id);
-  }
-
-  @Get('person/:personId')
-  async findByPersonId(
-    @Param('personId', ParseIntPipe) personId: number,
-  ): Promise<ResponseGuardianDto[]> {
-    return await this.guardiansService.findByPersonId(personId);
+    return await this.guardiansService.findOne(id, { relations: ['person'] });
   }
 
   @Patch(':id')
@@ -51,6 +44,6 @@ export class GuardiansController {
 
   @Delete(':id')
   async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
-    await this.guardiansService.remove(id);
+    await this.guardiansService.delete(id);
   }
 }

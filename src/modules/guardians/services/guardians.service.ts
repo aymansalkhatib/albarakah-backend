@@ -7,6 +7,8 @@ import { PersonsService } from '../../persons/services/persons.service';
 import { Person } from '../../persons/entities/person.entity';
 import { CreateGuardianDto } from '../dtos/requests/create-guardian.dto';
 import { FilterGuardianDto } from '../dtos/queries/filter-guardian.dto';
+import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
+import { PersonRelation } from '@app/modules/persons/enums/person-relation.enum';
 
 @Injectable()
 export class GuardiansService {
@@ -14,6 +16,7 @@ export class GuardiansService {
     @InjectRepository(Guardian)
     private readonly guardianRepository: Repository<Guardian>,
     private readonly personsService: PersonsService,
+    private readonly translateHelper: TranslateHelper,
   ) {}
 
   async create(createGuardianDto: CreateGuardianDto): Promise<Guardian> {
@@ -31,12 +34,7 @@ export class GuardiansService {
       person = await this.personsService.create(createGuardianDto.person);
     }
 
-    const guardianData = {
-      ...createGuardianDto,
-      personId: person.id,
-    };
-
-    const guardian = this.guardianRepository.create(guardianData);
+    const guardian = this.guardianRepository.create({ ...createGuardianDto, person });
     return await this.guardianRepository.save(guardian);
   }
 
@@ -44,7 +42,7 @@ export class GuardiansService {
     const queryBuilder = this.guardianRepository
       .createQueryBuilder('guardian')
       .leftJoinAndSelect('guardian.person', 'person')
-      .leftJoinAndSelect('guardian.families', 'families');
+      .leftJoinAndSelect('guardian.family', 'family');
 
     if (filterDto.relationType) {
       queryBuilder.andWhere('guardian.relationType = :relationType', {
@@ -131,7 +129,7 @@ export class GuardiansService {
   async findOne(id: number, { relations }: { relations?: string[] } = {}): Promise<Guardian> {
     const guardian = await this.guardianRepository.findOne({
       where: { id },
-      relations: relations || ['person', 'families'],
+      relations: relations,
     });
 
     if (!guardian) {
@@ -152,24 +150,13 @@ export class GuardiansService {
       delete updateGuardianDto.person;
     }
 
-    const guardianData = {
-      ...guardian,
-      ...updateGuardianDto,
-    };
-
-    const updatedGuardian = this.guardianRepository.create(guardianData);
-    return await this.guardianRepository.save(updatedGuardian);
+    this.guardianRepository.merge(guardian, updateGuardianDto);
+    return await this.guardianRepository.save(guardian);
   }
 
-  async remove(id: number): Promise<void> {
+  async delete(id: number): Promise<void> {
     const guardian = await this.findOne(id);
-    await this.guardianRepository.softRemove(guardian);
-  }
-
-  async findByPersonId(personId: number): Promise<Guardian[]> {
-    return await this.guardianRepository.find({
-      where: { personId },
-      relations: ['person', 'families'],
-    });
+    await this.guardianRepository.delete(id);
+    await this.personsService.deleteIf(guardian.personId, PersonRelation.GUARDIAN);
   }
 }

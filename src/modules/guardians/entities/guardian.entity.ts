@@ -20,8 +20,8 @@ export class Guardian {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'person_id', nullable: true })
-  personId?: number;
+  @Column({ name: 'person_id' })
+  personId: number;
 
   @Column({ name: 'relation_type', type: 'enum', enum: FamilyRelationType, nullable: true })
   relationType?: FamilyRelationType;
@@ -37,7 +37,7 @@ export class Guardian {
 
   // Relationships
 
-  @ManyToOne(() => Person, { onDelete: 'CASCADE' })
+  @OneToOne(() => Person, (person) => person.guardian, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'person_id' })
   person: Person;
 
