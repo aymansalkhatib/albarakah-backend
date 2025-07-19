@@ -12,11 +12,11 @@ import {
   Query,
   UseInterceptors,
 } from '@nestjs/common';
-import { EmployeesService } from './employee.service';
-import { CreateEmployeeDto } from './dtos/requests/create-employee.dto';
-import { EmployeeResponseDto } from './dtos/responses/employee-response.dto';
-import { UpdateEmployeeDto } from './dtos/requests/update-employee.dto';
-import { FilterEmployeeDto } from './dtos/queries/filter-employee.dto';
+import { EmployeesService } from '../services/employee.service';
+import { CreateEmployeeDto } from '../dtos/requests/create-employee.dto';
+import { EmployeeResponseDto } from '../dtos/responses/employee-response.dto';
+import { UpdateEmployeeDto } from '../dtos/requests/update-employee.dto';
+import { FilterEmployeeDto } from '../dtos/queries/filter-employee.dto';
 
 @Controller('employees')
 @UseInterceptors(EmployeeResponseDto)
@@ -25,8 +25,7 @@ export class EmployeesController {
 
   @Post()
   async create(@Body() createEmployeeDto: CreateEmployeeDto) {
-    const employee = await this.employeesService.create(createEmployeeDto);
-    return employee;
+    return await this.employeesService.create(createEmployeeDto);
   }
 
   @Patch(':id')

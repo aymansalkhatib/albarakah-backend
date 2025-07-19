@@ -8,7 +8,6 @@ import { GlobalExceptionFilter } from './shared/exceptions-filter/global-excepti
 import { AppI18nModule } from './shared/modules/app-i18n/i18n.module';
 import { AppConfigModel } from './shared/modules/app-config/app_config.module';
 import { AppTypeOrmModule } from './shared/modules/app-type-orm/app-type-orm.module';
-import { EmployeesModule } from './modules/employees/entities/employee.module';
 import { SystemUsersModule } from './modules/system-users/system-users.module';
 import { DropdownsModule } from './modules/dropdowns/dropdowns.module';
 import { AppJwtModule } from './shared/modules/app-jwt/app-jwt.module';
@@ -16,6 +15,7 @@ import { RolesModule } from './modules/roles/roles.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { TrainingCoursesModule } from './modules/training-courses/training-courses.module';
 import { GuardiansModule } from './modules/guardians/guardians.module';
+import { EmployeesModule } from './modules/employees/employee.module';
 
 @Module({
   imports: [

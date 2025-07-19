@@ -17,9 +17,6 @@ import { CallLog } from '@app/modules/call-logs/entities/call-log.entity';
 
 @Entity('employees')
 @Index('idx_employees_person_id', ['personId'], { unique: true })
-@Index('idx_employees_position', ['position'])
-@Index('idx_employees_hire_date', ['hireDate'])
-@Index('idx_employees_termination_date', ['terminationDate'])
 export class Employee {
   @PrimaryGeneratedColumn()
   id: number;
