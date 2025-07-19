@@ -14,6 +14,7 @@ import { DropdownsModule } from './modules/dropdowns/dropdowns.module';
 import { AppJwtModule } from './shared/modules/app-jwt/app-jwt.module';
 import { RolesModule } from './modules/roles/roles.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { CallLogsModule } from './modules/call-logs/call-logs.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { AuthModule } from './modules/auth/auth.module';
     EmployeesModule,
     SystemUsersModule,
     RolesModule,
+    CallLogsModule
   ],
 
   controllers: [AppController],
