@@ -20,6 +20,8 @@ import { UpdateSystemUserDto } from '../dtos/requests/update-system-user.dto';
 import { SystemUserResponseDto } from '../dtos/responses/system-user-response.dto';
 import { SystemUsersService } from '../services/system-users.service';
 import { SerializeResponse } from '@app/common/decorators/serialize-response.decorator';
+import { CurrentUser } from '@app/common/guards/current-user.decorator';
+import { SystemUser } from '../entities/system-user.entity';
 
 @Controller('system-users')
 @SerializeResponse(SystemUserResponseDto)
@@ -37,14 +39,19 @@ export class SystemUsersController {
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserAccountDto: UpdateSystemUserDto,
   ): Promise<SystemUserResponseDto> {
-    const systemUser = await this.systemUsersService.update(id, updateUserAccountDto);
-    return systemUser;
+    return await this.systemUsersService.update(id, updateUserAccountDto);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
     await this.systemUsersService.delete(id);
+  }
+
+  @Get('me')
+  @Protected()
+  async getCurrentUser(@CurrentUser() systemUser: SystemUser): Promise<SystemUserResponseDto> {
+    return systemUser;
   }
 
   @Get(':id')

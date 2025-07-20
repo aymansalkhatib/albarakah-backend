@@ -23,7 +23,9 @@ export class JwtAuthGuard implements CanActivate {
     const payload: DecodedAccessTokenPayload = this.jwtService.verifyAccessToken(token);
 
     // Check if user exists and is active
-    const user = await this.systemUsersService.findOne(payload.userId);
+    const user = await this.systemUsersService.findOne(payload.userId, {
+      relations: ['employee', 'employee.person'],
+    });
 
     // Attach user info to request for use in controllers
     request.user = user;
