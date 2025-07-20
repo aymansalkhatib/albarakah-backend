@@ -102,7 +102,9 @@ export class CallLogsService {
     const queryBuilder = this.callLogRepository
       .createQueryBuilder('call_log')
       .leftJoinAndSelect('call_log.receiver', 'receiver')
-      .leftJoinAndSelect('call_log.employee', 'employee');
+      .leftJoinAndSelect('call_log.employee', 'employee')
+      .leftJoinAndSelect('call_log.family', 'family');
+
 
     if (filterDto.callerNumber) {
       queryBuilder.andWhere('call_log.callerNumber LIKE :callerNumber', {
@@ -149,6 +151,18 @@ export class CallLogsService {
     if (filterDto.createdTo) {
       queryBuilder.andWhere('call_log.createdAt <= :createdTo', {
         createdTo: filterDto.createdTo
+      });
+    }
+
+    if (filterDto.familyId) {
+      queryBuilder.andWhere('call_log.familyId = :familyId', {
+        familyId: filterDto.familyId
+      });
+    }
+
+    if (filterDto.familyName) {
+      queryBuilder.andWhere('family.familyName ILIKE :familyName', {
+        familyName: `%${filterDto.familyName}%`
       });
     }
 

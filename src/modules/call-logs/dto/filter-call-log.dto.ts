@@ -38,4 +38,13 @@ export class FilterCallLogDto extends PaginationQueryDto {
   @IsOptional()
   @IsDateString()
   createdTo?: Date;
+
+  @IsOptional()
+  @Transform(({ value }) => parseInt(value))
+  @IsNumber()
+  familyId?: number;
+
+  @IsOptional()
+  @IsString()
+  familyName?: string;
 }
