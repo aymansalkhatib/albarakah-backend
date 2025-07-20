@@ -1,6 +1,6 @@
 import { Exclude, Expose, Type } from 'class-transformer';
 import { EmployeeResponseDto } from '../../../employees/dtos/responses/employee-response.dto';
-import { ResponseRoleDto } from '@app/modules/roles/dtos/responses/response-role.dto';
+import { RoleResponseDto } from '@app/modules/roles/dtos/responses/role-response.dto';
 
 @Exclude()
 export class SystemUserResponseDto {
@@ -30,6 +30,6 @@ export class SystemUserResponseDto {
   employee?: EmployeeResponseDto;
 
   @Expose()
-  @Type(() => ResponseRoleDto)
-  role?: ResponseRoleDto;
+  @Type(() => RoleResponseDto)
+  role?: RoleResponseDto;
 }

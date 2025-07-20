@@ -26,7 +26,7 @@ export class PersonResponseDto {
   nationalId?: string;
 
   @Expose()
-  isPalestinian: boolean;
+  isPalestinian?: boolean;
 
   @Expose()
   gender?: GenderType;
@@ -38,7 +38,7 @@ export class PersonResponseDto {
   birthPlace?: string;
 
   @Expose()
-  isWorking: boolean;
+  isWorking?: boolean;
 
   @Expose()
   currentJob?: string;
@@ -47,7 +47,7 @@ export class PersonResponseDto {
   jobDetails?: string;
 
   @Expose()
-  isSmoker: boolean;
+  isSmoker?: boolean;
 
   @Expose()
   healthStatusId?: number;

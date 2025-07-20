@@ -1,7 +1,5 @@
 import { Exclude, Expose, Transform, Type } from 'class-transformer';
-import { ResponseRoleDto } from './response-role.dto';
-import { UserPermission } from '../../entities/user-permission.entity';
-import { PermissionEntity } from '../../entities/permissions.entity';
+import { RoleResponseDto } from './role-response.dto';
 
 @Exclude()
 export class PermissionResponseDto {
@@ -9,7 +7,7 @@ export class PermissionResponseDto {
   id: number;
 
   @Expose()
-  name: string;
+  name?: string;
 
   @Expose()
   description?: string;
@@ -22,6 +20,6 @@ export class PermissionResponseDto {
     },
     { toClassOnly: true },
   )
-  @Type(() => ResponseRoleDto)
-  roles?: ResponseRoleDto[];
+  @Type(() => RoleResponseDto)
+  roles?: RoleResponseDto[];
 }

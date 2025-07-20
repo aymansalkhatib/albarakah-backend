@@ -85,15 +85,36 @@ export class EmployeesService {
       });
     }
 
-    if (filterDto.hireDateFrom) {
-      queryBuilder.andWhere('employee.hireDate >= :from', {
-        from: filterDto.hireDateFrom,
+    if (filterDto.hireDateFrom && filterDto.hireDateTo) {
+      queryBuilder.andWhere('employee.hireDate BETWEEN :hireDateFrom AND :hireDateTo', {
+        hireDateFrom: filterDto.hireDateFrom,
+        hireDateTo: filterDto.hireDateTo,
+      });
+    } else if (filterDto.hireDateFrom) {
+      queryBuilder.andWhere('employee.hireDate >= :hireDateFrom', {
+        hireDateFrom: filterDto.hireDateFrom,
+      });
+    } else if (filterDto.hireDateTo) {
+      queryBuilder.andWhere('employee.hireDate <= :hireDateTo', {
+        hireDateTo: filterDto.hireDateTo,
       });
     }
 
-    if (filterDto.hireDateTo) {
-      queryBuilder.andWhere('employee.hireDate <= :to', {
-        to: filterDto.hireDateTo,
+    if (filterDto.terminationDateFrom && filterDto.terminationDateTo) {
+      queryBuilder.andWhere(
+        'employee.terminationDate BETWEEN :terminationDateFrom AND :terminationDateTo',
+        {
+          terminationDateFrom: filterDto.terminationDateFrom,
+          terminationDateTo: filterDto.terminationDateTo,
+        },
+      );
+    } else if (filterDto.terminationDateFrom) {
+      queryBuilder.andWhere('employee.terminationDate >= :terminationDateFrom', {
+        terminationDateFrom: filterDto.terminationDateFrom,
+      });
+    } else if (filterDto.terminationDateTo) {
+      queryBuilder.andWhere('employee.terminationDate <= :terminationDateTo', {
+        terminationDateTo: filterDto.terminationDateTo,
       });
     }
 

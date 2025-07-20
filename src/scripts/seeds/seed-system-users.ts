@@ -48,7 +48,7 @@ export async function seedSystemUsers(
         firstName: 'Super',
         lastName: 'Admin',
         email: 'superadmin@albarakah.org',
-        phone: '+970591234567',
+        phone: '0959123456',
         nationalId: '123456789',
         birthDate: new Date('1990-01-15'),
         gender: GenderType.MALE,

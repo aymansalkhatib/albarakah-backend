@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SystemUser } from './entities/system-user.entity';
-import { SystemUsersController } from './system-users.controller';
-import { SystemUsersService } from './system-users.service';
 import { EmployeesModule } from '../employees/employee.module';
+import { SystemUsersController } from './controllers/system-users.controller';
+import { SystemUsersService } from './services/system-users.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([SystemUser]), EmployeesModule],

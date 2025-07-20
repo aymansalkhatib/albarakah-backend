@@ -7,13 +7,13 @@ export class EmployeeResponseDto {
   id: number;
 
   @Expose()
-  position: string;
+  position?: string;
 
   @Expose()
-  hireDate: string;
+  hireDate?: Date;
 
   @Expose()
-  terminationDate?: string;
+  terminationDate?: Date;
 
   @Expose()
   notes?: string;

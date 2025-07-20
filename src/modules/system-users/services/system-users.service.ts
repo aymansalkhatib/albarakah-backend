@@ -1,13 +1,13 @@
+import { Employee } from '@app/modules/employees/entities/employee.entity';
+import { EmployeesService } from '@app/modules/employees/services/employee.service';
+import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Not, Repository } from 'typeorm';
-import { Employee } from '../employees/entities/employee.entity';
-import { SystemUser } from './entities/system-user.entity';
-import { CreateSystemUserDto } from './dtos/requests/create-system-user.dto';
-import { FilterSystemUserDto } from './dtos/queries/filter-system-user.dto';
-import { UpdateSystemUserDto } from './dtos/requests/update-system-user.dto';
-import { TranslateHelper } from '../../shared/modules/app-i18n/translate.helper';
-import { EmployeesService } from '../employees/services/employee.service';
+import { FilterSystemUserDto } from '../dtos/queries/filter-system-user.dto';
+import { CreateSystemUserDto } from '../dtos/requests/create-system-user.dto';
+import { UpdateSystemUserDto } from '../dtos/requests/update-system-user.dto';
+import { SystemUser } from '../entities/system-user.entity';
 
 @Injectable()
 export class SystemUsersService {
@@ -130,12 +130,6 @@ export class SystemUsersService {
       }
 
       if (filterDto.role.name) {
-        queryBuilder.andWhere('role.name ILIKE :roleName', {
-          roleName: `%${filterDto.role.name}%`,
-        });
-      }
-
-      if (filterDto.role.name) {
         queryBuilder.andWhere('(role.name ILIKE :name)', {
           name: `%${filterDto.role.name}%`,
         });
@@ -159,6 +153,19 @@ export class SystemUsersService {
       if (filterDto.employee.hireDateTo) {
         queryBuilder.andWhere('employee.hireDate <= :hireDateTo', {
           hireDateTo: filterDto.employee.hireDateTo,
+        });
+      }
+
+      
+      if (filterDto.employee.terminationDateFrom) {
+        queryBuilder.andWhere('employee.terminationDate >= :terminationDateFrom', {
+          terminationDateFrom: filterDto.employee.terminationDateFrom,
+        });
+      }
+
+      if (filterDto.employee.terminationDateTo) {
+        queryBuilder.andWhere('employee.terminationDate <= :terminationDateTo', {
+          terminationDateTo: filterDto.employee.terminationDateTo,
         });
       }
 

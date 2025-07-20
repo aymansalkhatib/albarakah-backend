@@ -16,14 +16,15 @@ import { EmployeesService } from '../services/employee.service';
 import { CreateEmployeeDto } from '../dtos/requests/create-employee.dto';
 import { EmployeeResponseDto } from '../dtos/responses/employee-response.dto';
 import { UpdateEmployeeDto } from '../dtos/requests/update-employee.dto';
+import { SerializeResponse } from '@app/common/decorators/serialize-response.decorator';
 
 @Controller('employees')
-@UseInterceptors(EmployeeResponseDto)
+@SerializeResponse(EmployeeResponseDto)
 export class EmployeesController {
   constructor(private readonly employeesService: EmployeesService) {}
 
   @Post()
-  async create(@Body() createEmployeeDto: CreateEmployeeDto) {
+  async create(@Body() createEmployeeDto: CreateEmployeeDto): Promise<EmployeeResponseDto> {
     return await this.employeesService.create(createEmployeeDto);
   }
 
@@ -31,7 +32,7 @@ export class EmployeesController {
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateEmployeeDto: UpdateEmployeeDto,
-  ) {
+  ): Promise<EmployeeResponseDto> {
     return this.employeesService.update(id, updateEmployeeDto);
   }
 
@@ -42,12 +43,12 @@ export class EmployeesController {
   }
 
   @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: number) {
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<EmployeeResponseDto> {
     return this.employeesService.findOne(id, { relations: ['person'] });
   }
 
   @Get()
-  async findAll(@Query() filterDto: any) {
+  async findAll(@Query() filterDto: any): Promise<EmployeeResponseDto[]> {
     return this.employeesService.findAll(filterDto);
   }
 }

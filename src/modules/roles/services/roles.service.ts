@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, In, Not, IsNull } from 'typeorm';
+import { Repository, In } from 'typeorm';
 import { Role } from '../entities/roles.entity';
 import { PermissionEntity } from '../entities/permissions.entity';
 import { RolePermission } from '../entities/role-permission.entity';
@@ -13,9 +13,9 @@ import { CreateRoleDto } from '@app/modules/roles/dtos/requests/create-role.dto'
 import { UpdateRoleDto } from '@app/modules/roles/dtos/requests/update-role.dto';
 import { FilterRoleDto } from '@app/modules/roles/dtos/queries/filter-role.dto';
 import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
-import { ResponseRoleDto } from '../dtos/responses/response-role.dto';
 import { paginate } from '@app/common/pagination/paginate.service';
 import { isProtectedSystemUserPermission } from '../constants/protected-permissions.constant';
+import { RoleResponseDto } from '../dtos/responses/role-response.dto';
 
 @Injectable()
 export class RolesService {
@@ -47,7 +47,7 @@ export class RolesService {
     return await this.roleRepository.save(role);
   }
 
-  async findAllRole(filterDto: FilterRoleDto): Promise<PaginationResponseDto<ResponseRoleDto>> {
+  async findAllRole(filterDto: FilterRoleDto): Promise<PaginationResponseDto<RoleResponseDto>> {
     const queryBuilder = this.roleRepository.createQueryBuilder('role');
 
     if (filterDto.id) {
@@ -58,7 +58,7 @@ export class RolesService {
       queryBuilder.andWhere('role.name LIKE :name', { name: `%${filterDto.name}%` });
     }
 
-    return paginate(queryBuilder, filterDto, ResponseRoleDto);
+    return paginate(queryBuilder, filterDto, RoleResponseDto);
   }
 
   async findRoleById(id: number): Promise<Role> {

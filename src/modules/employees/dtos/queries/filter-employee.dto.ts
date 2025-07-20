@@ -31,6 +31,15 @@ export class FilterEmployeeDto {
   hireDateTo?: string;
 
   @IsOptional()
+  @IsDateString()
+  terminationDateFrom?: string;
+
+  @IsOptional()
+  @IsDateString()
+  @IsAfterDate('terminationDateFrom')
+  terminationDateTo?: string;
+
+  @IsOptional()
   @IsString()
   @MaxLength(100)
   search?: string;

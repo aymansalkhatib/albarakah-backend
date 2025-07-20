@@ -2,7 +2,7 @@ import { Exclude, Expose, Transform, Type } from 'class-transformer';
 import { PermissionResponseDto } from './permission-response.dto';
 
 @Exclude()
-export class ResponseRoleDto {
+export class RoleResponseDto {
   @Expose()
   id: number;
 
