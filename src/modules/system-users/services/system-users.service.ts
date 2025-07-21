@@ -8,6 +8,9 @@ import { FilterSystemUserDto } from '../dtos/queries/filter-system-user.dto';
 import { CreateSystemUserDto } from '../dtos/requests/create-system-user.dto';
 import { UpdateSystemUserDto } from '../dtos/requests/update-system-user.dto';
 import { SystemUser } from '../entities/system-user.entity';
+import { paginate } from '@app/common/pagination/paginate.service';
+import { SystemUserResponseDto } from '../dtos/responses/system-user-response.dto';
+import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
 
 @Injectable()
 export class SystemUsersService {
@@ -96,7 +99,7 @@ export class SystemUsersService {
     return systemUser;
   }
 
-  async findAll(filterDto: FilterSystemUserDto): Promise<SystemUser[]> {
+  async findAll(filterDto: FilterSystemUserDto): Promise<PaginationResponseDto<SystemUserResponseDto>> {
     const queryBuilder = this.systemUserRepository
       .createQueryBuilder('systemUser')
       .leftJoinAndSelect('systemUser.employee', 'employee')
@@ -241,6 +244,6 @@ export class SystemUsersService {
 
     queryBuilder.orderBy('systemUser.createdAt', 'DESC');
 
-    return queryBuilder.getMany();
+    return paginate(queryBuilder, filterDto, SystemUserResponseDto);
   }
 }

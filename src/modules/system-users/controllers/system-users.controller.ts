@@ -22,19 +22,21 @@ import { SystemUsersService } from '../services/system-users.service';
 import { SerializeResponse } from '@app/common/decorators/serialize-response.decorator';
 import { CurrentUser } from '@app/common/guards/current-user.decorator';
 import { SystemUser } from '../entities/system-user.entity';
+import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
 
 @Controller('system-users')
-@SerializeResponse(SystemUserResponseDto)
 export class SystemUsersController {
   constructor(private readonly systemUsersService: SystemUsersService) {}
 
   @Post()
+  @SerializeResponse(SystemUserResponseDto)
   @Protected(Permission.CREATE_SYSTEM_USER)
   async create(@Body() createUserAccountDto: CreateSystemUserDto): Promise<SystemUserResponseDto> {
     return await this.systemUsersService.create(createUserAccountDto);
   }
 
   @Patch(':id')
+  @SerializeResponse(SystemUserResponseDto)
   @Protected()
   async update(
     @Param('id', ParseIntPipe) id: number,
@@ -50,12 +52,13 @@ export class SystemUsersController {
   }
 
   @Get('me')
-  @Protected()
+  @SerializeResponse(SystemUserResponseDto)
   async getCurrentUser(@CurrentUser() systemUser: SystemUser): Promise<SystemUserResponseDto> {
     return systemUser;
   }
 
   @Get(':id')
+  @SerializeResponse(SystemUserResponseDto)
   async findOne(@Param('id', ParseIntPipe) id: number): Promise<SystemUserResponseDto> {
     const systemUser = await this.systemUsersService.findOne(id, {
       relations: ['employee', 'role', 'employee.person'],
@@ -64,7 +67,9 @@ export class SystemUsersController {
   }
 
   @Get()
-  async findAll(@Query() filterDto: FilterSystemUserDto): Promise<SystemUserResponseDto[]> {
+  async findAll(
+    @Query() filterDto: FilterSystemUserDto,
+  ): Promise<PaginationResponseDto<SystemUserResponseDto>> {
     return await this.systemUsersService.findAll(filterDto);
   }
 }
