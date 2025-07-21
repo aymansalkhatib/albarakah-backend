@@ -13,6 +13,7 @@ import {
 import { FamilyRelationType } from '../enums/family-relation-type.enum';
 import { BeneficiaryFamily } from './beneficiary-families.entity';
 import { PersonCourseBatch } from '../../training-courses/entities/person-course-batch.entity';
+import { CallLog } from '@app/modules/call-logs/entities/call-log.entity';
 
 @Entity('family_members')
 @Index(['familyId', 'personId', 'relationType'], { unique: true })

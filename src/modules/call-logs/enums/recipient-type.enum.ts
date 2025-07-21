@@ -1,6 +1,5 @@
-export enum CallerType {
+export enum RecipientType {
   GUARDIAN = 'guardian',
-  FAMILY = 'family',
   FAMILY_MEMBER = 'family_member',
   SUPPORTER = 'supporter',
   OTHER = 'other',

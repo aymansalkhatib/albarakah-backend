@@ -17,6 +17,7 @@ import { TrainingCoursesModule } from './modules/training-courses/training-cours
 import { GuardiansModule } from './modules/guardians/guardians.module';
 import { EmployeesModule } from './modules/employees/employee.module';
 import { ParseQueryMiddleware } from './common/middlewares/parse-query.middleware';
+import { CallLogsModule } from './modules/call-logs/call-logs.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { ParseQueryMiddleware } from './common/middlewares/parse-query.middlewar
     RolesModule,
     TrainingCoursesModule,
     GuardiansModule,
+    CallLogsModule,
   ],
 
   controllers: [AppController],

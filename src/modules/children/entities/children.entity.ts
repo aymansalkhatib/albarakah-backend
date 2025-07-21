@@ -13,6 +13,7 @@ import {
 import { ReceivedAssistance } from '../../received-assistance/entities/received-assistance.entity';
 import { BeneficiaryFamily } from '../../beneficiary-families/entities/beneficiary-families.entity';
 import { FamilyMember } from '../../beneficiary-families/entities/family-members.entity';
+import { CallLog } from '@app/modules/call-logs/entities/call-log.entity';
 
 @Entity('children')
 @Index(['personId'], { unique: true })
