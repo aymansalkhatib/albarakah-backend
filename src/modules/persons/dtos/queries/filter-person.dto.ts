@@ -16,8 +16,9 @@ import { StrictBoolean } from '@app/common/decorators/strict-boolean.decorator';
 import { ClothingSize } from '../../enums/clothing-size.enum';
 import { GenderType } from '../../enums/gender-type.enum';
 import { PositiveIntegerId } from '@app/common/decorators/positive-integer-id.decorator';
+import { PaginationDto } from '@app/common/pagination/dto/pagination.dto';
 
-export class FilterPersonDto {
+export class FilterPersonDto  extends PaginationDto{
   @IsOptional()
   @IsString()
   @Length(1, 100)

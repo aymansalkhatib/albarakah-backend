@@ -14,6 +14,9 @@ import { CreatePersonDto } from '../dtos/requests/create-person.dto';
 import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
 import { DropdownService } from '@app/modules/dropdowns/services/dropdown.service';
 import { PersonRelation } from '../enums/person-relation.enum';
+import { paginate } from '@app/common/pagination/paginate.service';
+import { PersonResponseDto } from '../dtos/responses/person-response.dto';
+import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
 
 @Injectable()
 export class PersonsService {
@@ -86,7 +89,7 @@ export class PersonsService {
     return person;
   }
 
-  async findAll(filterDto: FilterPersonDto): Promise<Person[]> {
+  async findAll(filterDto: FilterPersonDto): Promise<PaginationResponseDto<PersonResponseDto>> {
     const queryBuilder = this.personRepository.createQueryBuilder('person');
 
     // Apply filters based on FilterPersonDto
@@ -171,7 +174,7 @@ export class PersonsService {
       });
     }
 
-    return await queryBuilder.getMany();
+    return paginate(queryBuilder, filterDto, PersonResponseDto);
   }
 
   async findOneByName(name: string): Promise<Person> {
