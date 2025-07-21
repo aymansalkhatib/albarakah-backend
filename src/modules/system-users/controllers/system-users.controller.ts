@@ -37,7 +37,7 @@ export class SystemUsersController {
 
   @Patch(':id')
   @SerializeResponse(SystemUserResponseDto)
-  @Protected()
+  @Protected(Permission.UPDATE_SYSTEM_USER)
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserAccountDto: UpdateSystemUserDto,
@@ -47,6 +47,7 @@ export class SystemUsersController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
+  @Protected(Permission.DELETE_SYSTEM_USER)
   async delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
     await this.systemUsersService.delete(id);
   }
@@ -59,6 +60,7 @@ export class SystemUsersController {
 
   @Get(':id')
   @SerializeResponse(SystemUserResponseDto)
+  @Protected(Permission.READ_SYSTEM_USER)
   async findOne(@Param('id', ParseIntPipe) id: number): Promise<SystemUserResponseDto> {
     const systemUser = await this.systemUsersService.findOne(id, {
       relations: ['employee', 'role', 'employee.person'],
@@ -67,6 +69,7 @@ export class SystemUsersController {
   }
 
   @Get()
+  @Protected(Permission.READ_SYSTEM_USER)
   async findAll(
     @Query() filterDto: FilterSystemUserDto,
   ): Promise<PaginationResponseDto<SystemUserResponseDto>> {

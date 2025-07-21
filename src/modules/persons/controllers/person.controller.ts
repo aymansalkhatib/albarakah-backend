@@ -19,18 +19,22 @@ import { CreatePersonDto } from '../dtos/requests/create-person.dto';
 import { PersonResponseDto } from '../dtos/responses/person-response.dto';
 import { SerializeResponse } from '@app/common/decorators/serialize-response.decorator';
 import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
+import { Protected } from '@app/common/decorators/protected.decorator';
+import { Permission } from '@app/modules/roles/enums/permission.enum';
 
 @Controller('persons')
 export class PersonController {
   constructor(private readonly personsService: PersonsService) {}
 
   @Post()
+  @Protected(Permission.CREATE_PERSON)
   @SerializeResponse(PersonResponseDto)
   async create(@Body() createPersonDto: CreatePersonDto): Promise<PersonResponseDto> {
     return this.personsService.create(createPersonDto);
   }
 
   @Patch(':id')
+  @Protected(Permission.UPDATE_PERSON)
   @SerializeResponse(PersonResponseDto)
   async update(
     @Param('id', ParseIntPipe) id: number,
@@ -40,18 +44,21 @@ export class PersonController {
   }
 
   @Delete(':id')
+  @Protected(Permission.DELETE_PERSON)
   @HttpCode(HttpStatus.NO_CONTENT)
   async delete(@Param('id', ParseIntPipe) id: number) {
     return this.personsService.delete(id);
   }
 
   @Get(':id')
+  @Protected(Permission.READ_PERSON)
   @SerializeResponse(PersonResponseDto)
   async findOne(@Param('id', ParseIntPipe) id: number): Promise<PersonResponseDto> {
     return this.personsService.findOne(id, { relations: ['father', 'mother'] });
   }
 
   @Get()
+  @Protected(Permission.READ_PERSON)
   async findAll(
     @Query() filterDto: FilterPersonDto,
   ): Promise<PaginationResponseDto<PersonResponseDto>> {

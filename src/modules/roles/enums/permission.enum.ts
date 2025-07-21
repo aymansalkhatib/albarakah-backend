@@ -94,4 +94,10 @@ export enum Permission {
   READ_SYSTEM_USER = 'read_system_user',
   UPDATE_SYSTEM_USER = 'update_system_user',
   DELETE_SYSTEM_USER = 'delete_system_user',
+
+  // Person Management
+  CREATE_PERSON = 'create_person',
+  READ_PERSON = 'read_person',
+  UPDATE_PERSON = 'update_person',
+  DELETE_PERSON = 'delete_person',
 }
