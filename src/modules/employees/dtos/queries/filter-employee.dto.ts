@@ -9,8 +9,9 @@ import {
 import { Type } from 'class-transformer';
 import { FilterPersonDto } from '@app/modules/persons/dtos/queries/filter-person.dto';
 import { IsAfterDate } from '@app/common/decorators/is-after-date.decorator';
+import { PaginationDto } from '@app/common/pagination/dto/pagination.dto';
 
-export class FilterEmployeeDto {
+export class FilterEmployeeDto extends PaginationDto {
   @IsOptional()
   @IsString()
   @Length(1, 100)

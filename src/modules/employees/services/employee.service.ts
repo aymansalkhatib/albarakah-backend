@@ -9,6 +9,10 @@ import { CreateEmployeeDto } from '../dtos/requests/create-employee.dto';
 import { UpdateEmployeeDto } from '../dtos/requests/update-employee.dto';
 import { Employee } from '../entities/employee.entity';
 import { PersonRelation } from '@app/modules/persons/enums/person-relation.enum';
+import { paginate } from '@app/common/pagination/paginate.service';
+import { EmployeeResponseDto } from '../dtos/responses/employee-response.dto';
+import { ParamProperties } from '@nestjs/core/helpers/context-utils';
+import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
 
 @Injectable()
 export class EmployeesService {
@@ -74,7 +78,7 @@ export class EmployeesService {
     return employee;
   }
 
-  async findAll(filterDto: FilterEmployeeDto): Promise<Employee[]> {
+  async findAll(filterDto: FilterEmployeeDto): Promise<PaginationResponseDto<EmployeeResponseDto>> {
     const queryBuilder = this.employeeRepository
       .createQueryBuilder('employee')
       .leftJoinAndSelect('employee.person', 'person');
@@ -196,6 +200,6 @@ export class EmployeesService {
       }
     }
 
-    return await queryBuilder.getMany();
+    return paginate(queryBuilder, filterDto, EmployeeResponseDto);
   }
 }
