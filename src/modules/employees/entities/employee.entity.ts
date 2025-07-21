@@ -56,7 +56,7 @@ export class Employee {
   })
   interviews: Interview[];
 
-  @OneToMany(() => CallLog, (callLog) => callLog.employee, {
+  @OneToMany(() => CallLog, (callLog) => callLog.responsibleEmployee, {
     cascade: true,
   })
   callLogs: CallLog[];

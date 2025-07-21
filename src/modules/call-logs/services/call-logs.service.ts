@@ -42,11 +42,11 @@ export class CallLogsService {
       );
     }
 
-    await this.employeesService.findOne(createCallLogDto.employeeId);
+    await this.employeesService.findOne(createCallLogDto.responsibleEmployeeId);
 
     const callLog = this.callLogRepository.create({
       ...createCallLogDto,
-      personId: receiver?.person?.id,
+      relatedPersonId: receiver?.person?.id,
     });
     return await this.callLogRepository.save(callLog);
   }
@@ -54,22 +54,9 @@ export class CallLogsService {
   async findAll(filterDto: FilterCallLogDto): Promise<PaginationResponseDto<CallLogResponseDto>> {
     const queryBuilder = this.callLogRepository
       .createQueryBuilder('call_log')
-      .leftJoinAndSelect('call_log.person', 'person')
-      .leftJoinAndSelect('call_log.employee', 'employee')
-      .leftJoinAndSelect('employee.person', 'employeePerson');
-
-    if (filterDto.recipientName) {
-      queryBuilder.andWhere(`CONCAT(person.firstName, ' ', person.lastName) ILIKE :recipientName`, {
-        recipientName: `%${filterDto.recipientName}%`,
-      });
-    }
-
-    if (filterDto.callerName) {
-      queryBuilder.andWhere(
-        `CONCAT(employeePerson.firstName, ' ', employeePerson.lastName) ILIKE :callerName`,
-        { callerName: `%${filterDto.callerName}%` },
-      );
-    }
+      .leftJoinAndSelect('call_log.responsibleEmployee', 'responsibleEmployee')
+      .leftJoinAndSelect('call_log.relatedPerson', 'relatedPerson')
+      .leftJoinAndSelect('responsibleEmployee.person', 'responsibleEmployeePerson');
 
     if (filterDto.callerNumber) {
       queryBuilder.andWhere('call_log.callerNumber LIKE :callerNumber', {
@@ -95,20 +82,17 @@ export class CallLogsService {
       });
     }
 
-    if (filterDto.employeeId) {
-      queryBuilder.andWhere('call_log.employeeId = :employeeId', {
-        employeeId: filterDto.employeeId,
+    if (filterDto.callDirection) {
+      queryBuilder.andWhere('call_log.callDirection = :callDirection', {
+        callDirection: filterDto.callDirection,
       });
     }
 
     if (filterDto.callDateFrom && filterDto.callDateTo) {
-      queryBuilder.andWhere(
-        'call_log.callDate BETWEEN :callDateFrom AND :callDateTo',
-        {
-          callDateFrom: filterDto.callDateFrom,
-          callDateTo: filterDto.callDateTo,
-        },
-      );
+      queryBuilder.andWhere('call_log.callDate BETWEEN :callDateFrom AND :callDateTo', {
+        callDateFrom: filterDto.callDateFrom,
+        callDateTo: filterDto.callDateTo,
+      });
     } else if (filterDto.callDateFrom) {
       queryBuilder.andWhere('call_log.callDate >= :callDateFrom', {
         callDateFrom: filterDto.callDateFrom,
@@ -119,13 +103,27 @@ export class CallLogsService {
       });
     }
 
+    if (filterDto.responsibleEmployeeName) {
+      queryBuilder.andWhere(
+        `CONCAT(responsibleEmployeePerson.firstName, ' ', responsibleEmployeePerson.lastName) ILIKE :responsibleEmployeeName`,
+        { responsibleEmployeeName: `%${filterDto.responsibleEmployeeName}%` },
+      );
+    }
+
+    if (filterDto.relatedPersonName) {
+      queryBuilder.andWhere(
+        `CONCAT(relatedPerson.person.firstName, ' ', relatedPerson.person.lastName) ILIKE :relatedPersonName`,
+        { relatedPersonName: `%${filterDto.relatedPersonName}%` },
+      );
+    }
+
     return paginate<CallLog, CallLogResponseDto>(queryBuilder, filterDto, CallLogResponseDto);
   }
 
   async findOne(id: number): Promise<CallLog> {
     const callLog = await this.callLogRepository.findOne({
       where: { id },
-      relations: ['employee'],
+      relations: ['responsibleEmployee', 'relatedPerson'],
     });
 
     if (!callLog) {

@@ -3,6 +3,7 @@ import { CallStatus } from '../../enums/call-status.enum';
 import { RecipientType } from '../../enums/recipient-type.enum';
 import { SyriaPhone } from '@app/common/decorators/syria-phone.decorator';
 import { PositiveIntegerId } from '@app/common/decorators/positive-integer-id.decorator';
+import { CallDirection } from '../../enums/call-direction.enum';
 
 export class CreateCallLogDto {
   @IsOptional()
@@ -28,7 +29,12 @@ export class CreateCallLogDto {
 
   @IsOptional()
   @PositiveIntegerId()
-  employeeId?: number;
+  responsibleEmployeeId?: number;
+
+
+  @IsEnum(CallDirection)
+  @IsNotEmpty()
+  callDirection: CallDirection;
 
   @IsOptional()
   @IsString()

@@ -12,6 +12,7 @@ import { CallStatus } from '../enums/call-status.enum';
 import { Person } from '../../persons/entities/person.entity';
 import { Employee } from '../../employees/entities/employee.entity';
 import { RecipientType } from '../enums/recipient-type.enum';
+import { CallDirection } from '../enums/call-direction.enum';
 
 @Entity('call_logs')
 export class CallLog {
@@ -32,11 +33,18 @@ export class CallLog {
   })
   recipientType: RecipientType;
 
-  @Column({ name: 'receiver_id', nullable: true })
-  receiverId?: number;
+  @Column({ name: 'responsible_employee_id', nullable: true })
+  responsibleEmployeeId?: number;
 
-  @Column({ name: 'person_id', nullable: true })
-  personId?: number;
+  @Column({ name: 'related_person_id', nullable: true })
+  relatedPersonId?: number;
+
+  @Column({
+    type: 'enum',
+    enum: CallDirection,
+    nullable: false,
+  })
+  callDirection: CallDirection;
 
   @Column({
     name: 'call_status',
@@ -45,9 +53,6 @@ export class CallLog {
     nullable: false,
   })
   callStatus: CallStatus;
-
-  @Column({ name: 'employee_id', nullable: true })
-  employeeId?: number;
 
   @Column({ name: 'call_date', type: 'timestamp', nullable: false })
   callDate: Date;
@@ -62,10 +67,10 @@ export class CallLog {
   updatedAt: Date;
 
   @ManyToOne(() => Employee)
-  @JoinColumn({ name: 'employee_id' })
-  employee?: Employee;
+  @JoinColumn({ name: 'responsible_employee_id' })
+  responsibleEmployee?: Employee;
 
   @ManyToOne(() => Person)
-  @JoinColumn({ name: 'person_id' })
-  person?: Person;
+  @JoinColumn({ name: 'related_person_id' })
+  relatedPerson?: Person;
 }
