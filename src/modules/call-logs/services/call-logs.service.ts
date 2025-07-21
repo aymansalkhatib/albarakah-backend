@@ -6,7 +6,7 @@ import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-res
 import { paginate } from '@app/common/pagination/paginate.service';
 
 import { CallLog } from '../entities/call-log.entity';
-import { RecipientType } from '../enums/recipient-type.enum';
+import { ExternalPartyType } from '../enums/recipient-type.enum';
 import { FamilyMembersService } from '@app/modules/beneficiary-families/family-members.service';
 import { SupportersService } from '@app/modules/supporters/supporters.service';
 import { FilterCallLogDto } from '../dtos/queries/filter-call-log.dto';
@@ -30,13 +30,13 @@ export class CallLogsService {
   async create(createCallLogDto: CreateCallLogDto): Promise<CallLog> {
     let receiver: any;
 
-    const service = await this.getRecipientService(createCallLogDto.recipientType);
+    const service = await this.getExternalPartyService(createCallLogDto.externalPartyType);
 
     if (service) {
-      receiver = await service.findOne(createCallLogDto.receiverId, { relations: ['person'] });
+      receiver = await service.findOne(createCallLogDto.externalPartyId, { relations: ['person'] });
     }
 
-    if (service == null && createCallLogDto.recipientType !== RecipientType.OTHER) {
+    if (service == null && createCallLogDto.externalPartyType !== ExternalPartyType.OTHER) {
       throw new BadRequestException(
         'Recipient must be specified when selecting Guardian, Supporter, or Family Member. The recipient field cannot be left empty.',
       );
@@ -46,7 +46,7 @@ export class CallLogsService {
 
     const callLog = this.callLogRepository.create({
       ...createCallLogDto,
-      relatedPersonId: receiver?.person?.id,
+      externalPartyId: receiver?.person?.id,
     });
     return await this.callLogRepository.save(callLog);
   }
@@ -55,7 +55,7 @@ export class CallLogsService {
     const queryBuilder = this.callLogRepository
       .createQueryBuilder('call_log')
       .leftJoinAndSelect('call_log.responsibleEmployee', 'responsibleEmployee')
-      .leftJoinAndSelect('call_log.relatedPerson', 'relatedPerson')
+      .leftJoinAndSelect('call_log.externalParty', 'externalParty')
       .leftJoinAndSelect('responsibleEmployee.person', 'responsibleEmployeePerson');
 
     if (filterDto.callerNumber) {
@@ -76,9 +76,9 @@ export class CallLogsService {
       });
     }
 
-    if (filterDto.receiverId) {
-      queryBuilder.andWhere('call_log.receiverId = :receiverId', {
-        receiverId: filterDto.receiverId,
+    if (filterDto.externalPartyId) {
+      queryBuilder.andWhere('call_log.externalPartyId = :externalPartyId', {
+        externalPartyId: filterDto.externalPartyId,
       });
     }
 
@@ -110,10 +110,10 @@ export class CallLogsService {
       );
     }
 
-    if (filterDto.relatedPersonName) {
+    if (filterDto.externalPartyName) {
       queryBuilder.andWhere(
-        `CONCAT(relatedPerson.person.firstName, ' ', relatedPerson.person.lastName) ILIKE :relatedPersonName`,
-        { relatedPersonName: `%${filterDto.relatedPersonName}%` },
+        `CONCAT(externalParty.firstName, ' ', externalParty.lastName) ILIKE :externalPartyName`,
+        { externalPartyName: `%${filterDto.externalPartyName}%` },
       );
     }
 
@@ -123,7 +123,7 @@ export class CallLogsService {
   async findOne(id: number): Promise<CallLog> {
     const callLog = await this.callLogRepository.findOne({
       where: { id },
-      relations: ['responsibleEmployee', 'relatedPerson'],
+      relations: ['responsibleEmployee', 'externalParty', 'responsibleEmployee.person'],
     });
 
     if (!callLog) {
@@ -146,12 +146,12 @@ export class CallLogsService {
     }
   }
 
-  private async getRecipientService(recipientType: RecipientType) {
+  private async getExternalPartyService(externalPartyType: ExternalPartyType) {
     const services = {
-      [RecipientType.GUARDIAN]: this.guardiansService,
-      [RecipientType.FAMILY_MEMBER]: this.familyMembersService,
-      [RecipientType.SUPPORTER]: this.supportersService,
+      [ExternalPartyType.GUARDIAN]: this.guardiansService,
+      [ExternalPartyType.FAMILY_MEMBER]: this.familyMembersService,
+      [ExternalPartyType.SUPPORTER]: this.supportersService,
     };
-    return services[recipientType] || null;
+    return services[externalPartyType] || null;
   }
 }

@@ -18,7 +18,6 @@ import { FilterCallLogDto } from '../dtos/queries/filter-call-log.dto';
 import { CreateCallLogDto } from '../dtos/requests/create-call-log.dto';
 import { UpdateCallLogDto } from '../dtos/requests/update-call-log.dto';
 import { CallLogResponseDto } from '../dtos/responses/call-log-response.dto';
-import { CallLog } from '../entities/call-log.entity';
 import { CallLogsService } from '../services/call-logs.service';
 import { Protected } from '@app/common/decorators/protected.decorator';
 import { Permission } from '@app/modules/roles/enums/permission.enum';
@@ -30,7 +29,7 @@ export class CallLogsController {
   @Post()
   @Protected(Permission.CREATE_CALL_LOG)
   @SerializeResponse(CallLogResponseDto)
-  async create(@Body() createCallLogDto: CreateCallLogDto): Promise<CallLog> {
+  async create(@Body() createCallLogDto: CreateCallLogDto): Promise<CallLogResponseDto> {
     return this.callLogsService.create(createCallLogDto);
   }
 
@@ -45,7 +44,7 @@ export class CallLogsController {
   @Get(':id')
   @Protected(Permission.READ_CALL_LOG)
   @SerializeResponse(CallLogResponseDto)
-  async findOne(@Param('id', ParseIntPipe) id: number): Promise<CallLog> {
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<CallLogResponseDto> {
     return this.callLogsService.findOne(id);
   }
 
@@ -55,7 +54,7 @@ export class CallLogsController {
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateCallLogDto: UpdateCallLogDto,
-  ): Promise<CallLog> {
+  ): Promise<CallLogResponseDto> {
     return this.callLogsService.update(id, updateCallLogDto);
   }
 

@@ -3,7 +3,7 @@ import { IsOptional, IsEnum, IsString, IsDate } from 'class-validator';
 import { PaginationQueryDto } from '@app/common/pagination/dto/pagination-query.dto';
 import { IsAfterDate } from '@app/common/decorators/is-after-date.decorator';
 import { CallStatus } from '../../enums/call-status.enum';
-import { RecipientType } from '../../enums/recipient-type.enum';
+import { ExternalPartyType } from '../../enums/recipient-type.enum';
 import { PositiveIntegerId } from '@app/common/decorators/positive-integer-id.decorator';
 import { CallDirection } from '../../enums/call-direction.enum';
 
@@ -22,11 +22,11 @@ export class FilterCallLogDto extends PaginationQueryDto {
 
   @IsOptional()
   @PositiveIntegerId()
-  receiverId?: number;
+  externalPartyId?: number;
 
   @IsOptional()
-  @IsEnum(RecipientType)
-  recipientType: RecipientType;
+  @IsEnum(ExternalPartyType)
+  externalPartyType: ExternalPartyType;
 
   @IsOptional()
   @IsString()
@@ -34,7 +34,7 @@ export class FilterCallLogDto extends PaginationQueryDto {
 
   @IsOptional()
   @IsString()
-  relatedPersonName?: string;
+  externalPartyName?: string;
 
   @IsOptional()
   @IsEnum(CallDirection)

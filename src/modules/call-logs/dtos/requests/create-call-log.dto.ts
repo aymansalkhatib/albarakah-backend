@@ -1,9 +1,10 @@
-import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 import { CallStatus } from '../../enums/call-status.enum';
-import { RecipientType } from '../../enums/recipient-type.enum';
+import { ExternalPartyType } from '../../enums/recipient-type.enum';
 import { SyriaPhone } from '@app/common/decorators/syria-phone.decorator';
 import { PositiveIntegerId } from '@app/common/decorators/positive-integer-id.decorator';
 import { CallDirection } from '../../enums/call-direction.enum';
+import { Type } from 'class-transformer';
 
 export class CreateCallLogDto {
   @IsOptional()
@@ -20,19 +21,22 @@ export class CreateCallLogDto {
   callStatus: CallStatus;
 
   @IsOptional()
-  @PositiveIntegerId()
-  receiverId?: number;
+  @IsDate()
+  callDate?: Date;
 
-  @IsEnum(RecipientType)
+  @IsOptional()
+  @PositiveIntegerId()
+  externalPartyId?: number;
+
+  @IsEnum(ExternalPartyType)
   @IsNotEmpty()
-  recipientType: RecipientType;
+  externalPartyType: ExternalPartyType;
 
   @IsOptional()
   @PositiveIntegerId()
   responsibleEmployeeId?: number;
 
   @IsEnum(CallDirection)
-  @IsNotEmpty()
   callDirection: CallDirection;
 
   @IsOptional()

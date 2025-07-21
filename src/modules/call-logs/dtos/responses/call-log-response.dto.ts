@@ -1,6 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 import { CallStatus } from '../../enums/call-status.enum';
-import { RecipientType } from '../../enums/recipient-type.enum';
+import { ExternalPartyType } from '../../enums/recipient-type.enum';
 import { EmployeeResponseDto } from '@app/modules/employees/dtos/responses/employee-response.dto';
 import { CallDirection } from '../../enums/call-direction.enum';
 import { PersonResponseDto } from '@app/modules/persons/dtos/responses/person-response.dto';
@@ -19,19 +19,19 @@ export class CallLogResponseDto {
   callStatus: CallStatus;
 
   @Expose()
-  receiverId: number;
-
-  @Expose()
-  recipientType: RecipientType;
+  externalPartyType: ExternalPartyType;
 
   @Expose()
   responsibleEmployeeId?: number;
 
   @Expose()
-  relatedPersonId?: number;
+  externalPartyId?: number;
 
   @Expose()
   callDirection: CallDirection;
+
+  @Expose()
+  callDate: Date;
 
   @Expose()
   notes?: string;
@@ -48,5 +48,5 @@ export class CallLogResponseDto {
 
   @Expose()
   @Type(() => PersonResponseDto)
-  relatedPerson?: PersonResponseDto;
+  externalParty?: PersonResponseDto;
 }

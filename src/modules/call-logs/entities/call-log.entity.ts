@@ -11,7 +11,7 @@ import {
 import { CallStatus } from '../enums/call-status.enum';
 import { Person } from '../../persons/entities/person.entity';
 import { Employee } from '../../employees/entities/employee.entity';
-import { RecipientType } from '../enums/recipient-type.enum';
+import { ExternalPartyType } from '../enums/recipient-type.enum';
 import { CallDirection } from '../enums/call-direction.enum';
 
 @Entity('call_logs')
@@ -26,18 +26,17 @@ export class CallLog {
   recipientNumber: string;
 
   @Column({
-    name: 'caller_type',
     type: 'enum',
-    enum: RecipientType,
+    enum: ExternalPartyType,
     nullable: false,
   })
-  recipientType: RecipientType;
+  externalPartyType: ExternalPartyType;
 
   @Column({ name: 'responsible_employee_id', nullable: true })
   responsibleEmployeeId?: number;
 
-  @Column({ name: 'related_person_id', nullable: true })
-  relatedPersonId?: number;
+  @Column({ name: 'external_party_id', nullable: true })
+  externalPartyId?: number;
 
   @Column({
     type: 'enum',
@@ -54,7 +53,12 @@ export class CallLog {
   })
   callStatus: CallStatus;
 
-  @Column({ name: 'call_date', type: 'timestamp', nullable: false })
+  @Column({
+    name: 'call_date',
+    type: 'timestamp',
+    nullable: false,
+    default: () => 'CURRENT_TIMESTAMP',
+  })
   callDate: Date;
 
   @Column({ type: 'text', nullable: true })
@@ -71,6 +75,6 @@ export class CallLog {
   responsibleEmployee?: Employee;
 
   @ManyToOne(() => Person)
-  @JoinColumn({ name: 'related_person_id' })
-  relatedPerson?: Person;
+  @JoinColumn({ name: 'external_party_id' })
+  externalParty?: Person;
 }
