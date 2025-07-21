@@ -52,7 +52,24 @@ export class CallLogsService {
   }
 
   async findAll(filterDto: FilterCallLogDto): Promise<PaginationResponseDto<CallLogResponseDto>> {
-    const queryBuilder = this.callLogRepository.createQueryBuilder('call_log');
+    const queryBuilder = this.callLogRepository
+      .createQueryBuilder('call_log')
+      .leftJoinAndSelect('call_log.person', 'person')
+      .leftJoinAndSelect('call_log.employee', 'employee')
+      .leftJoinAndSelect('employee.person', 'employeePerson');
+
+    if (filterDto.recipientName) {
+      queryBuilder.andWhere(`CONCAT(person.firstName, ' ', person.lastName) ILIKE :recipientName`, {
+        recipientName: `%${filterDto.recipientName}%`,
+      });
+    }
+
+    if (filterDto.callerName) {
+      queryBuilder.andWhere(
+        `CONCAT(employeePerson.firstName, ' ', employeePerson.lastName) ILIKE :callerName`,
+        { callerName: `%${filterDto.callerName}%` },
+      );
+    }
 
     if (filterDto.callerNumber) {
       queryBuilder.andWhere('call_log.callerNumber LIKE :callerNumber', {
@@ -84,13 +101,19 @@ export class CallLogsService {
       });
     }
 
-    if (filterDto.callDateFrom) {
+    if (filterDto.callDateFrom && filterDto.callDateTo) {
+      queryBuilder.andWhere(
+        'call_log.callDate BETWEEN :callDateFrom AND :callDateTo',
+        {
+          callDateFrom: filterDto.callDateFrom,
+          callDateTo: filterDto.callDateTo,
+        },
+      );
+    } else if (filterDto.callDateFrom) {
       queryBuilder.andWhere('call_log.callDate >= :callDateFrom', {
         callDateFrom: filterDto.callDateFrom,
       });
-    }
-
-    if (filterDto.callDateTo) {
+    } else if (filterDto.callDateTo) {
       queryBuilder.andWhere('call_log.callDate <= :callDateTo', {
         callDateTo: filterDto.callDateTo,
       });

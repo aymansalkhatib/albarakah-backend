@@ -99,20 +99,6 @@ export class PersonsService {
       });
     }
 
-    if (filterDto.fatherFirstName) {
-      queryBuilder.leftJoin('person.father', 'father');
-      queryBuilder.andWhere('father.firstName ILIKE :fatherFirstName', {
-        fatherFirstName: `%${filterDto.fatherFirstName}%`,
-      });
-    }
-
-    if (filterDto.motherFirstName) {
-      queryBuilder.leftJoin('person.mother', 'mother');
-      queryBuilder.andWhere('mother.firstName ILIKE :motherFirstName', {
-        motherFirstName: `%${filterDto.motherFirstName}%`,
-      });
-    }
-
     if (filterDto.lastName) {
       queryBuilder.andWhere('person.lastName ILIKE :lastName', {
         lastName: `%${filterDto.lastName}%`,
@@ -156,8 +142,19 @@ export class PersonsService {
     }
 
     if (filterDto.birthDateFrom && filterDto.birthDateTo) {
-      queryBuilder.andWhere('person.birthDate BETWEEN :birthDateFrom AND :birthDateTo', {
+      queryBuilder.andWhere(
+        'person.birthDate BETWEEN :birthDateFrom AND :birthDateTo',
+        {
+          birthDateFrom: filterDto.birthDateFrom,
+          birthDateTo: filterDto.birthDateTo,
+        },
+      );
+    } else if (filterDto.birthDateFrom) {
+      queryBuilder.andWhere('person.birthDate >= :birthDateFrom', {
         birthDateFrom: filterDto.birthDateFrom,
+      });
+    } else if (filterDto.birthDateTo) {
+      queryBuilder.andWhere('person.birthDate <= :birthDateTo', {
         birthDateTo: filterDto.birthDateTo,
       });
     }

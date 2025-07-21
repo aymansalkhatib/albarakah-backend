@@ -18,7 +18,7 @@ import { GenderType } from '../../enums/gender-type.enum';
 import { PositiveIntegerId } from '@app/common/decorators/positive-integer-id.decorator';
 import { PaginationDto } from '@app/common/pagination/dto/pagination.dto';
 
-export class FilterPersonDto  extends PaginationDto{
+export class FilterPersonDto extends PaginationDto {
   @IsOptional()
   @IsString()
   @Length(1, 100)
@@ -141,14 +141,4 @@ export class FilterPersonDto  extends PaginationDto{
   @MaxDate(new Date(), { message: 'Birth date must be before today' })
   @IsAfterDate('birthDateFrom')
   birthDateTo?: Date;
-
-  @IsOptional()
-  @IsString()
-  @Length(1, 100)
-  fatherFirstName?: string;
-
-  @IsOptional()
-  @IsString()
-  @Length(1, 100)
-  motherFirstName?: string;
 }

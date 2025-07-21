@@ -46,7 +46,6 @@ export class FilterEmployeeDto extends PaginationDto {
   search?: string;
 
   @IsOptional()
-  @ValidateNested()
   @Type(() => FilterPersonDto)
   person?: FilterPersonDto;
 }
