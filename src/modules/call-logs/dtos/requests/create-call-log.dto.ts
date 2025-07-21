@@ -2,6 +2,7 @@ import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-valida
 import { CallStatus } from '../../enums/call-status.enum';
 import { RecipientType } from '../../enums/recipient-type.enum';
 import { SyriaPhone } from '@app/common/decorators/syria-phone.decorator';
+import { PositiveIntegerId } from '@app/common/decorators/positive-integer-id.decorator';
 
 export class CreateCallLogDto {
   @IsOptional()
@@ -17,9 +18,8 @@ export class CreateCallLogDto {
   @IsNotEmpty()
   callStatus: CallStatus;
 
-  @IsNumber()
-  @IsNotEmpty()
   @IsOptional()
+  @PositiveIntegerId()
   receiverId?: number;
 
   @IsEnum(RecipientType)
@@ -27,7 +27,7 @@ export class CreateCallLogDto {
   recipientType: RecipientType;
 
   @IsOptional()
-  @IsNumber()
+  @PositiveIntegerId()
   employeeId?: number;
 
   @IsOptional()

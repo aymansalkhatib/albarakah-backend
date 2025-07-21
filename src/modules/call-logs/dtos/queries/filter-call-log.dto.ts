@@ -13,8 +13,7 @@ import { PaginationQueryDto } from '@app/common/pagination/dto/pagination-query.
 import { IsAfterDate } from '@app/common/decorators/is-after-date.decorator';
 import { CallStatus } from '../../enums/call-status.enum';
 import { RecipientType } from '../../enums/recipient-type.enum';
-import { FilterPersonDto } from '@app/modules/persons/dtos/queries/filter-person.dto';
-import { FilterEmployeeDto } from '@app/modules/employees/dtos/queries/filter-employee.dto';
+import { PositiveIntegerId } from '@app/common/decorators/positive-integer-id.decorator';
 
 export class FilterCallLogDto extends PaginationQueryDto {
   @IsOptional()
@@ -30,8 +29,7 @@ export class FilterCallLogDto extends PaginationQueryDto {
   callStatus?: CallStatus;
 
   @IsOptional()
-  @Transform(({ value }) => parseInt(value))
-  @IsNumber()
+  @PositiveIntegerId()
   receiverId?: number;
 
   @IsOptional()
@@ -39,8 +37,7 @@ export class FilterCallLogDto extends PaginationQueryDto {
   recipientType: RecipientType;
 
   @IsOptional()
-  @Transform(({ value }) => parseInt(value))
-  @IsNumber()
+  @PositiveIntegerId()
   employeeId?: number;
 
   @IsOptional()
