@@ -20,30 +20,30 @@ export class AuthService {
     const { username, password } = loginDto;
 
     // Find user by username with relations
-    const user = await this.systemUserRepository.findOne({
+    const systemUser = await this.systemUserRepository.findOne({
       where: { username },
-      relations: ['employee'],
+      relations: ['employee', 'employee.person'],
     });
 
-    if (!user) {
+    if (!systemUser) {
       throw new UnauthorizedException('Invalid username or password');
     }
 
     // Verify password (assuming password is hashed with bcrypt)
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(password, systemUser.password);
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid username or password');
     }
 
     // Update last login
-    await this.systemUserRepository.update(user.id, {
+    await this.systemUserRepository.update(systemUser.id, {
       lastLogin: new Date(),
     });
 
     // Create JWT payload
     const payload: AccessTokenPayload = {
-      userId: user.id,
-      username: user.username,
+      userId: systemUser.id,
+      username: systemUser.username,
     };
 
     // Generate access token
@@ -51,7 +51,7 @@ export class AuthService {
 
     return {
       accessToken,
-      user,
+      user: systemUser,
     };
   }
 }

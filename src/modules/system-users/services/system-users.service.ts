@@ -71,12 +71,8 @@ export class SystemUsersService {
       delete updateSystemUserDto.employee;
     }
 
-    const updatedSystemUser = await this.systemUserRepository.save({
-      ...systemUser,
-      ...updateSystemUserDto,
-    });
-
-    return updatedSystemUser;
+    this.systemUserRepository.merge(systemUser, updateSystemUserDto);
+    return this.systemUserRepository.save(systemUser);
   }
 
   async delete(id: number): Promise<void> {
@@ -156,7 +152,6 @@ export class SystemUsersService {
         });
       }
 
-      
       if (filterDto.employee.terminationDateFrom) {
         queryBuilder.andWhere('employee.terminationDate >= :terminationDateFrom', {
           terminationDateFrom: filterDto.employee.terminationDateFrom,

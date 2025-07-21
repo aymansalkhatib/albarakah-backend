@@ -27,6 +27,20 @@ export class JwtAuthGuard implements CanActivate {
       relations: ['employee', 'employee.person'],
     });
 
+    if (user.passwordChangedAt) {
+      const passwordChangedAtSec = Math.floor(new Date(user.passwordChangedAt).getTime() / 1000);
+      if (payload.iat < passwordChangedAtSec) {
+        throw new UnauthorizedException('Token was issued before the last password change.');
+      }
+    }
+
+    if (user.lastLogin) {
+      const lastLoginSec = Math.floor(new Date(user.lastLogin).getTime() / 1000);
+      if (payload.iat < lastLoginSec) {
+        throw new UnauthorizedException('Token was issued before the last login.');
+      }
+    }
+
     // Attach user info to request for use in controllers
     request.user = user;
 

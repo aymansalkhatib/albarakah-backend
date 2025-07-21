@@ -35,6 +35,7 @@ export class SystemUsersController {
   }
 
   @Patch(':id')
+  @Protected()
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserAccountDto: UpdateSystemUserDto,
