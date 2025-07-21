@@ -7,14 +7,14 @@ import { paginate } from '@app/common/pagination/paginate.service';
 
 import { CallLog } from '../entities/call-log.entity';
 import { RecipientType } from '../enums/recipient-type.enum';
-import { EmployeesService } from '@app/modules/employees/employee.service';
-import { GuardiansService } from '@app/modules/guardians/guardians.service';
 import { FamilyMembersService } from '@app/modules/beneficiary-families/family-members.service';
 import { SupportersService } from '@app/modules/supporters/supporters.service';
 import { FilterCallLogDto } from '../dtos/queries/filter-call-log.dto';
 import { CreateCallLogDto } from '../dtos/requests/create-call-log.dto';
 import { UpdateCallLogDto } from '../dtos/requests/update-call-log.dto';
 import { CallLogResponseDto } from '../dtos/responses/call-log-response.dto';
+import { EmployeesService } from '@app/modules/employees/services/employee.service';
+import { GuardiansService } from '@app/modules/guardians/services/guardians.service';
 
 @Injectable()
 export class CallLogsService {

@@ -7,8 +7,8 @@ import { CallLogsController } from './controllers/call-logs.controller';
 import { CallLogsService } from './services/call-logs.service';
 import { GuardiansModule } from '../guardians/guardians.module';
 import { SupportersModule } from '../supporters/supporters.module';
-import { EmployeesModule } from '../employees/entities/employee.module';
 import { BeneficiaryFamiliesModule } from '../beneficiary-families/beneficiary-families.module';
+import { EmployeesModule } from '../employees/employee.module';
 
 @Module({
   imports: [
@@ -18,8 +18,8 @@ import { BeneficiaryFamiliesModule } from '../beneficiary-families/beneficiary-f
     EmployeesModule,
     BeneficiaryFamiliesModule,
   ],
-  // controllers: [CallLogsController],
-  // providers: [CallLogsService],
-  // exports: [CallLogsService],
+  controllers: [CallLogsController],
+  providers: [CallLogsService],
+  exports: [CallLogsService],
 })
 export class CallLogsModule {}
