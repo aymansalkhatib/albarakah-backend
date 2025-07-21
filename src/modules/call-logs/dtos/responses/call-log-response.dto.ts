@@ -3,6 +3,7 @@ import { CallStatus } from '../../enums/call-status.enum';
 import { RecipientType } from '../../enums/recipient-type.enum';
 import { EmployeeResponseDto } from '@app/modules/employees/dtos/responses/employee-response.dto';
 import { CallDirection } from '../../enums/call-direction.enum';
+import { PersonResponseDto } from '@app/modules/persons/dtos/responses/person-response.dto';
 
 export class CallLogResponseDto {
   @Expose()
@@ -43,5 +44,9 @@ export class CallLogResponseDto {
 
   @Expose()
   @Type(() => EmployeeResponseDto)
-  employee?: EmployeeResponseDto;
+  responsibleEmployee?: EmployeeResponseDto;
+
+  @Expose()
+  @Type(() => PersonResponseDto)
+  relatedPerson?: PersonResponseDto;
 }

@@ -31,7 +31,6 @@ export class CreateCallLogDto {
   @PositiveIntegerId()
   responsibleEmployeeId?: number;
 
-
   @IsEnum(CallDirection)
   @IsNotEmpty()
   callDirection: CallDirection;
