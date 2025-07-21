@@ -17,7 +17,6 @@ import { Guardian } from '../../guardians/entities/guardian.entity';
 import { EmergencyAidRequest } from '../../emergency-aid/entities/emergency-aid-request.entity';
 import { ReceivedAssistance } from '../../received-assistance/entities/received-assistance.entity';
 import { FamilyIncome } from './family-income.entity';
-import { CallLog } from '../../call-logs/entities/call-log.entity';
 import { House } from '../../houses/entities/house.entity';
 import { Interview } from '../../interviews/entities/interview.entity';
 import { FamilyRegistrationForm } from '../../family-registration-forms/entities/family-registration-form.entity';

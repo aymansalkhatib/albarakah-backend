@@ -7,23 +7,23 @@ import {
   Param,
   Delete,
   Query,
-  UseGuards,
   ParseIntPipe,
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
-import { CallLogsService } from './call-logs.service';
-import { CreateCallLogDto } from './dto/create-call-log.dto';
-import { UpdateCallLogDto } from './dto/update-call-log.dto';
-import { FilterCallLogDto } from './dto/filter-call-log.dto';
-import { CallLogResponseDto } from './dto/call-log-response.dto';
+
 import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
 import { SerializeResponse } from '@app/common/decorators/serialize-response.decorator';
-import { CallLog } from './entities/call-log.entity';
+import { FilterCallLogDto } from '../dtos/queries/filter-call-log.dto';
+import { CreateCallLogDto } from '../dtos/requests/create-call-log.dto';
+import { UpdateCallLogDto } from '../dtos/requests/update-call-log.dto';
+import { CallLogResponseDto } from '../dtos/responses/call-log-response.dto';
+import { CallLog } from '../entities/call-log.entity';
+import { CallLogsService } from '../services/call-logs.service';
 
 @Controller('call-logs')
 export class CallLogsController {
-  constructor(private readonly callLogsService: CallLogsService) { }
+  constructor(private readonly callLogsService: CallLogsService) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -33,13 +33,15 @@ export class CallLogsController {
   }
 
   @Get()
-  async findAll(@Query() filterDto: FilterCallLogDto): Promise<PaginationResponseDto<CallLogResponseDto>> {
+  async findAll(
+    @Query() filterDto: FilterCallLogDto,
+  ): Promise<PaginationResponseDto<CallLogResponseDto>> {
     return this.callLogsService.findAll(filterDto);
   }
 
   @Get(':id')
   @SerializeResponse(CallLogResponseDto)
-  async findOne(@Param('id', ParseIntPipe) id: number) : Promise<CallLog> {
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<CallLog> {
     return this.callLogsService.findOne(id);
   }
 
@@ -48,13 +50,13 @@ export class CallLogsController {
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateCallLogDto: UpdateCallLogDto,
-  ) : Promise<CallLog>{
+  ): Promise<CallLog> {
     return this.callLogsService.update(id, updateCallLogDto);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
-    await this.callLogsService.remove(id);
+  async delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    await this.callLogsService.delete(id);
   }
 }

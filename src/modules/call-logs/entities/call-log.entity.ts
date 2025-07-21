@@ -11,8 +11,7 @@ import {
 import { CallStatus } from '../enums/call-status.enum';
 import { Person } from '../../persons/entities/person.entity';
 import { Employee } from '../../employees/entities/employee.entity';
-import { FamilyMember } from '../../beneficiary-families/entities/family-members.entity';
-import { CallerType } from '../enums/caller-type.enum';
+import { RecipientType } from '../enums/recipient-type.enum';
 
 @Entity('call_logs')
 export class CallLog {
@@ -26,6 +25,20 @@ export class CallLog {
   recipientNumber: string;
 
   @Column({
+    name: 'caller_type',
+    type: 'enum',
+    enum: RecipientType,
+    nullable: false,
+  })
+  recipientType: RecipientType;
+
+  @Column({ name: 'receiver_id', nullable: true })
+  receiverId?: number;
+
+  @Column({ name: 'person_id', nullable: true })
+  personId?: number;
+
+  @Column({
     name: 'call_status',
     type: 'enum',
     enum: CallStatus,
@@ -33,31 +46,14 @@ export class CallLog {
   })
   callStatus: CallStatus;
 
-  @Column({
-    name: 'caller_type',
-    type: 'enum',
-    enum: CallerType,
-    nullable: false,
-  })
-  callerType: CallerType;
-
-  @Column({ name: 'receiver_id', nullable: false })
-  receiverId: number;
-
   @Column({ name: 'employee_id', nullable: true })
   employeeId?: number;
 
+  @Column({ name: 'call_date', type: 'timestamp', nullable: false })
+  callDate: Date;
+
   @Column({ type: 'text', nullable: true })
-  note?: string;
-
-  @Column({ name: 'family_id', nullable: true })
-  familyId?: number;
-
-  @Column({ name: 'family_member_id', nullable: true })
-  familyMemberId?: number;
-
-  @Column({ name: 'child_id', nullable: true })
-  childId?: number;
+  notes?: string;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
@@ -65,26 +61,11 @@ export class CallLog {
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
-  @DeleteDateColumn({ name: 'deleted_at', nullable: true })
-  deletedAt?: Date;
-
-  // Relationships
-  @ManyToOne(() => Person, { eager: false })
-  @JoinColumn({ name: 'receiver_id' })
-  receiver?: Person;
-
-  @ManyToOne(() => Person, { eager: false })
-  @JoinColumn({ name: 'caller_number', referencedColumnName: 'phone' })
-  caller?: Person;
-
-  @ManyToOne(() => Employee, { eager: false })
+  @ManyToOne(() => Employee)
   @JoinColumn({ name: 'employee_id' })
   employee?: Employee;
 
-  @ManyToOne(() => FamilyMember, (member) => member.callLogs, {
-    onDelete: 'RESTRICT',
-    nullable: true,
-  })
-  @JoinColumn({ name: 'family_member_id' })
-  familyMember?: FamilyMember;
+  @ManyToOne(() => Person)
+  @JoinColumn({ name: 'person_id' })
+  person?: Person;
 }

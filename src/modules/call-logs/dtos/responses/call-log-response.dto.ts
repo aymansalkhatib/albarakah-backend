@@ -1,6 +1,6 @@
-import { Exclude, Expose, Type } from 'class-transformer';
-import { CallStatus } from '../enums/call-status.enum';
-import { CallerTypeEnum } from '../enums/caller-type.enum';
+import { Expose, Type } from 'class-transformer';
+import { CallStatus } from '../../enums/call-status.enum';
+import { RecipientType } from '../../enums/recipient-type.enum';
 
 export class PersonResponseDto {
   @Expose()
@@ -41,7 +41,7 @@ export class CallLogResponseDto {
   receiverId: number;
 
   @Expose()
-  callerType: CallerTypeEnum;
+  callerType: RecipientType;
 
   @Expose()
   employeeId?: number;

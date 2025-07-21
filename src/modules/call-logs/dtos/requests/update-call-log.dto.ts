@@ -1,5 +1,5 @@
 import { IsEnum, IsOptional, IsString } from 'class-validator';
-import { CallStatus } from '../enums/call-status.enum';
+import { CallStatus } from '../../enums/call-status.enum';
 
 export class UpdateCallLogDto {
   @IsOptional()
@@ -8,5 +8,5 @@ export class UpdateCallLogDto {
 
   @IsOptional()
   @IsString()
-  note?: string;
+  notes?: string;
 }

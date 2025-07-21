@@ -1,8 +1,10 @@
-import { IsOptional, IsEnum, IsString, IsNumber, IsDateString } from 'class-validator';
+import { IsOptional, IsEnum, IsString, IsNumber, IsDateString, IsDate } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { CallStatus } from '../enums/call-status.enum';
-import { CallerTypeEnum } from '../enums/caller-type.enum';
+
 import { PaginationQueryDto } from '@app/common/pagination/dto/pagination-query.dto';
+import { IsAfterDate } from '@app/common/decorators/is-after-date.decorator';
+import { CallStatus } from '../../enums/call-status.enum';
+import { RecipientType } from '../../enums/recipient-type.enum';
 
 export class FilterCallLogDto extends PaginationQueryDto {
   @IsOptional()
@@ -23,8 +25,8 @@ export class FilterCallLogDto extends PaginationQueryDto {
   receiverId?: number;
 
   @IsOptional()
-  @IsEnum(CallerTypeEnum)
-  callerType?: CallerTypeEnum;
+  @IsEnum(RecipientType)
+  recipientType: RecipientType;
 
   @IsOptional()
   @Transform(({ value }) => parseInt(value))
@@ -32,19 +34,10 @@ export class FilterCallLogDto extends PaginationQueryDto {
   employeeId?: number;
 
   @IsOptional()
-  @IsDateString()
-  createdFrom?: Date;
+  @IsDate()
+  callDateFrom?: Date;
 
   @IsOptional()
-  @IsDateString()
-  createdTo?: Date;
-
-  @IsOptional()
-  @Transform(({ value }) => parseInt(value))
-  @IsNumber()
-  familyId?: number;
-
-  @IsOptional()
-  @IsString()
-  familyName?: string;
+  @IsAfterDate('callDateFrom')
+  callDateTo?: Date;
 }
