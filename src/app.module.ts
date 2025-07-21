@@ -15,6 +15,7 @@ import { AppJwtModule } from './shared/modules/app-jwt/app-jwt.module';
 import { RolesModule } from './modules/roles/roles.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { TrainingCoursesModule } from './modules/training-courses/training-courses.module';
+import { CallLogsModule } from './modules/call-logs/call-logs.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { TrainingCoursesModule } from './modules/training-courses/training-cours
     SystemUsersModule,
     RolesModule,
     TrainingCoursesModule,
+    CallLogsModule
   ],
 
   controllers: [AppController],
