@@ -1,4 +1,3 @@
-// beneficiary-families.entity.ts
 import {
   Column,
   CreateDateColumn,
@@ -22,7 +21,7 @@ import { Interview } from '../../interviews/entities/interview.entity';
 import { FamilyRegistrationForm } from '../../family-registration-forms/entities/family-registration-form.entity';
 import { Visit } from '../../visits/entities/visit.entity';
 
-@Entity('beneficiary_families')
+@Entity('families')
 @Index(['familyBookNumber'], { unique: true })
 export class Family {
   @PrimaryGeneratedColumn()

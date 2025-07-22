@@ -19,35 +19,35 @@ export class FamiliesService {
   }
 
   async findOne(id: number): Promise<Family> {
-    const beneficiaryFamily = await this.familyRepository.findOneById(id);
-    if (!beneficiaryFamily) {
-      throw new NotFoundException('Beneficiary family not found');
+    const family = await this.familyRepository.findOneById(id);
+    if (!family) {
+      throw new NotFoundException('family not found');
     }
-    return beneficiaryFamily;
+    return family;
   }
 
-  async create(createBeneficiaryFamilyDto: CreateFamilyDto): Promise<Family> {
-    if (createBeneficiaryFamilyDto.familyBookNumber) {
+  async create(createFamilyDto: CreateFamilyDto): Promise<Family> {
+    if (createFamilyDto.familyBookNumber) {
       const existingFamily = await this.familyRepository.findOneByFamilyBookNumber(
-        createBeneficiaryFamilyDto.familyBookNumber,
+        createFamilyDto.familyBookNumber,
       );
       if (existingFamily) {
         throw new ConflictException('Family book number already exists');
       }
     }
-    return this.familyRepository.createBeneficiaryFamily(createBeneficiaryFamilyDto);
+    return this.familyRepository.createFamily(createFamilyDto);
   }
 
-  async update(id: number, updateBeneficiaryFamilyDto: UpdateFamilyDto): Promise<Family> {
-    const beneficiaryFamily = await this.familyRepository.findOneById(id);
+  async update(id: number, updateFamilyDto: UpdateFamilyDto): Promise<Family> {
+    const family = await this.familyRepository.findOneById(id);
 
-    if (!beneficiaryFamily) {
-      throw new NotFoundException('Beneficiary family not found');
+    if (!family) {
+      throw new NotFoundException('family not found');
     }
 
-    if (updateBeneficiaryFamilyDto.familyBookNumber) {
+    if (updateFamilyDto.familyBookNumber) {
       const existingFamily = await this.familyRepository.findOneByFamilyBookNumber(
-        updateBeneficiaryFamilyDto.familyBookNumber,
+        updateFamilyDto.familyBookNumber,
       );
 
       if (existingFamily && existingFamily.id !== id) {
@@ -55,16 +55,13 @@ export class FamiliesService {
       }
     }
 
-    return await this.familyRepository.updateBeneficiaryFamily(
-      beneficiaryFamily,
-      updateBeneficiaryFamilyDto,
-    );
+    return await this.familyRepository.updateFamily(family, updateFamilyDto);
   }
 
   async forceDelete(id: number): Promise<void> {
     const result = await this.familyRepository.forceDelete(id);
     if (!result.affected) {
-      throw new NotFoundException('Beneficiary family not found');
+      throw new NotFoundException('family not found');
     }
   }
 }

@@ -1,7 +1,7 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { FamilyMember } from '../entities/family-members.entity';
 import { FamilyRelationType } from '../enums/family-relation-type.enum';
-import { FamiliesService } from './beneficiary-families.service';
+import { FamiliesService } from './families.service';
 import { FamilyMemberRepository } from '../repositories/family-member.repository';
 import { CreateFamilyMemberDto } from '../dtos/requests/create-family-member.dto';
 
@@ -9,7 +9,7 @@ import { CreateFamilyMemberDto } from '../dtos/requests/create-family-member.dto
 export class FamilyMembersService {
   constructor(
     private readonly familyMemberRepository: FamilyMemberRepository,
-    private readonly beneficiaryFamiliesService: FamiliesService,
+    private readonly familiesService: FamiliesService,
   ) {}
 
   async findAll(): Promise<FamilyMember[]> {
@@ -92,7 +92,7 @@ export class FamilyMembersService {
 
   private async validateFamilyExists(familyId: number): Promise<void> {
     try {
-      await this.beneficiaryFamiliesService.findOne(familyId);
+      await this.familiesService.findOne(familyId);
     } catch (error) {
       throw new NotFoundException('Family not found');
     }

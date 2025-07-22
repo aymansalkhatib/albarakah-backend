@@ -1,14 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateFamilyIncomeDto } from '../dtos/requests/create-family-income.dto';
 import { FamilyIncome } from '../entities/family-income.entity';
-import { FamiliesService } from './beneficiary-families.service';
+import { FamiliesService } from './families.service';
 import { FamilyIncomeRepository } from '../repositories/family-income.repository';
 
 @Injectable()
 export class FamilyIncomeService {
   constructor(
     private readonly familyIncomeRepository: FamilyIncomeRepository,
-    private readonly beneficiaryFamiliesService: FamiliesService,
+    private readonly familiesService: FamiliesService,
   ) {}
 
   async findAll(): Promise<FamilyIncome[]> {
@@ -91,7 +91,7 @@ export class FamilyIncomeService {
 
   private async validateFamilyExists(familyId: number): Promise<void> {
     try {
-      await this.beneficiaryFamiliesService.findOne(familyId);
+      await this.familiesService.findOne(familyId);
     } catch (error) {
       throw new NotFoundException('Family not found');
     }

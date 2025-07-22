@@ -1,4 +1,4 @@
-import { BeneficiaryFamiliesModule } from './modules/families/beneficiary-families.module';
+import { familiesModule } from './modules/families/families.module';
 import { ClassSerializerInterceptor, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -28,7 +28,7 @@ import { CallLogsModule } from './modules/call-logs/call-logs.module';
     //
     AuthModule,
     DropdownsModule,
-    BeneficiaryFamiliesModule,
+    familiesModule,
     EmployeesModule,
     SystemUsersModule,
     RolesModule,

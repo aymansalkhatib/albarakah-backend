@@ -14,7 +14,6 @@ import { FilterFamilyDto } from '../dtos/queries/filter-family.dto';
 import { CreateFamilyDto } from '../dtos/requests/create-family-dto';
 import { UpdateFamilyDto } from '../dtos/requests/update-family-dto';
 
-
 @Injectable()
 export class FamilyRepository extends Repository<Family> {
   constructor(
@@ -47,16 +46,16 @@ export class FamilyRepository extends Repository<Family> {
     return this.findOne({ where: { id }, withDeleted });
   }
 
-  createBeneficiaryFamily(createBeneficiaryFamilyDto: CreateFamilyDto): Promise<Family> {
-    const beneficiaryFamily = this.create(createBeneficiaryFamilyDto);
-    return this.save(beneficiaryFamily);
+  createFamily(createFamilyDto: CreateFamilyDto): Promise<Family> {
+    const family = this.create(createFamilyDto);
+    return this.save(family);
   }
 
-  updateBeneficiaryFamily(
-    oldBeneficiaryFamily: Family,
-    updateBeneficiaryFamilyDto: UpdateFamilyDto,
+  updateFamily(
+    oldFamily: Family,
+    updateFamilyDto: UpdateFamilyDto,
   ): Promise<Family> {
-    const updatedFamily = this.merge(oldBeneficiaryFamily, updateBeneficiaryFamilyDto);
+    const updatedFamily = this.merge(oldFamily, updateFamilyDto);
     return this.save(updatedFamily);
   }
 

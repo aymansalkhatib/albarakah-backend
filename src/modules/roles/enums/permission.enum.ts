@@ -11,12 +11,6 @@ export enum Permission {
   UPDATE_PERMISSION = 'update_permission',
   DELETE_PERMISSION = 'delete_permission',
 
-  // Beneficiary Management
-  CREATE_BENEFICIARY = 'create_beneficiary',
-  READ_BENEFICIARY = 'read_beneficiary',
-  UPDATE_BENEFICIARY = 'update_beneficiary',
-  DELETE_BENEFICIARY = 'delete_beneficiary',
-
   // Family Management
   CREATE_FAMILY = 'create_family',
   READ_FAMILY = 'read_family',
