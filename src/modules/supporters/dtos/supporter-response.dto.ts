@@ -1,9 +1,10 @@
 import { Exclude, Expose, Type } from 'class-transformer';
 import { Person } from '../../persons/entities/person.entity';
 import { SupportType } from '../enums/support-type';
+import { PersonResponseDto } from '@app/modules/persons/dtos/responses/person-response.dto';
 
 @Exclude()
-export class ResponseSupporterDto {
+export class SupporterResponseDto {
   @Expose()
   id: number;
 
@@ -11,10 +12,10 @@ export class ResponseSupporterDto {
   personId: number;
 
   @Expose()
-  supportStartDate: string;
+  supportStartDate: Date;
 
   @Expose()
-  supportEndDate?: string;
+  supportEndDate?: Date;
 
   @Expose()
   supportType?: SupportType;
@@ -29,6 +30,6 @@ export class ResponseSupporterDto {
   updatedAt: Date;
 
   @Expose()
-  @Type(() => Person)
-  person?: Person;
+  @Type(() => PersonResponseDto)
+  person?: PersonResponseDto;
 }

@@ -9,7 +9,7 @@ import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
 import { CallLog } from '../entities/call-log.entity';
 import { ExternalPartyType } from '../enums/recipient-type.enum';
 import { FamilyMembersService } from '@app/modules/beneficiary-families/family-members.service';
-import { SupportersService } from '@app/modules/supporters/supporters.service';
+import { SupportersService } from '@app/modules/supporters/services/supporters.service';
 import { FilterCallLogDto } from '../dtos/queries/filter-call-log.dto';
 import { CreateCallLogDto } from '../dtos/requests/create-call-log.dto';
 import { UpdateCallLogDto } from '../dtos/requests/update-call-log.dto';

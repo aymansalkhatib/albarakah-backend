@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { SupportersService } from './supporters.service';
-import { SupportersController } from './supporters.controller';
-import { Supporter } from './entities/supporters.entity';
+ import { Supporter } from './entities/supporters.entity';
 import { PersonsModule } from '../persons/persons.module';
 import { SupporterChildSponsorship } from './entities/supporters-children.entity';
+import { SupportersService } from './services/supporters.service';
+import { SupportersController } from './controllers/supporters.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Supporter, SupporterChildSponsorship]), PersonsModule],

@@ -1,14 +1,18 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Supporter } from './entities/supporters.entity';
-import { CreateSupporterDto } from './dto/create-supporter.dto';
-import { UpdateSupporterDto } from './dto/update-supporter.dto';
-import { FilterSupporterDto } from './dto/filter-supporter.dto';
-import { PersonsService } from '../persons/services/persons.service';
-import { Person } from '../persons/entities/person.entity';
 import { plainToInstance } from 'class-transformer';
-import { ResponseSupporterDto } from './dto/response-supporter.dto';
+import { Supporter } from '../entities/supporters.entity';
+import { CreateSupporterDto } from '../dtos/create-supporter.dto';
+import { UpdateSupporterDto } from '../dtos/update-supporter.dto';
+import { FilterSupporterDto } from '../dtos/filter-supporter.dto';
+import { SupporterResponseDto } from '../dtos/supporter-response.dto';
+import { PersonsService } from '@app/modules/persons/services/persons.service';
+import { Person } from '@app/modules/persons/entities/person.entity';
+import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
+import { PersonRelation } from '@app/modules/persons/enums/person-relation.enum';
+import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
+import { paginate } from '@app/common/pagination/paginate.service';
 
 @Injectable()
 export class SupportersService {
@@ -16,38 +20,34 @@ export class SupportersService {
     @InjectRepository(Supporter)
     private readonly supporterRepository: Repository<Supporter>,
     private readonly personsService: PersonsService,
+    private readonly translateHelper: TranslateHelper,
   ) {}
 
-  async create(createSupporterDto: CreateSupporterDto): Promise<ResponseSupporterDto> {
+  async create(createSupporterDto: CreateSupporterDto): Promise<Supporter> {
     let person: Person;
 
     if (createSupporterDto.personId) {
-      person = await this.personsService.findOne(createSupporterDto.personId);
-
-      const existingSupporter = await this.supporterRepository.findOne({
-        where: { personId: person.id },
+      person = await this.personsService.findOne(createSupporterDto.personId, {
+        relations: ['supporter'],
       });
 
-      if (existingSupporter) {
+      if (person.supporter) {
         throw new ConflictException('This person is already a supporter');
       }
     } else {
       person = await this.personsService.create(createSupporterDto.person);
     }
 
-    const supporterData = {
+    const supporter = this.supporterRepository.create({
       ...createSupporterDto,
-      personId: person.id,
-      supportStartDate: createSupporterDto.supportStartDate.toISOString(),
-      supportEndDate: createSupporterDto.supportEndDate?.toISOString(),
-    };
-
-    const supporter = this.supporterRepository.create(supporterData);
-    const savedSupporter = await this.supporterRepository.save(supporter);
-    return this.transformToDto(savedSupporter);
+      person,
+    });
+    return this.supporterRepository.save(supporter);
   }
 
-  async findAll(filterDto: FilterSupporterDto): Promise<ResponseSupporterDto[]> {
+  async findAll(
+    filterDto: FilterSupporterDto,
+  ): Promise<PaginationResponseDto<SupporterResponseDto>> {
     const queryBuilder = this.supporterRepository
       .createQueryBuilder('supporter')
       .leftJoinAndSelect('supporter.person', 'person');
@@ -155,14 +155,10 @@ export class SupportersService {
       }
     }
 
-    const supporters = await queryBuilder.getMany();
-    return this.transformToDtoArray(supporters);
+    return paginate(queryBuilder, filterDto, SupporterResponseDto);
   }
 
-  async findOne(
-    id: number,
-    { relations }: { relations?: string[] } = {},
-  ): Promise<ResponseSupporterDto> {
+  async findOne(id: number, { relations }: { relations?: string[] } = {}): Promise<Supporter> {
     const supporter = await this.supporterRepository.findOne({
       where: { id },
       relations: relations || ['person'],
@@ -172,10 +168,10 @@ export class SupportersService {
       throw new NotFoundException(`Supporter with ID ${id} not found`);
     }
 
-    return this.transformToDto(supporter);
+    return supporter;
   }
 
-  async update(id: number, updateSupporterDto: UpdateSupporterDto): Promise<ResponseSupporterDto> {
+  async update(id: number, updateSupporterDto: UpdateSupporterDto): Promise<Supporter> {
     const supporter = await this.findOne(id, { relations: ['person'] });
 
     if (updateSupporterDto.person) {
@@ -186,45 +182,13 @@ export class SupportersService {
       delete updateSupporterDto.person;
     }
 
-    const supporterData = {
-      ...supporter,
-      ...updateSupporterDto,
-      supportStartDate:
-        updateSupporterDto.supportStartDate?.toISOString() || supporter.supportStartDate,
-      supportEndDate: updateSupporterDto.supportEndDate?.toISOString() || supporter.supportEndDate,
-    };
-
-    const updatedSupporter = this.supporterRepository.create(supporterData);
-    const savedSupporter = await this.supporterRepository.save(updatedSupporter);
-    return this.transformToDto(savedSupporter);
+    this.supporterRepository.merge(supporter, updateSupporterDto);
+    return await this.supporterRepository.save(supporter);
   }
 
-  async remove(id: number): Promise<void> {
+  async delete(id: number): Promise<void> {
     const supporter = await this.findOne(id);
-    await this.supporterRepository.softRemove(supporter);
-  }
-
-  async findByPersonId(personId: number): Promise<ResponseSupporterDto[]> {
-    const supporters = await this.supporterRepository.find({
-      where: { personId },
-      relations: ['person'],
-    });
-    return this.transformToDtoArray(supporters);
-  }
-
-  private transformToDto(supporter: Supporter): ResponseSupporterDto {
-    return plainToInstance(
-      ResponseSupporterDto,
-      {
-        ...supporter,
-        supportStartDate: supporter.supportStartDate.toISOString().split('T')[0],
-        supportEndDate: supporter.supportEndDate?.toISOString().split('T')[0],
-      },
-      { excludeExtraneousValues: true },
-    );
-  }
-
-  private transformToDtoArray(supporters: Supporter[]): ResponseSupporterDto[] {
-    return supporters.map((supporter) => this.transformToDto(supporter));
+    await this.supporterRepository.delete(id);
+    await this.personsService.deleteIf(supporter.personId, PersonRelation.SUPPORTER);
   }
 }

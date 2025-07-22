@@ -11,7 +11,6 @@ import { Employee } from '../entities/employee.entity';
 import { PersonRelation } from '@app/modules/persons/enums/person-relation.enum';
 import { paginate } from '@app/common/pagination/paginate.service';
 import { EmployeeResponseDto } from '../dtos/responses/employee-response.dto';
-import { ParamProperties } from '@nestjs/core/helpers/context-utils';
 import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
 
 @Injectable()
@@ -55,12 +54,12 @@ export class EmployeesService {
       delete updateEmployeeDto.person;
     }
 
-    const updatedEmployee = this.employeeRepository.merge(employee, updateEmployeeDto);
-    return await this.employeeRepository.save(updatedEmployee);
+    this.employeeRepository.merge(employee, updateEmployeeDto);
+    return await this.employeeRepository.save(employee);
   }
 
   async delete(id: number): Promise<void> {
-    const employee = await this.findOne(id, { relations: ['systemUser'] });
+    const employee = await this.findOne(id);
     await this.employeeRepository.delete(id);
     await this.personsService.deleteIf(employee.personId, PersonRelation.EMPLOYEE);
   }

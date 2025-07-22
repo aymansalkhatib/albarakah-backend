@@ -12,11 +12,9 @@ import { CreatePersonDto } from '@app/modules/persons/dtos/requests/create-perso
 ])
 export class CreateSupporterDto {
   @IsDate()
-  @Type(() => Date)
   supportStartDate: Date;
 
   @IsDate()
-  @Type(() => Date)
   @IsOptional()
   supportEndDate?: Date;
 
