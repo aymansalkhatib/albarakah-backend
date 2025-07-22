@@ -1,8 +1,8 @@
 import { toDto } from '@app/common/helpers/to-dto';
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
-import { CreateFamilyMemberDto } from '../dtos/create-family-member.dto';
-import { FamilyMemberResponseDto } from '../dtos/family-member-response.dto';
+import { FamilyMemberResponseDto } from '../dtos/responses/family-member-response.dto';
 import { FamilyMembersService } from '../services/family-members.service';
+import { CreateFamilyMemberDto } from '../dtos/requests/create-family-member.dto';
 
 @Controller('family-members')
 export class FamilyMembersController {

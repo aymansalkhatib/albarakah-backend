@@ -9,13 +9,13 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { CreateFamilyDto } from '../dtos/create-family-dto';
-import { UpdateFamilyDto } from '../dtos/update-family-dto';
-import { FamilyResponseDto } from '../dtos/family-response.dto';
+import { UpdateFamilyDto } from '../dtos/requests/update-family-dto';
+import { FamilyResponseDto } from '../dtos/responses/family-response.dto';
 
 import { toDto } from '../../../common/helpers/to-dto';
-import { FilterFamilyDto } from '../dtos/filter-family.dto';
 import { FamiliesService } from '../services/beneficiary-families.service';
+import { FilterFamilyDto } from '../dtos/queries/filter-family.dto';
+import { CreateFamilyDto } from '../dtos/requests/create-family-dto';
 
 @Controller('families')
 export class FamiliesController {

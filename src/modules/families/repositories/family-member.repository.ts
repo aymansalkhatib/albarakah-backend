@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
-import { CreateFamilyMemberDto } from '../dtos/create-family-member.dto';
 import { FamilyMember } from '../entities/family-members.entity';
 import { FamilyRelationType } from '../enums/family-relation-type.enum';
+import { CreateFamilyMemberDto } from '../dtos/requests/create-family-member.dto';
 
 @Injectable()
 export class FamilyMemberRepository extends Repository<FamilyMember> {

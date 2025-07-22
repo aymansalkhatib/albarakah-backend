@@ -10,9 +10,9 @@ import {
   Min,
 } from 'class-validator';
 import { Expose } from 'class-transformer';
-import { StrictBoolean } from '../../../common/decorators/strict-boolean.decorator';
-import { ValidateMinMaxPairs } from '../../../common/decorators/validate-min-max-pairs-constraint';
-import { IsAfterDate } from '../../../common/decorators/is-after-date.decorator';
+import { IsAfterDate } from '@app/common/decorators/is-after-date.decorator';
+import { StrictBoolean } from '@app/common/decorators/strict-boolean.decorator';
+import { ValidateMinMaxPairs } from '@app/common/decorators/validate-min-max-pairs-constraint';
 
 @ValidateMinMaxPairs()
 export class FilterFamilyDto {

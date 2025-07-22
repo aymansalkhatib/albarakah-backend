@@ -10,7 +10,7 @@ import {
   Min,
 } from 'class-validator';
 import { Expose, Transform } from 'class-transformer';
-import { StrictBoolean } from '../../../common/decorators/strict-boolean.decorator';
+import { StrictBoolean } from '@app/common/decorators/strict-boolean.decorator';
 
 export class CreateFamilyDto {
   @IsString()

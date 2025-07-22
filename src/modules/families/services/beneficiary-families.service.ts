@@ -1,10 +1,11 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateFamilyDto } from '../dtos/create-family-dto';
-import { FilterFamilyDto } from '../dtos/filter-family.dto';
-import { UpdateFamilyDto } from '../dtos/update-family-dto';
+
+import { UpdateFamilyDto } from '../dtos/requests/update-family-dto';
 import { Family } from '../entities/families.entity';
 import { FamilyRepository } from '../repositories/family.repository';
+import { CreateFamilyDto } from '../dtos/requests/create-family-dto';
+import { FilterFamilyDto } from '../dtos/queries/filter-family.dto';
 
 @Injectable()
 export class FamiliesService {

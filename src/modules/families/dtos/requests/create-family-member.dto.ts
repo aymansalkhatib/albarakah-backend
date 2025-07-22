@@ -1,6 +1,6 @@
 import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength } from 'class-validator';
 import { Expose } from 'class-transformer';
-import { FamilyRelationType } from '../enums/family-relation-type.enum';
+import { FamilyRelationType } from '../../enums/family-relation-type.enum';
 
 export class CreateFamilyMemberDto {
   @IsNumber()

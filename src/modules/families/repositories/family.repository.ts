@@ -10,9 +10,10 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 import { Family } from '../entities/families.entity';
-import { FilterFamilyDto } from '../dtos/filter-family.dto';
-import { CreateFamilyDto } from '../dtos/create-family-dto';
-import { UpdateFamilyDto } from '../dtos/update-family-dto';
+import { FilterFamilyDto } from '../dtos/queries/filter-family.dto';
+import { CreateFamilyDto } from '../dtos/requests/create-family-dto';
+import { UpdateFamilyDto } from '../dtos/requests/update-family-dto';
+
 
 @Injectable()
 export class FamilyRepository extends Repository<Family> {

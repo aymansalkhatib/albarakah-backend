@@ -10,9 +10,9 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { CreateFamilyIncomeDto } from '../dtos/create-family-income.dto';
-import { FamilyIncomeResponseDto } from '../dtos/family-income-response.dto';
+import { CreateFamilyIncomeDto } from '../dtos/requests/create-family-income.dto';
 import { FamilyIncomeService } from '../services/family-income.service';
+import { FamilyIncomeResponseDto } from '../dtos/responses/family-income-response.dto';
 
 @Controller('family-income')
 export class FamilyIncomeController {

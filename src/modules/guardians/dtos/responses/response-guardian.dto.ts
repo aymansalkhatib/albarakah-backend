@@ -1,4 +1,4 @@
-import { FamilyResponseDto } from '@app/modules/families/dtos/family-response.dto';
+import { FamilyResponseDto } from '@app/modules/families/dtos/responses/family-response.dto';
 import { FamilyRelationType } from '@app/modules/families/enums/family-relation-type.enum';
 import { Person } from '@app/modules/persons/entities/person.entity';
 import { Exclude, Expose, Type } from 'class-transformer';

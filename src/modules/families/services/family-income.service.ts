@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateFamilyIncomeDto } from '../dtos/create-family-income.dto';
+import { CreateFamilyIncomeDto } from '../dtos/requests/create-family-income.dto';
 import { FamilyIncome } from '../entities/family-income.entity';
 import { FamiliesService } from './beneficiary-families.service';
 import { FamilyIncomeRepository } from '../repositories/family-income.repository';
