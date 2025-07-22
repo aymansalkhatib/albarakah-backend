@@ -1,6 +1,3 @@
-// =====================================
-
-// family-members.entity.ts
 import {
   Column,
   CreateDateColumn,
@@ -16,7 +13,7 @@ import { Person } from '../../persons/entities/person.entity';
 import { FamilyRelationType } from '../enums/family-relation-type.enum';
 import { PersonCourseBatch } from '../../training-courses/entities/person-course-batch.entity';
 import { ReceivedAssistance } from '../../received-assistance/entities/received-assistance.entity';
-import { Family } from './families.entity';
+import { Family } from '@app/modules/families/entities/families.entity';
 
 @Entity('family_members')
 @Index(['familyId', 'personId'], { unique: true })

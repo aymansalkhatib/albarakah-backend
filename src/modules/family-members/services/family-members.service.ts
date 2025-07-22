@@ -1,9 +1,9 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { FamilyMember } from '../entities/family-members.entity';
 import { FamilyRelationType } from '../enums/family-relation-type.enum';
-import { FamiliesService } from './families.service';
 import { FamilyMemberRepository } from '../repositories/family-member.repository';
 import { CreateFamilyMemberDto } from '../dtos/requests/create-family-member.dto';
+import { FamiliesService } from '@app/modules/families/services/families.service';
 
 @Injectable()
 export class FamilyMembersService {

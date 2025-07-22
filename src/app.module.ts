@@ -1,4 +1,4 @@
-import { familiesModule } from './modules/families/families.module';
+import { FamiliesModule } from './modules/families/families.module';
 import { ClassSerializerInterceptor, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -18,6 +18,8 @@ import { GuardiansModule } from './modules/guardians/guardians.module';
 import { EmployeesModule } from './modules/employees/employee.module';
 import { ParseQueryMiddleware } from './common/middlewares/parse-query.middleware';
 import { CallLogsModule } from './modules/call-logs/call-logs.module';
+import { FamiliesIncomeModule } from './modules/family-income/family-income.module';
+import { FamilyMembersModule } from './modules/family-members/family-members.module';
 
 @Module({
   imports: [
@@ -28,7 +30,9 @@ import { CallLogsModule } from './modules/call-logs/call-logs.module';
     //
     AuthModule,
     DropdownsModule,
-    familiesModule,
+    FamiliesModule,
+    FamilyMembersModule,
+    FamiliesIncomeModule,
     EmployeesModule,
     SystemUsersModule,
     RolesModule,

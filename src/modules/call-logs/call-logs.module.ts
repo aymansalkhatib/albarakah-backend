@@ -7,8 +7,9 @@ import { CallLogsController } from './controllers/call-logs.controller';
 import { CallLogsService } from './services/call-logs.service';
 import { GuardiansModule } from '../guardians/guardians.module';
 import { SupportersModule } from '../supporters/supporters.module';
-import { familiesModule } from '../families/families.module';
+import { FamiliesModule } from '../families/families.module';
 import { EmployeesModule } from '../employees/employee.module';
+import { FamilyMembersModule } from '../family-members/family-members.module';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { EmployeesModule } from '../employees/employee.module';
     GuardiansModule,
     SupportersModule,
     EmployeesModule,
-    familiesModule,
+    FamilyMembersModule,
   ],
   controllers: [CallLogsController],
   providers: [CallLogsService],

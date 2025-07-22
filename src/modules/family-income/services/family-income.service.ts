@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateFamilyIncomeDto } from '../dtos/requests/create-family-income.dto';
 import { FamilyIncome } from '../entities/family-income.entity';
-import { FamiliesService } from './families.service';
+import { FamiliesService } from '@app/modules/families/services/families.service';
 import { FamilyIncomeRepository } from '../repositories/family-income.repository';
 
 @Injectable()

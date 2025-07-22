@@ -1,4 +1,4 @@
-import { forwardRef, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TrainingCourse } from './entities/training-course.entity';
 import { CourseBatch } from './entities/course-batch.entity';
@@ -9,12 +9,13 @@ import { PersonCourseBatchService } from './services/person-course-batch.service
 import { TrainingCoursesController } from './controllers/training-courses.controller';
 import { CourseBatchController } from './controllers/course-batch.controller';
 import { PersonCourseBatchController } from './controllers/person-course-batch.controller';
-import { familiesModule } from '../families/families.module';
+import { FamiliesModule } from '../families/families.module';
+import { FamilyMembersModule } from '../family-members/family-members.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([TrainingCourse, CourseBatch, PersonCourseBatch]),
-    familiesModule,
+    FamilyMembersModule,
   ],
   controllers: [TrainingCoursesController, CourseBatchController, PersonCourseBatchController],
   providers: [TrainingCoursesService, CourseBatchService, PersonCourseBatchService],

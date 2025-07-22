@@ -1,5 +1,5 @@
+import { FamilyRelationType } from '@app/modules/family-members/enums/family-relation-type.enum';
 import { Family } from '../../families/entities/families.entity';
-import { FamilyRelationType } from '../../families/enums/family-relation-type.enum';
 import { Person } from '../../persons/entities/person.entity';
 import {
   Column,

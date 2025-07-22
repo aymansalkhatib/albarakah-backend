@@ -1,6 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 import { CreateFamilyIncomeDto } from '../requests/create-family-income.dto';
-import { FamilyResponseDto } from './family-response.dto';
+import { FamilyResponseDto } from '@app/modules/families/dtos/responses/family-response.dto';
 
 export class FamilyIncomeResponseDto extends CreateFamilyIncomeDto {
   @Expose()

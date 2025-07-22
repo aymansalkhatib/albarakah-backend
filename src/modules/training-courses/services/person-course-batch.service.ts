@@ -16,7 +16,7 @@ import { PersonCourseBatchResponseDto } from '../dtos/responses/person-course-ba
 import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
 import { normalizeDate } from '@app/common/helpers/date.helper';
 import { CourseBatchService } from './course-batch.service';
-import { FamilyMembersService } from '@app/modules/families/services/family-members.service';
+import { FamilyMembersService } from '@app/modules/family-members/services/family-members.service';
 
 @Injectable()
 export class PersonCourseBatchService {

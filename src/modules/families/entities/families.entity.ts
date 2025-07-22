@@ -10,16 +10,16 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Max } from 'class-validator';
-import { FamilyMember } from './family-members.entity';
 import { FamilyNeed } from '../../family-needs/entities/family-need.entity';
 import { Guardian } from '../../guardians/entities/guardian.entity';
 import { EmergencyAidRequest } from '../../emergency-aid/entities/emergency-aid-request.entity';
 import { ReceivedAssistance } from '../../received-assistance/entities/received-assistance.entity';
-import { FamilyIncome } from './family-income.entity';
 import { House } from '../../houses/entities/house.entity';
 import { Interview } from '../../interviews/entities/interview.entity';
 import { FamilyRegistrationForm } from '../../family-registration-forms/entities/family-registration-form.entity';
 import { Visit } from '../../visits/entities/visit.entity';
+import { FamilyIncome } from '@app/modules/family-income/entities/family-income.entity';
+import { FamilyMember } from '@app/modules/family-members/entities/family-members.entity';
 
 @Entity('families')
 @Index(['familyBookNumber'], { unique: true })

@@ -8,9 +8,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { FamilyMember } from '../../families/entities/family-members.entity';
 import { CourseBatch } from './course-batch.entity';
 import { AttendanceStatus } from '../enums/attendance-status.enum';
+import { FamilyMember } from '@app/modules/family-members/entities/family-members.entity';
 
 @Entity('person_course_batches')
 @Index(['familyMemberId', 'courseBatchId'], { unique: true })

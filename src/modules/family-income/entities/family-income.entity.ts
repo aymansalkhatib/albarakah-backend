@@ -1,3 +1,4 @@
+import { Family } from '@app/modules/families/entities/families.entity';
 import {
   Column,
   CreateDateColumn,
@@ -8,7 +9,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Family } from './families.entity';
 
 @Entity('family_income')
 export class FamilyIncome {
