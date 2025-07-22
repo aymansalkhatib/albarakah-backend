@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, In } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Role } from '../entities/roles.entity';
 import { PermissionEntity } from '../entities/permissions.entity';
 import { RolePermission } from '../entities/role-permission.entity';

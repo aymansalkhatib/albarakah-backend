@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PermissionEntity } from '../entities/permissions.entity';
 import { FilterPermissionDto } from '../dtos/queries/filter-permission.dto';
-import { Permission } from '../enums/permission.enum';
 import { SystemUser } from '@app/modules/system-users/entities/system-user.entity';
 import { UserPermissionsService } from './user-permissions.service';
 import { paginate } from '@app/common/pagination/paginate.service';

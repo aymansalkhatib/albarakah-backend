@@ -1,11 +1,4 @@
-import {
-  IsDateString,
-  IsNumber,
-  IsOptional,
-  IsString,
-  Length,
-  ValidateNested,
-} from 'class-validator';
+import { IsDateString, IsOptional, IsString, Length, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { OnlyOneOf } from '../../../../common/decorators/validate-one-of-two-fields.validator';
 import { CreatePersonDto } from '@app/modules/persons/dtos/requests/create-person.dto';

@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException } from '@nestjs/common';
+import { ConflictException } from '@nestjs/common';
 import { UpdatePersonDto } from '../dtos/requests/update-person.dto';
 import { Person } from '../entities/person.entity';
 import { Not, Repository } from 'typeorm';

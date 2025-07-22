@@ -51,10 +51,7 @@ export class FamilyRepository extends Repository<Family> {
     return this.save(family);
   }
 
-  updateFamily(
-    oldFamily: Family,
-    updateFamilyDto: UpdateFamilyDto,
-  ): Promise<Family> {
+  updateFamily(oldFamily: Family, updateFamilyDto: UpdateFamilyDto): Promise<Family> {
     const updatedFamily = this.merge(oldFamily, updateFamilyDto);
     return this.save(updatedFamily);
   }

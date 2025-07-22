@@ -7,7 +7,7 @@ import { FamilyMemberRepository } from './repositories/family-member.repository'
 import { FamiliesModule } from '../families/families.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([FamilyMember]),FamiliesModule],
+  imports: [TypeOrmModule.forFeature([FamilyMember]), FamiliesModule],
   controllers: [FamilyMembersController],
   providers: [FamilyMembersService, FamilyMemberRepository],
   exports: [FamilyMembersService],

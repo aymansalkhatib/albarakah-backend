@@ -137,6 +137,61 @@ export class DropdownService {
 
   // Private helper methods
 
+  async findDropdownWithOptionCheck(params: {
+    dropdownName: string;
+    categoryName: string;
+    optionId: number;
+    categoryParentId?: number;
+  }): Promise<Dropdown> {
+    const { dropdownName, categoryName, optionId, categoryParentId } = params;
+
+    const whereConditions = {
+      dropdownName,
+      dropdownCategory: {
+        name: categoryName,
+        ...(categoryParentId !== undefined &&
+          categoryParentId !== null && {
+            parentId: categoryParentId,
+          }),
+      },
+    };
+
+    const dropdown = await this.dropdownRepository.findOne({
+      where: whereConditions,
+      relations: ['dropdownCategory', 'options'],
+      select: {
+        id: true,
+        dropdownName: true,
+        dropdownCategory: {
+          id: true,
+          name: true,
+          parentId: true,
+        },
+      },
+    });
+
+    if (!dropdown) {
+      throw new NotFoundException(
+        this.translateHelper.tr('dropdowns.errors.dropdown_not_found', {
+          id: dropdownName,
+        }),
+      );
+    }
+
+    const hasOption = dropdown.options?.some((option) => option.id === optionId);
+
+    if (!hasOption) {
+      throw new NotFoundException(
+        this.translateHelper.tr('dropdowns.errors.option_not_found_in_dropdown', {
+          optionId,
+          dropdownName,
+        }),
+      );
+    }
+
+    return dropdown;
+  }
+
   private async handleOptionsUpsert(
     dropdownId: number,
     optionsDto: any[],
@@ -277,60 +332,5 @@ export class DropdownService {
         );
       }
     }
-  }
-
-  async findDropdownWithOptionCheck(params: {
-    dropdownName: string;
-    categoryName: string;
-    optionId: number;
-    categoryParentId?: number;
-  }): Promise<Dropdown> {
-    const { dropdownName, categoryName, optionId, categoryParentId } = params;
-
-    const whereConditions = {
-      dropdownName,
-      dropdownCategory: {
-        name: categoryName,
-        ...(categoryParentId !== undefined &&
-          categoryParentId !== null && {
-            parentId: categoryParentId,
-          }),
-      },
-    };
-
-    const dropdown = await this.dropdownRepository.findOne({
-      where: whereConditions,
-      relations: ['dropdownCategory', 'options'],
-      select: {
-        id: true,
-        dropdownName: true,
-        dropdownCategory: {
-          id: true,
-          name: true,
-          parentId: true,
-        },
-      },
-    });
-
-    if (!dropdown) {
-      throw new NotFoundException(
-        this.translateHelper.tr('dropdowns.errors.dropdown_not_found', {
-          id: dropdownName,
-        }),
-      );
-    }
-
-    const hasOption = dropdown.options?.some((option) => option.id === optionId);
-
-    if (!hasOption) {
-      throw new NotFoundException(
-        this.translateHelper.tr('dropdowns.errors.option_not_found_in_dropdown', {
-          optionId,
-          dropdownName,
-        }),
-      );
-    }
-
-    return dropdown;
   }
 }

@@ -3,7 +3,6 @@ import { ConfigService } from '@nestjs/config';
 import * as winston from 'winston';
 import { ConsoleFormatter } from './formatters/console.formatter';
 import { ILogger, LogMetadata } from './interfaces/logger.interface';
-import { createFileTransports } from './transports/file.transport';
 import { AppConfigModel } from '../app-config/app_config.module';
 
 /**

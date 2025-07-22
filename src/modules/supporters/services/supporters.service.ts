@@ -1,7 +1,6 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { plainToInstance } from 'class-transformer';
 import { Supporter } from '../entities/supporters.entity';
 import { CreateSupporterDto } from '../dtos/create-supporter.dto';
 import { UpdateSupporterDto } from '../dtos/update-supporter.dto';

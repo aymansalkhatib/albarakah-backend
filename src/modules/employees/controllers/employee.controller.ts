@@ -10,7 +10,6 @@ import {
   Patch,
   Post,
   Query,
-  UseInterceptors,
 } from '@nestjs/common';
 import { EmployeesService } from '../services/employee.service';
 import { CreateEmployeeDto } from '../dtos/requests/create-employee.dto';

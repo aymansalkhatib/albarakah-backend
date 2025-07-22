@@ -1,4 +1,4 @@
-import { IsOptional, IsEnum, IsString, IsDate } from 'class-validator';
+import { IsDate, IsEnum, IsOptional, IsString } from 'class-validator';
 
 import { PaginationQueryDto } from '@app/common/pagination/dto/pagination-query.dto';
 import { IsAfterDate } from '@app/common/decorators/is-after-date.decorator';

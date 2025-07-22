@@ -9,7 +9,6 @@ import { PersonCourseBatchService } from './services/person-course-batch.service
 import { TrainingCoursesController } from './controllers/training-courses.controller';
 import { CourseBatchController } from './controllers/course-batch.controller';
 import { PersonCourseBatchController } from './controllers/person-course-batch.controller';
-import { FamiliesModule } from '../families/families.module';
 import { FamilyMembersModule } from '../family-members/family-members.module';
 
 @Module({

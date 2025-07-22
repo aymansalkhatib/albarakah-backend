@@ -1,6 +1,6 @@
 {
-    "errors": {
-        "not_found": "الوصي ذو المعرف {id} غير موجود",
-        "already_guardian": "هذا الشخص هو وصي بالفعل"
-    }
+  "errors": {
+    "not_found": "الوصي ذو المعرف {id} غير موجود",
+    "already_guardian": "هذا الشخص هو وصي بالفعل"
+  }
 }

@@ -5,7 +5,6 @@ import helmet from 'helmet';
 import compression from 'compression';
 import { i18nValidationErrorFactory, I18nValidationExceptionFilter } from 'nestjs-i18n';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { parse } from 'qs';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 
 async function bootstrap() {

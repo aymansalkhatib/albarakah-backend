@@ -1,13 +1,13 @@
 import {
-  Controller,
-  Get,
-  Post,
-  Delete,
-  Param,
   Body,
-  ParseIntPipe,
+  Controller,
+  Delete,
+  Get,
   HttpCode,
   HttpStatus,
+  Param,
+  ParseIntPipe,
+  Post,
 } from '@nestjs/common';
 import { UserPermissionsService } from '../services/user-permissions.service';
 import { AssignUserPermissionDto } from '../dtos/requests/assign-user-permission.dto';

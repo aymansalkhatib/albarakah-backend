@@ -99,7 +99,9 @@ export class SystemUsersService {
     return systemUser;
   }
 
-  async findAll(filterDto: FilterSystemUserDto): Promise<PaginationResponseDto<SystemUserResponseDto>> {
+  async findAll(
+    filterDto: FilterSystemUserDto,
+  ): Promise<PaginationResponseDto<SystemUserResponseDto>> {
     const queryBuilder = this.systemUserRepository
       .createQueryBuilder('systemUser')
       .leftJoinAndSelect('systemUser.employee', 'employee')

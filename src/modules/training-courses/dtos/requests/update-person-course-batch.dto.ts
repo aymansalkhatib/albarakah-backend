@@ -1,4 +1,4 @@
-import { IsOptional, IsString, Length, IsDateString, IsEnum, IsDate } from 'class-validator';
+import { IsDate, IsEnum, IsOptional, IsString, Length } from 'class-validator';
 import { AttendanceStatus } from '../../enums/attendance-status.enum';
 import { IsAfterDate } from '@app/common/decorators/is-after-date.decorator';
 

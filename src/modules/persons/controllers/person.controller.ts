@@ -10,7 +10,6 @@ import {
   Patch,
   Post,
   Query,
-  UseInterceptors,
 } from '@nestjs/common';
 import { PersonsService } from '../services/persons.service';
 import { UpdatePersonDto } from '../dtos/requests/update-person.dto';

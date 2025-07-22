@@ -17,7 +17,6 @@ import { UpdateTrainingCourseDto } from '../dtos/requests/update-training-course
 import { FilterTrainingCourseDto } from '../dtos/queries/filter-training-course.dto';
 import { TrainingCourseResponseDto } from '../dtos/responses/training-course-response.dto';
 import { SerializeResponse } from '@app/common/decorators/serialize-response.decorator';
-import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
 import { Protected } from '@app/common/decorators/protected.decorator';
 import { Permission } from '../../roles/enums/permission.enum';
 

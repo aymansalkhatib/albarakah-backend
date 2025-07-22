@@ -1,16 +1,15 @@
 import {
-  Injectable,
-  NotFoundException,
   BadRequestException,
   ForbiddenException,
+  Injectable,
+  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, In } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { UserPermission } from '../entities/user-permission.entity';
 import { PermissionEntity } from '../entities/permissions.entity';
 import { SystemUser } from '../../system-users/entities/system-user.entity';
 import { UserPermissionItemDto } from '../dtos/requests/bulk-assign-user-permissions.dto';
-import { RolePermission } from '../entities/role-permission.entity';
 import { isProtectedSystemUserPermission } from '../constants/protected-permissions.constant';
 
 @Injectable()

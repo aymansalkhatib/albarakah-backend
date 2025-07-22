@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, ILike } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CourseBatch } from '../entities/course-batch.entity';
 import { CreateCourseBatchDto } from '../dtos/requests/create-course-batch.dto';
 import { UpdateCourseBatchDto } from '../dtos/requests/update-course-batch.dto';

@@ -28,9 +28,7 @@ export class GuardiansService {
       });
 
       if (person.guardian) {
-        throw new ConflictException(
-          this.translateHelper.tr('guardians.errors.already_guardian'),
-        );
+        throw new ConflictException(this.translateHelper.tr('guardians.errors.already_guardian'));
       }
     } else {
       person = await this.personsService.create(createGuardianDto.person);

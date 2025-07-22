@@ -1,24 +1,24 @@
 {
-    "errors": {
-        "email_exists": "يوجد شخص بالفعل بالبريد الإلكتروني \"{email}\"",
-        "national_id_exists": "يوجد شخص بالفعل برقم الهوية الوطنية \"{nationalId}\"",
-        "father_name_exists": "يوجد شخص باسم \"{firstName} {lastName}\" مع نفس الأب بالفعل",
-        "mother_name_exists": "يوجد شخص باسم \"{firstName} {lastName}\" مع نفس الأم بالفعل",
-        "name_no_parent_exists": "يوجد شخص بهذا الاسم بالفعل بدون معلومات عن الوالدين.",
-        "person_details_exists": "يوجد شخص بهذه التفاصيل بالفعل",
-        "self_father": "لا يمكن أن يكون الشخص أبًا لنفسه",
-        "self_mother": "لا يمكن أن يكون الشخص أمًا لنفسه",
-        "same_father_mother": "لا يمكن أن يكون الأب والأم نفس الشخص",
-        "cannot_delete_related": "لا يمكن حذف الشخص \"{firstName} {lastName}\" لوجود سجلات مرتبطة: {relationsList}. يرجى إزالة هذه العلاقات أولاً.",
-        "not_found": "الشخص ذو المعرف {id} غير موجود",
-        "name_birthdate_exists": "يوجد شخص باسم \"{firstName} {lastName}\" مع نفس تاريخ الميلاد ({birthDate}) بالفعل"
-    },
-    "success": {
-        "deleted": "تم حذف الشخص \"{firstName} {lastName}\" بنجاح"
-    },
-    "validation": {
-        "birth_date_min": "يجب أن يكون تاريخ الميلاد بعد 1900-01-01",
-        "birth_date_max": "يجب أن يكون تاريخ الميلاد قبل اليوم",
-        "national_id_length": "يجب أن يكون رقم الهوية الوطنية 11 رقمًا بالضبط"
-    }
+  "errors": {
+    "email_exists": "يوجد شخص بالفعل بالبريد الإلكتروني \"{email}\"",
+    "national_id_exists": "يوجد شخص بالفعل برقم الهوية الوطنية \"{nationalId}\"",
+    "father_name_exists": "يوجد شخص باسم \"{firstName} {lastName}\" مع نفس الأب بالفعل",
+    "mother_name_exists": "يوجد شخص باسم \"{firstName} {lastName}\" مع نفس الأم بالفعل",
+    "name_no_parent_exists": "يوجد شخص بهذا الاسم بالفعل بدون معلومات عن الوالدين.",
+    "person_details_exists": "يوجد شخص بهذه التفاصيل بالفعل",
+    "self_father": "لا يمكن أن يكون الشخص أبًا لنفسه",
+    "self_mother": "لا يمكن أن يكون الشخص أمًا لنفسه",
+    "same_father_mother": "لا يمكن أن يكون الأب والأم نفس الشخص",
+    "cannot_delete_related": "لا يمكن حذف الشخص \"{firstName} {lastName}\" لوجود سجلات مرتبطة: {relationsList}. يرجى إزالة هذه العلاقات أولاً.",
+    "not_found": "الشخص ذو المعرف {id} غير موجود",
+    "name_birthdate_exists": "يوجد شخص باسم \"{firstName} {lastName}\" مع نفس تاريخ الميلاد ({birthDate}) بالفعل"
+  },
+  "success": {
+    "deleted": "تم حذف الشخص \"{firstName} {lastName}\" بنجاح"
+  },
+  "validation": {
+    "birth_date_min": "يجب أن يكون تاريخ الميلاد بعد 1900-01-01",
+    "birth_date_max": "يجب أن يكون تاريخ الميلاد قبل اليوم",
+    "national_id_length": "يجب أن يكون رقم الهوية الوطنية 11 رقمًا بالضبط"
+  }
 }

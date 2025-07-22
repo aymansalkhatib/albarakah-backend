@@ -17,7 +17,6 @@ import { UpdatePersonCourseBatchDto } from '../dtos/requests/update-person-cours
 import { FilterPersonCourseBatchDto } from '../dtos/queries/filter-person-course-batch.dto';
 import { PersonCourseBatchResponseDto } from '../dtos/responses/person-course-batch-response.dto';
 import { SerializeResponse } from '@app/common/decorators/serialize-response.decorator';
-import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
 import { Protected } from '@app/common/decorators/protected.decorator';
 import { Permission } from '../../roles/enums/permission.enum';
 

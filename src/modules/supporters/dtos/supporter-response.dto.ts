@@ -1,5 +1,4 @@
 import { Exclude, Expose, Type } from 'class-transformer';
-import { Person } from '../../persons/entities/person.entity';
 import { SupportType } from '../enums/support-type';
 import { PersonResponseDto } from '@app/modules/persons/dtos/responses/person-response.dto';
 

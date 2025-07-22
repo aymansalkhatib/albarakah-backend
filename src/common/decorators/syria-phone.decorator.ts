@@ -1,10 +1,10 @@
 import { applyDecorators } from '@nestjs/common';
 import { Transform } from 'class-transformer';
 import {
-  registerDecorator,
-  ValidationOptions,
-  ValidationArguments,
   isString,
+  registerDecorator,
+  ValidationArguments,
+  ValidationOptions,
 } from 'class-validator';
 
 interface SyriaPhoneOptions {

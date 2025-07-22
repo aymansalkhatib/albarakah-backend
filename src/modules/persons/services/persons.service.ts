@@ -1,9 +1,4 @@
-import {
-  BadRequestException,
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Person } from '../entities/person.entity';
@@ -142,13 +137,10 @@ export class PersonsService {
     }
 
     if (filterDto.birthDateFrom && filterDto.birthDateTo) {
-      queryBuilder.andWhere(
-        'person.birthDate BETWEEN :birthDateFrom AND :birthDateTo',
-        {
-          birthDateFrom: filterDto.birthDateFrom,
-          birthDateTo: filterDto.birthDateTo,
-        },
-      );
+      queryBuilder.andWhere('person.birthDate BETWEEN :birthDateFrom AND :birthDateTo', {
+        birthDateFrom: filterDto.birthDateFrom,
+        birthDateTo: filterDto.birthDateTo,
+      });
     } else if (filterDto.birthDateFrom) {
       queryBuilder.andWhere('person.birthDate >= :birthDateFrom', {
         birthDateFrom: filterDto.birthDateFrom,
