@@ -2,8 +2,6 @@ import { ArgumentsHost, Catch, ExceptionFilter, Injectable } from '@nestjs/commo
 import { Request, Response } from 'express';
 import { randomUUID } from 'crypto';
 import { ErrorHandlerFactory } from './error-handler.factory';
-import { extractRequestMetadata, getErrorStatus } from './utils/request-metadata.util';
-import { LogMetadata } from '../modules/app-logging/interfaces/logger.interface';
 
 /**
  * Global exception filter that handles all unhandled exceptions in the application
@@ -11,10 +9,7 @@ import { LogMetadata } from '../modules/app-logging/interfaces/logger.interface'
 @Injectable()
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
-  constructor(
-    private readonly errorHandlerFactory: ErrorHandlerFactory,
-    // private readonly logger: WinstonLoggerService,
-  ) {}
+  constructor(private readonly errorHandlerFactory: ErrorHandlerFactory) {}
 
   catch(exception: any, host: ArgumentsHost): void {
     const ctx = host.switchToHttp();
@@ -41,7 +36,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       }
 
       // Log the error with requests context
-      this.logError(request, exception, traceId);
+      this.logError(exception);
 
       // Send responses
 
@@ -83,10 +78,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     }
   }
 
-  private logError(request: Request, exception: Error, traceId: string): void {
-    const metadata: LogMetadata = extractRequestMetadata(request);
-    const status = getErrorStatus(exception);
-
+  private logError(exception: Error): void {
     // this.logger.error(`Request failed: ${requests.method} ${requests.url}`, {
     //   ...metadata,
     //   statusCode: status,
