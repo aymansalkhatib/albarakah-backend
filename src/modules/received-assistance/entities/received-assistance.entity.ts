@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 import { Family } from '../../families/entities/families.entity';
 import { AssistanceType } from '../enums/assistance-type.enum';
-import { Child } from '../../children/entities/children.entity';
+import { FamilyMember } from '@app/modules/families/entities/family-members.entity';
 
 @Entity('received_assistance')
 @Index(['childId'])
@@ -61,10 +61,10 @@ export class ReceivedAssistance {
   @JoinColumn({ name: 'family_id' })
   family: Family;
 
-  @ManyToOne(() => Child, (child) => child.receivedAssistance, {
+  @ManyToOne(() => FamilyMember, (familyMember) => familyMember.receivedAssistance, {
     onDelete: 'RESTRICT',
     nullable: true,
   })
-  @JoinColumn({ name: 'child_id' })
-  child?: Child;
+  @JoinColumn({ name: 'family_member_id' })
+  familyMember?: FamilyMember;
 }

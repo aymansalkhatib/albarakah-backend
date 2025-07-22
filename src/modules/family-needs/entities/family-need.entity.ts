@@ -11,14 +11,9 @@ import {
 import { Family } from '../../families/entities/families.entity';
 import { PriorityLevel } from '../enums/priority-level.enum';
 import { FamilyNeedStatus } from '../enums/family-need-status.enum';
-import { Child } from '../../children/entities/children.entity';
+import { FamilyMember } from '@app/modules/families/entities/family-members.entity';
 
 @Entity('family_needs')
-@Index(['familyId'])
-@Index(['childId'])
-@Index(['needType'])
-@Index(['priorityLevel'])
-@Index(['status'])
 export class FamilyNeed {
   @PrimaryGeneratedColumn()
   id: number;
@@ -26,8 +21,8 @@ export class FamilyNeed {
   @Column({ name: 'family_id' })
   familyId: number;
 
-  @Column({ name: 'child_id', nullable: true })
-  childId?: number;
+  @Column({ name: 'family_member_id', nullable: true })
+  familyMemberId?: number;
 
   @Column({ name: 'need_type', length: 100 })
   needType: string;
@@ -67,7 +62,7 @@ export class FamilyNeed {
   @JoinColumn({ name: 'family_id' })
   family: Family;
 
-  @ManyToOne(() => Child, { onDelete: 'RESTRICT', nullable: true })
-  @JoinColumn({ name: 'child_id' })
-  child?: Child;
+  @ManyToOne(() => FamilyMember, { onDelete: 'RESTRICT', nullable: true })
+  @JoinColumn({ name: 'family_member_id' })
+  familyMember?: FamilyMember;
 }

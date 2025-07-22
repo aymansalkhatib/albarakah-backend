@@ -1,4 +1,6 @@
-import { Person } from '../../persons/entities/person.entity';
+// =====================================
+
+// family-members.entity.ts
 import {
   Column,
   CreateDateColumn,
@@ -10,42 +12,51 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Person } from '../../persons/entities/person.entity';
 import { FamilyRelationType } from '../enums/family-relation-type.enum';
-import { Family } from './families.entity';
 import { PersonCourseBatch } from '../../training-courses/entities/person-course-batch.entity';
-import { CallLog } from '@app/modules/call-logs/entities/call-log.entity';
+import { ReceivedAssistance } from '../../received-assistance/entities/received-assistance.entity';
+import { Family } from './families.entity';
 
 @Entity('family_members')
-@Index(['familyId', 'personId', 'relationType'], { unique: true })
+@Index(['familyId', 'personId'], { unique: true })
 export class FamilyMember {
   @PrimaryGeneratedColumn()
   id: number;
 
+  // Foreign Keys
   @Column({ name: 'person_id' })
   personId: number;
 
   @Column({ name: 'family_id' })
   familyId: number;
 
+  // Member Details
   @Column({ name: 'relation_type', type: 'enum', enum: FamilyRelationType })
   relationType: FamilyRelationType;
+
+  @Column({ name: 'is_sponsored', default: false })
+  isSponsored: boolean;
 
   @Column({ type: 'text', nullable: true })
   notes?: string;
 
+  // Timestamps
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
-  // Relationships
+  // === RELATIONSHIPS ===
 
   @ManyToOne(() => Person, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'person_id' })
   person: Person;
 
-  @ManyToOne(() => Family, (family) => family.members, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Family, (family) => family.members, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'family_id' })
   family: Family;
 
@@ -54,11 +65,24 @@ export class FamilyMember {
   })
   courseBatches: PersonCourseBatch[];
 
+  @OneToMany(() => ReceivedAssistance, (assistance) => assistance.familyMember)
+  receivedAssistance: ReceivedAssistance[];
+
+  // === COMPUTED PROPERTIES ===
+
   get isParent(): boolean {
     return [FamilyRelationType.MOTHER, FamilyRelationType.FATHER].includes(this.relationType);
   }
 
   get isChild(): boolean {
     return [FamilyRelationType.SON, FamilyRelationType.DAUGHTER].includes(this.relationType);
+  }
+
+  get isMother(): boolean {
+    return this.relationType === FamilyRelationType.MOTHER;
+  }
+
+  get isFather(): boolean {
+    return this.relationType === FamilyRelationType.FATHER;
   }
 }

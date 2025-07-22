@@ -15,7 +15,6 @@ import { Guardian } from '../../guardians/entities/guardian.entity';
 import { FamilyMember } from '../../families/entities/family-members.entity';
 import { Employee } from '../../employees/entities/employee.entity';
 import { Supporter } from '../../supporters/entities/supporters.entity';
-import { Child } from '../../children/entities/children.entity';
 
 @Entity('person')
 @Index('idx_person_national_id', ['nationalId'], { unique: true, where: 'national_id IS NOT NULL' })
@@ -142,11 +141,6 @@ export class Person {
     nullable: true,
   })
   guardian?: Guardian;
-
-  @OneToOne(() => Child, (child) => child.person, {
-    nullable: true,
-  })
-  child?: Child;
 
   @OneToOne(() => FamilyMember, (member) => member.person, {
     nullable: true,

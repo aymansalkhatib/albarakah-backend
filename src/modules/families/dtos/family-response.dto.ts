@@ -1,6 +1,4 @@
-import { CreateFamilyDto } from './create-family-dto';
 import { Expose } from 'class-transformer';
-import { IsDateString, IsUUID } from 'class-validator';
 
 export class FamilyResponseDto {
   @Expose()
@@ -28,7 +26,7 @@ export class FamilyResponseDto {
   voucherAmount?: number;
 
   @Expose()
-  familySuspensionDate?: string;
+  familySuspensionDate?: Date;
 
   @Expose()
   suspensionReason?: string;
@@ -43,7 +41,7 @@ export class FamilyResponseDto {
   incomeFromBarakaAssociation: number;
 
   @Expose()
-  registrationDate?: string;
+  registrationDate?: Date;
 
   @Expose()
   lastAssessmentDate?: Date;
