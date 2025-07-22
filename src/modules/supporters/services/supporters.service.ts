@@ -32,7 +32,7 @@ export class SupportersService {
       });
 
       if (person.supporter) {
-        throw new ConflictException('This person is already a supporter');
+        throw new ConflictException(this.translateHelper.tr('supporters.errors.already_supporter'));
       }
     } else {
       person = await this.personsService.create(createSupporterDto.person);
@@ -165,7 +165,7 @@ export class SupportersService {
     });
 
     if (!supporter) {
-      throw new NotFoundException(`Supporter with ID ${id} not found`);
+      throw new NotFoundException(this.translateHelper.tr('supporters.errors.not_found', { id }));
     }
 
     return supporter;

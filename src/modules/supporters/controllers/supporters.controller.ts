@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   ParseIntPipe,
   Patch,
@@ -56,6 +58,7 @@ export class SupportersController {
   }
 
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Protected(Permission.DELETE_SUPPORTER)
   delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
     return this.supportersService.delete(id);

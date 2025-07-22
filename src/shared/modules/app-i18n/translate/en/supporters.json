@@ -1,0 +1,6 @@
+{
+    "errors": {
+        "not_found": "Supporter with ID {id} not found",
+        "already_supporter": "This person is already a supporter"
+    }
+}

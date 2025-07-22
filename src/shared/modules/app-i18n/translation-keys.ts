@@ -96,6 +96,10 @@ interface PersonsSuccessDeletedParams {
   firstName: string | number; lastName: string | number
 }
 
+interface SupportersErrorsNotfoundParams {
+  id: string | number
+}
+
 interface SystemusersErrorsNotfoundParams {
   id: string | number
 }
@@ -179,6 +183,8 @@ const TranslationKeys = {
   'persons.validation.birth_date_max': 'persons.validation.birth_date_max',
   'persons.validation.birth_date_min': 'persons.validation.birth_date_min',
   'persons.validation.national_id_length': 'persons.validation.national_id_length',
+  'supporters.errors.already_supporter': 'supporters.errors.already_supporter',
+  'supporters.errors.not_found': 'supporters.errors.not_found',
   'system-users.errors.employee_has_system_account': 'system-users.errors.employee_has_system_account',
   'system-users.errors.not_found': 'system-users.errors.not_found',
   'system-users.errors.username_taken': 'system-users.errors.username_taken',
@@ -248,6 +254,8 @@ export interface TranslationInterpolations {
   'persons.validation.birth_date_max': NoParams;
   'persons.validation.birth_date_min': NoParams;
   'persons.validation.national_id_length': NoParams;
+  'supporters.errors.already_supporter': NoParams;
+  'supporters.errors.not_found': SupportersErrorsNotfoundParams;
   'system-users.errors.employee_has_system_account': NoParams;
   'system-users.errors.not_found': SystemusersErrorsNotfoundParams;
   'system-users.errors.username_taken': NoParams;
