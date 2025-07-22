@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 
 import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
 import { paginate } from '@app/common/pagination/paginate.service';
+import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
 
 import { CallLog } from '../entities/call-log.entity';
 import { ExternalPartyType } from '../enums/recipient-type.enum';
@@ -25,6 +26,7 @@ export class CallLogsService {
     private employeesService: EmployeesService,
     private guardiansService: GuardiansService,
     private familyMembersService: FamilyMembersService,
+    private readonly translateHelper: TranslateHelper,
   ) {}
 
   async create(createCallLogDto: CreateCallLogDto): Promise<CallLog> {
@@ -37,9 +39,7 @@ export class CallLogsService {
     }
 
     if (service == null && createCallLogDto.externalPartyType !== ExternalPartyType.OTHER) {
-      throw new BadRequestException(
-        'Recipient must be specified when selecting Guardian, Supporter, or Family Member. The recipient field cannot be left empty.',
-      );
+      throw new BadRequestException(this.translateHelper.tr('call-logs.errors.recipient_required'));
     }
 
     await this.employeesService.findOne(createCallLogDto.responsibleEmployeeId);
@@ -127,7 +127,7 @@ export class CallLogsService {
     });
 
     if (!callLog) {
-      throw new NotFoundException(`Call log with ID ${id} was not found.`);
+      throw new NotFoundException(this.translateHelper.tr('call-logs.errors.not_found', { id }));
     }
 
     return callLog;
@@ -142,7 +142,7 @@ export class CallLogsService {
   async delete(id: number): Promise<void> {
     const result = await this.callLogRepository.delete(id);
     if (result.affected === 0) {
-      throw new NotFoundException(`Call log with ID ${id} was not found.`);
+      throw new NotFoundException(this.translateHelper.tr('call-logs.errors.not_found', { id }));
     }
   }
 

@@ -1,0 +1,6 @@
+{
+    "errors": {
+        "not_found": "Call log with ID {id} not found",
+        "recipient_required": "Recipient must be specified when selecting Guardian, Supporter, or Family Member. The recipient field cannot be left empty."
+    }
+}
