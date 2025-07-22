@@ -6,23 +6,24 @@ import {
   MoreThanOrEqual,
   Repository,
 } from 'typeorm';
-import { FilterBeneficiaryFamilyDto } from './dto/filter-beneficiary-family.dto';
-import { BeneficiaryFamily } from './entities/beneficiary-families.entity';
-import { CreateBeneficiaryFamilyDto } from './dto/create-beneficiary-family-dto';
-import { UpdateBeneficiaryFamilyDto } from './dto/update-beneficiary-family-dto';
+
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
+import { Family } from '../entities/families.entity';
+import { FilterFamilyDto } from '../dtos/filter-family.dto';
+import { CreateFamilyDto } from '../dtos/create-family-dto';
+import { UpdateFamilyDto } from '../dtos/update-family-dto';
 
 @Injectable()
-export class BeneficiaryFamilyRepository extends Repository<BeneficiaryFamily> {
+export class FamilyRepository extends Repository<Family> {
   constructor(
-    @InjectRepository(BeneficiaryFamily)
-    private readonly repository: Repository<BeneficiaryFamily>,
+    @InjectRepository(Family)
+    private readonly repository: Repository<Family>,
   ) {
     super(repository.target, repository.manager, repository.queryRunner);
   }
 
-  async findAll(filter: FilterBeneficiaryFamilyDto): Promise<BeneficiaryFamily[]> {
+  async findAll(filter: FilterFamilyDto): Promise<Family[]> {
     const whereClause = this.buildWhereClause(filter);
 
     return this.find({
@@ -33,29 +34,27 @@ export class BeneficiaryFamilyRepository extends Repository<BeneficiaryFamily> {
     });
   }
 
-  findOneByFamilyBookNumber(familyBookNumber: string): Promise<BeneficiaryFamily | undefined> {
+  findOneByFamilyBookNumber(familyBookNumber: string): Promise<Family | undefined> {
     return this.findOneBy({ familyBookNumber });
   }
 
   async findOneById(
     id: number,
     options: { withDeleted?: boolean } = {},
-  ): Promise<BeneficiaryFamily | undefined> {
+  ): Promise<Family | undefined> {
     const { withDeleted = false } = options;
     return this.findOne({ where: { id }, withDeleted });
   }
 
-  createBeneficiaryFamily(
-    createBeneficiaryFamilyDto: CreateBeneficiaryFamilyDto,
-  ): Promise<BeneficiaryFamily> {
+  createBeneficiaryFamily(createBeneficiaryFamilyDto: CreateFamilyDto): Promise<Family> {
     const beneficiaryFamily = this.create(createBeneficiaryFamilyDto);
     return this.save(beneficiaryFamily);
   }
 
   updateBeneficiaryFamily(
-    oldBeneficiaryFamily: BeneficiaryFamily,
-    updateBeneficiaryFamilyDto: UpdateBeneficiaryFamilyDto,
-  ): Promise<BeneficiaryFamily> {
+    oldBeneficiaryFamily: Family,
+    updateBeneficiaryFamilyDto: UpdateFamilyDto,
+  ): Promise<Family> {
     const updatedFamily = this.merge(oldBeneficiaryFamily, updateBeneficiaryFamilyDto);
     return this.save(updatedFamily);
   }
@@ -66,7 +65,7 @@ export class BeneficiaryFamilyRepository extends Repository<BeneficiaryFamily> {
 
   //
 
-  private buildWhereClause(filter: FilterBeneficiaryFamilyDto): any {
+  private buildWhereClause(filter: FilterFamilyDto): any {
     const where: any = {};
 
     // String filters with case-insensitive search

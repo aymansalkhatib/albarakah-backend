@@ -10,7 +10,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Person } from '../../persons/entities/person.entity';
-import { BeneficiaryFamily } from '../../beneficiary-families/entities/beneficiary-families.entity';
+import { Family } from '../../families/entities/families.entity';
 import { RequestStatus } from '../enums/request-status.enum';
 
 @Entity('family_registration_forms')
@@ -91,10 +91,10 @@ export class FamilyRegistrationForm {
   @JoinColumn({ name: 'guardian_id' })
   guardian: Person;
 
-  @OneToOne(() => BeneficiaryFamily, (family) => family.registrationForm, {
+  @OneToOne(() => Family, (family) => family.registrationForm, {
     onDelete: 'RESTRICT',
     nullable: false,
   })
   @JoinColumn({ name: 'family_id' })
-  family: BeneficiaryFamily;
+  family: Family;
 }

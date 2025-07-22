@@ -11,8 +11,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { ReceivedAssistance } from '../../received-assistance/entities/received-assistance.entity';
-import { BeneficiaryFamily } from '../../beneficiary-families/entities/beneficiary-families.entity';
-import { FamilyMember } from '../../beneficiary-families/entities/family-members.entity';
+import { Family } from '../../families/entities/families.entity';
+import { FamilyMember } from '../../families/entities/family-members.entity';
 import { CallLog } from '@app/modules/call-logs/entities/call-log.entity';
 
 @Entity('children')
@@ -55,9 +55,9 @@ export class Child {
   @JoinColumn({ name: 'family_member_id' })
   familyMember: FamilyMember;
 
-  @ManyToOne(() => BeneficiaryFamily, (family) => family.children, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Family, (family) => family.children, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'family_id' })
-  family: BeneficiaryFamily;
+  family: Family;
 
   @OneToMany(() => ReceivedAssistance, (assistance) => assistance.child, {
     cascade: ['insert', 'update'],

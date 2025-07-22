@@ -8,7 +8,7 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { FilterPersonDto } from '@app/modules/persons/dtos/queries/filter-person.dto';
-import { FamilyRelationType } from '@app/modules/beneficiary-families/enums/family-relation-type.enum';
+import { FamilyRelationType } from '@app/modules/families/enums/family-relation-type.enum';
 
 export class FilterGuardianDto {
   @IsOptional()

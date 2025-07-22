@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { BeneficiaryFamily } from '../../beneficiary-families/entities/beneficiary-families.entity';
+import { Family } from '../../families/entities/families.entity';
 
 @Entity('visits')
 @Index(['visitDate'])
@@ -55,10 +55,10 @@ export class Visit {
 
   // Relationships
 
-  @ManyToOne(() => BeneficiaryFamily, (family) => family.visits, {
+  @ManyToOne(() => Family, (family) => family.visits, {
     onDelete: 'RESTRICT',
     nullable: true,
   })
   @JoinColumn({ name: 'family_id' })
-  family?: BeneficiaryFamily;
+  family?: Family;
 }

@@ -1,14 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { FamilyIncomeRepository } from './family-income.repository';
-import { CreateFamilyIncomeDto } from './dto/create-family-income.dto';
-import { FamilyIncome } from './entities/family-income.entity';
-import { BeneficiaryFamiliesService } from './beneficiary-families.service';
+import { CreateFamilyIncomeDto } from '../dtos/create-family-income.dto';
+import { FamilyIncome } from '../entities/family-income.entity';
+import { FamiliesService } from './beneficiary-families.service';
+import { FamilyIncomeRepository } from '../repositories/family-income.repository';
 
 @Injectable()
 export class FamilyIncomeService {
   constructor(
     private readonly familyIncomeRepository: FamilyIncomeRepository,
-    private readonly beneficiaryFamiliesService: BeneficiaryFamiliesService,
+    private readonly beneficiaryFamiliesService: FamiliesService,
   ) {}
 
   async findAll(): Promise<FamilyIncome[]> {

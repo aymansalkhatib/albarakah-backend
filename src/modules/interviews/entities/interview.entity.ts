@@ -9,7 +9,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Employee } from '../../employees/entities/employee.entity';
-import { BeneficiaryFamily } from '../../beneficiary-families/entities/beneficiary-families.entity';
+import { Family } from '../../families/entities/families.entity';
 
 @Entity('interviews')
 @Index(['familyId'])
@@ -45,12 +45,12 @@ export class Interview {
 
   // Relationships
 
-  @ManyToOne(() => BeneficiaryFamily, (family) => family.interviews, {
+  @ManyToOne(() => Family, (family) => family.interviews, {
     onDelete: 'RESTRICT',
     nullable: true,
   })
   @JoinColumn({ name: 'family_id' })
-  family?: BeneficiaryFamily;
+  family?: Family;
 
   @ManyToOne(() => Employee, {
     onDelete: 'RESTRICT',

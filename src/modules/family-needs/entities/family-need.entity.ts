@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { BeneficiaryFamily } from '../../beneficiary-families/entities/beneficiary-families.entity';
+import { Family } from '../../families/entities/families.entity';
 import { PriorityLevel } from '../enums/priority-level.enum';
 import { FamilyNeedStatus } from '../enums/family-need-status.enum';
 import { Child } from '../../children/entities/children.entity';
@@ -61,11 +61,11 @@ export class FamilyNeed {
   updatedAt: Date;
 
   // Relationships
-  @ManyToOne(() => BeneficiaryFamily, (family) => family.needs, {
+  @ManyToOne(() => Family, (family) => family.needs, {
     onDelete: 'RESTRICT',
   })
   @JoinColumn({ name: 'family_id' })
-  family: BeneficiaryFamily;
+  family: Family;
 
   @ManyToOne(() => Child, { onDelete: 'RESTRICT', nullable: true })
   @JoinColumn({ name: 'child_id' })

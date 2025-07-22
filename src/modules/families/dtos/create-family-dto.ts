@@ -12,7 +12,7 @@ import {
 import { Expose, Transform } from 'class-transformer';
 import { StrictBoolean } from '../../../common/decorators/strict-boolean.decorator';
 
-export class CreateBeneficiaryFamilyDto {
+export class CreateFamilyDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(64)

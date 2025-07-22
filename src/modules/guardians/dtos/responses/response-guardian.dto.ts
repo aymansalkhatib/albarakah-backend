@@ -1,5 +1,5 @@
-import { BeneficiaryFamilyResponseDto } from '@app/modules/beneficiary-families/dto/beneficiary-family-response.dto';
-import { FamilyRelationType } from '@app/modules/beneficiary-families/enums/family-relation-type.enum';
+import { FamilyResponseDto } from '@app/modules/families/dtos/family-response.dto';
+import { FamilyRelationType } from '@app/modules/families/enums/family-relation-type.enum';
 import { Person } from '@app/modules/persons/entities/person.entity';
 import { Exclude, Expose, Type } from 'class-transformer';
 
@@ -28,6 +28,6 @@ export class ResponseGuardianDto {
   person?: Person;
 
   @Expose()
-  @Type(() => BeneficiaryFamilyResponseDto)
-  family?: BeneficiaryFamilyResponseDto;
+  @Type(() => FamilyResponseDto)
+  family?: FamilyResponseDto;
 }

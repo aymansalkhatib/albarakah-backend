@@ -1,14 +1,14 @@
 import { Expose, Type } from 'class-transformer';
 import { CreateFamilyIncomeDto } from './create-family-income.dto';
-import { BeneficiaryFamilyResponseDto } from './beneficiary-family-response.dto';
+import { FamilyResponseDto as FamilyResponseDto } from './family-response.dto';
 
 export class FamilyIncomeResponseDto extends CreateFamilyIncomeDto {
   @Expose()
   id: number;
 
   @Expose()
-  @Type(() => BeneficiaryFamilyResponseDto)
-  family: BeneficiaryFamilyResponseDto;
+  @Type(() => FamilyResponseDto)
+  family: FamilyResponseDto;
 
   @Expose()
   createdAt: Date;

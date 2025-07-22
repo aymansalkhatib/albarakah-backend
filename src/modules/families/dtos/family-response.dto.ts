@@ -1,8 +1,8 @@
-import { CreateBeneficiaryFamilyDto } from './create-beneficiary-family-dto';
+import { CreateFamilyDto } from './create-family-dto';
 import { Expose } from 'class-transformer';
 import { IsDateString, IsUUID } from 'class-validator';
 
-export class BeneficiaryFamilyResponseDto {
+export class FamilyResponseDto {
   @Expose()
   id: number;
 

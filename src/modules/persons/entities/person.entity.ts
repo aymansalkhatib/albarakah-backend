@@ -12,7 +12,7 @@ import { DropdownOption } from '../../dropdowns/entities/dropdown-option.entity'
 import { GenderType } from '../enums/gender-type.enum';
 import { ClothingSize } from '../enums/clothing-size.enum';
 import { Guardian } from '../../guardians/entities/guardian.entity';
-import { FamilyMember } from '../../beneficiary-families/entities/family-members.entity';
+import { FamilyMember } from '../../families/entities/family-members.entity';
 import { Employee } from '../../employees/entities/employee.entity';
 import { Supporter } from '../../supporters/entities/supporters.entity';
 import { Child } from '../../children/entities/children.entity';

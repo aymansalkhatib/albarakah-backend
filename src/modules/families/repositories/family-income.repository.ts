@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Between, Repository } from 'typeorm';
-import { FamilyIncome } from './entities/family-income.entity';
-import { CreateFamilyIncomeDto } from './dto/create-family-income.dto';
+import { CreateFamilyIncomeDto } from '../dtos/create-family-income.dto';
+import { FamilyIncome } from '../entities/family-income.entity';
 
 @Injectable()
 export class FamilyIncomeRepository extends Repository<FamilyIncome> {

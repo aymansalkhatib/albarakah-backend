@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 import { Supporter } from './supporters.entity';
 import { Person } from '../../persons/entities/person.entity';
-import { BeneficiaryFamily } from '../../beneficiary-families/entities/beneficiary-families.entity';
+import { Family } from '../../families/entities/families.entity';
 import { SponsorshipStatus } from '../enums/sponsorship-status.enum';
 
 @Entity('supporter_child_sponsorships')
@@ -67,7 +67,7 @@ export class SupporterChildSponsorship {
   @JoinColumn({ name: 'person_id' })
   person: Person;
 
-  @ManyToOne(() => BeneficiaryFamily, { onDelete: 'RESTRICT', nullable: true })
+  @ManyToOne(() => Family, { onDelete: 'RESTRICT', nullable: true })
   @JoinColumn({ name: 'family_id' })
-  family?: BeneficiaryFamily;
+  family?: Family;
 }

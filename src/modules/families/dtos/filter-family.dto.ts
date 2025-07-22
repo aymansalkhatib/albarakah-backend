@@ -15,7 +15,7 @@ import { ValidateMinMaxPairs } from '../../../common/decorators/validate-min-max
 import { IsAfterDate } from '../../../common/decorators/is-after-date.decorator';
 
 @ValidateMinMaxPairs()
-export class FilterBeneficiaryFamilyDto {
+export class FilterFamilyDto {
   @IsOptional()
   @IsString()
   @MaxLength(64)

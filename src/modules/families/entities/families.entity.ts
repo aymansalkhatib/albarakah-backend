@@ -24,12 +24,8 @@ import { Visit } from '../../visits/entities/visit.entity';
 import { Child } from '../../children/entities/children.entity';
 
 @Index(['familyBookNumber'], { unique: true })
-@Index(['familyName'])
-@Index(['registrationDate'])
-@Index(['isDisplaced'])
-@Index(['isExtremelyPoor'])
-@Entity('beneficiary_families')
-export class BeneficiaryFamily {
+@Entity('family')
+export class Family {
   @PrimaryGeneratedColumn()
   id: number;
 

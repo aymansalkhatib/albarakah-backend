@@ -1,5 +1,5 @@
-import { BeneficiaryFamily } from '../../beneficiary-families/entities/beneficiary-families.entity';
-import { FamilyRelationType } from '../../beneficiary-families/enums/family-relation-type.enum';
+import { Family } from '../../families/entities/families.entity';
+import { FamilyRelationType } from '../../families/enums/family-relation-type.enum';
 import { Person } from '../../persons/entities/person.entity';
 import {
   Column,
@@ -41,6 +41,6 @@ export class Guardian {
   @JoinColumn({ name: 'person_id' })
   person: Person;
 
-  @OneToOne(() => BeneficiaryFamily, (family) => family.guardian)
-  family: BeneficiaryFamily;
+  @OneToOne(() => Family, (family) => family.guardian)
+  family: Family;
 }

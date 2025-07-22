@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { FamilyMember } from '../../beneficiary-families/entities/family-members.entity';
+import { FamilyMember } from '../../families/entities/family-members.entity';
 import { CourseBatch } from './course-batch.entity';
 import { AttendanceStatus } from '../enums/attendance-status.enum';
 

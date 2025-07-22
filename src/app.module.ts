@@ -1,4 +1,4 @@
-import { BeneficiaryFamiliesModule } from './modules/beneficiary-families/beneficiary-families.module';
+import { BeneficiaryFamiliesModule } from './modules/families/beneficiary-families.module';
 import { ClassSerializerInterceptor, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';

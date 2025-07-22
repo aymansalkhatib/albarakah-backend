@@ -1,15 +1,15 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { FamilyMemberRepository } from './family-member.repository';
-import { CreateFamilyMemberDto } from './dto/create-family-member.dto';
-import { FamilyMember } from './entities/family-members.entity';
-import { FamilyRelationType } from './enums/family-relation-type.enum';
-import { BeneficiaryFamiliesService } from './beneficiary-families.service';
+import { CreateFamilyMemberDto } from '../dtos/create-family-member.dto';
+import { FamilyMember } from '../entities/family-members.entity';
+import { FamilyRelationType } from '../enums/family-relation-type.enum';
+import { FamiliesService } from './beneficiary-families.service';
+import { FamilyMemberRepository } from '../repositories/family-member.repository';
 
 @Injectable()
 export class FamilyMembersService {
   constructor(
     private readonly familyMemberRepository: FamilyMemberRepository,
-    private readonly beneficiaryFamiliesService: BeneficiaryFamiliesService,
+    private readonly beneficiaryFamiliesService: FamiliesService,
   ) {}
 
   async findAll(): Promise<FamilyMember[]> {

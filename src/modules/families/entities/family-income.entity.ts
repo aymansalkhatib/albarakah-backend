@@ -8,12 +8,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { BeneficiaryFamily } from './beneficiary-families.entity';
+import { Family } from './families.entity';
 
 @Entity('family_income')
-@Index(['familyId'])
-@Index(['incomeSource'])
-@Index(['createdAt'])
 export class FamilyIncome {
   @PrimaryGeneratedColumn()
   id: number;
@@ -37,9 +34,9 @@ export class FamilyIncome {
   updatedAt: Date;
 
   // Relationships
-  @ManyToOne(() => BeneficiaryFamily, (family) => family.income, {
+  @ManyToOne(() => Family, (family) => family.income, {
     onDelete: 'RESTRICT',
   })
   @JoinColumn({ name: 'family_id' })
-  family: BeneficiaryFamily;
+  family: Family;
 }

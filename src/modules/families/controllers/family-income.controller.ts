@@ -1,3 +1,4 @@
+import { toDto } from '@app/common/helpers/to-dto';
 import {
   Body,
   Controller,
@@ -9,10 +10,9 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { FamilyIncomeService } from './family-income.service';
-import { CreateFamilyIncomeDto } from './dto/create-family-income.dto';
-import { toDto } from '../../common/helpers/to-dto';
-import { FamilyIncomeResponseDto } from './dto/family-income-response.dto';
+import { CreateFamilyIncomeDto } from '../dtos/create-family-income.dto';
+import { FamilyIncomeResponseDto } from '../dtos/family-income-response.dto';
+import { FamilyIncomeService } from '../services/family-income.service';
 
 @Controller('family-income')
 export class FamilyIncomeController {

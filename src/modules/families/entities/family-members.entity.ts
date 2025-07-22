@@ -11,15 +11,12 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { FamilyRelationType } from '../enums/family-relation-type.enum';
-import { BeneficiaryFamily } from './beneficiary-families.entity';
+import { Family } from './families.entity';
 import { PersonCourseBatch } from '../../training-courses/entities/person-course-batch.entity';
 import { CallLog } from '@app/modules/call-logs/entities/call-log.entity';
 
 @Entity('family_members')
 @Index(['familyId', 'personId', 'relationType'], { unique: true })
-@Index(['familyId', 'relationType'])
-@Index(['personId'])
-@Index(['relationType'])
 export class FamilyMember {
   @PrimaryGeneratedColumn()
   id: number;
@@ -48,9 +45,9 @@ export class FamilyMember {
   @JoinColumn({ name: 'person_id' })
   person: Person;
 
-  @ManyToOne(() => BeneficiaryFamily, (family) => family.members, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Family, (family) => family.members, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'family_id' })
-  family: BeneficiaryFamily;
+  family: Family;
 
   @OneToMany(() => PersonCourseBatch, (courseBatch) => courseBatch.familyMember, {
     cascade: ['insert', 'update'],
