@@ -69,10 +69,6 @@ export class FamilyIncomeRepository extends Repository<FamilyIncome> {
   }
 
   async deleteFamilyIncome(id: number): Promise<void> {
-    await this.softDelete(id);
-  }
-
-  async forceDeleteFamilyIncome(id: number): Promise<void> {
     await this.delete(id);
   }
 

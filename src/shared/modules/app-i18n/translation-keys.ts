@@ -151,6 +151,10 @@ interface TrainingcoursesPersoncoursebatchesErrorsAlreadyenrolledParams {
   courseBatchId: string | number;
 }
 
+interface FamilyincomeErrorsNotfoundParams {
+  id: string | number;
+}
+
 const TranslationKeys = {
   'call-logs.errors.not_found': 'call-logs.errors.not_found',
   'call-logs.errors.recipient_required': 'call-logs.errors.recipient_required',
@@ -199,6 +203,7 @@ const TranslationKeys = {
   'persons.errors.same_father_mother': 'persons.errors.same_father_mother',
   'persons.errors.self_father': 'persons.errors.self_father',
   'persons.errors.self_mother': 'persons.errors.self_mother',
+  'family-income.errors.not_found': 'family-income.errors.not_found',
   'persons.success.deleted': 'persons.success.deleted',
   'persons.validation.birth_date_max': 'persons.validation.birth_date_max',
   'persons.validation.birth_date_min': 'persons.validation.birth_date_min',
@@ -281,6 +286,7 @@ export interface TranslationInterpolations {
   'persons.errors.same_father_mother': NoParams;
   'persons.errors.self_father': NoParams;
   'persons.errors.self_mother': NoParams;
+  'family-income.errors.not_found': FamilyincomeErrorsNotfoundParams;
   'persons.success.deleted': PersonsSuccessDeletedParams;
   'persons.validation.birth_date_max': NoParams;
   'persons.validation.birth_date_min': NoParams;
