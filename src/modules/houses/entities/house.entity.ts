@@ -4,6 +4,7 @@ import {
   Entity,
   Index,
   JoinColumn,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -40,9 +41,8 @@ export class House {
 
   // Relationships
 
-  @OneToOne(() => Family, (family) => family.house, {
-    onDelete: 'RESTRICT',
-    nullable: false,
+  @ManyToOne(() => Family, (family) => family.houses, {
+    onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'family_id' })
   family: Family;

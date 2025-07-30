@@ -41,9 +41,6 @@ export class Family {
   @Column({ name: 'landline_phone', type: 'varchar', length: 10, nullable: true })
   landlinePhone?: string;
 
-  @Column({ name: 'phone', type: 'varchar', length: 10, nullable: true })
-  phone?: string;
-
   // Status Flags
   @Column({ name: 'is_displaced', default: false })
   isDisplaced: boolean;
@@ -88,27 +85,15 @@ export class Family {
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
-  // Foreign Keys
-  @Column({ name: 'guardian_id', type: 'int', nullable: true })
-  guardianId?: number;
-
-  @Column({ name: 'house_id', type: 'int', nullable: true })
-  houseId?: number;
-
   // === RELATIONSHIPS ===
 
   // One-to-One Relationships
-  @OneToOne(() => Guardian, (guardian) => guardian.family, {
-    onDelete: 'SET NULL',
-  })
+  @OneToOne(() => Guardian, (guardian) => guardian.family)
   @JoinColumn({ name: 'guardian_id' })
   guardian?: Guardian;
 
-  @OneToOne(() => House, (house) => house.family, {
-    onDelete: 'SET NULL',
-  })
-  @JoinColumn({ name: 'house_id' })
-  house?: House;
+  @OneToMany(() => House, (house) => house.family)
+  houses: House[];
 
   @OneToOne(() => FamilyRegistrationForm, (form) => form.family, {
     onDelete: 'CASCADE',

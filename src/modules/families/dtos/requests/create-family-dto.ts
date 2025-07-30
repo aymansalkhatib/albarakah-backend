@@ -37,13 +37,6 @@ export class CreateFamilyDto {
   landlinePhone?: string;
 
   @IsOptional()
-  @IsString()
-  @MaxLength(10)
-  @Matches(/^[0-9]{10}$/, { message: 'Mobile phone must be exactly 10 digits' })
-  @Expose()
-  mobilePhone?: string;
-
-  @IsOptional()
   @StrictBoolean()
   @Expose()
   isDisplaced?: boolean;

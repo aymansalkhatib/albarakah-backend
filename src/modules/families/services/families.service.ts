@@ -14,18 +14,6 @@ export class FamiliesService {
     private readonly familyRepository: FamilyRepository,
   ) {}
 
-  async findAll(filter: FilterFamilyDto): Promise<Family[]> {
-    return this.familyRepository.findAll(filter);
-  }
-
-  async findOne(id: number): Promise<Family> {
-    const family = await this.familyRepository.findOneById(id);
-    if (!family) {
-      throw new NotFoundException('family not found');
-    }
-    return family;
-  }
-
   async create(createFamilyDto: CreateFamilyDto): Promise<Family> {
     if (createFamilyDto.familyBookNumber) {
       const existingFamily = await this.familyRepository.findOneByFamilyBookNumber(
@@ -36,6 +24,18 @@ export class FamiliesService {
       }
     }
     return this.familyRepository.createFamily(createFamilyDto);
+  }
+
+  async findAll(filter: FilterFamilyDto): Promise<Family[]> {
+    return this.familyRepository.findAll(filter);
+  }
+
+  async findOne(id: number): Promise<Family> {
+    const family = await this.familyRepository.findOneById(id);
+    if (!family) {
+      throw new NotFoundException('family not found');
+    }
+    return family;
   }
 
   async update(id: number, updateFamilyDto: UpdateFamilyDto): Promise<Family> {

@@ -39,6 +39,6 @@ export class Guardian {
   @JoinColumn({ name: 'person_id' })
   person: Person;
 
-  @OneToOne(() => Family, (family) => family.guardian)
+  @OneToOne(() => Family, (family) => family.guardian, { onDelete: 'CASCADE' })
   family: Family;
 }
