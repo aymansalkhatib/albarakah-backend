@@ -160,7 +160,7 @@ export class SupportersService {
   async findOne(id: number, { relations }: { relations?: string[] } = {}): Promise<Supporter> {
     const supporter = await this.supporterRepository.findOne({
       where: { id },
-      relations: relations || ['person'],
+      relations: relations,
     });
 
     if (!supporter) {

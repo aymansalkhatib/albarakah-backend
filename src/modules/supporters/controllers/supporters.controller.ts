@@ -44,7 +44,7 @@ export class SupportersController {
   @Protected(Permission.READ_SUPPORTER)
   @SerializeResponse(SupporterResponseDto)
   findOne(@Param('id', ParseIntPipe) id: number): Promise<SupporterResponseDto> {
-    return this.supportersService.findOne(id);
+    return this.supportersService.findOne(id, { relations: ['person'] });
   }
 
   @Patch(':id')
