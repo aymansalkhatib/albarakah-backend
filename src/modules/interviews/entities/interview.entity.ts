@@ -46,14 +46,14 @@ export class Interview {
   // Relationships
 
   @ManyToOne(() => Family, (family) => family.interviews, {
-    onDelete: 'RESTRICT',
+    onDelete: 'CASCADE',
     nullable: true,
   })
   @JoinColumn({ name: 'family_id' })
   family?: Family;
 
   @ManyToOne(() => Employee, {
-    onDelete: 'RESTRICT',
+    onDelete: 'SET NULL',
     nullable: true,
   })
   @JoinColumn({ name: 'interviewer_id' })

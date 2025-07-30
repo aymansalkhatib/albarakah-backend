@@ -58,7 +58,7 @@ export class FamiliesService {
     return await this.familyRepository.updateFamily(family, updateFamilyDto);
   }
 
-  async forceDelete(id: number): Promise<void> {
+  async delete(id: number): Promise<void> {
     const result = await this.familyRepository.forceDelete(id);
     if (!result.affected) {
       throw new NotFoundException('family not found');

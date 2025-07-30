@@ -51,13 +51,9 @@ export class Employee {
   })
   systemUser?: SystemUser;
 
-  @OneToMany(() => Interview, (interview) => interview.interviewer, {
-    cascade: true,
-  })
+  @OneToMany(() => Interview, (interview) => interview.interviewer)
   interviews: Interview[];
 
-  @OneToMany(() => CallLog, (callLog) => callLog.responsibleEmployee, {
-    cascade: true,
-  })
+  @OneToMany(() => CallLog, (callLog) => callLog.responsibleEmployee)
   callLogs: CallLog[];
 }

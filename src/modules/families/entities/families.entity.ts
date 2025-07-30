@@ -105,31 +105,24 @@ export class Family {
   guardian?: Guardian;
 
   @OneToOne(() => House, (house) => house.family, {
-    cascade: ['insert', 'update'],
     onDelete: 'SET NULL',
   })
   @JoinColumn({ name: 'house_id' })
   house?: House;
 
   @OneToOne(() => FamilyRegistrationForm, (form) => form.family, {
-    cascade: ['insert', 'update'],
+    onDelete: 'CASCADE',
   })
   registrationForm?: FamilyRegistrationForm;
 
   // One-to-Many Relationships
-  @OneToMany(() => FamilyMember, (member) => member.family, {
-    cascade: ['insert', 'update'],
-  })
+  @OneToMany(() => FamilyMember, (member) => member.family)
   members: FamilyMember[];
 
-  @OneToMany(() => FamilyNeed, (need) => need.family, {
-    cascade: ['insert', 'update'],
-  })
+  @OneToMany(() => FamilyNeed, (need) => need.family)
   needs: FamilyNeed[];
 
-  @OneToMany(() => FamilyIncome, (income) => income.family, {
-    cascade: ['insert', 'update'],
-  })
+  @OneToMany(() => FamilyIncome, (income) => income.family)
   income: FamilyIncome[];
 
   @OneToMany(() => ReceivedAssistance, (assistance) => assistance.family)
@@ -143,22 +136,4 @@ export class Family {
 
   @OneToMany(() => Visit, (visit) => visit.family)
   visits: Visit[];
-
-  // === COMPUTED PROPERTIES ===
-
-  get sponsoredChildrenCount(): number {
-    return this.members?.filter((member) => member.isChild && member.isSponsored).length || 0;
-  }
-
-  get totalChildrenCount(): number {
-    return this.members?.filter((member) => member.isChild).length || 0;
-  }
-
-  get parentsCount(): number {
-    return this.members?.filter((member) => member.isParent).length || 0;
-  }
-
-  get isSuspended(): boolean {
-    return !!this.familySuspensionDate;
-  }
 }

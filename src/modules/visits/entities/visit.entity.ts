@@ -56,7 +56,7 @@ export class Visit {
   // Relationships
 
   @ManyToOne(() => Family, (family) => family.visits, {
-    onDelete: 'RESTRICT',
+    onDelete: 'CASCADE',
     nullable: true,
   })
   @JoinColumn({ name: 'family_id' })

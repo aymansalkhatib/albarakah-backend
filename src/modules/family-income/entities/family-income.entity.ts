@@ -34,7 +34,7 @@ export class FamilyIncome {
 
   // Relationships
   @ManyToOne(() => Family, (family) => family.income, {
-    onDelete: 'RESTRICT',
+    onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'family_id' })
   family: Family;

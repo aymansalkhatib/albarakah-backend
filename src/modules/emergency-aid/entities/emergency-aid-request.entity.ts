@@ -70,7 +70,7 @@ export class EmergencyAidRequest {
 
   // Relationships
   @ManyToOne(() => Family, (family) => family.emergencyAidRequests, {
-    onDelete: 'RESTRICT',
+    onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'family_id' })
   family: Family;

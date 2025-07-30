@@ -56,13 +56,13 @@ export class ReceivedAssistance {
 
   // Relationships
   @ManyToOne(() => Family, (family) => family.receivedAssistance, {
-    onDelete: 'RESTRICT',
+    onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'family_id' })
   family: Family;
 
   @ManyToOne(() => FamilyMember, (familyMember) => familyMember.receivedAssistance, {
-    onDelete: 'RESTRICT',
+    onDelete: 'CASCADE',
     nullable: true,
   })
   @JoinColumn({ name: 'family_member_id' })
