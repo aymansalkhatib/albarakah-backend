@@ -120,13 +120,6 @@ export class CreateFamilyDto {
   // @IsOptional()
   // @IsArray()
   // @ValidateNested({ each: true })
-  // @Type(() => CreateChildDto)
-  // @Expose()
-  // children?: CreateChildDto[];
-
-  // @IsOptional()
-  // @IsArray()
-  // @ValidateNested({ each: true })
   // @Type(() => CreateFamilyNeedDto)
   // @Expose()
   // needs?: CreateFamilyNeedDto[];
