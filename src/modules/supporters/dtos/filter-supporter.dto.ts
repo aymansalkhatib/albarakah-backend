@@ -7,7 +7,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { IsAfterDate } from '../../../common/decorators/is-after-date.decorator';
+import { IsLessThanOrEqual } from '../../../common/decorators/is-less-than-or-equal.decorator';
 import { SupportType } from '../enums/support-type';
 import { FilterPersonDto } from '@app/modules/persons/dtos/queries/filter-person.dto';
 import { PaginationDto } from '@app/common/pagination/dto/pagination.dto';
@@ -23,7 +23,7 @@ export class FilterSupporterDto extends PaginationDto {
 
   @IsOptional()
   @IsDateString()
-  @IsAfterDate('supportStartDateFrom')
+  @IsLessThanOrEqual('supportStartDateFrom')
   supportStartDateTo?: string;
 
   @IsOptional()
@@ -32,7 +32,7 @@ export class FilterSupporterDto extends PaginationDto {
 
   @IsOptional()
   @IsDateString()
-  @IsAfterDate('supportEndDateFrom')
+  @IsLessThanOrEqual('supportEndDateFrom')
   supportEndDateTo?: string;
 
   @IsOptional()

@@ -14,9 +14,6 @@ export class FamilyResponseDto {
   landlinePhone?: string;
 
   @Expose()
-  mobilePhone?: string;
-
-  @Expose()
   isDisplaced?: boolean;
 
   @Expose()

@@ -1,5 +1,5 @@
 import {
-  IsDateString,
+  IsDate,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -10,7 +10,7 @@ import {
   Min,
 } from 'class-validator';
 import { Expose } from 'class-transformer';
-import { IsAfterDate } from '@app/common/decorators/is-after-date.decorator';
+import { IsLessThanOrEqual } from '@app/common/decorators/is-less-than-or-equal.decorator';
 import { StrictBoolean } from '@app/common/decorators/strict-boolean.decorator';
 import { ValidateMinMaxPairs } from '@app/common/decorators/validate-min-max-pairs-constraint';
 
@@ -38,13 +38,6 @@ export class FilterFamilyDto {
   landlinePhone?: string;
 
   @IsOptional()
-  @IsString()
-  @MaxLength(10)
-  @Matches(/^[0-9]{1,10}$/, { message: 'Mobile phone must be between 1 and 10 digits' })
-  @Expose()
-  mobilePhone?: string;
-
-  @IsOptional()
   @StrictBoolean()
   @Expose()
   isDisplaced?: boolean;
@@ -69,15 +62,16 @@ export class FilterFamilyDto {
   maxVoucherAmount?: number;
 
   @IsOptional()
-  @IsDateString()
+  @IsLessThanOrEqual('familySuspensionDateTo', {
+    message: 'Date from must be before or equal to date to',
+  })
   @Expose()
-  familySuspensionDateFrom?: string;
+  familySuspensionDateFrom?: Date;
 
   @IsOptional()
-  @IsDateString()
-  @IsAfterDate('familySuspensionDateFrom')
+  @IsDate()
   @Expose()
-  familySuspensionDateTo?: string;
+  familySuspensionDateTo?: Date;
 
   @IsOptional()
   @IsString()
@@ -119,24 +113,24 @@ export class FilterFamilyDto {
   maxIncomeFromBarakaAssociation?: number;
 
   @IsOptional()
-  @IsDateString()
+  @IsDate()
   @Expose()
-  registrationDateFrom?: string;
+  registrationDateFrom?: Date;
 
   @IsOptional()
-  @IsDateString()
+  @IsDate()
   @Expose()
-  registrationDateTo?: string;
+  registrationDateTo?: Date;
 
   @IsOptional()
-  @IsDateString()
+  @IsDate()
   @Expose()
-  lastAssessmentDateFrom?: string;
+  lastAssessmentDateFrom?: Date;
 
   @IsOptional()
-  @IsDateString()
+  @IsDate()
   @Expose()
-  lastAssessmentDateTo?: string;
+  lastAssessmentDateTo?: Date;
 
   @IsOptional()
   @IsString()

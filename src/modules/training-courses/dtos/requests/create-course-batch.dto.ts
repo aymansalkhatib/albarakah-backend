@@ -1,4 +1,4 @@
-import { IsAfterDate } from '@app/common/decorators/is-after-date.decorator';
+import { IsLessThanOrEqual } from '@app/common/decorators/is-less-than-or-equal.decorator';
 import { IsDate, IsInt, IsOptional, IsPositive, IsString, Length } from 'class-validator';
 
 export class CreateCourseBatchDto {
@@ -17,7 +17,7 @@ export class CreateCourseBatchDto {
 
   @IsOptional()
   @IsDate()
-  @IsAfterDate('startDate', {
+  @IsLessThanOrEqual('startDate', {
     message: 'endDate must be after startDate',
   })
   endDate?: Date;

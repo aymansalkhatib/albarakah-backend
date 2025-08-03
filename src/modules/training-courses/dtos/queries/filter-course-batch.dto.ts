@@ -1,7 +1,7 @@
 import { IsDateString, IsInt, IsOptional, IsPositive, IsString, Length } from 'class-validator';
 import { PaginationDto } from '@app/common/pagination/dto/pagination.dto';
 import { Transform } from 'class-transformer';
-import { IsAfterDate } from '@app/common/decorators/is-after-date.decorator';
+import { IsLessThanOrEqual } from '@app/common/decorators/is-less-than-or-equal.decorator';
 
 export class FilterCourseBatchDto extends PaginationDto {
   @IsOptional()
@@ -22,7 +22,7 @@ export class FilterCourseBatchDto extends PaginationDto {
 
   @IsOptional()
   @IsDateString()
-  @IsAfterDate('startDate', {
+  @IsLessThanOrEqual('startDate', {
     message: 'endDate must be after startDate',
   })
   endDate?: string;

@@ -1,7 +1,7 @@
 import { IsDateString, IsOptional, IsString, Length, MaxLength } from 'class-validator';
 import { Type } from 'class-transformer';
 import { FilterPersonDto } from '@app/modules/persons/dtos/queries/filter-person.dto';
-import { IsAfterDate } from '@app/common/decorators/is-after-date.decorator';
+import { IsLessThanOrEqual } from '@app/common/decorators/is-less-than-or-equal.decorator';
 import { PaginationDto } from '@app/common/pagination/dto/pagination.dto';
 
 export class FilterEmployeeDto extends PaginationDto {
@@ -21,7 +21,7 @@ export class FilterEmployeeDto extends PaginationDto {
 
   @IsOptional()
   @IsDateString()
-  @IsAfterDate('hireDateFrom')
+  @IsLessThanOrEqual('hireDateFrom')
   hireDateTo?: string;
 
   @IsOptional()
@@ -30,7 +30,7 @@ export class FilterEmployeeDto extends PaginationDto {
 
   @IsOptional()
   @IsDateString()
-  @IsAfterDate('terminationDateFrom')
+  @IsLessThanOrEqual('terminationDateFrom')
   terminationDateTo?: string;
 
   @IsOptional()

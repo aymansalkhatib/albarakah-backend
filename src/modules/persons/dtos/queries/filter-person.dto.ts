@@ -11,7 +11,7 @@ import {
   MinDate,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { IsAfterDate } from '@app/common/decorators/is-after-date.decorator';
+import { IsLessThanOrEqual } from '@app/common/decorators/is-less-than-or-equal.decorator';
 import { StrictBoolean } from '@app/common/decorators/strict-boolean.decorator';
 import { ClothingSize } from '../../enums/clothing-size.enum';
 import { GenderType } from '../../enums/gender-type.enum';
@@ -139,6 +139,6 @@ export class FilterPersonDto extends PaginationDto {
   @IsDate()
   @MinDate(new Date('1900-01-01'), { message: 'Birth date must be after 1900-01-01' })
   @MaxDate(new Date(), { message: 'Birth date must be before today' })
-  @IsAfterDate('birthDateFrom')
+  @IsLessThanOrEqual('birthDateFrom')
   birthDateTo?: Date;
 }
