@@ -20,6 +20,7 @@ import { ParseQueryMiddleware } from './common/middlewares/parse-query.middlewar
 import { CallLogsModule } from './modules/call-logs/call-logs.module';
 import { FamiliesIncomeModule } from './modules/family-income/family-income.module';
 import { FamilyMembersModule } from './modules/family-members/family-members.module';
+import { EmergencyAidModule } from './modules/emergency-aid/emergency-aid.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { FamilyMembersModule } from './modules/family-members/family-members.mod
     TrainingCoursesModule,
     GuardiansModule,
     CallLogsModule,
+    EmergencyAidModule,
   ],
 
   controllers: [AppController],
