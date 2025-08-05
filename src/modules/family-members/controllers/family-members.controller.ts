@@ -27,6 +27,7 @@ export class FamilyMembersController {
   constructor(private readonly familyMembersService: FamilyMembersService) {}
 
   @Get()
+  @Protected(Permission.READ_FAMILY_MEMBER)
   async findAll(
     @Query() query: FamilyMemberFilterDto,
   ): Promise<PaginationResponseDto<FamilyMemberResponseDto>> {
@@ -34,9 +35,10 @@ export class FamilyMembersController {
   }
 
   @Get(':id')
+  @Protected(Permission.READ_FAMILY_MEMBER)
+  @SerializeResponse(FamilyMemberResponseDto)
   async findOne(@Param('id', ParseIntPipe) id: number): Promise<FamilyMemberResponseDto> {
-    const familyMember = await this.familyMembersService.findOne(id);
-    return toDto(FamilyMemberResponseDto, familyMember);
+    return await this.familyMembersService.findOne(id);
   }
 
   @Post()
@@ -59,7 +61,7 @@ export class FamilyMembersController {
   }
 
   @Delete(':id')
-  @Protected(Permission.CREATE_FAMILY_MEMBER)
+  @Protected(Permission.DELETE_FAMILY_MEMBER)
   @HttpCode(HttpStatus.NO_CONTENT)
   async delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
     await this.familyMembersService.delete(id);
