@@ -25,10 +25,10 @@ export class FamilyMemberFilterDto extends PaginationDto {
   relationType?: FamilyRelationType;
 
   @IsOptional()
-  @Type(() => FilterPersonDto)
-  person?: FilterPersonDto;
-
-  @IsOptional()
   @StrictBoolean()
   isSponsored?: boolean;
+
+  @IsOptional()
+  @Type(() => FilterPersonDto)
+  person?: FilterPersonDto;
 }
