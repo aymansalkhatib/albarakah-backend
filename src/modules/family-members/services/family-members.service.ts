@@ -41,7 +41,10 @@ export class FamilyMembersService {
         }
         person = foundPerson;
       } else {
-        person = await this.personsService.create(createFamilyMemberDto.person);
+        person = await this.personsService.createWithTransaction(
+          createFamilyMemberDto.person,
+          entityManager,
+        );
       }
 
       if (createFamilyMemberDto.relationType === FamilyRelationType.FATHER) {

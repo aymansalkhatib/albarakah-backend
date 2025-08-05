@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, EntityManager } from 'typeorm';
 import { Person } from '../entities/person.entity';
 import { UpdatePersonDto } from '../dtos/requests/update-person.dto';
 import { validateDropdownFields, validatePersonUniqueness } from '../utils/person.validation';
@@ -22,19 +22,37 @@ export class PersonsService {
     private readonly dropdownService: DropdownService,
   ) {}
 
-  async create(createPersonDto: CreatePersonDto): Promise<Person> {
-    await validatePersonUniqueness(
-      this.translateHelper,
-      this.personRepository,
-      createPersonDto,
-      undefined,
-    );
+  async create(createPersonDto: CreatePersonDto, entityManager?: EntityManager): Promise<Person> {
+    const repository = entityManager ? entityManager.getRepository(Person) : this.personRepository;
+
+    await validatePersonUniqueness(this.translateHelper, repository, createPersonDto, undefined);
 
     await validateDropdownFields(createPersonDto, this.dropdownService);
 
-    const person = this.personRepository.create(createPersonDto);
-    const savedPerson = await this.personRepository.save(person);
-    return this.findOne(savedPerson.id);
+    const person = repository.create(createPersonDto);
+    const savedPerson = await repository.save(person);
+    return savedPerson;
+  }
+
+  async createWithTransaction(
+    createPersonDto: CreatePersonDto,
+    entityManager: EntityManager,
+  ): Promise<Person> {
+    return this.create(createPersonDto, entityManager);
+  }
+
+  async createManyWithTransaction(
+    createPersonDtos: CreatePersonDto[],
+    entityManager: EntityManager,
+  ): Promise<Person[]> {
+    const createdPersons: Person[] = [];
+
+    for (const createPersonDto of createPersonDtos) {
+      const person = await this.create(createPersonDto, entityManager);
+      createdPersons.push(person);
+    }
+
+    return createdPersons;
   }
 
   async update(id: number, updatePersonDto: UpdatePersonDto): Promise<Person> {
