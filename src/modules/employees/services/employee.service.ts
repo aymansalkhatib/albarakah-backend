@@ -137,19 +137,19 @@ export class EmployeesService {
     // Add person filters
     if (filterDto.person) {
       if (filterDto.person.firstName) {
-        queryBuilder.andWhere('person.firstName LIKE :firstName', {
+        queryBuilder.andWhere('person.firstName ILIKE :firstName', {
           firstName: `%${filterDto.person.firstName}%`,
         });
       }
 
       if (filterDto.person.lastName) {
-        queryBuilder.andWhere('person.lastName LIKE :lastName', {
+        queryBuilder.andWhere('person.lastName ILIKE :lastName', {
           lastName: `%${filterDto.person.lastName}%`,
         });
       }
 
       if (filterDto.person.nationalId) {
-        queryBuilder.andWhere('person.nationalId LIKE :nationalId', {
+        queryBuilder.andWhere('person.nationalId ILIKE :nationalId', {
           nationalId: `%${filterDto.person.nationalId}%`,
         });
       }
@@ -166,7 +166,7 @@ export class EmployeesService {
         });
       }
       if (filterDto.person.nationality) {
-        queryBuilder.andWhere('person.nationality ILIKE :nationality', {
+        queryBuilder.andWhere('person.nationality LIKE :nationality', {
           nationality: `%${filterDto.person.nationality}%`,
         });
       }
@@ -178,7 +178,7 @@ export class EmployeesService {
       }
 
       if (filterDto.person.email) {
-        queryBuilder.andWhere('person.email LIKE :email', {
+        queryBuilder.andWhere('person.email ILIKE :email', {
           email: `%${filterDto.person.email}%`,
         });
       }

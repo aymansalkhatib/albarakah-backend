@@ -11,7 +11,5 @@ export enum FamilyRelationType {
   MATERNAL_GRANDFATHER = 'Maternal Grandfather',
   MATERNAL_GRANDMOTHER = 'Maternal Grandmother',
   PATERNAL_GRANDMOTHER = 'Paternal Grandmother',
-  SPOUSE = 'Spouse',
-  SIBLING = 'Sibling',
   OTHER = 'Other',
 }

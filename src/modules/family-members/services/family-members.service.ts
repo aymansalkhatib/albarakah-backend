@@ -1,126 +1,253 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { FamilyMember } from '../entities/family-members.entity';
 import { FamilyRelationType } from '../enums/family-relation-type.enum';
-import { FamilyMemberRepository } from '../repositories/family-member.repository';
 import { CreateFamilyMemberDto } from '../dtos/requests/create-family-member.dto';
 import { FamiliesService } from '@app/modules/families/services/families.service';
+import { paginate } from '@app/common/pagination/paginate.service';
+import { PaginationDto } from '@app/common/pagination/dto/pagination.dto';
+import { FamilyMemberResponseDto } from '../dtos/responses/family-member-response.dto';
+import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
+import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { PersonsService } from '@app/modules/persons/services/persons.service';
+import { GenderType } from '@app/modules/persons/enums/gender-type.enum';
+import { FamilyMemberFilterDto } from '../dtos/queries/family-member-filter.dto';
+import { Person } from '@app/modules/persons/entities/person.entity';
+import { PersonRelation } from '@app/modules/persons/enums/person-relation.enum';
+import { UpdateFamilyMemberDto } from '../dtos/requests/update-family-member.dto';
 
 @Injectable()
 export class FamilyMembersService {
   constructor(
-    private readonly familyMemberRepository: FamilyMemberRepository,
+    @InjectRepository(FamilyMember)
+    private readonly familyMemberRepository: Repository<FamilyMember>,
     private readonly familiesService: FamiliesService,
+    private readonly personsService: PersonsService,
   ) {}
 
-  async findAll(): Promise<FamilyMember[]> {
-    return this.familyMemberRepository.find({
-      relations: ['person', 'family'],
-    });
+  async create(createFamilyMemberDto: CreateFamilyMemberDto): Promise<FamilyMember> {
+    await this.familiesService.findOne(createFamilyMemberDto.familyId);
+
+    let person: Person;
+
+    if (createFamilyMemberDto.personId) {
+      const person = await this.personsService.findOne(createFamilyMemberDto.personId, {
+        relations: ['familyMember'],
+      });
+
+      if (person.familyMember) {
+        throw new ConflictException('Person is already a member of a family');
+      }
+    } else {
+      person = await this.personsService.create(createFamilyMemberDto.person);
+    }
+
+    if (createFamilyMemberDto.relationType === FamilyRelationType.FATHER) {
+      const member = await this.familyMemberRepository.findOne({
+        where: {
+          familyId: createFamilyMemberDto.familyId,
+          relationType: FamilyRelationType.FATHER,
+        },
+      });
+      if (member) {
+        throw new ConflictException('The family already has a father');
+      }
+    }
+
+    await this.validateGenderRelationType(person.gender, createFamilyMemberDto.relationType);
+
+    if (createFamilyMemberDto.isSponsored) {
+      const relation = createFamilyMemberDto.relationType;
+      if (relation !== FamilyRelationType.DAUGHTER && relation !== FamilyRelationType.SON) {
+        throw new ConflictException('Only daughters and sons can be sponsored');
+      }
+    }
+
+    const entity = this.familyMemberRepository.create(createFamilyMemberDto);
+
+    return await this.familyMemberRepository.save(entity);
   }
 
-  async findOne(id: number): Promise<FamilyMember> {
-    const familyMember = await this.familyMemberRepository.findOneById(id);
+  async findAll(
+    filterDto: FamilyMemberFilterDto,
+  ): Promise<PaginationResponseDto<FamilyMemberResponseDto>> {
+    const qb = this.familyMemberRepository
+      .createQueryBuilder('family_member')
+      .leftJoinAndSelect('family_member.person', 'person')
+      .leftJoinAndSelect('family_member.family', 'family');
+
+    if (filterDto.familyId) {
+      qb.andWhere('family_member.familyId = :familyId', { familyId: filterDto.familyId });
+    }
+    if (filterDto.personId) {
+      qb.andWhere('family_member.personId = :personId', { personId: filterDto.personId });
+    }
+    if (filterDto.relationType) {
+      qb.andWhere('family_member.relationType = :relationType', {
+        relationType: filterDto.relationType,
+      });
+    }
+    if (filterDto.isSponsored !== undefined) {
+      qb.andWhere('family_member.isSponsored = :isSponsored', {
+        isSponsored: filterDto.isSponsored,
+      });
+    }
+    if (filterDto.person) {
+      if (filterDto.person.firstName) {
+        qb.andWhere('person.firstName ILIKE :firstName', {
+          firstName: `%${filterDto.person.firstName}%`,
+        });
+      }
+
+      if (filterDto.person.lastName) {
+        qb.andWhere('person.lastName ILIKE :lastName', {
+          lastName: `%${filterDto.person.lastName}%`,
+        });
+      }
+
+      if (filterDto.person.nationalId) {
+        qb.andWhere('person.nationalId LIKE :nationalId', {
+          nationalId: `%${filterDto.person.nationalId}%`,
+        });
+      }
+
+      if (filterDto.person.isPalestinian !== undefined) {
+        qb.andWhere('person.isPalestinian = :isPalestinian', {
+          isPalestinian: filterDto.person.isPalestinian,
+        });
+      }
+
+      if (filterDto.person.gender) {
+        qb.andWhere('person.gender = :gender', {
+          gender: filterDto.person.gender,
+        });
+      }
+      if (filterDto.person.nationality) {
+        qb.andWhere('person.nationality LIKE :nationality', {
+          nationality: `%${filterDto.person.nationality}%`,
+        });
+      }
+
+      if (filterDto.person.phone) {
+        qb.andWhere('person.phone LIKE :phone', {
+          phone: `%${filterDto.person.phone}%`,
+        });
+      }
+
+      if (filterDto.person.email) {
+        qb.andWhere('person.email LIKE :email', {
+          email: `%${filterDto.person.email}%`,
+        });
+      }
+
+      if (filterDto.person.birthDateFrom && filterDto.person.birthDateTo) {
+        qb.andWhere('person.birthDate BETWEEN :birthDateFrom AND :birthDateTo', {
+          birthDateFrom: filterDto.person.birthDateFrom,
+          birthDateTo: filterDto.person.birthDateTo,
+        });
+      } else if (filterDto.person.birthDateFrom) {
+        qb.andWhere('person.birthDate >= :birthDateFrom', {
+          birthDateFrom: filterDto.person.birthDateFrom,
+        });
+      } else if (filterDto.person.birthDateTo) {
+        qb.andWhere('person.birthDate <= :birthDateTo', {
+          birthDateTo: filterDto.person.birthDateTo,
+        });
+      }
+    }
+
+    return paginate(qb, filterDto, FamilyMemberResponseDto);
+  }
+
+  async findOne(id: number, options: FindOneOptions<FamilyMember> = {}): Promise<FamilyMember> {
+    const familyMember = await this.familyMemberRepository.findOne({
+      where: { id },
+      ...options,
+    });
     if (!familyMember) {
       throw new NotFoundException('Family member not found');
     }
     return familyMember;
   }
 
-  async findByFamilyId(familyId: number): Promise<FamilyMember[]> {
-    await this.validateFamilyExists(familyId);
-    return this.familyMemberRepository.findByFamilyId(familyId);
-  }
+  async update(id: number, updateData: UpdateFamilyMemberDto): Promise<FamilyMember> {
+    const familyMember = await this.findOne(id, { relations: ['person'] });
 
-  async findByPersonId(personId: number): Promise<FamilyMember[]> {
-    return this.familyMemberRepository.findByPersonId(personId);
-  }
-
-  async create(createFamilyMemberDto: CreateFamilyMemberDto): Promise<FamilyMember> {
-    await this.validateFamilyExists(createFamilyMemberDto.familyId);
-    await this.validateUniquePersonInFamily(
-      createFamilyMemberDto.personId,
-      createFamilyMemberDto.familyId,
-    );
-    await this.validateParentCount(createFamilyMemberDto);
-
-    return this.familyMemberRepository.createFamilyMember(createFamilyMemberDto);
-  }
-
-  async update(id: number, updateData: Partial<CreateFamilyMemberDto>): Promise<FamilyMember> {
-    const familyMember = await this.findOne(id);
-
-    if (updateData.familyId) {
-      await this.validateFamilyExists(updateData.familyId);
-    }
-
-    if (updateData.personId) {
-      await this.validateUniquePersonInFamily(
-        updateData.personId,
-        updateData.familyId || familyMember.familyId,
-      );
-    }
-
-    if (updateData.relationType) {
-      await this.validateParentCount({
-        ...familyMember,
-        ...updateData,
+    // new relationType is Father => check if have already father
+    if (
+      updateData.relationType === FamilyRelationType.FATHER &&
+      familyMember.relationType != updateData.relationType
+    ) {
+      const existingFather = await this.familyMemberRepository.exists({
+        where: {
+          familyId: familyMember.familyId,
+          relationType: FamilyRelationType.FATHER,
+        },
       });
+      if (existingFather) {
+        throw new ConflictException('The family already has a father');
+      }
     }
 
-    return this.familyMemberRepository.updateFamilyMember(id, updateData);
+    // check if relationType match gender
+    const relationType = updateData.relationType ?? familyMember.relationType;
+    const gender = updateData?.person?.gender ?? familyMember?.person?.gender;
+    const isSponsored = updateData?.isSponsored ?? familyMember?.isSponsored;
+
+    await this.validateGenderRelationType(gender, relationType);
+
+    //
+    if (isSponsored) {
+      const relation = updateData.relationType;
+      if (relation !== FamilyRelationType.DAUGHTER && relation !== FamilyRelationType.SON) {
+        throw new ConflictException('Only daughters and sons can be sponsored');
+      }
+    }
+
+    if (updateData.person) {
+      familyMember.person = await this.personsService.update(
+        familyMember.person.id,
+        updateData.person,
+      );
+      delete updateData.person;
+    }
+
+    this.familyMemberRepository.merge(familyMember, updateData);
+    return this.familyMemberRepository.save(familyMember);
   }
 
   async delete(id: number): Promise<void> {
     const familyMember = await this.findOne(id);
-    await this.familyMemberRepository.deleteFamilyMember(id);
+    await this.familyMemberRepository.delete(id);
+    await this.personsService.deleteIf(familyMember.personId, PersonRelation.FAMILY_MEMBER);
   }
 
-  async forceDelete(id: number): Promise<void> {
-    const familyMember = await this.findOne(id);
-    await this.familyMemberRepository.forceDeleteFamilyMember(id);
-  }
+  // private methods
 
-  async findParentsByFamilyId(familyId: number): Promise<FamilyMember[]> {
-    await this.validateFamilyExists(familyId);
-    return this.familyMemberRepository.findParentsByFamilyId(familyId);
-  }
+  private async validateGenderRelationType(
+    gender: GenderType,
+    relationType: FamilyRelationType,
+  ): Promise<void> {
+    const expectedGenderByRelation: Record<FamilyRelationType, GenderType | undefined> = {
+      [FamilyRelationType.FATHER]: GenderType.MALE,
+      [FamilyRelationType.MOTHER]: GenderType.FEMALE,
+      [FamilyRelationType.SON]: GenderType.MALE,
+      [FamilyRelationType.DAUGHTER]: GenderType.FEMALE,
+      [FamilyRelationType.PATERNAL_UNCLE]: GenderType.MALE,
+      [FamilyRelationType.PATERNAL_AUNT]: GenderType.FEMALE,
+      [FamilyRelationType.MATERNAL_UNCLE]: GenderType.MALE,
+      [FamilyRelationType.MATERNAL_AUNT]: GenderType.FEMALE,
+      [FamilyRelationType.PATERNAL_GRANDFATHER]: GenderType.MALE,
+      [FamilyRelationType.MATERNAL_GRANDFATHER]: GenderType.MALE,
+      [FamilyRelationType.PATERNAL_GRANDMOTHER]: GenderType.FEMALE,
+      [FamilyRelationType.MATERNAL_GRANDMOTHER]: GenderType.FEMALE,
+      [FamilyRelationType.OTHER]: undefined,
+    };
 
-  async findChildrenByFamilyId(familyId: number): Promise<FamilyMember[]> {
-    await this.validateFamilyExists(familyId);
-    return this.familyMemberRepository.findChildrenByFamilyId(familyId);
-  }
+    const expectedGender = expectedGenderByRelation[relationType];
 
-  private async validateFamilyExists(familyId: number): Promise<void> {
-    try {
-      await this.familiesService.findOne(familyId);
-    } catch (error) {
-      throw new NotFoundException('Family not found');
-    }
-  }
-
-  private async validateUniquePersonInFamily(personId: number, familyId: number): Promise<void> {
-    const existingMembers = await this.familyMemberRepository.findByPersonId(personId);
-    const isPersonInFamily = existingMembers.some((member) => member.familyId === familyId);
-
-    if (isPersonInFamily) {
-      throw new ConflictException('Person is already a member of this family');
-    }
-  }
-
-  private async validateParentCount(familyMember: CreateFamilyMemberDto): Promise<void> {
-    if (
-      [FamilyRelationType.MOTHER, FamilyRelationType.FATHER].includes(familyMember.relationType)
-    ) {
-      const parents = await this.familyMemberRepository.findByFamilyIdAndRelationType(
-        familyMember.familyId,
-        familyMember.relationType,
-      );
-
-      if (parents.length > 0) {
-        throw new ConflictException(
-          `Family already has a ${familyMember.relationType.toLowerCase()}`,
-        );
-      }
+    if (expectedGender && expectedGender !== gender) {
+      throw new ConflictException('Person gender does not match the selected family relation type');
     }
   }
 }

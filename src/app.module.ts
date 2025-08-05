@@ -39,6 +39,7 @@ import { FamilyMembersModule } from './modules/family-members/family-members.mod
     TrainingCoursesModule,
     GuardiansModule,
     CallLogsModule,
+    FamilyMembersModule,
   ],
 
   controllers: [AppController],

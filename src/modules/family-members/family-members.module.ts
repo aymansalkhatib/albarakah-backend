@@ -3,13 +3,13 @@ import { FamilyMember } from './entities/family-members.entity';
 import { FamilyMembersController } from './controllers/family-members.controller';
 import { FamilyMembersService } from './services/family-members.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { FamilyMemberRepository } from './repositories/family-member.repository';
 import { FamiliesModule } from '../families/families.module';
+import { PersonsModule } from '../persons/persons.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([FamilyMember]), FamiliesModule],
+  imports: [TypeOrmModule.forFeature([FamilyMember]), FamiliesModule, PersonsModule],
   controllers: [FamilyMembersController],
-  providers: [FamilyMembersService, FamilyMemberRepository],
+  providers: [FamilyMembersService],
   exports: [FamilyMembersService],
 })
 export class FamilyMembersModule {}

@@ -1,17 +1,36 @@
 import { toDto } from '@app/common/helpers/to-dto';
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { FamilyMemberResponseDto } from '../dtos/responses/family-member-response.dto';
 import { FamilyMembersService } from '../services/family-members.service';
 import { CreateFamilyMemberDto } from '../dtos/requests/create-family-member.dto';
+import { FamilyMemberFilterDto } from '../dtos/queries/family-member-filter.dto';
+import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
+import { Protected } from '@app/common/decorators/protected.decorator';
+import { Permission } from '@app/modules/roles/enums/permission.enum';
+import { SerializeResponse } from '@app/common/decorators/serialize-response.decorator';
+import { UpdateFamilyMemberDto } from '../dtos/requests/update-family-member.dto';
 
 @Controller('family-members')
 export class FamilyMembersController {
   constructor(private readonly familyMembersService: FamilyMembersService) {}
 
   @Get()
-  async findAll(): Promise<FamilyMemberResponseDto[]> {
-    const familyMembers = await this.familyMembersService.findAll();
-    return toDto(FamilyMemberResponseDto, familyMembers);
+  async findAll(
+    @Query() query: FamilyMemberFilterDto,
+  ): Promise<PaginationResponseDto<FamilyMemberResponseDto>> {
+    return this.familyMembersService.findAll(query);
   }
 
   @Get(':id')
@@ -20,68 +39,29 @@ export class FamilyMembersController {
     return toDto(FamilyMemberResponseDto, familyMember);
   }
 
-  @Get('family/:familyId')
-  async findByFamilyId(
-    @Param('familyId', ParseIntPipe) familyId: number,
-  ): Promise<FamilyMemberResponseDto[]> {
-    const familyMembers = await this.familyMembersService.findByFamilyId(familyId);
-    return toDto(FamilyMemberResponseDto, familyMembers);
-  }
-
-  @Get('person/:personId')
-  async findByPersonId(
-    @Param('personId', ParseIntPipe) personId: number,
-  ): Promise<FamilyMemberResponseDto[]> {
-    const familyMembers = await this.familyMembersService.findByPersonId(personId);
-    return toDto(FamilyMemberResponseDto, familyMembers);
-  }
-
   @Post()
+  @Protected(Permission.CREATE_FAMILY_MEMBER)
+  @SerializeResponse(FamilyMemberResponseDto)
   async create(
     @Body() createFamilyMemberDto: CreateFamilyMemberDto,
   ): Promise<FamilyMemberResponseDto> {
-    const familyMember = await this.familyMembersService.create(createFamilyMemberDto);
-    return toDto(FamilyMemberResponseDto, familyMember);
+    return await this.familyMembersService.create(createFamilyMemberDto);
   }
 
   @Put(':id')
+  @Protected(Permission.UPDATE_FAMILY_MEMBER)
+  @SerializeResponse(FamilyMemberResponseDto)
   async update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() updateData: Partial<CreateFamilyMemberDto>,
+    @Body() updateData: Partial<UpdateFamilyMemberDto>,
   ): Promise<FamilyMemberResponseDto> {
-    const familyMember = await this.familyMembersService.update(id, updateData);
-    return toDto(FamilyMemberResponseDto, familyMember);
+    return await this.familyMembersService.update(id, updateData);
   }
 
   @Delete(':id')
-  async delete(@Param('id', ParseIntPipe) id: number): Promise<{ message: string }> {
+  @Protected(Permission.CREATE_FAMILY_MEMBER)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
     await this.familyMembersService.delete(id);
-    return {
-      message: 'Family member deleted successfully',
-    };
-  }
-
-  @Delete(':id/force')
-  async forceDelete(@Param('id', ParseIntPipe) id: number): Promise<{ message: string }> {
-    await this.familyMembersService.forceDelete(id);
-    return {
-      message: 'Family member permanently deleted',
-    };
-  }
-
-  @Get('family/:familyId/parents')
-  async findParentsByFamilyId(
-    @Param('familyId', ParseIntPipe) familyId: number,
-  ): Promise<FamilyMemberResponseDto[]> {
-    const parents = await this.familyMembersService.findParentsByFamilyId(familyId);
-    return toDto(FamilyMemberResponseDto, parents);
-  }
-
-  @Get('family/:familyId/children')
-  async findChildrenByFamilyId(
-    @Param('familyId', ParseIntPipe) familyId: number,
-  ): Promise<FamilyMemberResponseDto[]> {
-    const children = await this.familyMembersService.findChildrenByFamilyId(familyId);
-    return toDto(FamilyMemberResponseDto, children);
   }
 }

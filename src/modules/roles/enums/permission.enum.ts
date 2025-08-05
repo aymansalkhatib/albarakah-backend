@@ -94,4 +94,10 @@ export enum Permission {
   READ_PERSON = 'read_person',
   UPDATE_PERSON = 'update_person',
   DELETE_PERSON = 'delete_person',
+
+  // Family Member Management
+  CREATE_FAMILY_MEMBER = 'create_family_member',
+  READ_FAMILY_MEMBER = 'read_family_member',
+  UPDATE_FAMILY_MEMBER = 'update_family_member',
+  DELETE_FAMILY_MEMBER = 'delete_family_member',
 }
