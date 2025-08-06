@@ -6,7 +6,6 @@ import { CreateSupporterChildSponsorshipDto } from '../dtos/requests/create-supp
 import { UpdateSupporterChildSponsorshipDto } from '../dtos/requests/update-supporter-child-sponsorship.dto';
 import { FilterSupporterChildSponsorshipDto } from '../dtos/queries/filter-supporter-child-sponsorship.dto';
 import { SponsorshipStatus } from '../enums/sponsorship-status.enum';
-import { FamilyMember } from '@app/modules/family-members/entities/family-members.entity';
 import { FamilyMembersService } from '@app/modules/family-members/services/family-members.service';
 import { FamilyRelationType } from '@app/modules/family-members/enums/family-relation-type.enum';
 import { applyPersonFilters } from '@app/modules/persons/utils/person-filter.util';
