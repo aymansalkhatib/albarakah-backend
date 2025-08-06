@@ -8,6 +8,7 @@ import {
   HttpStatus,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   Put,
   Query,
@@ -50,7 +51,7 @@ export class FamilyMembersController {
     return await this.familyMembersService.create(createFamilyMemberDto);
   }
 
-  @Put(':id')
+  @Patch(':id')
   @Protected(Permission.UPDATE_FAMILY_MEMBER)
   @SerializeResponse(FamilyMemberResponseDto)
   async update(

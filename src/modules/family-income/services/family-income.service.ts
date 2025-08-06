@@ -12,6 +12,7 @@ import { FamilyMembersService } from '@app/modules/family-members/services/famil
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOneOptions, Repository } from 'typeorm';
 import { UpdateFamilyIncomeDto } from '../dtos/requests/update-family-income.dto';
+import { FamilyMember } from '@app/modules/family-members/entities/family-members.entity';
 
 @Injectable()
 export class FamilyIncomeService {
@@ -88,13 +89,11 @@ export class FamilyIncomeService {
 
   async create(createFamilyIncomeDto: CreateFamilyIncomeDto): Promise<FamilyIncome> {
     // Validate that the family exists
-    await this.familiesService.findOne(createFamilyIncomeDto.familyId);
-
+    const family = await this.familiesService.findOne(createFamilyIncomeDto.familyId);
+    let familyMember: FamilyMember;
     // Validate that the family member exists if provided
     if (createFamilyIncomeDto.familyMemberId) {
-      const familyMember = await this.familyMembersService.findOne(
-        createFamilyIncomeDto.familyMemberId,
-      );
+      familyMember = await this.familyMembersService.findOne(createFamilyIncomeDto.familyMemberId);
       if (!familyMember) {
         throw new BadRequestException(
           this.translateHelper.tr('family-income.errors.family_member_not_found', {
@@ -111,7 +110,8 @@ export class FamilyIncomeService {
     }
 
     const familyIncome = this.familyIncomeRepository.create(createFamilyIncomeDto);
-    return this.familyIncomeRepository.save(familyIncome);
+    const savedFamilyIncome = await this.familyIncomeRepository.save(familyIncome);
+    return { ...savedFamilyIncome, family, familyMember };
   }
 
   async update(id: number, updateData: UpdateFamilyIncomeDto): Promise<FamilyIncome> {

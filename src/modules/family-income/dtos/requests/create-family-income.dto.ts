@@ -18,7 +18,7 @@ export class CreateFamilyIncomeDto {
   @PositiveIntegerId()
   familyMemberId?: number;
 
-  @IsNumber({ maxDecimalPlaces: 2 })
+  @IsNumber()
   @Min(0)
   @Max(1_000_000_000)
   amount: number;

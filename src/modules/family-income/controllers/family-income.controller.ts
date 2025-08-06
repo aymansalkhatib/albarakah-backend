@@ -8,6 +8,7 @@ import {
   HttpStatus,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   Put,
   Query,
@@ -52,7 +53,7 @@ export class FamilyIncomeController {
     });
   }
 
-  @Put(':id')
+  @Patch(':id')
   @SerializeResponse(FamilyIncomeResponseDto)
   @Protected(Permission.UPDATE_FAMILY_INCOME)
   async update(

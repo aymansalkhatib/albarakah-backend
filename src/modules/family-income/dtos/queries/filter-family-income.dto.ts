@@ -20,13 +20,13 @@ export class FilterFamilyIncomeDto extends PaginationQueryDto {
   incomeSource?: string;
 
   @IsOptional()
-  @IsNumber({ maxDecimalPlaces: 2 })
+  @IsNumber()
   @Min(0)
   minAmount?: number;
 
   @IsOptional()
-  @IsNumber({ maxDecimalPlaces: 2 })
-  @Max(0)
+  @IsNumber()
+  @Max(1_000_000_000)
   maxAmount?: number;
 
   @IsOptional()

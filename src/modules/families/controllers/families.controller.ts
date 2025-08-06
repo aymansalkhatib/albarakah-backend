@@ -7,6 +7,7 @@ import {
   HttpStatus,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   Put,
   Query,
@@ -45,7 +46,7 @@ export class FamiliesController {
     return await this.familiesService.findOne(id);
   }
 
-  @Put(':id')
+  @Patch(':id')
   @Protected(Permission.UPDATE_FAMILY)
   @SerializeResponse(FamilyResponseDto)
   async update(
