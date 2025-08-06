@@ -14,6 +14,7 @@ import { FamilyRelationType } from '../enums/family-relation-type.enum';
 import { PersonCourseBatch } from '../../training-courses/entities/person-course-batch.entity';
 import { ReceivedAssistance } from '../../received-assistance/entities/received-assistance.entity';
 import { Family } from '@app/modules/families/entities/families.entity';
+import { SupporterChildSponsorship } from '../../supporters/entities/supporters-children.entity';
 
 @Entity('family_members')
 @Index(['familyId', 'personId'], { unique: true })
@@ -46,6 +47,9 @@ export class FamilyMember {
   updatedAt: Date;
 
   // === RELATIONSHIPS ===
+
+  @OneToMany(() => SupporterChildSponsorship, (sponsorship) => sponsorship.familyMember)
+  childSponsorships: SupporterChildSponsorship[];
 
   @ManyToOne(() => Person, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'person_id' })

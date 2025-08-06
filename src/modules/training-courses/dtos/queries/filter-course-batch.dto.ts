@@ -18,13 +18,13 @@ export class FilterCourseBatchDto extends PaginationDto {
 
   @IsOptional()
   @IsDateString()
+  @IsLessThanOrEqual('endDate', {
+    message: 'endDate must be after startDate',
+  })
   startDate?: string;
 
   @IsOptional()
   @IsDateString()
-  @IsLessThanOrEqual('startDate', {
-    message: 'endDate must be after startDate',
-  })
   endDate?: string;
 
   @IsOptional()

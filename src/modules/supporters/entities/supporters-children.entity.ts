@@ -9,15 +9,12 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Supporter } from './supporters.entity';
-import { Person } from '../../persons/entities/person.entity';
-import { Family } from '../../families/entities/families.entity';
 import { SponsorshipStatus } from '../enums/sponsorship-status.enum';
+import { FamilyMember } from '@app/modules/family-members/entities/family-members.entity';
 
 @Entity('supporter_child_sponsorships')
-@Index(['supporterId', 'personId'], { unique: true })
-@Index(['familyId'])
-@Index(['sponsorshipStatus'])
-@Index(['sponsorshipStartDate', 'sponsorshipEndDate'])
+@Index(['supporterId', 'familyMemberId'], { unique: true })
+@Index(['familyMemberId'], { unique: true, where: `"sponsorship_status" = 'active'` })
 export class SupporterChildSponsorship {
   @PrimaryGeneratedColumn()
   id: number;
@@ -25,18 +22,8 @@ export class SupporterChildSponsorship {
   @Column({ name: 'supporter_id' })
   supporterId: number;
 
-  @Column({ name: 'person_id' })
-  personId: number;
-
-  @Column({ name: 'family_id', nullable: true })
-  familyId?: number;
-
-  @Column({
-    name: 'sponsorship_amount',
-    type: 'integer',
-    nullable: true,
-  })
-  sponsorshipAmount?: number;
+  @Column({ name: 'family_member_id' })
+  familyMemberId: number;
 
   @Column({ name: 'sponsorship_start_date', type: 'date' })
   sponsorshipStartDate: Date;
@@ -59,15 +46,13 @@ export class SupporterChildSponsorship {
   updatedAt: Date;
 
   // Relationships
-  @ManyToOne(() => Supporter, { onDelete: 'RESTRICT' })
+  @ManyToOne(() => Supporter, (supporter) => supporter.childSponsorships, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'supporter_id' })
   supporter: Supporter;
 
-  @ManyToOne(() => Person, { onDelete: 'RESTRICT' })
-  @JoinColumn({ name: 'person_id' })
-  person: Person;
-
-  @ManyToOne(() => Family, { onDelete: 'RESTRICT', nullable: true })
-  @JoinColumn({ name: 'family_id' })
-  family?: Family;
+  @ManyToOne(() => FamilyMember, (familyMember) => familyMember.childSponsorships, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'family_member_id' })
+  familyMember: FamilyMember;
 }

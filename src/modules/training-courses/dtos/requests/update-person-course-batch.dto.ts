@@ -13,12 +13,12 @@ export class UpdatePersonCourseBatchDto {
   evaluation?: string;
 
   @IsOptional()
+  @IsLessThanOrEqual('dropOutDate')
   @IsDate()
   joinDate?: Date;
 
   @IsOptional()
   @IsDate()
-  @IsLessThanOrEqual('joinDate')
   dropOutDate?: Date;
 
   @IsOptional()

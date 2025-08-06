@@ -8,8 +8,10 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 import { SupportType } from '../enums/support-type';
+import { SupporterChildSponsorship } from './supporters-children.entity';
 
 @Entity('supporters')
 @Index(['personId'])
@@ -43,6 +45,9 @@ export class Supporter {
   updatedAt: Date;
 
   // Relationships
+
+  @OneToMany(() => SupporterChildSponsorship, (sponsorship) => sponsorship.supporter)
+  childSponsorships: SupporterChildSponsorship[];
 
   @OneToOne(() => Person, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'person_id' })

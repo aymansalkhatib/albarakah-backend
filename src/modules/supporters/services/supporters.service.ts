@@ -2,16 +2,16 @@ import { ConflictException, Injectable, NotFoundException } from '@nestjs/common
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Supporter } from '../entities/supporters.entity';
-import { CreateSupporterDto } from '../dtos/create-supporter.dto';
-import { UpdateSupporterDto } from '../dtos/update-supporter.dto';
-import { FilterSupporterDto } from '../dtos/filter-supporter.dto';
-import { SupporterResponseDto } from '../dtos/supporter-response.dto';
+import { UpdateSupporterDto } from '../dtos/requests/update-supporter.dto';
 import { PersonsService } from '@app/modules/persons/services/persons.service';
 import { Person } from '@app/modules/persons/entities/person.entity';
 import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
 import { PersonRelation } from '@app/modules/persons/enums/person-relation.enum';
 import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
 import { paginate } from '@app/common/pagination/paginate.service';
+import { CreateSupporterDto } from '../dtos/requests/create-supporter.dto';
+import { FilterSupporterDto } from '../dtos/queries/filter-supporter.dto';
+import { SupporterResponseDto } from '../dtos/responses/supporter-response.dto';
 
 @Injectable()
 export class SupportersService {

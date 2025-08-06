@@ -13,13 +13,13 @@ export class CreateCourseBatchDto {
 
   @IsOptional()
   @IsDate()
+  @IsLessThanOrEqual('endDate', {
+    message: 'endDate must be after startDate',
+  })
   startDate?: Date;
 
   @IsOptional()
   @IsDate()
-  @IsLessThanOrEqual('startDate', {
-    message: 'endDate must be after startDate',
-  })
   endDate?: Date;
 
   @IsOptional()

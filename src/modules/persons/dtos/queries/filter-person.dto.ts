@@ -131,6 +131,7 @@ export class FilterPersonDto extends PaginationDto {
 
   @IsOptional()
   @IsDate()
+  @IsLessThanOrEqual('birthDateTo')
   @MinDate(new Date('1900-01-01'), { message: 'Birth date must be after 1900-01-01' })
   @MaxDate(new Date(), { message: 'Birth date must be before today' })
   birthDateFrom?: Date;
@@ -139,6 +140,5 @@ export class FilterPersonDto extends PaginationDto {
   @IsDate()
   @MinDate(new Date('1900-01-01'), { message: 'Birth date must be after 1900-01-01' })
   @MaxDate(new Date(), { message: 'Birth date must be before today' })
-  @IsLessThanOrEqual('birthDateFrom')
   birthDateTo?: Date;
 }

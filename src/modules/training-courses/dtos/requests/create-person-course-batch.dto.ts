@@ -22,11 +22,11 @@ export class CreatePersonCourseBatchDto {
 
   @IsOptional()
   @IsDate()
+  @IsLessThanOrEqual('dropOutDate')
   joinDate?: Date;
 
   @IsOptional()
   @IsDate()
-  @IsLessThanOrEqual('joinDate')
   dropOutDate?: string;
 
   @IsOptional()

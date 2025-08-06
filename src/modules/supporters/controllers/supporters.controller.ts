@@ -12,14 +12,14 @@ import {
   Query,
 } from '@nestjs/common';
 import { SupportersService } from '../services/supporters.service';
-import { CreateSupporterDto } from '../dtos/create-supporter.dto';
-import { UpdateSupporterDto } from '../dtos/update-supporter.dto';
-import { SupporterResponseDto } from '../dtos/supporter-response.dto';
-import { FilterSupporterDto } from '../dtos/filter-supporter.dto';
+import { UpdateSupporterDto } from '../dtos/requests/update-supporter.dto';
 import { SerializeResponse } from '@app/common/decorators/serialize-response.decorator';
 import { Protected } from '@app/common/decorators/protected.decorator';
 import { Permission } from '@app/modules/roles/enums/permission.enum';
 import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
+import { FilterSupporterDto } from '../dtos/queries/filter-supporter.dto';
+import { CreateSupporterDto } from '../dtos/requests/create-supporter.dto';
+import { SupporterResponseDto } from '../dtos/responses/supporter-response.dto';
 
 @Controller('supporters')
 export class SupportersController {

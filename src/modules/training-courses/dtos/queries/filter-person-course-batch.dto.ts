@@ -29,20 +29,20 @@ export class FilterPersonCourseBatchDto extends PaginationDto {
 
   @IsOptional()
   @IsDate()
+  @IsLessThanOrEqual('joinDateTo')
   joinDateFrom?: string;
 
   @IsOptional()
   @IsDate()
-  @IsLessThanOrEqual('joinDateFrom')
   joinDateTo?: string;
 
   @IsOptional()
   @IsDate()
+  @IsLessThanOrEqual('dropOutDateFrom')
   dropOutDateFrom?: string;
 
   @IsOptional()
   @IsDate()
-  @IsLessThanOrEqual('dropOutDateFrom')
   dropOutDateTo?: string;
 
   @IsOptional()
