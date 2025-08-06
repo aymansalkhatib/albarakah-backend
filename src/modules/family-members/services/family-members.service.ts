@@ -181,7 +181,17 @@ export class FamilyMembersService {
 
   async update(id: number, updateData: UpdateFamilyMemberDto): Promise<FamilyMember> {
     return await this.familyMemberRepository.manager.transaction(async (entityManager) => {
-      const familyMember = await this.findOne(id, { relations: ['person'] });
+      const familyMember = await this.findOne(id, { relations: ['person', 'childSponsorships'] });
+
+      if (
+        updateData.relationType &&
+        updateData.relationType !== familyMember.relationType &&
+        familyMember?.childSponsorships?.length > 0
+      ) {
+        throw new ConflictException(
+          'Cannot change relation type because the member has existing child sponsorships.',
+        );
+      }
 
       // new relationType is Father => check if have already father
       if (
