@@ -1,0 +1,5 @@
+{
+    "errors": {
+        "not_found": "Family income record with ID {id} not found"
+    }
+}

@@ -34,6 +34,10 @@ export enum Permission {
   READ_EMERGENCY_AID = 'read_emergency_aid',
   UPDATE_EMERGENCY_AID = 'update_emergency_aid',
   DELETE_EMERGENCY_AID = 'delete_emergency_aid',
+  APPROVE_EMERGENCY_AID = 'approve_emergency_aid',
+  REJECT_EMERGENCY_AID = 'reject_emergency_aid',
+  DISBURSE_EMERGENCY_AID = 'disburse_emergency_aid',
+  CANCEL_EMERGENCY_AID = 'cancel_emergency_aid',
 
   // Family Needs Management
   CREATE_FAMILY_NEED = 'create_family_need',

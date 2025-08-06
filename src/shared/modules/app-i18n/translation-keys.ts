@@ -151,6 +151,14 @@ interface TrainingcoursesPersoncoursebatchesErrorsAlreadyenrolledParams {
   courseBatchId: string | number;
 }
 
+interface FamilyincomeErrorsNotfoundParams {
+  id: string | number;
+}
+
+interface EmergencyAidRequestErrorsNotFoundParams {
+  id: string | number;
+}
+
 const TranslationKeys = {
   'call-logs.errors.not_found': 'call-logs.errors.not_found',
   'call-logs.errors.recipient_required': 'call-logs.errors.recipient_required',
@@ -199,6 +207,7 @@ const TranslationKeys = {
   'persons.errors.same_father_mother': 'persons.errors.same_father_mother',
   'persons.errors.self_father': 'persons.errors.self_father',
   'persons.errors.self_mother': 'persons.errors.self_mother',
+  'family-income.errors.not_found': 'family-income.errors.not_found',
   'persons.success.deleted': 'persons.success.deleted',
   'persons.validation.birth_date_max': 'persons.validation.birth_date_max',
   'persons.validation.birth_date_min': 'persons.validation.birth_date_min',
@@ -230,6 +239,15 @@ const TranslationKeys = {
     'training-courses.training-courses.errors.not_found',
   'training-courses.training-courses.success.deleted':
     'training-courses.training-courses.success.deleted',
+  'emergency_aid_request.errors.not_found': 'emergency_aid_request.errors.not_found',
+  'emergency_aid_request.errors.cannot_approve_non_pending':
+    'emergency_aid_request.errors.cannot_approve_non_pending',
+  'emergency_aid_request.errors.cannot_reject_non_pending':
+    'emergency_aid_request.errors.cannot_reject_non_pending',
+  'emergency_aid_request.errors.cannot_disburse_non_approved':
+    'emergency_aid_request.errors.cannot_disburse_non_approved',
+  'emergency_aid_request.errors.cannot_cancel_unmodifiable':
+    'emergency_aid_request.errors.cannot_cancel_unmodifiable',
 } as const;
 
 export type TranslationKey = keyof typeof TranslationKeys;
@@ -281,6 +299,7 @@ export interface TranslationInterpolations {
   'persons.errors.same_father_mother': NoParams;
   'persons.errors.self_father': NoParams;
   'persons.errors.self_mother': NoParams;
+  'family-income.errors.not_found': FamilyincomeErrorsNotfoundParams;
   'persons.success.deleted': PersonsSuccessDeletedParams;
   'persons.validation.birth_date_max': NoParams;
   'persons.validation.birth_date_min': NoParams;
@@ -301,4 +320,9 @@ export interface TranslationInterpolations {
   'training-courses.person-course-batches.success.deleted': NoParams;
   'training-courses.training-courses.errors.not_found': TrainingcoursesTrainingcoursesErrorsNotfoundParams;
   'training-courses.training-courses.success.deleted': TrainingcoursesTrainingcoursesSuccessDeletedParams;
+  'emergency_aid_request.errors.not_found': EmergencyAidRequestErrorsNotFoundParams;
+  'emergency_aid_request.errors.cannot_approve_non_pending': NoParams;
+  'emergency_aid_request.errors.cannot_reject_non_pending': NoParams;
+  'emergency_aid_request.errors.cannot_disburse_non_approved': NoParams;
+  'emergency_aid_request.errors.cannot_cancel_unmodifiable': NoParams;
 }
