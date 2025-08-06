@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { CreateFamilyIncomeDto } from '../dtos/requests/create-family-income.dto';
 import { FamilyIncome } from '../entities/family-income.entity';
 import { FamiliesService } from '@app/modules/families/services/families.service';
@@ -8,11 +8,17 @@ import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-res
 import { paginate } from '@app/common/pagination/paginate.service';
 import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
 import { FamilyIncomeResponseDto } from '../dtos/responses/family-income-response.dto';
+import { FamilyMembersService } from '@app/modules/family-members/services/family-members.service';
+import { InjectRepository } from '@nestjs/typeorm';
+import { FindOneOptions, Repository } from 'typeorm';
+import { UpdateFamilyIncomeDto } from '../dtos/requests/update-family-income.dto';
 
 @Injectable()
 export class FamilyIncomeService {
   constructor(
-    private readonly familyIncomeRepository: FamilyIncomeRepository,
+    @InjectRepository(FamilyIncome)
+    private readonly familyIncomeRepository: Repository<FamilyIncome>,
+    private readonly familyMembersService: FamilyMembersService,
     private readonly familiesService: FamiliesService,
     private readonly translateHelper: TranslateHelper,
   ) {}
@@ -20,103 +26,131 @@ export class FamilyIncomeService {
   async findAll(
     filterDto: FilterFamilyIncomeDto,
   ): Promise<PaginationResponseDto<FamilyIncomeResponseDto>> {
-    const qb = this.familyIncomeRepository
+    const queryBuilder = this.familyIncomeRepository
       .createQueryBuilder('familyIncome')
       .leftJoinAndSelect('familyIncome.family', 'family')
-      .orderBy('familyIncome.createdAt', 'DESC');
+      .leftJoinAndSelect('familyIncome.familyMember', 'familyMember');
 
+    // Apply filters
     if (filterDto.familyId) {
-      qb.andWhere('familyIncome.familyId = :familyId', { familyId: filterDto.familyId });
+      queryBuilder.andWhere('familyIncome.familyId = :familyId', {
+        familyId: filterDto.familyId,
+      });
     }
+
+    if (filterDto.familyMemberId) {
+      queryBuilder.andWhere('familyIncome.familyMemberId = :familyMemberId', {
+        familyMemberId: filterDto.familyMemberId,
+      });
+    }
+
     if (filterDto.incomeSource) {
-      qb.andWhere('familyIncome.incomeSource LIKE :incomeSource', {
+      queryBuilder.andWhere('familyIncome.incomeSource ILIKE :incomeSource', {
         incomeSource: `%${filterDto.incomeSource}%`,
       });
     }
-    if (filterDto.minAmount) {
-      qb.andWhere('familyIncome.amount >= :minAmount', { minAmount: filterDto.minAmount });
-    }
-    if (filterDto.maxAmount) {
-      qb.andWhere('familyIncome.amount <= :maxAmount', { maxAmount: filterDto.maxAmount });
-    }
-    if (filterDto.notes) {
-      qb.andWhere('familyIncome.notes LIKE :notes', { notes: `%${filterDto.notes}%` });
+
+    if (filterDto.minAmount !== undefined) {
+      queryBuilder.andWhere('familyIncome.amount >= :minAmount', {
+        minAmount: filterDto.minAmount,
+      });
     }
 
-    return paginate<FamilyIncome, FamilyIncomeResponseDto>(qb, filterDto, FamilyIncomeResponseDto);
+    if (filterDto.maxAmount !== undefined) {
+      queryBuilder.andWhere('familyIncome.amount <= :maxAmount', {
+        maxAmount: filterDto.maxAmount,
+      });
+    }
+
+    if (filterDto.notes) {
+      queryBuilder.andWhere('familyIncome.notes ILIKE :notes', {
+        notes: `%${filterDto.notes}%`,
+      });
+    }
+
+    return paginate(queryBuilder, filterDto, FamilyIncomeResponseDto);
   }
 
-  async findOne(id: number): Promise<FamilyIncome> {
-    const familyIncome = await this.familyIncomeRepository.findOneById(id);
+  async findOne(id: number, options: FindOneOptions<FamilyIncome> = {}): Promise<FamilyIncome> {
+    const familyIncome = await this.familyIncomeRepository.findOne({
+      where: { id },
+      ...options,
+    });
+
     if (!familyIncome) {
       throw new NotFoundException(
         this.translateHelper.tr('family-income.errors.not_found', { id }),
       );
     }
+
     return familyIncome;
   }
 
-  async findByFamilyId(familyId: number): Promise<FamilyIncome[]> {
-    await this.validateFamilyExists(familyId);
-    return this.familyIncomeRepository.findByFamilyId(familyId);
-  }
-
-  async findByFamilyIdAndDateRange(
-    familyId: number,
-    startDate: Date,
-    endDate: Date,
-  ): Promise<FamilyIncome[]> {
-    await this.validateFamilyExists(familyId);
-    return this.familyIncomeRepository.findByFamilyIdAndDateRange(familyId, startDate, endDate);
-  }
-
-  async findByIncomeSource(incomeSource: string): Promise<FamilyIncome[]> {
-    return this.familyIncomeRepository.findByIncomeSource(incomeSource);
-  }
-
   async create(createFamilyIncomeDto: CreateFamilyIncomeDto): Promise<FamilyIncome> {
-    await this.validateFamilyExists(createFamilyIncomeDto.familyId);
-    return this.familyIncomeRepository.createFamilyIncome(createFamilyIncomeDto);
-  }
+    // Validate that the family exists
+    await this.familiesService.findOne(createFamilyIncomeDto.familyId);
 
-  async update(id: number, updateData: Partial<CreateFamilyIncomeDto>): Promise<FamilyIncome> {
-    await this.findOne(id);
-
-    if (updateData.familyId) {
-      await this.validateFamilyExists(updateData.familyId);
+    // Validate that the family member exists if provided
+    if (createFamilyIncomeDto.familyMemberId) {
+      const familyMember = await this.familyMembersService.findOne(
+        createFamilyIncomeDto.familyMemberId,
+      );
+      if (!familyMember) {
+        throw new BadRequestException(
+          this.translateHelper.tr('family-income.errors.family_member_not_found', {
+            id: createFamilyIncomeDto.familyMemberId,
+          }),
+        );
+      }
+      // Ensure the family member belongs to the specified family
+      if (familyMember.familyId !== createFamilyIncomeDto.familyId) {
+        throw new BadRequestException(
+          this.translateHelper.tr('family-income.errors.family_member_mismatch'),
+        );
+      }
     }
 
-    return this.familyIncomeRepository.updateFamilyIncome(id, updateData);
+    const familyIncome = this.familyIncomeRepository.create(createFamilyIncomeDto);
+    return this.familyIncomeRepository.save(familyIncome);
+  }
+
+  async update(id: number, updateData: UpdateFamilyIncomeDto): Promise<FamilyIncome> {
+    // Check if the family income record exists
+    const existingFamilyIncome = await this.findOne(id, { relations: ['family', 'familyMember'] });
+
+    // Validate family member if being updated
+    if (updateData.familyMemberId) {
+      const familyMember = await this.familyMembersService.findOne(updateData.familyMemberId);
+      if (!familyMember) {
+        throw new BadRequestException(
+          this.translateHelper.tr('family-income.errors.family_member_not_found', {
+            id: updateData.familyMemberId,
+          }),
+        );
+      }
+      // Ensure the family member belongs to the specified family
+      if (familyMember.familyId !== existingFamilyIncome.familyId) {
+        throw new BadRequestException(
+          this.translateHelper.tr('family-income.errors.family_member_mismatch'),
+        );
+      }
+    }
+
+    // Validate amount if being updated
+    if (updateData.amount !== undefined && updateData.amount <= 0) {
+      throw new BadRequestException(this.translateHelper.tr('family-income.errors.invalid_amount'));
+    }
+
+    this.familyIncomeRepository.merge(existingFamilyIncome, updateData);
+    return this.familyIncomeRepository.save(existingFamilyIncome);
   }
 
   async delete(id: number): Promise<void> {
-    await this.findOne(id);
-    await this.familyIncomeRepository.deleteFamilyIncome(id);
-  }
-
-  async getTotalIncomeByFamilyId(familyId: number): Promise<number> {
-    await this.validateFamilyExists(familyId);
-    return this.familyIncomeRepository.getTotalIncomeByFamilyId(familyId);
-  }
-
-  async getTotalIncomeByFamilyIdAndDateRange(
-    familyId: number,
-    startDate: Date,
-    endDate: Date,
-  ): Promise<number> {
-    await this.validateFamilyExists(familyId);
-    return this.familyIncomeRepository.getTotalIncomeByFamilyIdAndDateRange(
-      familyId,
-      startDate,
-      endDate,
-    );
-  }
-
-  private async validateFamilyExists(familyId: number): Promise<void> {
-    const family = await this.familiesService.findOne(familyId);
-    if (!family)
-      throw new NotFoundException(
-        this.translateHelper.tr('family-income.errors.not_found', { id: familyId }),
+    const result = await this.familyIncomeRepository.delete(id);
+    if (!result.affected) {
+      throw new BadRequestException(
+        this.translateHelper.tr('family-income.errors.delete_not_found', { id }),
       );
+    }
   }
 }

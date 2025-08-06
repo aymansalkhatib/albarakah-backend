@@ -17,64 +17,55 @@ import { FamilyIncomeService } from '../services/family-income.service';
 import { FamilyIncomeResponseDto } from '../dtos/responses/family-income-response.dto';
 import { FilterFamilyIncomeDto } from '../dtos/queries/filter-family-income.dto';
 import { UpdateFamilyIncomeDto } from '../dtos/requests/update-family-income.dto';
+import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
+import { SerializeResponse } from '@app/common/decorators/serialize-response.decorator';
+import { Protected } from '@app/common/decorators/protected.decorator';
+import { Permission } from '@app/modules/roles/enums/permission.enum';
 
 @Controller('family-income')
 export class FamilyIncomeController {
   constructor(private readonly familyIncomeService: FamilyIncomeService) {}
 
-  @Get()
-  async findAll(@Query() filterDto: FilterFamilyIncomeDto): Promise<FamilyIncomeResponseDto[]> {
-    const familyIncomes = await this.familyIncomeService.findAll(filterDto);
-    return toDto(FamilyIncomeResponseDto, familyIncomes.data, { enableImplicitConversion: true });
-  }
-
-  @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: number): Promise<FamilyIncomeResponseDto> {
-    const familyIncome = await this.familyIncomeService.findOne(id);
-    return toDto(FamilyIncomeResponseDto, familyIncome);
-  }
-
   @Post()
+  @SerializeResponse(FamilyIncomeResponseDto)
+  @Protected(Permission.CREATE_FAMILY_INCOME)
   async create(
     @Body() createFamilyIncomeDto: CreateFamilyIncomeDto,
   ): Promise<FamilyIncomeResponseDto> {
-    const familyIncome = await this.familyIncomeService.create(createFamilyIncomeDto);
-    return toDto(FamilyIncomeResponseDto, familyIncome);
+    return await this.familyIncomeService.create(createFamilyIncomeDto);
+  }
+
+  @Get()
+  @Protected(Permission.READ_FAMILY_INCOME)
+  async findAll(
+    @Query() filterDto: FilterFamilyIncomeDto,
+  ): Promise<PaginationResponseDto<FamilyIncomeResponseDto>> {
+    return await this.familyIncomeService.findAll(filterDto);
+  }
+
+  @Get(':id')
+  @SerializeResponse(FamilyIncomeResponseDto)
+  @Protected(Permission.READ_FAMILY_INCOME)
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<FamilyIncomeResponseDto> {
+    return await this.familyIncomeService.findOne(id, {
+      relations: ['family', 'familyMember'],
+    });
   }
 
   @Put(':id')
+  @SerializeResponse(FamilyIncomeResponseDto)
+  @Protected(Permission.UPDATE_FAMILY_INCOME)
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateData: UpdateFamilyIncomeDto,
   ): Promise<FamilyIncomeResponseDto> {
-    const familyIncome = await this.familyIncomeService.update(id, updateData);
-    return toDto(FamilyIncomeResponseDto, familyIncome);
+    return await this.familyIncomeService.update(id, updateData);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
+  @Protected(Permission.DELETE_FAMILY_INCOME)
   async delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
     await this.familyIncomeService.delete(id);
-  }
-
-  @Get('family/:familyId/total')
-  async getFamilyTotalIncome(
-    @Param('familyId', ParseIntPipe) familyId: number,
-    @Query('startDate') startDate?: string,
-    @Query('endDate') endDate?: string,
-  ): Promise<{ total: number }> {
-    let total: number;
-
-    if (startDate && endDate) {
-      total = await this.familyIncomeService.getTotalIncomeByFamilyIdAndDateRange(
-        familyId,
-        new Date(startDate),
-        new Date(endDate),
-      );
-    } else {
-      total = await this.familyIncomeService.getTotalIncomeByFamilyId(familyId);
-    }
-
-    return { total };
   }
 }

@@ -49,7 +49,7 @@ export class EmergencyAidService {
     const result = await this.emergencyAidRepository.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException(
-        this.translateHelper.tr('emergency_aid_request.errors.not_found', { id }),
+        this.translateHelper.tr('emergency-aid-request.errors.not_found', { id }),
       );
     }
   }
@@ -65,7 +65,7 @@ export class EmergencyAidService {
 
     if (!emergencyAidRequest) {
       throw new NotFoundException(
-        this.translateHelper.tr('emergency_aid_request.errors.not_found', { id }),
+        this.translateHelper.tr('emergency-aid-request.errors.not_found', { id }),
       );
     }
 
@@ -207,7 +207,7 @@ export class EmergencyAidService {
 
     if (emergencyAidRequest.requestStatus !== EmergencyAidRequestStatus.PENDING) {
       throw new ConflictException(
-        this.translateHelper.tr('emergency_aid_request.errors.cannot_approve_non_pending'),
+        this.translateHelper.tr('emergency-aid-request.errors.cannot_approve_non_pending'),
       );
     }
 
@@ -227,7 +227,7 @@ export class EmergencyAidService {
 
     if (emergencyAidRequest.requestStatus !== EmergencyAidRequestStatus.PENDING) {
       throw new ConflictException(
-        this.translateHelper.tr('emergency_aid_request.errors.cannot_reject_non_pending'),
+        this.translateHelper.tr('emergency-aid-request.errors.cannot_reject_non_pending'),
       );
     }
 
@@ -248,7 +248,7 @@ export class EmergencyAidService {
 
     if (emergencyAidRequest.requestStatus !== EmergencyAidRequestStatus.APPROVED) {
       throw new ConflictException(
-        this.translateHelper.tr('emergency_aid_request.errors.cannot_disburse_non_approved'),
+        this.translateHelper.tr('emergency-aid-request.errors.cannot_disburse_non_approved'),
       );
     }
 
@@ -273,7 +273,7 @@ export class EmergencyAidService {
       emergencyAidRequest.requestStatus !== EmergencyAidRequestStatus.APPROVED
     ) {
       throw new ConflictException(
-        this.translateHelper.tr('emergency_aid_request.errors.cannot_cancel_unmodifiable'),
+        this.translateHelper.tr('emergency-aid-request.errors.cannot_cancel_unmodifiable'),
       );
     }
 

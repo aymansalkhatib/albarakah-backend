@@ -110,4 +110,10 @@ export enum Permission {
   READ_FAMILY_MEMBER = 'read_family_member',
   UPDATE_FAMILY_MEMBER = 'update_family_member',
   DELETE_FAMILY_MEMBER = 'delete_family_member',
+
+  // Family Income Management
+  CREATE_FAMILY_INCOME = 'create_family_income',
+  READ_FAMILY_INCOME = 'read_family_income',
+  UPDATE_FAMILY_INCOME = 'update_family_income',
+  DELETE_FAMILY_INCOME = 'delete_family_income',
 }

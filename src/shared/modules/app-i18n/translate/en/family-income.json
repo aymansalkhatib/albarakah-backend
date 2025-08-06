@@ -1,5 +1,10 @@
 {
     "errors": {
-        "not_found": "Family income record with ID {id} not found"
+        "not_found": "Family income record with ID {id} not found",
+        "family_not_found": "Family with ID {id} not found",
+        "family_member_not_found": "Family member with ID {id} not found",
+        "family_member_mismatch": "Family member does not belong to the specified family",
+        "invalid_amount": "Income amount must be greater than zero",
+        "delete_not_found": "Family income record with ID {id} not found for deletion"
     }
 }
