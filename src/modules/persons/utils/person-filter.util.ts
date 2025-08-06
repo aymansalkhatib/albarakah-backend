@@ -3,7 +3,7 @@ import { Person } from '../entities/person.entity';
 import { FilterPersonDto } from '../dtos/queries/filter-person.dto';
 
 export function applyPersonFilters(
-  qb: SelectQueryBuilder<Person>,
+  qb: SelectQueryBuilder<any>,
   alias: string,
   filter: FilterPersonDto,
 ): SelectQueryBuilder<Person> {

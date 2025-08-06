@@ -13,8 +13,10 @@ import { SponsorshipStatus } from '../enums/sponsorship-status.enum';
 import { FamilyMember } from '@app/modules/family-members/entities/family-members.entity';
 
 @Entity('supporter_child_sponsorships')
-@Index(['supporterId', 'familyMemberId'], { unique: true })
-@Index(['familyMemberId'], { unique: true, where: `"sponsorship_status" = 'active'` })
+@Index(['supporterId', 'familyMemberId'], {
+  unique: true,
+  where: `"sponsorship_status" = 'active'`,
+})
 export class SupporterChildSponsorship {
   @PrimaryGeneratedColumn()
   id: number;

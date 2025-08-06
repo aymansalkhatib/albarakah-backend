@@ -83,6 +83,12 @@ export enum Permission {
   UPDATE_SUPPORTER = 'update_supporter',
   DELETE_SUPPORTER = 'delete_supporter',
 
+  // Supporter Child Sponsorship Management
+  CREATE_SUPPORTER_CHILD_SPONSORSHIP = 'create_supporter_child_sponsorship',
+  READ_SUPPORTER_CHILD_SPONSORSHIP = 'read_supporter_child_sponsorship',
+  UPDATE_SUPPORTER_CHILD_SPONSORSHIP = 'update_supporter_child_sponsorship',
+  DELETE_SUPPORTER_CHILD_SPONSORSHIP = 'delete_supporter_child_sponsorship',
+
   // System User Management
   CREATE_SYSTEM_USER = 'create_system_user',
   READ_SYSTEM_USER = 'read_system_user',

@@ -9,6 +9,7 @@ import { SponsorshipStatus } from '../enums/sponsorship-status.enum';
 import { FamilyMember } from '@app/modules/family-members/entities/family-members.entity';
 import { FamilyMembersService } from '@app/modules/family-members/services/family-members.service';
 import { FamilyRelationType } from '@app/modules/family-members/enums/family-relation-type.enum';
+import { applyPersonFilters } from '@app/modules/persons/utils/person-filter.util';
 
 @Injectable()
 export class SupporterChildSponsorshipService {
@@ -52,22 +53,44 @@ export class SupporterChildSponsorshipService {
       .leftJoinAndSelect('sponsorship.familyMember', 'familyMember')
       .leftJoinAndSelect('familyMember.person', 'person');
 
+    // Filter by supporterId
     if (filterDto?.supporterId) {
       queryBuilder.andWhere('sponsorship.supporterId = :supporterId', {
         supporterId: filterDto.supporterId,
       });
     }
 
+    // Filter by familyMemberId
     if (filterDto?.familyMemberId) {
       queryBuilder.andWhere('sponsorship.familyMemberId = :familyMemberId', {
         familyMemberId: filterDto.familyMemberId,
       });
     }
 
+    // Filter by sponsorshipStatus
     if (filterDto?.sponsorshipStatus) {
       queryBuilder.andWhere('sponsorship.sponsorshipStatus = :sponsorshipStatus', {
         sponsorshipStatus: filterDto.sponsorshipStatus,
       });
+    }
+
+    // Filter by sponsorshipStartDate (greater than or equal)
+    if (filterDto?.sponsorshipStartDate) {
+      queryBuilder.andWhere('sponsorship.sponsorshipStartDate >= :sponsorshipStartDate', {
+        sponsorshipStartDate: filterDto.sponsorshipStartDate,
+      });
+    }
+
+    // Filter by sponsorshipEndDate (less than or equal)
+    if (filterDto?.sponsorshipEndDate) {
+      queryBuilder.andWhere('sponsorship.sponsorshipEndDate <= :sponsorshipEndDate', {
+        sponsorshipEndDate: filterDto.sponsorshipEndDate,
+      });
+    }
+
+    // Filter by person fields if provided
+    if (filterDto?.person) {
+      applyPersonFilters(queryBuilder, 'person', filterDto.person);
     }
 
     return await queryBuilder.getMany();
