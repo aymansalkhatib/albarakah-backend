@@ -15,6 +15,7 @@ import { PersonCourseBatch } from '../../training-courses/entities/person-course
 import { ReceivedAssistance } from '../../received-assistance/entities/received-assistance.entity';
 import { Family } from '@app/modules/families/entities/families.entity';
 import { SupporterChildSponsorship } from '../../supporters/entities/supporters-children.entity';
+import { FamilyIncome } from '../../family-income/entities/family-income.entity';
 
 @Entity('family_members')
 @Index(['familyId', 'personId'], { unique: true })
@@ -66,6 +67,9 @@ export class FamilyMember {
 
   @OneToMany(() => ReceivedAssistance, (assistance) => assistance.familyMember)
   receivedAssistance: ReceivedAssistance[];
+
+  @OneToMany(() => FamilyIncome, (income) => income.familyMember)
+  income: FamilyIncome[];
 
   // === COMPUTED PROPERTIES ===
 

@@ -42,14 +42,6 @@ export class FamilyIncomeService {
     if (filterDto.notes) {
       qb.andWhere('familyIncome.notes LIKE :notes', { notes: `%${filterDto.notes}%` });
     }
-    if (filterDto.startDate) {
-      qb.andWhere('familyIncome.createdAt >= :startDate', {
-        startDate: new Date(filterDto.startDate),
-      });
-    }
-    if (filterDto.endDate) {
-      qb.andWhere('familyIncome.createdAt <= :endDate', { endDate: new Date(filterDto.endDate) });
-    }
 
     return paginate<FamilyIncome, FamilyIncomeResponseDto>(qb, filterDto, FamilyIncomeResponseDto);
   }

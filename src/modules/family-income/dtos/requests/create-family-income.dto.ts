@@ -1,27 +1,36 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength, Min } from 'class-validator';
-import { Expose } from 'class-transformer';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  MaxLength,
+  Min,
+  Max,
+  MinLength,
+} from 'class-validator';
+import { PositiveIntegerId } from '@app/common/decorators/positive-integer-id.decorator';
 
 export class CreateFamilyIncomeDto {
-  @IsNumber()
-  @IsNotEmpty()
-  @Expose()
+  @PositiveIntegerId()
   familyId: number;
 
-  @IsNumber()
-  @IsNotEmpty()
+  @IsOptional()
+  @PositiveIntegerId()
+  familyMemberId?: number;
+
+  @IsNumber({ maxDecimalPlaces: 2 })
   @Min(0)
-  @Expose()
+  @Max(1_000_000_000)
   amount: number;
 
   @IsString()
   @IsNotEmpty()
-  @MaxLength(100)
-  @Expose()
+  @MinLength(2)
+  @MaxLength(512)
   incomeSource: string;
 
   @IsOptional()
   @IsString()
-  @MaxLength(2000)
-  @Expose()
+  @MaxLength(4096)
   notes?: string;
 }

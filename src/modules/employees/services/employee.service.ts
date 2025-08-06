@@ -36,10 +36,12 @@ export class EmployeesService {
     } else {
       person = await this.personsService.create(createEmployeeDto.person);
     }
+
     const employee = this.employeeRepository.create({
       ...createEmployeeDto,
       person,
     });
+    
     return await this.employeeRepository.save(employee);
   }
 

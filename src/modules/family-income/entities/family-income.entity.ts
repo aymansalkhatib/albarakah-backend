@@ -1,4 +1,5 @@
 import { Family } from '@app/modules/families/entities/families.entity';
+import { FamilyMember } from '@app/modules/family-members/entities/family-members.entity';
 import {
   Column,
   CreateDateColumn,
@@ -16,6 +17,9 @@ export class FamilyIncome {
 
   @Column({ name: 'family_id' })
   familyId: number;
+
+  @Column({ name: 'family_member_id', nullable: true })
+  familyMemberId?: number;
 
   @Column({ name: 'amount', type: 'decimal', precision: 10, scale: 2 })
   amount: number;
@@ -38,4 +42,10 @@ export class FamilyIncome {
   })
   @JoinColumn({ name: 'family_id' })
   family: Family;
+
+  @ManyToOne(() => FamilyMember, (familyMember) => familyMember.income, {
+    onDelete: 'SET NULL',
+  })
+  @JoinColumn({ name: 'family_member_id' })
+  familyMember?: FamilyMember;
 }
