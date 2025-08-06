@@ -12,6 +12,7 @@ import { PersonRelation } from '../enums/person-relation.enum';
 import { paginate } from '@app/common/pagination/paginate.service';
 import { PersonResponseDto } from '../dtos/responses/person-response.dto';
 import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
+import { applyPersonFilters } from '../utils/person-filter.util';
 
 @Injectable()
 export class PersonsService {
@@ -104,83 +105,7 @@ export class PersonsService {
 
   async findAll(filterDto: FilterPersonDto): Promise<PaginationResponseDto<PersonResponseDto>> {
     const queryBuilder = this.personRepository.createQueryBuilder('person');
-
-    // Apply filters based on FilterPersonDto
-    if (filterDto.firstName) {
-      queryBuilder.andWhere('person.firstName ILIKE :firstName', {
-        firstName: `%${filterDto.firstName}%`,
-      });
-    }
-
-    if (filterDto.lastName) {
-      queryBuilder.andWhere('person.lastName ILIKE :lastName', {
-        lastName: `%${filterDto.lastName}%`,
-      });
-    }
-
-    if (filterDto.nationalId) {
-      queryBuilder.andWhere('person.nationalId ILIKE :nationalId', {
-        nationalId: `%${filterDto.nationalId}%`,
-      });
-    }
-
-    if (filterDto.email) {
-      queryBuilder.andWhere('person.email ILIKE :email', {
-        email: `%${filterDto.email}%`,
-      });
-    }
-
-    if (filterDto.phone) {
-      queryBuilder.andWhere('person.phone ILIKE :phone', {
-        phone: `%${filterDto.phone}%`,
-      });
-    }
-
-    if (filterDto.isPalestinian !== undefined) {
-      queryBuilder.andWhere('person.isPalestinian = :isPalestinian', {
-        isPalestinian: filterDto.isPalestinian,
-      });
-    }
-
-    if (filterDto.gender) {
-      queryBuilder.andWhere('person.gender = :gender', {
-        gender: filterDto.gender,
-      });
-    }
-
-    if (filterDto.nationality) {
-      queryBuilder.andWhere('person.nationality ILIKE :nationality', {
-        nationality: `%${filterDto.nationality}%`,
-      });
-    }
-
-    if (filterDto.birthDateFrom && filterDto.birthDateTo) {
-      queryBuilder.andWhere('person.birthDate BETWEEN :birthDateFrom AND :birthDateTo', {
-        birthDateFrom: filterDto.birthDateFrom,
-        birthDateTo: filterDto.birthDateTo,
-      });
-    } else if (filterDto.birthDateFrom) {
-      queryBuilder.andWhere('person.birthDate >= :birthDateFrom', {
-        birthDateFrom: filterDto.birthDateFrom,
-      });
-    } else if (filterDto.birthDateTo) {
-      queryBuilder.andWhere('person.birthDate <= :birthDateTo', {
-        birthDateTo: filterDto.birthDateTo,
-      });
-    }
-
-    if (filterDto.fatherName) {
-      queryBuilder.andWhere('person.fatherName ILIKE :fatherName', {
-        fatherName: `%${filterDto.fatherName}%`,
-      });
-    }
-
-    if (filterDto.motherName) {
-      queryBuilder.andWhere('person.motherName ILIKE :motherName', {
-        motherName: `%${filterDto.motherName}%`,
-      });
-    }
-
+    applyPersonFilters(queryBuilder, 'person', filterDto);
     return paginate(queryBuilder, filterDto, PersonResponseDto);
   }
 
