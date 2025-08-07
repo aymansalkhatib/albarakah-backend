@@ -20,7 +20,7 @@ import { ParseQueryMiddleware } from './common/middlewares/parse-query.middlewar
 import { CallLogsModule } from './modules/call-logs/call-logs.module';
 import { FamiliesIncomeModule } from './modules/family-income/family-income.module';
 import { FamilyMembersModule } from './modules/family-members/family-members.module';
-import { EmergencyAidModule } from './modules/emergency-aid/emergency-aid.module';
+import { EmergencyAidRequestModule } from './modules/emergency-aid-request/emergency-aid-request.module';
 import { FamilyNeedsModule } from './modules/family-needs/family-needs.module';
 
 @Module({
@@ -42,7 +42,7 @@ import { FamilyNeedsModule } from './modules/family-needs/family-needs.module';
     GuardiansModule,
     CallLogsModule,
     FamilyMembersModule,
-    EmergencyAidModule,
+    EmergencyAidRequestModule,
     FamilyNeedsModule,
   ],
 
