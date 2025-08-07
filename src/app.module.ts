@@ -21,6 +21,7 @@ import { CallLogsModule } from './modules/call-logs/call-logs.module';
 import { FamiliesIncomeModule } from './modules/family-income/family-income.module';
 import { FamilyMembersModule } from './modules/family-members/family-members.module';
 import { EmergencyAidModule } from './modules/emergency-aid/emergency-aid.module';
+import { FamilyNeedsModule } from './modules/family-needs/family-needs.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { EmergencyAidModule } from './modules/emergency-aid/emergency-aid.module
     CallLogsModule,
     FamilyMembersModule,
     EmergencyAidModule,
+    FamilyNeedsModule,
   ],
 
   controllers: [AppController],
