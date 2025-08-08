@@ -39,7 +39,7 @@ export class ReceivedAssistanceController {
   @SerializeResponse(ReceivedAssistanceResponseDto)
   async findOne(@Param('id', ParseIntPipe) id: number): Promise<ReceivedAssistanceResponseDto> {
     return await this.receivedAssistanceService.findOne(id, {
-      relations: ['family', 'familyMember'],
+      relations: ['family', 'familyMember', 'familyMember.person'],
     });
   }
 

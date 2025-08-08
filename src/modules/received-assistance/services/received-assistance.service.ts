@@ -27,7 +27,9 @@ export class ReceivedAssistanceService {
 
     let familyMember = undefined;
     if (createDto.familyMemberId) {
-      familyMember = await this.familyMembersService.findOne(createDto.familyMemberId);
+      familyMember = await this.familyMembersService.findOne(createDto.familyMemberId, {
+        relations: ['person'],
+      });
       if (familyMember.familyId !== createDto.familyId) {
         throw new ConflictException('familyMemberId must belong to the same family');
       }
@@ -40,14 +42,9 @@ export class ReceivedAssistanceService {
   }
 
   async update(id: number, updateDto: UpdateReceivedAssistanceDto): Promise<ReceivedAssistance> {
-    const entity = await this.findOne(id, { relations: ['family', 'familyMember'] });
-
-    if (updateDto.familyMemberId !== undefined) {
-      const member = await this.familyMembersService.findOne(updateDto.familyMemberId);
-      if (member.familyId !== entity.familyId) {
-        throw new ConflictException('familyMemberId must belong to the same family');
-      }
-    }
+    const entity = await this.findOne(id, {
+      relations: ['family', 'familyMember', 'familyMember.person'],
+    });
 
     this.repository.merge(entity, updateDto);
     return await this.repository.save(entity);
