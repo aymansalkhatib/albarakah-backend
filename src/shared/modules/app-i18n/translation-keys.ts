@@ -116,6 +116,10 @@ interface PersonsSuccessDeletedParams {
   firstName: string | number; lastName: string | number
 }
 
+interface ReceivedassistanceErrorsNotfoundParams {
+  id: string | number
+}
+
 interface SupportersErrorsNotfoundParams {
   id: string | number
 }
@@ -214,6 +218,7 @@ const TranslationKeys = {
   'persons.validation.birth_date_max': 'persons.validation.birth_date_max',
   'persons.validation.birth_date_min': 'persons.validation.birth_date_min',
   'persons.validation.national_id_length': 'persons.validation.national_id_length',
+  'received-assistance.errors.not_found': 'received-assistance.errors.not_found',
   'supporters.errors.already_supporter': 'supporters.errors.already_supporter',
   'supporters.errors.not_found': 'supporters.errors.not_found',
   'system-users.errors.employee_has_system_account': 'system-users.errors.employee_has_system_account',
@@ -296,6 +301,7 @@ export interface TranslationInterpolations {
   'persons.validation.birth_date_max': NoParams;
   'persons.validation.birth_date_min': NoParams;
   'persons.validation.national_id_length': NoParams;
+  'received-assistance.errors.not_found': ReceivedassistanceErrorsNotfoundParams;
   'supporters.errors.already_supporter': NoParams;
   'supporters.errors.not_found': SupportersErrorsNotfoundParams;
   'system-users.errors.employee_has_system_account': NoParams;

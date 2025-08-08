@@ -13,7 +13,7 @@ import { AssistanceType } from '../enums/assistance-type.enum';
 import { FamilyMember } from '@app/modules/family-members/entities/family-members.entity';
 
 @Entity('received_assistance')
-@Index(['childId'])
+@Index(['familyMemberId'])
 @Index(['familyId'])
 @Index(['assistanceType'])
 @Index(['deliveryDate'])
@@ -24,8 +24,8 @@ export class ReceivedAssistance {
   @Column({ name: 'family_id' })
   familyId: number;
 
-  @Column({ name: 'child_id', nullable: true })
-  childId?: number;
+  @Column({ name: 'family_member_id', nullable: true })
+  familyMemberId?: number;
 
   @Column({
     name: 'assistance_type',
@@ -46,7 +46,7 @@ export class ReceivedAssistance {
   deliveryDate: Date;
 
   @Column({ type: 'text', nullable: true })
-  description?: string;
+  notes?: string;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

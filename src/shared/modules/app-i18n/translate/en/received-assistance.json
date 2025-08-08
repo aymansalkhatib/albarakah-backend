@@ -1,0 +1,5 @@
+{
+    "errors": {
+        "not_found": "Received assistance with ID {id} was not found."
+    }
+}

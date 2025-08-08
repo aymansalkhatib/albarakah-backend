@@ -22,6 +22,7 @@ import { FamiliesIncomeModule } from './modules/family-income/family-income.modu
 import { FamilyMembersModule } from './modules/family-members/family-members.module';
 import { EmergencyAidRequestModule } from './modules/emergency-aid-request/emergency-aid-request.module';
 import { FamilyNeedsModule } from './modules/family-needs/family-needs.module';
+import { ReceivedAssistanceModule } from './modules/received-assistance/received-assistance.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { FamilyNeedsModule } from './modules/family-needs/family-needs.module';
     FamilyMembersModule,
     EmergencyAidRequestModule,
     FamilyNeedsModule,
+    ReceivedAssistanceModule,
   ],
 
   controllers: [AppController],
