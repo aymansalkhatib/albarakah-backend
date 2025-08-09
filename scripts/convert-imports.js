@@ -1,55 +1,25 @@
-// convert-imports.js
-const fs = require('fs');
+// revert-module-specifier.cjs
+const { Project } = require('ts-morph');
 const path = require('path');
 
-function convertImportsInFile(filePath) {
-  const content = fs.readFileSync(filePath, 'utf8');
-  const lines = content.split('\n');
+(async () => {
+  const project = new Project({ tsConfigFilePath: 'tsconfig.json' });
+  const files = project
+    .getSourceFiles('src/**/*.ts')
+    .filter((f) => !f.getFilePath().includes('/node_modules/') && !f.isDeclarationFile());
 
-  const convertedLines = lines.map((line) => {
-    // البحث عن imports التي تبدأ بـ src/
-    const importMatch = line.match(/import\s+.*\s+from\s+['"]src\/(.+)['"]/);
-
-    if (importMatch) {
-      const importPath = importMatch[1];
-      const currentDir = path.dirname(filePath);
-      const targetPath = path.join('src', importPath);
-
-      // حساب المسار النسبي
-      const relativePath = path.relative(currentDir, targetPath);
-
-      // التأكد من أن المسار يبدأ بـ ./ أو ../
-      const normalizedPath = relativePath.startsWith('.') ? relativePath : './' + relativePath;
-
-      // استبدال المسار
-      return line.replace(
-        /from\s+['"]src\/(.+)['"]/,
-        `from '${normalizedPath.replace(/\\/g, '/')}'`,
-      );
+  for (const f of files) {
+    let changed = false;
+    for (const imp of f.getImportDeclarations()) {
+      const spec = imp.getModuleSpecifierValue();
+      if (spec && spec.includes('app-i18n/translate.helper')) {
+        imp.setModuleSpecifier(
+          spec.replace('../../../shared/modules/app-i18n/translate.helper', '@app/common'),
+        );
+        changed = true;
+      }
     }
-
-    return line;
-  });
-
-  fs.writeFileSync(filePath, convertedLines.join('\n'));
-}
-
-function processDirectory(dirPath) {
-  const files = fs.readdirSync(dirPath);
-
-  files.forEach((file) => {
-    const fullPath = path.join(dirPath, file);
-    const stat = fs.statSync(fullPath);
-
-    if (stat.isDirectory()) {
-      processDirectory(fullPath);
-    } else if (file.endsWith('.ts') && !file.endsWith('.d.ts')) {
-      console.log(`Converting: ${fullPath}`);
-      convertImportsInFile(fullPath);
-    }
-  });
-}
-
-// تشغيل التحويل
-processDirectory('./src');
-console.log('تم تحويل جميع المسارات بنجاح!');
+    if (changed) await f.save();
+  }
+  console.log('done');
+})();
