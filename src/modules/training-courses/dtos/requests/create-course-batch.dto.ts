@@ -1,4 +1,5 @@
 import { IsLessThanOrEqual } from '@app/common/decorators/is-less-than-or-equal.decorator';
+import { Type } from 'class-transformer';
 import { IsDate, IsInt, IsOptional, IsPositive, IsString, Length } from 'class-validator';
 
 export class CreateCourseBatchDto {
@@ -9,9 +10,10 @@ export class CreateCourseBatchDto {
   @IsOptional()
   @IsInt()
   @IsPositive()
-  batchNumber: number;
+  batchNumber?: number;
 
   @IsOptional()
+  @Type(() => Date)
   @IsDate()
   @IsLessThanOrEqual('endDate', {
     message: 'endDate must be after startDate',
@@ -19,6 +21,7 @@ export class CreateCourseBatchDto {
   startDate?: Date;
 
   @IsOptional()
+  @Type(() => Date)
   @IsDate()
   endDate?: Date;
 

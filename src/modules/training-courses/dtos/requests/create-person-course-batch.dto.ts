@@ -1,4 +1,5 @@
 import { IsDate, IsEnum, IsInt, IsOptional, IsPositive, IsString, Length } from 'class-validator';
+import { Type } from 'class-transformer';
 import { AttendanceStatus } from '../../enums/attendance-status.enum';
 import { IsLessThanOrEqual } from '@app/common/decorators/is-less-than-or-equal.decorator';
 
@@ -21,13 +22,15 @@ export class CreatePersonCourseBatchDto {
   evaluation?: string;
 
   @IsOptional()
+  @Type(() => Date)
   @IsDate()
   @IsLessThanOrEqual('dropOutDate')
   joinDate?: Date;
 
   @IsOptional()
+  @Type(() => Date)
   @IsDate()
-  dropOutDate?: string;
+  dropOutDate?: Date;
 
   @IsOptional()
   @IsString()

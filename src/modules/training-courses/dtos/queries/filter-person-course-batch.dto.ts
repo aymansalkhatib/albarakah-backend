@@ -1,6 +1,6 @@
 import { IsDate, IsEnum, IsInt, IsOptional, IsPositive, IsString, Length } from 'class-validator';
 import { PaginationDto } from '@app/common/pagination/dto/pagination.dto';
-import { Transform } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { AttendanceStatus } from '../../enums/attendance-status.enum';
 import { IsLessThanOrEqual } from '@app/common/decorators/is-less-than-or-equal.decorator';
 
@@ -28,22 +28,26 @@ export class FilterPersonCourseBatchDto extends PaginationDto {
   attendanceStatus?: AttendanceStatus;
 
   @IsOptional()
+  @Type(() => Date)
   @IsDate()
   @IsLessThanOrEqual('joinDateTo')
-  joinDateFrom?: string;
+  joinDateFrom?: Date;
 
   @IsOptional()
+  @Type(() => Date)
   @IsDate()
-  joinDateTo?: string;
+  joinDateTo?: Date;
 
   @IsOptional()
+  @Type(() => Date)
   @IsDate()
-  @IsLessThanOrEqual('dropOutDateFrom')
-  dropOutDateFrom?: string;
+  @IsLessThanOrEqual('dropOutDateTo')
+  dropOutDateFrom?: Date;
 
   @IsOptional()
+  @Type(() => Date)
   @IsDate()
-  dropOutDateTo?: string;
+  dropOutDateTo?: Date;
 
   @IsOptional()
   @IsString()

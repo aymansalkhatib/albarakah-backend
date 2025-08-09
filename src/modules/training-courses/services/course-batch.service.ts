@@ -54,15 +54,16 @@ export class CourseBatchService {
 
   async update(id: number, updateCourseBatchDto: UpdateCourseBatchDto): Promise<CourseBatch> {
     const courseBatch = await this.findOne(id);
+    // Validate chronological order regardless of which field is provided
+    const newStartDate = updateCourseBatchDto.startDate ?? courseBatch.startDate;
+    const newEndDate = updateCourseBatchDto.endDate ?? courseBatch.endDate;
 
-    if (updateCourseBatchDto.endDate && courseBatch.startDate) {
-      if (normalizeDate(updateCourseBatchDto.endDate) < normalizeDate(courseBatch.startDate)) {
-        throw new BadRequestException(
-          this.translateHelper.tr(
-            'training-courses.course-batches.errors.end_date_before_start_date',
-          ),
-        );
-      }
+    if (newStartDate && newEndDate && normalizeDate(newEndDate) < normalizeDate(newStartDate)) {
+      throw new BadRequestException(
+        this.translateHelper.tr(
+          'training-courses.course-batches.errors.end_date_before_start_date',
+        ),
+      );
     }
 
     const mergedCourseBatch = this.courseBatchRepository.merge(courseBatch, updateCourseBatchDto);

@@ -59,11 +59,11 @@ export class PersonCourseBatchService {
   ): Promise<PersonCourseBatch> {
     const personCourseBatch = await this.findOne(id);
 
-    if (updatePersonCourseBatchDto.dropOutDate && personCourseBatch.joinDate) {
-      if (
-        normalizeDate(updatePersonCourseBatchDto.dropOutDate) <
-        normalizeDate(personCourseBatch.joinDate)
-      ) {
+    // Validate chronological order regardless of which field is provided
+    const newJoinDate = updatePersonCourseBatchDto.joinDate ?? personCourseBatch.joinDate;
+    const newDropOutDate = updatePersonCourseBatchDto.dropOutDate ?? personCourseBatch.dropOutDate;
+    if (newJoinDate && newDropOutDate) {
+      if (normalizeDate(newDropOutDate) < normalizeDate(newJoinDate)) {
         throw new BadRequestException(
           this.translateHelper.tr(
             'training-courses.person-course-batches.errors.drop_out_date_before_join_date',
