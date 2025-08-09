@@ -38,20 +38,13 @@ export class TrainingCoursesService {
   }
 
   async delete(id: number): Promise<void> {
-    // Find the training course with its batches to ensure cascade delete works
-    const trainingCourse = await this.trainingCourseRepository.findOne({
-      where: { id },
-      relations: ['batches', 'batches.participants'],
-    });
+    const result = await this.trainingCourseRepository.delete(id);
 
-    if (!trainingCourse) {
+    if (result.affected === 0) {
       throw new NotFoundException(
         this.translateHelper.tr('training-courses.training-courses.errors.not_found', { id }),
       );
     }
-
-    // Delete with cascade - this will automatically delete related batches and participants
-    await this.trainingCourseRepository.remove(trainingCourse);
   }
 
   async findOne(id: number, relations: string[] = []): Promise<TrainingCourse> {
