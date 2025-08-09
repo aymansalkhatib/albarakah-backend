@@ -14,7 +14,7 @@ import { ClothingSize } from '../enums/clothing-size.enum';
 import { Guardian } from '../../guardians/entities/guardian.entity';
 import { Employee } from '../../employees/entities/employee.entity';
 import { Supporter } from '../../supporters/entities/supporters.entity';
-import { FamilyMember } from '@app/modules/family-members/entities/family-members.entity';
+import { FamilyMember } from '../../../modules/family-members/entities/family-members.entity';
 
 @Entity('person')
 @Index('idx_person_national_id', ['nationalId'], { unique: true, where: 'national_id IS NOT NULL' })

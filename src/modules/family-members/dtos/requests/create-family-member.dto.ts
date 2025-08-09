@@ -9,10 +9,10 @@ import {
 } from 'class-validator';
 import { Expose, Type } from 'class-transformer';
 import { FamilyRelationType } from '../../enums/family-relation-type.enum';
-import { StrictBoolean } from '@app/common/decorators/strict-boolean.decorator';
-import { OnlyOneOf } from '@app/common/decorators/validate-one-of-two-fields.validator';
-import { PositiveIntegerId } from '@app/common/decorators/positive-integer-id.decorator';
-import { CreatePersonDto } from '@app/modules/persons/dtos/requests/create-person.dto';
+import { StrictBoolean } from '../../../../common/decorators/strict-boolean.decorator';
+import { OnlyOneOf } from '../../../../common/decorators/validate-one-of-two-fields.validator';
+import { PositiveIntegerId } from '../../../../common/decorators/positive-integer-id.decorator';
+import { CreatePersonDto } from '../../../../modules/persons/dtos/requests/create-person.dto';
 
 @OnlyOneOf([
   {

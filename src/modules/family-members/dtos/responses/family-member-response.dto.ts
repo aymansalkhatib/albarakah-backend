@@ -1,9 +1,9 @@
 import { Expose, Type } from 'class-transformer';
-import { PersonResponseDto } from '@app/modules/persons/dtos/responses/person-response.dto';
-import { ReceivedAssistance } from '@app/modules/received-assistance/entities/received-assistance.entity';
+import { PersonResponseDto } from '../../../../modules/persons/dtos/responses/person-response.dto';
+import { ReceivedAssistance } from '../../../../modules/received-assistance/entities/received-assistance.entity';
 import { FamilyRelationType } from '../../enums/family-relation-type.enum';
-import { PersonCourseBatchResponseDto } from '@app/modules/training-courses/dtos/responses/person-course-batch-response.dto';
-import { FamilyResponseDto } from '@app/modules/families/dtos/responses/family-response.dto';
+import { PersonCourseBatchResponseDto } from '../../../../modules/training-courses/dtos/responses/person-course-batch-response.dto';
+import { FamilyResponseDto } from '../../../../modules/families/dtos/responses/family-response.dto';
 
 export class FamilyMemberResponseDto {
   @Expose()

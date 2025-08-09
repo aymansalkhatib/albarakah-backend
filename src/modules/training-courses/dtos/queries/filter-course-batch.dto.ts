@@ -1,7 +1,7 @@
 import { IsDateString, IsInt, IsOptional, IsPositive, IsString, Length } from 'class-validator';
-import { PaginationDto } from '@app/common/pagination/dto/pagination.dto';
+import { PaginationDto } from '../../../../common/pagination/dto/pagination.dto';
 import { Transform } from 'class-transformer';
-import { IsLessThanOrEqual } from '@app/common/decorators/is-less-than-or-equal.decorator';
+import { IsLessThanOrEqual } from '../../../../common/decorators/is-less-than-or-equal.decorator';
 
 export class FilterCourseBatchDto extends PaginationDto {
   @IsOptional()

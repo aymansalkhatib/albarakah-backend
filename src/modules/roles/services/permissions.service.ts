@@ -3,10 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PermissionEntity } from '../entities/permissions.entity';
 import { FilterPermissionDto } from '../dtos/queries/filter-permission.dto';
-import { SystemUser } from '@app/modules/system-users/entities/system-user.entity';
+import { SystemUser } from '../../../modules/system-users/entities/system-user.entity';
 import { UserPermissionsService } from './user-permissions.service';
-import { paginate } from '@app/common/pagination/paginate.service';
-import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
+import { paginate } from '../../../common/pagination/paginate.service';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { PermissionResponseDto } from '../dtos/responses/permission-response.dto';
 
 @Injectable()

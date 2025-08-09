@@ -1,18 +1,17 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { CreateFamilyIncomeDto } from '../dtos/requests/create-family-income.dto';
 import { FamilyIncome } from '../entities/family-income.entity';
-import { FamiliesService } from '@app/modules/families/services/families.service';
-import { FamilyIncomeRepository } from '../repositories/family-income.repository';
+import { FamiliesService } from '../../../modules/families/services/families.service';
 import { FilterFamilyIncomeDto } from '../dtos/queries/filter-family-income.dto';
-import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
-import { paginate } from '@app/common/pagination/paginate.service';
-import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
+import { paginate } from '../../../common/pagination/paginate.service';
+import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
 import { FamilyIncomeResponseDto } from '../dtos/responses/family-income-response.dto';
-import { FamilyMembersService } from '@app/modules/family-members/services/family-members.service';
+import { FamilyMembersService } from '../../../modules/family-members/services/family-members.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOneOptions, Repository } from 'typeorm';
 import { UpdateFamilyIncomeDto } from '../dtos/requests/update-family-income.dto';
-import { FamilyMember } from '@app/modules/family-members/entities/family-members.entity';
+import { FamilyMember } from '../../../modules/family-members/entities/family-members.entity';
 
 @Injectable()
 export class FamilyIncomeService {

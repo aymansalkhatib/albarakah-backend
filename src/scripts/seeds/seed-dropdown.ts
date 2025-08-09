@@ -1,4 +1,4 @@
-import { PersonDropdown } from '@app/modules/persons/enums/type-dropdown.enum';
+import { PersonDropdown } from '../../modules/persons/enums/type-dropdown.enum';
 import { DropdownCategory } from '../../modules/dropdowns/entities/dropdown-category.entity';
 import { DropdownOption } from '../../modules/dropdowns/entities/dropdown-option.entity';
 import { Dropdown, DropdownSelectionType } from '../../modules/dropdowns/entities/dropdown.entity';

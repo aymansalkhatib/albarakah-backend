@@ -8,7 +8,7 @@ import {
   Max,
   MinLength,
 } from 'class-validator';
-import { PositiveIntegerId } from '@app/common/decorators/positive-integer-id.decorator';
+import { PositiveIntegerId } from '../../../../common/decorators/positive-integer-id.decorator';
 
 export class CreateFamilyIncomeDto {
   @PositiveIntegerId()

@@ -15,10 +15,10 @@ import { EmployeesService } from '../services/employee.service';
 import { CreateEmployeeDto } from '../dtos/requests/create-employee.dto';
 import { EmployeeResponseDto } from '../dtos/responses/employee-response.dto';
 import { UpdateEmployeeDto } from '../dtos/requests/update-employee.dto';
-import { SerializeResponse } from '@app/common/decorators/serialize-response.decorator';
-import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
-import { Protected } from '@app/common/decorators/protected.decorator';
-import { Permission } from '@app/modules/roles/enums/permission.enum';
+import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
+import { Protected } from '../../../common/decorators/protected.decorator';
+import { Permission } from '../../../modules/roles/enums/permission.enum';
 
 @Controller('employees')
 export class EmployeesController {

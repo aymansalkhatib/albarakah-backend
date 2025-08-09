@@ -16,10 +16,10 @@ import { CreateEmergencyAidRequestDto } from '../dtos/requests/create-emergency-
 import { EmergencyAidRequestResponseDto } from '../dtos/responses/emergency-aid-request-response.dto';
 import { UpdateEmergencyAidRequestDto } from '../dtos/requests/update-emergency-aid-request.dto';
 import { FilterEmergencyAidRequestDto } from '../dtos/queries/filter-emergency-aid-request.dto';
-import { SerializeResponse } from '@app/common/decorators/serialize-response.decorator';
-import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
-import { Protected } from '@app/common/decorators/protected.decorator';
-import { Permission } from '@app/modules/roles/enums/permission.enum';
+import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
+import { Protected } from '../../../common/decorators/protected.decorator';
+import { Permission } from '../../../modules/roles/enums/permission.enum';
 
 @Controller('emergency-aid-requests')
 export class EmergencyAidRequestController {

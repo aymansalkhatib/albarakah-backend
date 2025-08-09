@@ -3,8 +3,8 @@ import { UpdatePersonDto } from '../dtos/requests/update-person.dto';
 import { Person } from '../entities/person.entity';
 import { Not, Repository } from 'typeorm';
 import { CreatePersonDto } from '../dtos/requests/create-person.dto';
-import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
-import { DropdownService } from '@app/modules/dropdowns/services/dropdown.service';
+import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
+import { DropdownService } from '../../../modules/dropdowns/services/dropdown.service';
 import { PersonDropdown } from '../enums/type-dropdown.enum';
 
 export async function validatePersonUniqueness(

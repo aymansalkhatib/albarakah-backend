@@ -11,12 +11,12 @@ import {
   MinDate,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { IsLessThanOrEqual } from '@app/common/decorators/is-less-than-or-equal.decorator';
-import { StrictBoolean } from '@app/common/decorators/strict-boolean.decorator';
+import { IsLessThanOrEqual } from '../../../../common/decorators/is-less-than-or-equal.decorator';
+import { StrictBoolean } from '../../../../common/decorators/strict-boolean.decorator';
 import { ClothingSize } from '../../enums/clothing-size.enum';
 import { GenderType } from '../../enums/gender-type.enum';
-import { PositiveIntegerId } from '@app/common/decorators/positive-integer-id.decorator';
-import { PaginationDto } from '@app/common/pagination/dto/pagination.dto';
+import { PositiveIntegerId } from '../../../../common/decorators/positive-integer-id.decorator';
+import { PaginationDto } from '../../../../common/pagination/dto/pagination.dto';
 
 export class FilterPersonDto extends PaginationDto {
   @IsOptional()

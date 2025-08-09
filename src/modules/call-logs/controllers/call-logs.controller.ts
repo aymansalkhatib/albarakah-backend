@@ -12,15 +12,15 @@ import {
   Query,
 } from '@nestjs/common';
 
-import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
-import { SerializeResponse } from '@app/common/decorators/serialize-response.decorator';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
+import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
 import { FilterCallLogDto } from '../dtos/queries/filter-call-log.dto';
 import { CreateCallLogDto } from '../dtos/requests/create-call-log.dto';
 import { UpdateCallLogDto } from '../dtos/requests/update-call-log.dto';
 import { CallLogResponseDto } from '../dtos/responses/call-log-response.dto';
 import { CallLogsService } from '../services/call-logs.service';
-import { Protected } from '@app/common/decorators/protected.decorator';
-import { Permission } from '@app/modules/roles/enums/permission.enum';
+import { Protected } from '../../../common/decorators/protected.decorator';
+import { Permission } from '../../../modules/roles/enums/permission.enum';
 
 @Controller('call-logs')
 export class CallLogsController {

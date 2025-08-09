@@ -12,7 +12,7 @@ import {
 import { UserPermissionsService } from '../services/user-permissions.service';
 import { AssignUserPermissionDto } from '../dtos/requests/assign-user-permission.dto';
 import { BulkAssignUserPermissionsDto } from '../dtos/requests/bulk-assign-user-permissions.dto';
-import { toDto } from '@app/common/helpers/to-dto';
+import { toDto } from '../../.././common/helpers/to-dto';
 import { PermissionResponseDto } from '../dtos/responses/permission-response.dto';
 
 @Controller('user-permissions')

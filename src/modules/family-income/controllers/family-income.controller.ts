@@ -1,4 +1,3 @@
-import { toDto } from '@app/common/helpers/to-dto';
 import {
   Body,
   Controller,
@@ -18,10 +17,10 @@ import { FamilyIncomeService } from '../services/family-income.service';
 import { FamilyIncomeResponseDto } from '../dtos/responses/family-income-response.dto';
 import { FilterFamilyIncomeDto } from '../dtos/queries/filter-family-income.dto';
 import { UpdateFamilyIncomeDto } from '../dtos/requests/update-family-income.dto';
-import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
-import { SerializeResponse } from '@app/common/decorators/serialize-response.decorator';
-import { Protected } from '@app/common/decorators/protected.decorator';
-import { Permission } from '@app/modules/roles/enums/permission.enum';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
+import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
+import { Protected } from '../../../common/decorators/protected.decorator';
+import { Permission } from '../../../modules/roles/enums/permission.enum';
 
 @Controller('family-income')
 export class FamilyIncomeController {

@@ -1,11 +1,11 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOneOptions, Repository } from 'typeorm';
-import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
-import { FamiliesService } from '@app/modules/families/services/families.service';
-import { FamilyMembersService } from '@app/modules/family-members/services/family-members.service';
-import { paginate } from '@app/common/pagination/paginate.service';
-import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
+import { TranslateHelper } from '../../.././shared/modules/app-i18n/translate.helper';
+import { FamiliesService } from '../../.././modules/families/services/families.service';
+import { FamilyMembersService } from '../../.././modules/family-members/services/family-members.service';
+import { paginate } from '../../.././common/pagination/paginate.service';
+import { PaginationResponseDto } from '../../.././common/pagination/dto/pagination-response.dto';
 import { ReceivedAssistance } from '../entities/received-assistance.entity';
 import { CreateReceivedAssistanceDto } from '../dtos/requests/create-received-assistance.dto';
 import { UpdateReceivedAssistanceDto } from '../dtos/requests/update-received-assistance.dto';

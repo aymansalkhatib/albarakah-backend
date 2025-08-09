@@ -16,10 +16,10 @@ import { UpdatePersonDto } from '../dtos/requests/update-person.dto';
 import { FilterPersonDto } from '../dtos/queries/filter-person.dto';
 import { CreatePersonDto } from '../dtos/requests/create-person.dto';
 import { PersonResponseDto } from '../dtos/responses/person-response.dto';
-import { SerializeResponse } from '@app/common/decorators/serialize-response.decorator';
-import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
-import { Protected } from '@app/common/decorators/protected.decorator';
-import { Permission } from '@app/modules/roles/enums/permission.enum';
+import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
+import { Protected } from '../../../common/decorators/protected.decorator';
+import { Permission } from '../../../modules/roles/enums/permission.enum';
 
 @Controller('persons')
 export class PersonController {

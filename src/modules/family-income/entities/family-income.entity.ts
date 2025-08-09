@@ -1,5 +1,5 @@
-import { Family } from '@app/modules/families/entities/families.entity';
-import { FamilyMember } from '@app/modules/family-members/entities/family-members.entity';
+import { Family } from '../../../modules/families/entities/families.entity';
+import { FamilyMember } from '../../../modules/family-members/entities/family-members.entity';
 import {
   Column,
   CreateDateColumn,

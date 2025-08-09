@@ -10,13 +10,13 @@ import { PersonCourseBatch } from '../entities/person-course-batch.entity';
 import { CreatePersonCourseBatchDto } from '../dtos/requests/create-person-course-batch.dto';
 import { UpdatePersonCourseBatchDto } from '../dtos/requests/update-person-course-batch.dto';
 import { FilterPersonCourseBatchDto } from '../dtos/queries/filter-person-course-batch.dto';
-import { paginate } from '@app/common/pagination/paginate.service';
-import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
+import { paginate } from '../../../common/pagination/paginate.service';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { PersonCourseBatchResponseDto } from '../dtos/responses/person-course-batch-response.dto';
-import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
-import { normalizeDate } from '@app/common/helpers/date.helper';
+import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
+import { normalizeDate } from '../../../common/helpers/date.helper';
 import { CourseBatchService } from './course-batch.service';
-import { FamilyMembersService } from '@app/modules/family-members/services/family-members.service';
+import { FamilyMembersService } from '../../../modules/family-members/services/family-members.service';
 
 @Injectable()
 export class PersonCourseBatchService {

@@ -2,20 +2,20 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
-import { paginate } from '@app/common/pagination/paginate.service';
-import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
+import { paginate } from '../../../common/pagination/paginate.service';
+import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
 
 import { CallLog } from '../entities/call-log.entity';
 import { ExternalPartyType } from '../enums/recipient-type.enum';
-import { SupportersService } from '@app/modules/supporters/services/supporters.service';
+import { SupportersService } from '../../../modules/supporters/services/supporters.service';
 import { FilterCallLogDto } from '../dtos/queries/filter-call-log.dto';
 import { CreateCallLogDto } from '../dtos/requests/create-call-log.dto';
 import { UpdateCallLogDto } from '../dtos/requests/update-call-log.dto';
 import { CallLogResponseDto } from '../dtos/responses/call-log-response.dto';
-import { EmployeesService } from '@app/modules/employees/services/employee.service';
-import { GuardiansService } from '@app/modules/guardians/services/guardians.service';
-import { FamilyMembersService } from '@app/modules/family-members/services/family-members.service';
+import { EmployeesService } from '../../../modules/employees/services/employee.service';
+import { GuardiansService } from '../../../modules/guardians/services/guardians.service';
+import { FamilyMembersService } from '../../../modules/family-members/services/family-members.service';
 
 @Injectable()
 export class CallLogsService {

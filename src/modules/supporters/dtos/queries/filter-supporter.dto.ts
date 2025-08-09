@@ -7,9 +7,9 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { FilterPersonDto } from '@app/modules/persons/dtos/queries/filter-person.dto';
-import { PaginationDto } from '@app/common/pagination/dto/pagination.dto';
-import { IsLessThanOrEqual } from '@app/common/decorators/is-less-than-or-equal.decorator';
+import { FilterPersonDto } from '../../../../modules/persons/dtos/queries/filter-person.dto';
+import { PaginationDto } from '../../../../common/pagination/dto/pagination.dto';
+import { IsLessThanOrEqual } from '../../../../common/decorators/is-less-than-or-equal.decorator';
 import { SupportType } from '../../enums/support-type';
 
 export class FilterSupporterDto extends PaginationDto {

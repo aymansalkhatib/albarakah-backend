@@ -17,9 +17,9 @@ import { FamilyResponseDto } from '../dtos/responses/family-response.dto';
 import { FamiliesService } from '../services/families.service';
 import { FilterFamilyDto } from '../dtos/queries/filter-family.dto';
 import { CreateFamilyDto } from '../dtos/requests/create-family-dto';
-import { Protected } from '@app/common/decorators/protected.decorator';
-import { Permission } from '@app/modules/roles/enums/permission.enum';
-import { SerializeResponse } from '@app/common/decorators/serialize-response.decorator';
+import { Protected } from '../../../common/decorators/protected.decorator';
+import { Permission } from '../../../modules/roles/enums/permission.enum';
+import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
 
 @Controller('families')
 export class FamiliesController {

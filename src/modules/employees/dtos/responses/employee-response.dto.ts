@@ -1,4 +1,4 @@
-import { PersonResponseDto } from '@app/modules/persons/dtos/responses/person-response.dto';
+import { PersonResponseDto } from '../../../../modules/persons/dtos/responses/person-response.dto';
 import { Exclude, Expose, Type } from 'class-transformer';
 
 @Exclude()

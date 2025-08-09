@@ -1,6 +1,6 @@
 import { IsOptional, IsString } from 'class-validator';
 import { PositiveIntegerId } from '../../../../common/decorators/positive-integer-id.decorator';
-import { PaginationDto } from '@app/common/pagination/dto/pagination.dto';
+import { PaginationDto } from '../../../../common/pagination/dto/pagination.dto';
 
 export class FilterPermissionDto extends PaginationDto {
   @IsOptional()

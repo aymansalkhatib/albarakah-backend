@@ -1,7 +1,7 @@
 import { IsDate, IsEnum, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { OnlyOneOf } from '@app/common/decorators/validate-one-of-two-fields.validator';
-import { CreatePersonDto } from '@app/modules/persons/dtos/requests/create-person.dto';
+import { OnlyOneOf } from '../../../../common/decorators/validate-one-of-two-fields.validator';
+import { CreatePersonDto } from '../../../../modules/persons/dtos/requests/create-person.dto';
 import { SupportType } from '../../enums/support-type';
 
 @OnlyOneOf([

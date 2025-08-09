@@ -1,6 +1,6 @@
-import { Employee } from '@app/modules/employees/entities/employee.entity';
-import { EmployeesService } from '@app/modules/employees/services/employee.service';
-import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
+import { Employee } from '../../../modules/employees/entities/employee.entity';
+import { EmployeesService } from '../../../modules/employees/services/employee.service';
+import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Not, Repository } from 'typeorm';
@@ -8,9 +8,9 @@ import { FilterSystemUserDto } from '../dtos/queries/filter-system-user.dto';
 import { CreateSystemUserDto } from '../dtos/requests/create-system-user.dto';
 import { UpdateSystemUserDto } from '../dtos/requests/update-system-user.dto';
 import { SystemUser } from '../entities/system-user.entity';
-import { paginate } from '@app/common/pagination/paginate.service';
+import { paginate } from '../../../common/pagination/paginate.service';
 import { SystemUserResponseDto } from '../dtos/responses/system-user-response.dto';
-import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 
 @Injectable()
 export class SystemUsersService {

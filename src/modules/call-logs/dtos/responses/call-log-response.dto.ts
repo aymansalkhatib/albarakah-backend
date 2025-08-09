@@ -1,9 +1,9 @@
 import { Expose, Type } from 'class-transformer';
 import { CallStatus } from '../../enums/call-status.enum';
 import { ExternalPartyType } from '../../enums/recipient-type.enum';
-import { EmployeeResponseDto } from '@app/modules/employees/dtos/responses/employee-response.dto';
+import { EmployeeResponseDto } from '../../../../modules/employees/dtos/responses/employee-response.dto';
 import { CallDirection } from '../../enums/call-direction.enum';
-import { PersonResponseDto } from '@app/modules/persons/dtos/responses/person-response.dto';
+import { PersonResponseDto } from '../../../../modules/persons/dtos/responses/person-response.dto';
 
 export class CallLogResponseDto {
   @Expose()

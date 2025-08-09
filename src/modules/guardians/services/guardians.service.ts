@@ -7,8 +7,8 @@ import { PersonsService } from '../../persons/services/persons.service';
 import { Person } from '../../persons/entities/person.entity';
 import { CreateGuardianDto } from '../dtos/requests/create-guardian.dto';
 import { FilterGuardianDto } from '../dtos/queries/filter-guardian.dto';
-import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
-import { PersonRelation } from '@app/modules/persons/enums/person-relation.enum';
+import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
+import { PersonRelation } from '../../../modules/persons/enums/person-relation.enum';
 
 @Injectable()
 export class GuardiansService {

@@ -16,8 +16,8 @@ import { CreateCourseBatchDto } from '../dtos/requests/create-course-batch.dto';
 import { UpdateCourseBatchDto } from '../dtos/requests/update-course-batch.dto';
 import { FilterCourseBatchDto } from '../dtos/queries/filter-course-batch.dto';
 import { CourseBatchResponseDto } from '../dtos/responses/course-batch-response.dto';
-import { SerializeResponse } from '@app/common/decorators/serialize-response.decorator';
-import { Protected } from '@app/common/decorators/protected.decorator';
+import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
+import { Protected } from '../../../common/decorators/protected.decorator';
 import { Permission } from '../../roles/enums/permission.enum';
 
 @Controller('course-batches')

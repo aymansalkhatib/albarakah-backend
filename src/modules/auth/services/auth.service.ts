@@ -2,9 +2,9 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { SystemUser } from '@app/modules/system-users/entities/system-user.entity';
-import { AppJwtService } from '@app/shared/modules/app-jwt/app-jwt.service';
-import { AccessTokenPayload } from '@app/shared/modules/app-jwt/interfaces';
+import { SystemUser } from '../../../modules/system-users/entities/system-user.entity';
+import { AppJwtService } from '../../../shared/modules/app-jwt/app-jwt.service';
+import { AccessTokenPayload } from '../../../shared/modules/app-jwt/interfaces';
 import { LoginDto } from '../dtos/requests/login.dto';
 import { LoginResponseDto } from '../dtos/responses/login-response.dto';
 

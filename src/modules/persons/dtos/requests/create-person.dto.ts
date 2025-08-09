@@ -12,10 +12,10 @@ import {
   MinDate,
 } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { StrictBoolean } from '@app/common/decorators/strict-boolean.decorator';
+import { StrictBoolean } from '../../../../common/decorators/strict-boolean.decorator';
 import { ClothingSize } from '../../enums/clothing-size.enum';
 import { GenderType } from '../../enums/gender-type.enum';
-import { PositiveIntegerId } from '@app/common/decorators/positive-integer-id.decorator';
+import { PositiveIntegerId } from '../../../../common/decorators/positive-integer-id.decorator';
 
 export class CreatePersonDto {
   @IsOptional()

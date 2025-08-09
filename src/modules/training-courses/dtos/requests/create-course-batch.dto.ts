@@ -1,4 +1,4 @@
-import { IsLessThanOrEqual } from '@app/common/decorators/is-less-than-or-equal.decorator';
+import { IsLessThanOrEqual } from '../../../../common/decorators/is-less-than-or-equal.decorator';
 import { Type } from 'class-transformer';
 import { IsDate, IsInt, IsOptional, IsPositive, IsString, Length } from 'class-validator';
 

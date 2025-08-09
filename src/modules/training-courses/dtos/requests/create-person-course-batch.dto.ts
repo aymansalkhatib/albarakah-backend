@@ -1,7 +1,7 @@
 import { IsDate, IsEnum, IsInt, IsOptional, IsPositive, IsString, Length } from 'class-validator';
 import { Type } from 'class-transformer';
 import { AttendanceStatus } from '../../enums/attendance-status.enum';
-import { IsLessThanOrEqual } from '@app/common/decorators/is-less-than-or-equal.decorator';
+import { IsLessThanOrEqual } from '../../../../common/decorators/is-less-than-or-equal.decorator';
 
 export class CreatePersonCourseBatchDto {
   @IsInt()

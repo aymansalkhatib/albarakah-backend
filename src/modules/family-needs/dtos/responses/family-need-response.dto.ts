@@ -1,8 +1,8 @@
 import { Expose, Type } from 'class-transformer';
 import { PriorityLevel } from '../../enums/priority-level.enum';
 import { FamilyNeedStatus } from '../../enums/family-need-status.enum';
-import { FamilyResponseDto } from '@app/modules/families/dtos/responses/family-response.dto';
-import { FamilyMemberResponseDto } from '@app/modules/family-members/dtos/responses/family-member-response.dto';
+import { FamilyResponseDto } from '../../../../modules/families/dtos/responses/family-response.dto';
+import { FamilyMemberResponseDto } from '../../../../modules/family-members/dtos/responses/family-member-response.dto';
 
 export class FamilyNeedResponseDto {
   @Expose()

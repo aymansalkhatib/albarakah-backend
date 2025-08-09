@@ -1,8 +1,8 @@
 import { IsDate, IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { CallStatus } from '../../enums/call-status.enum';
 import { ExternalPartyType } from '../../enums/recipient-type.enum';
-import { SyriaPhone } from '@app/common/decorators/syria-phone.decorator';
-import { PositiveIntegerId } from '@app/common/decorators/positive-integer-id.decorator';
+import { SyriaPhone } from '../../../../common/decorators/syria-phone.decorator';
+import { PositiveIntegerId } from '../../../../common/decorators/positive-integer-id.decorator';
 import { CallDirection } from '../../enums/call-direction.enum';
 
 export class CreateCallLogDto {

@@ -1,4 +1,4 @@
-import { SystemUser } from '@app/modules/system-users/entities/system-user.entity';
+import { SystemUser } from '../../modules/system-users/entities/system-user.entity';
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { Request } from 'express';
 

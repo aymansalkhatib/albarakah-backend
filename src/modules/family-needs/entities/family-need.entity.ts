@@ -10,7 +10,7 @@ import {
 import { Family } from '../../families/entities/families.entity';
 import { PriorityLevel } from '../enums/priority-level.enum';
 import { FamilyNeedStatus } from '../enums/family-need-status.enum';
-import { FamilyMember } from '@app/modules/family-members/entities/family-members.entity';
+import { FamilyMember } from '../../../modules/family-members/entities/family-members.entity';
 
 @Entity('family_needs')
 export class FamilyNeed {

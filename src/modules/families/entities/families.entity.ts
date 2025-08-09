@@ -18,8 +18,8 @@ import { House } from '../../houses/entities/house.entity';
 import { Interview } from '../../interviews/entities/interview.entity';
 import { FamilyRegistrationForm } from '../../family-registration-forms/entities/family-registration-form.entity';
 import { Visit } from '../../visits/entities/visit.entity';
-import { FamilyIncome } from '@app/modules/family-income/entities/family-income.entity';
-import { FamilyMember } from '@app/modules/family-members/entities/family-members.entity';
+import { FamilyIncome } from '../../../modules/family-income/entities/family-income.entity';
+import { FamilyMember } from '../../../modules/family-members/entities/family-members.entity';
 
 @Entity('families')
 @Index(['familyBookNumber'], { unique: true })

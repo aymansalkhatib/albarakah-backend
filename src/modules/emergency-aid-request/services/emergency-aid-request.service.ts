@@ -1,15 +1,15 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOneOptions, Repository } from 'typeorm';
-import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
-import { FamiliesService } from '@app/modules/families/services/families.service';
+import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
+import { FamiliesService } from '../../../modules/families/services/families.service';
 import { FilterEmergencyAidRequestDto } from '../dtos/queries/filter-emergency-aid-request.dto';
 import { CreateEmergencyAidRequestDto } from '../dtos/requests/create-emergency-aid-request.dto';
 import { UpdateEmergencyAidRequestDto } from '../dtos/requests/update-emergency-aid-request.dto';
 import { EmergencyAidRequest } from '../entities/emergency-aid-request.entity';
-import { paginate } from '@app/common/pagination/paginate.service';
+import { paginate } from '../../../common/pagination/paginate.service';
 import { EmergencyAidRequestResponseDto } from '../dtos/responses/emergency-aid-request-response.dto';
-import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 
 @Injectable()
 export class EmergencyAidRequestService {

@@ -5,10 +5,10 @@ import { TrainingCourse } from '../entities/training-course.entity';
 import { CreateTrainingCourseDto } from '../dtos/requests/create-training-course.dto';
 import { UpdateTrainingCourseDto } from '../dtos/requests/update-training-course.dto';
 import { FilterTrainingCourseDto } from '../dtos/queries/filter-training-course.dto';
-import { paginate } from '@app/common/pagination/paginate.service';
-import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
+import { paginate } from '../../../common/pagination/paginate.service';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { TrainingCourseResponseDto } from '../dtos/responses/training-course-response.dto';
-import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
+import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
 
 @Injectable()
 export class TrainingCoursesService {

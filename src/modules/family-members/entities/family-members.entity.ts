@@ -13,7 +13,7 @@ import { Person } from '../../persons/entities/person.entity';
 import { FamilyRelationType } from '../enums/family-relation-type.enum';
 import { PersonCourseBatch } from '../../training-courses/entities/person-course-batch.entity';
 import { ReceivedAssistance } from '../../received-assistance/entities/received-assistance.entity';
-import { Family } from '@app/modules/families/entities/families.entity';
+import { Family } from '../../../modules/families/entities/families.entity';
 import { SupporterChildSponsorship } from '../../supporters/entities/supporters-children.entity';
 import { FamilyIncome } from '../../family-income/entities/family-income.entity';
 

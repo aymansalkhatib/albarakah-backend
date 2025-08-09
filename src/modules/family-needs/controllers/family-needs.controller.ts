@@ -16,10 +16,10 @@ import { CreateFamilyNeedDto } from '../dtos/requests/create-family-need.dto';
 import { UpdateFamilyNeedDto } from '../dtos/requests/update-family-need.dto';
 import { FilterFamilyNeedDto } from '../dtos/queries/filter-family-need.dto';
 import { FamilyNeedResponseDto } from '../dtos/responses/family-need-response.dto';
-import { Protected } from '@app/common/decorators/protected.decorator';
-import { Permission } from '@app/modules/roles/enums/permission.enum';
-import { SerializeResponse } from '@app/common/decorators/serialize-response.decorator';
-import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
+import { Protected } from '../../../common/decorators/protected.decorator';
+import { Permission } from '../../../modules/roles/enums/permission.enum';
+import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 
 @Controller('family-needs')
 export class FamilyNeedsController {

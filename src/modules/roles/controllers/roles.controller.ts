@@ -10,11 +10,11 @@ import {
   Query,
 } from '@nestjs/common';
 import { RolesService } from '../services/roles.service';
-import { CreateRoleDto } from '@app/modules/roles/dtos/requests/create-role.dto';
-import { UpdateRoleDto } from '@app/modules/roles/dtos/requests/update-role.dto';
-import { FilterRoleDto } from '@app/modules/roles/dtos/queries/filter-role.dto';
-import { toDto } from '@app/common/helpers/to-dto';
-import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
+import { CreateRoleDto } from '../../.././modules/roles/dtos/requests/create-role.dto';
+import { UpdateRoleDto } from '../../.././modules/roles/dtos/requests/update-role.dto';
+import { FilterRoleDto } from '../../.././modules/roles/dtos/queries/filter-role.dto';
+import { toDto } from '../../.././common/helpers/to-dto';
+import { PaginationResponseDto } from '../../.././common/pagination/dto/pagination-response.dto';
 import { RoleResponseDto } from '../dtos/responses/role-response.dto';
 
 @Controller('roles')

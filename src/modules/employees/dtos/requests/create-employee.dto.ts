@@ -1,8 +1,8 @@
 import { IsDateString, IsOptional, IsString, Length, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { OnlyOneOf } from '../../../../common/decorators/validate-one-of-two-fields.validator';
-import { CreatePersonDto } from '@app/modules/persons/dtos/requests/create-person.dto';
-import { PositiveIntegerId } from '@app/common/decorators/positive-integer-id.decorator';
+import { PositiveIntegerId } from '../../../../common/decorators/positive-integer-id.decorator';
+import { CreatePersonDto } from '../../../../modules/persons/dtos/requests/create-person.dto';
 
 @OnlyOneOf([
   {

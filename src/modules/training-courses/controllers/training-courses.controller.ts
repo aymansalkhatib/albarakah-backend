@@ -16,8 +16,8 @@ import { CreateTrainingCourseDto } from '../dtos/requests/create-training-course
 import { UpdateTrainingCourseDto } from '../dtos/requests/update-training-course.dto';
 import { FilterTrainingCourseDto } from '../dtos/queries/filter-training-course.dto';
 import { TrainingCourseResponseDto } from '../dtos/responses/training-course-response.dto';
-import { SerializeResponse } from '@app/common/decorators/serialize-response.decorator';
-import { Protected } from '@app/common/decorators/protected.decorator';
+import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
+import { Protected } from '../../../common/decorators/protected.decorator';
 import { Permission } from '../../roles/enums/permission.enum';
 
 @Controller('training-courses')

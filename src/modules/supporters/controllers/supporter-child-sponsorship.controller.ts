@@ -16,9 +16,9 @@ import { CreateSupporterChildSponsorshipDto } from '../dtos/requests/create-supp
 import { UpdateSupporterChildSponsorshipDto } from '../dtos/requests/update-supporter-child-sponsorship.dto';
 import { FilterSupporterChildSponsorshipDto } from '../dtos/queries/filter-supporter-child-sponsorship.dto';
 import { SupporterChildSponsorship } from '../entities/supporters-children.entity';
-import { Protected } from '@app/common/decorators/protected.decorator';
-import { SerializeResponse } from '@app/common/decorators/serialize-response.decorator';
-import { Permission } from '@app/modules/roles/enums/permission.enum';
+import { Protected } from '../../../common/decorators/protected.decorator';
+import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
+import { Permission } from '../../../modules/roles/enums/permission.enum';
 
 @Controller('supporter-child-sponsorships')
 export class SupporterChildSponsorshipController {

@@ -6,9 +6,9 @@ import { CreateSupporterChildSponsorshipDto } from '../dtos/requests/create-supp
 import { UpdateSupporterChildSponsorshipDto } from '../dtos/requests/update-supporter-child-sponsorship.dto';
 import { FilterSupporterChildSponsorshipDto } from '../dtos/queries/filter-supporter-child-sponsorship.dto';
 import { SponsorshipStatus } from '../enums/sponsorship-status.enum';
-import { FamilyMembersService } from '@app/modules/family-members/services/family-members.service';
-import { FamilyRelationType } from '@app/modules/family-members/enums/family-relation-type.enum';
-import { applyPersonFilters } from '@app/modules/persons/utils/person-filter.util';
+import { FamilyMembersService } from '../../../modules/family-members/services/family-members.service';
+import { FamilyRelationType } from '../../../modules/family-members/enums/family-relation-type.enum';
+import { applyPersonFilters } from '../../../modules/persons/utils/person-filter.util';
 
 @Injectable()
 export class SupporterChildSponsorshipService {

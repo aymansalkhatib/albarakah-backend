@@ -15,12 +15,12 @@ import { UpdateFamilyNeedDto } from '../dtos/requests/update-family-need.dto';
 import { FilterFamilyNeedDto } from '../dtos/queries/filter-family-need.dto';
 import { PriorityLevel } from '../enums/priority-level.enum';
 import { FamilyNeedStatus } from '../enums/family-need-status.enum';
-import { FamiliesService } from '@app/modules/families/services/families.service';
-import { FamilyMembersService } from '@app/modules/family-members/services/family-members.service';
-import { FamilyMember } from '@app/modules/family-members/entities/family-members.entity';
-import { paginate } from '@app/common/pagination/paginate.service';
+import { FamiliesService } from '../../../modules/families/services/families.service';
+import { FamilyMembersService } from '../../../modules/family-members/services/family-members.service';
+import { FamilyMember } from '../../../modules/family-members/entities/family-members.entity';
+import { paginate } from '../../../common/pagination/paginate.service';
 import { FamilyNeedResponseDto } from '../dtos';
-import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 
 @Injectable()
 export class FamilyNeedsService {

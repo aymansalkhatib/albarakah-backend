@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 import { Family } from '../../families/entities/families.entity';
 import { AssistanceType } from '../enums/assistance-type.enum';
-import { FamilyMember } from '@app/modules/family-members/entities/family-members.entity';
+import { FamilyMember } from '../../.././modules/family-members/entities/family-members.entity';
 
 @Entity('received_assistance')
 @Index(['familyMemberId'])

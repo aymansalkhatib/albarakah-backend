@@ -1,6 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 import { EmergencyAidRequestStatus } from '../../enums/emergency-aid-request-status.enum';
-import { FamilyResponseDto } from '@app/modules/families/dtos/responses/family-response.dto';
+import { FamilyResponseDto } from '../../../../modules/families/dtos/responses/family-response.dto';
 
 export class EmergencyAidRequestResponseDto {
   @Expose()

@@ -2,18 +2,17 @@ import { ConflictException, Injectable, NotFoundException } from '@nestjs/common
 import { FamilyMember } from '../entities/family-members.entity';
 import { FamilyRelationType } from '../enums/family-relation-type.enum';
 import { CreateFamilyMemberDto } from '../dtos/requests/create-family-member.dto';
-import { FamiliesService } from '@app/modules/families/services/families.service';
-import { paginate } from '@app/common/pagination/paginate.service';
-import { PaginationDto } from '@app/common/pagination/dto/pagination.dto';
+import { FamiliesService } from '../../../modules/families/services/families.service';
+import { paginate } from '../../../common/pagination/paginate.service';
 import { FamilyMemberResponseDto } from '../dtos/responses/family-member-response.dto';
-import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PersonsService } from '@app/modules/persons/services/persons.service';
-import { GenderType } from '@app/modules/persons/enums/gender-type.enum';
+import { PersonsService } from '../../../modules/persons/services/persons.service';
+import { GenderType } from '../../../modules/persons/enums/gender-type.enum';
 import { FamilyMemberFilterDto } from '../dtos/queries/family-member-filter.dto';
-import { Person } from '@app/modules/persons/entities/person.entity';
-import { PersonRelation } from '@app/modules/persons/enums/person-relation.enum';
+import { Person } from '../../../modules/persons/entities/person.entity';
+import { PersonRelation } from '../../../modules/persons/enums/person-relation.enum';
 import { UpdateFamilyMemberDto } from '../dtos/requests/update-family-member.dto';
 
 @Injectable()

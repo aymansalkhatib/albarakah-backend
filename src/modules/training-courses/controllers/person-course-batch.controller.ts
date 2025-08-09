@@ -16,8 +16,8 @@ import { CreatePersonCourseBatchDto } from '../dtos/requests/create-person-cours
 import { UpdatePersonCourseBatchDto } from '../dtos/requests/update-person-course-batch.dto';
 import { FilterPersonCourseBatchDto } from '../dtos/queries/filter-person-course-batch.dto';
 import { PersonCourseBatchResponseDto } from '../dtos/responses/person-course-batch-response.dto';
-import { SerializeResponse } from '@app/common/decorators/serialize-response.decorator';
-import { Protected } from '@app/common/decorators/protected.decorator';
+import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
+import { Protected } from '../../../common/decorators/protected.decorator';
 import { Permission } from '../../roles/enums/permission.enum';
 
 @Controller('person-course-batches')

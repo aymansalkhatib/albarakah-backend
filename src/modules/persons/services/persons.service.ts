@@ -6,12 +6,12 @@ import { UpdatePersonDto } from '../dtos/requests/update-person.dto';
 import { validateDropdownFields, validatePersonUniqueness } from '../utils/person.validation';
 import { FilterPersonDto } from '../dtos/queries/filter-person.dto';
 import { CreatePersonDto } from '../dtos/requests/create-person.dto';
-import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
-import { DropdownService } from '@app/modules/dropdowns/services/dropdown.service';
+import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
+import { DropdownService } from '../../../modules/dropdowns/services/dropdown.service';
 import { PersonRelation } from '../enums/person-relation.enum';
-import { paginate } from '@app/common/pagination/paginate.service';
+import { paginate } from '../../../common/pagination/paginate.service';
 import { PersonResponseDto } from '../dtos/responses/person-response.dto';
-import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { applyPersonFilters } from '../utils/person-filter.util';
 
 @Injectable()

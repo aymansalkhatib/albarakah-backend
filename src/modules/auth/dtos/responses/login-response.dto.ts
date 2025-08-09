@@ -1,5 +1,5 @@
 import { Expose, Type } from 'class-transformer';
-import { SystemUserResponseDto } from '@app/modules/system-users/dtos/responses/system-user-response.dto';
+import { SystemUserResponseDto } from '../../../../modules/system-users/dtos/responses/system-user-response.dto';
 
 export class LoginResponseDto {
   @Expose()

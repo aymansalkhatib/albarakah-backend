@@ -1,4 +1,3 @@
-import { toDto } from '@app/common/helpers/to-dto';
 import {
   Body,
   Controller,
@@ -17,10 +16,10 @@ import { FamilyMemberResponseDto } from '../dtos/responses/family-member-respons
 import { FamilyMembersService } from '../services/family-members.service';
 import { CreateFamilyMemberDto } from '../dtos/requests/create-family-member.dto';
 import { FamilyMemberFilterDto } from '../dtos/queries/family-member-filter.dto';
-import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
-import { Protected } from '@app/common/decorators/protected.decorator';
-import { Permission } from '@app/modules/roles/enums/permission.enum';
-import { SerializeResponse } from '@app/common/decorators/serialize-response.decorator';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
+import { Protected } from '../../../common/decorators/protected.decorator';
+import { Permission } from '../../../modules/roles/enums/permission.enum';
+import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
 import { UpdateFamilyMemberDto } from '../dtos/requests/update-family-member.dto';
 
 @Controller('family-members')

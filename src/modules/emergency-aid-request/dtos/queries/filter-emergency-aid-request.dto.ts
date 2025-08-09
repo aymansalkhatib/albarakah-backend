@@ -1,6 +1,6 @@
 import { Type } from 'class-transformer';
 import { IsDateString, IsEnum, IsNumber, IsOptional, IsPositive, IsString } from 'class-validator';
-import { PaginationDto } from '@app/common/pagination/dto/pagination.dto';
+import { PaginationDto } from '../../../../common/pagination/dto/pagination.dto';
 import { EmergencyAidRequestStatus } from '../../enums/emergency-aid-request-status.enum';
 
 export class FilterEmergencyAidRequestDto extends PaginationDto {

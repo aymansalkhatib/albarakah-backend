@@ -9,11 +9,11 @@ import { In, Repository } from 'typeorm';
 import { Role } from '../entities/roles.entity';
 import { PermissionEntity } from '../entities/permissions.entity';
 import { RolePermission } from '../entities/role-permission.entity';
-import { CreateRoleDto } from '@app/modules/roles/dtos/requests/create-role.dto';
-import { UpdateRoleDto } from '@app/modules/roles/dtos/requests/update-role.dto';
-import { FilterRoleDto } from '@app/modules/roles/dtos/queries/filter-role.dto';
-import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
-import { paginate } from '@app/common/pagination/paginate.service';
+import { CreateRoleDto } from '../../../modules/roles/dtos/requests/create-role.dto';
+import { UpdateRoleDto } from '../../../modules/roles/dtos/requests/update-role.dto';
+import { FilterRoleDto } from '../../../modules/roles/dtos/queries/filter-role.dto';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
+import { paginate } from '../../../common/pagination/paginate.service';
 import { isProtectedSystemUserPermission } from '../constants/protected-permissions.constant';
 import { RoleResponseDto } from '../dtos/responses/role-response.dto';
 

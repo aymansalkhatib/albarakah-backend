@@ -10,7 +10,7 @@ import {
 } from 'class-validator';
 import { PriorityLevel } from '../../enums/priority-level.enum';
 import { FamilyNeedStatus } from '../../enums/family-need-status.enum';
-import { PositiveIntegerId } from '@app/common/decorators/positive-integer-id.decorator';
+import { PositiveIntegerId } from '../../../../common/decorators/positive-integer-id.decorator';
 
 export class CreateFamilyNeedDto {
   @PositiveIntegerId()

@@ -5,11 +5,11 @@ import { CourseBatch } from '../entities/course-batch.entity';
 import { CreateCourseBatchDto } from '../dtos/requests/create-course-batch.dto';
 import { UpdateCourseBatchDto } from '../dtos/requests/update-course-batch.dto';
 import { FilterCourseBatchDto } from '../dtos/queries/filter-course-batch.dto';
-import { paginate } from '@app/common/pagination/paginate.service';
-import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
+import { paginate } from '../../../common/pagination/paginate.service';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { CourseBatchResponseDto } from '../dtos/responses/course-batch-response.dto';
-import { TranslateHelper } from '@app/shared/modules/app-i18n/translate.helper';
-import { normalizeDate } from '@app/common/helpers/date.helper';
+import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
+import { normalizeDate } from '../../../common/helpers/date.helper';
 import { TrainingCoursesService } from './training-courses.service';
 
 @Injectable()

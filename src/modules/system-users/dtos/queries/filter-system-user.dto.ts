@@ -1,9 +1,9 @@
 import 'reflect-metadata';
 import { IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { FilterRoleDto } from '@app/modules/roles/dtos/queries/filter-role.dto';
-import { FilterEmployeeDto } from '@app/modules/employees/dtos/queries/filter-employee.dto';
-import { PaginationDto } from '@app/common/pagination/dto/pagination.dto';
+import { FilterRoleDto } from '../../../../modules/roles/dtos/queries/filter-role.dto';
+import { FilterEmployeeDto } from '../../../../modules/employees/dtos/queries/filter-employee.dto';
+import { PaginationDto } from '../../../../common/pagination/dto/pagination.dto';
 
 export class FilterSystemUserDto extends PaginationDto {
   @IsOptional()
