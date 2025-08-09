@@ -1,12 +1,11 @@
-import { Exclude, Expose, Type } from 'class-transformer';
-import { SystemUser } from '../../../system-users/entities/system-user.entity';
+import { Expose, Type } from 'class-transformer';
+import { SystemUserResponseDto } from '@app/modules/system-users/dtos/responses/system-user-response.dto';
 
-@Exclude()
 export class LoginResponseDto {
   @Expose()
   accessToken: string;
 
   @Expose()
-  @Type(() => SystemUser)
-  user: SystemUser;
+  @Type(() => SystemUserResponseDto)
+  user: SystemUserResponseDto;
 }
