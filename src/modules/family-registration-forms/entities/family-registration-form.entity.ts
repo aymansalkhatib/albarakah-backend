@@ -2,30 +2,18 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  Index,
   JoinColumn,
-  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Person } from '../../persons/entities/person.entity';
 import { Family } from '../../families/entities/families.entity';
 import { RequestStatus } from '../enums/request-status.enum';
 
 @Entity('family_registration_forms')
-@Index(['guardianId'])
-@Index(['familyId'])
-@Index(['interviewDate'])
-@Index(['requestStatus'])
-@Index(['emailArrivalDate'])
-@Index(['applicationApprovalDate'])
 export class FamilyRegistrationForm {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column({ name: 'guardian_id' })
-  guardianId: number;
 
   @Column({ name: 'family_id' })
   familyId: number;
@@ -84,12 +72,6 @@ export class FamilyRegistrationForm {
   updatedAt: Date;
 
   // Relationships
-  @ManyToOne(() => Person, {
-    onDelete: 'RESTRICT',
-    nullable: false,
-  })
-  @JoinColumn({ name: 'guardian_id' })
-  guardian: Person;
 
   @OneToOne(() => Family, (family) => family.registrationForm, {
     onDelete: 'RESTRICT',
