@@ -20,9 +20,9 @@
     "esModuleInterop": true,
     "baseUrl": "./src",
     "paths": {
-      // "@app/*": [
-      //   "*"
-      // ]
+      "@app/*": [
+        "*"
+      ]
     },
     "typeRoots": [
       "./node_modules/@types",
