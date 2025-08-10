@@ -1,7 +1,6 @@
-import { PersonResponseDto } from 'modules/persons/dtos/responses/person-response.dto';
+import { PersonResponseDto } from '../../../persons/dtos/responses/person-response.dto';
 import { FamilyResponseDto } from '../../../families/dtos/responses/family-response.dto';
 import { FamilyRelationType } from '../../../family-members/enums/family-relation-type.enum';
-import { Person } from '../../../persons/entities/person.entity';
 import { Exclude, Expose, Type } from 'class-transformer';
 
 @Exclude()
