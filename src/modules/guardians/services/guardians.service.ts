@@ -9,10 +9,10 @@ import { CreateGuardianDto } from '../dtos/requests/create-guardian.dto';
 import { FilterGuardianDto } from '../dtos/queries/filter-guardian.dto';
 import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
 import { PersonRelation } from '../../../modules/persons/enums/person-relation.enum';
-import { paginate } from 'common/pagination/paginate.service';
-import { GuardianResponseDto } from '../dtos/responses/guardian-response.dto';
-import { PaginationResponseDto } from 'common/pagination/dto/pagination-response.dto';
-
+ import { GuardianResponseDto } from '../dtos/responses/guardian-response.dto';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
+import { paginate } from '../../../common/pagination/paginate.service';
+ 
 @Injectable()
 export class GuardiansService {
   constructor(

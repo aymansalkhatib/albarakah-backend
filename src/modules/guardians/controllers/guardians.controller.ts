@@ -14,10 +14,10 @@ import { CreateGuardianDto } from '../dtos/requests/create-guardian.dto';
 import { UpdateGuardianDto } from '../dtos/requests/update-guardian.dto';
 import { GuardianResponseDto } from '../dtos/responses/guardian-response.dto';
 import { GuardiansService } from '../services/guardians.service';
-import { PaginationResponseDto } from 'common/pagination/dto/pagination-response.dto';
-import { Protected } from 'common/decorators/protected.decorator';
 import { Permission } from 'modules/roles/enums/permission.enum';
-import { SerializeResponse } from 'common/decorators/serialize-response.decorator';
+import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
+import { Protected } from '../../../common/decorators/protected.decorator';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 
 @Controller('guardians')
 export class GuardiansController {
