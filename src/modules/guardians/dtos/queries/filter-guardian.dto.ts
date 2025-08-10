@@ -2,8 +2,9 @@ import { IsEnum, IsOptional, IsString, MaxLength, ValidateNested } from 'class-v
 import { Type } from 'class-transformer';
 import { FilterPersonDto } from '../../../../modules/persons/dtos/queries/filter-person.dto';
 import { FamilyRelationType } from '../../../../modules/family-members/enums/family-relation-type.enum';
+import { PaginationDto } from 'common/pagination/dto/pagination.dto';
 
-export class FilterGuardianDto {
+export class FilterGuardianDto extends PaginationDto{
   @IsOptional()
   @IsEnum(FamilyRelationType)
   relationType?: FamilyRelationType;

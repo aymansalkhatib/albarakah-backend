@@ -51,4 +51,7 @@ export class FamilyResponseDto {
 
   @Expose()
   updatedAt: Date;
+
+  @Expose()
+  guardianId?: number;
 }

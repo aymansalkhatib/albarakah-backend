@@ -8,6 +8,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  RelationId,
 } from 'typeorm';
 import { Max } from 'class-validator';
 import { FamilyNeed } from '../../family-needs/entities/family-need.entity';
@@ -36,6 +37,9 @@ export class Family {
 
   @Column({ name: 'registration_date', type: 'timestamp' })
   registrationDate: Date;
+
+  @Column({ name: 'guardian_id', type: 'number', nullable: true })
+  guardianId?: number;
 
   // Contact Information
   @Column({ name: 'landline_phone', type: 'varchar', length: 10, nullable: true })
@@ -88,6 +92,7 @@ export class Family {
   // === RELATIONSHIPS ===
 
   // One-to-One Relationships
+
   @OneToOne(() => Guardian, (guardian) => guardian.family)
   @JoinColumn({ name: 'guardian_id' })
   guardian?: Guardian;

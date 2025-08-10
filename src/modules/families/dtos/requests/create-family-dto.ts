@@ -9,10 +9,16 @@ import {
   MaxLength,
   Min,
 } from 'class-validator';
+
 import { Expose, Transform } from 'class-transformer';
 import { StrictBoolean } from '../../../../common/decorators/strict-boolean.decorator';
+import { PositiveIntegerId } from 'common/decorators/positive-integer-id.decorator';
 
 export class CreateFamilyDto {
+  @IsOptional()
+  @PositiveIntegerId()
+  guardianId: number;
+
   @IsString()
   @IsNotEmpty()
   @MaxLength(64)

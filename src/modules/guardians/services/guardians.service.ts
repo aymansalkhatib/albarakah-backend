@@ -9,6 +9,9 @@ import { CreateGuardianDto } from '../dtos/requests/create-guardian.dto';
 import { FilterGuardianDto } from '../dtos/queries/filter-guardian.dto';
 import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
 import { PersonRelation } from '../../../modules/persons/enums/person-relation.enum';
+import { paginate } from 'common/pagination/paginate.service';
+import { GuardianResponseDto } from '../dtos/responses/guardian-response.dto';
+import { PaginationResponseDto } from 'common/pagination/dto/pagination-response.dto';
 
 @Injectable()
 export class GuardiansService {
@@ -38,7 +41,7 @@ export class GuardiansService {
     return await this.guardianRepository.save(guardian);
   }
 
-  async findAll(filterDto: FilterGuardianDto): Promise<Guardian[]> {
+  async findAll(filterDto: FilterGuardianDto): Promise<PaginationResponseDto<GuardianResponseDto>> {
     const queryBuilder = this.guardianRepository
       .createQueryBuilder('guardian')
       .leftJoinAndSelect('guardian.person', 'person')
@@ -123,7 +126,7 @@ export class GuardiansService {
       }
     }
 
-    return await queryBuilder.getMany();
+    return paginate(queryBuilder, filterDto, GuardianResponseDto);
   }
 
   async findOne(id: number, { relations }: { relations?: string[] } = {}): Promise<Guardian> {
@@ -140,7 +143,7 @@ export class GuardiansService {
   }
 
   async update(id: number, updateGuardianDto: UpdateGuardianDto): Promise<Guardian> {
-    const guardian = await this.findOne(id, { relations: ['person'] });
+    const guardian = await this.findOne(id, { relations: ['person', 'family'] });
 
     if (updateGuardianDto.person) {
       guardian.person = await this.personsService.update(
