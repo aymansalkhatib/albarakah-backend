@@ -133,6 +133,12 @@ export function applyPersonFilters(
     });
   }
 
+  if (filter.notes) {
+    qb.andWhere(`${alias}.notes ILIKE :notes`, {
+      notes: `%${filter.notes}%`,
+    });
+  }
+
   if (filter.address) {
     qb.andWhere(`${alias}.address ILIKE :address`, {
       address: `%${filter.address}%`,

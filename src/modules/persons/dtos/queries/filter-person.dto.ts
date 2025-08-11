@@ -116,6 +116,10 @@ export class FilterPersonDto extends PaginationDto {
 
   @IsOptional()
   @IsString()
+  notes?: string;
+
+  @IsOptional()
+  @IsString()
   @Length(1, 200)
   address?: string;
 
