@@ -5,7 +5,7 @@ import { FamilyRelationType } from '../../enums/family-relation-type.enum';
 import { PersonCourseBatchResponseDto } from '../../../../modules/training-courses/dtos/responses/person-course-batch-response.dto';
 import { FamilyResponseDto } from '../../../../modules/families/dtos/responses/family-response.dto';
 import { SupporterResponseDto } from '../../../../modules/supporters/dtos/responses/supporter-response.dto';
-import { SupporterChildSponsorshipResponseDto } from '@app/modules/supporters/dtos/responses/supporter-child-sponsorship-response.dto';
+import { SupporterChildSponsorshipResponseDto } from '../../../supporters/dtos/responses/supporter-child-sponsorship-response.dto';
 
 export class FamilyMemberResponseDto {
   @Expose()
