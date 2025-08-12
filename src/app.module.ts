@@ -23,6 +23,7 @@ import { FamilyMembersModule } from './modules/family-members/family-members.mod
 import { EmergencyAidRequestModule } from './modules/emergency-aid-request/emergency-aid-request.module';
 import { FamilyNeedsModule } from './modules/family-needs/family-needs.module';
 import { ReceivedAssistanceModule } from './modules/received-assistance/received-assistance.module';
+import { InterviewsModule } from './modules/interviews/interviews.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { ReceivedAssistanceModule } from './modules/received-assistance/received
     EmergencyAidRequestModule,
     FamilyNeedsModule,
     ReceivedAssistanceModule,
+    InterviewsModule,
   ],
 
   controllers: [AppController],

@@ -12,6 +12,8 @@ import { PersonRelation } from '../../../modules/persons/enums/person-relation.e
 import { paginate } from '../../../common/pagination/paginate.service';
 import { EmployeeResponseDto } from '../dtos/responses/employee-response.dto';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
+import { applyPersonFilters } from '@app/modules/persons/utils/person-filter.util';
+import { applyEmployeeFilters } from '../utils/employee-filter.util';
 
 @Injectable()
 export class EmployeesService {
@@ -41,7 +43,7 @@ export class EmployeesService {
       ...createEmployeeDto,
       person,
     });
-    
+
     return await this.employeeRepository.save(employee);
   }
 
@@ -84,121 +86,12 @@ export class EmployeesService {
       .createQueryBuilder('employee')
       .leftJoinAndSelect('employee.person', 'person');
 
-    if (filterDto.position) {
-      queryBuilder.andWhere('employee.position LIKE :position', {
-        position: `%${filterDto.position}%`,
-      });
-    }
-
-    if (filterDto.hireDateFrom && filterDto.hireDateTo) {
-      queryBuilder.andWhere('employee.hireDate BETWEEN :hireDateFrom AND :hireDateTo', {
-        hireDateFrom: filterDto.hireDateFrom,
-        hireDateTo: filterDto.hireDateTo,
-      });
-    } else if (filterDto.hireDateFrom) {
-      queryBuilder.andWhere('employee.hireDate >= :hireDateFrom', {
-        hireDateFrom: filterDto.hireDateFrom,
-      });
-    } else if (filterDto.hireDateTo) {
-      queryBuilder.andWhere('employee.hireDate <= :hireDateTo', {
-        hireDateTo: filterDto.hireDateTo,
-      });
-    }
-
-    if (filterDto.terminationDateFrom && filterDto.terminationDateTo) {
-      queryBuilder.andWhere(
-        'employee.terminationDate BETWEEN :terminationDateFrom AND :terminationDateTo',
-        {
-          terminationDateFrom: filterDto.terminationDateFrom,
-          terminationDateTo: filterDto.terminationDateTo,
-        },
-      );
-    } else if (filterDto.terminationDateFrom) {
-      queryBuilder.andWhere('employee.terminationDate >= :terminationDateFrom', {
-        terminationDateFrom: filterDto.terminationDateFrom,
-      });
-    } else if (filterDto.terminationDateTo) {
-      queryBuilder.andWhere('employee.terminationDate <= :terminationDateTo', {
-        terminationDateTo: filterDto.terminationDateTo,
-      });
-    }
-
-    if (filterDto.search) {
-      queryBuilder.andWhere(
-        `(
-          person.firstName LIKE :search OR
-          person.lastName LIKE :search OR
-          employee.position LIKE :search OR
-          COALESCE(person.notes, '') LIKE :search OR
-          COALESCE(employee.notes, '') LIKE :search
-        )`,
-        { search: `%${filterDto.search}%` },
-      );
-    }
+    // Apply employee filters
+    applyEmployeeFilters(queryBuilder, 'employee', filterDto);
 
     // Add person filters
     if (filterDto.person) {
-      if (filterDto.person.firstName) {
-        queryBuilder.andWhere('person.firstName ILIKE :firstName', {
-          firstName: `%${filterDto.person.firstName}%`,
-        });
-      }
-
-      if (filterDto.person.lastName) {
-        queryBuilder.andWhere('person.lastName ILIKE :lastName', {
-          lastName: `%${filterDto.person.lastName}%`,
-        });
-      }
-
-      if (filterDto.person.nationalId) {
-        queryBuilder.andWhere('person.nationalId ILIKE :nationalId', {
-          nationalId: `%${filterDto.person.nationalId}%`,
-        });
-      }
-
-      if (filterDto.person.isPalestinian !== undefined) {
-        queryBuilder.andWhere('person.isPalestinian = :isPalestinian', {
-          isPalestinian: filterDto.person.isPalestinian,
-        });
-      }
-
-      if (filterDto.person.gender) {
-        queryBuilder.andWhere('person.gender = :gender', {
-          gender: filterDto.person.gender,
-        });
-      }
-      if (filterDto.person.nationality) {
-        queryBuilder.andWhere('person.nationality LIKE :nationality', {
-          nationality: `%${filterDto.person.nationality}%`,
-        });
-      }
-
-      if (filterDto.person.phone) {
-        queryBuilder.andWhere('person.phone LIKE :phone', {
-          phone: `%${filterDto.person.phone}%`,
-        });
-      }
-
-      if (filterDto.person.email) {
-        queryBuilder.andWhere('person.email ILIKE :email', {
-          email: `%${filterDto.person.email}%`,
-        });
-      }
-
-      if (filterDto.person.birthDateFrom && filterDto.person.birthDateTo) {
-        queryBuilder.andWhere('person.birthDate BETWEEN :birthDateFrom AND :birthDateTo', {
-          birthDateFrom: filterDto.person.birthDateFrom,
-          birthDateTo: filterDto.person.birthDateTo,
-        });
-      } else if (filterDto.person.birthDateFrom) {
-        queryBuilder.andWhere('person.birthDate >= :birthDateFrom', {
-          birthDateFrom: filterDto.person.birthDateFrom,
-        });
-      } else if (filterDto.person.birthDateTo) {
-        queryBuilder.andWhere('person.birthDate <= :birthDateTo', {
-          birthDateTo: filterDto.person.birthDateTo,
-        });
-      }
+      applyPersonFilters(queryBuilder, 'person', filterDto.person);
     }
 
     return paginate(queryBuilder, filterDto, EmployeeResponseDto);

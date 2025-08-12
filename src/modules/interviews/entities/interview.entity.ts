@@ -12,14 +12,11 @@ import { Employee } from '../../employees/entities/employee.entity';
 import { Family } from '../../families/entities/families.entity';
 
 @Entity('interviews')
-@Index(['familyId'])
-@Index(['interviewerId'])
-@Index(['interviewDate'])
 export class Interview {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'family_id', nullable: true })
+  @Column({ name: 'family_id' })
   familyId?: number;
 
   @Column({ name: 'interviewer_id', nullable: true })
@@ -47,10 +44,9 @@ export class Interview {
 
   @ManyToOne(() => Family, (family) => family.interviews, {
     onDelete: 'CASCADE',
-    nullable: true,
   })
   @JoinColumn({ name: 'family_id' })
-  family?: Family;
+  family: Family;
 
   @ManyToOne(() => Employee, {
     onDelete: 'SET NULL',

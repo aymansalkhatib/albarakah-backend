@@ -202,6 +202,7 @@ const TranslationKeys = {
   'family-income.errors.not_found': 'family-income.errors.not_found',
   'guardians.errors.already_guardian': 'guardians.errors.already_guardian',
   'guardians.errors.not_found': 'guardians.errors.not_found',
+  'interviews.errors.not_found': 'interviews.errors.not_found',
   'persons.errors.cannot_delete_related': 'persons.errors.cannot_delete_related',
   'persons.errors.email_exists': 'persons.errors.email_exists',
   'persons.errors.father_name_exists': 'persons.errors.father_name_exists',
@@ -285,6 +286,7 @@ export interface TranslationInterpolations {
   'family-income.errors.not_found': FamilyincomeErrorsNotfoundParams;
   'guardians.errors.already_guardian': NoParams;
   'guardians.errors.not_found': GuardiansErrorsNotfoundParams;
+  'interviews.errors.not_found': NoParams;
   'persons.errors.cannot_delete_related': PersonsErrorsCannotdeleterelatedParams;
   'persons.errors.email_exists': PersonsErrorsEmailexistsParams;
   'persons.errors.father_name_exists': PersonsErrorsFathernameexistsParams;

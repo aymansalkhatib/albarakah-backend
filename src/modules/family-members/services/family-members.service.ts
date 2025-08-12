@@ -14,6 +14,8 @@ import { FamilyMemberFilterDto } from '../dtos/queries/family-member-filter.dto'
 import { Person } from '../../../modules/persons/entities/person.entity';
 import { PersonRelation } from '../../../modules/persons/enums/person-relation.enum';
 import { UpdateFamilyMemberDto } from '../dtos/requests/update-family-member.dto';
+import { applyFamilyMemberFilters } from '../utils';
+import { applyPersonFilters } from '../../persons/utils/person-filter.util';
 
 @Injectable()
 export class FamilyMembersService {
@@ -93,84 +95,11 @@ export class FamilyMembersService {
       .leftJoinAndSelect('childSponsorships.supporter', 'supporter')
       .leftJoinAndSelect('supporter.person', 'supporterPerson');
 
-    if (filterDto.familyId) {
-      qb.andWhere('family_member.familyId = :familyId', { familyId: filterDto.familyId });
-    }
-    if (filterDto.personId) {
-      qb.andWhere('family_member.personId = :personId', { personId: filterDto.personId });
-    }
-    if (filterDto.relationType) {
-      qb.andWhere('family_member.relationType = :relationType', {
-        relationType: filterDto.relationType,
-      });
-    }
-    if (filterDto.isSponsored !== undefined) {
-      qb.andWhere('family_member.isSponsored = :isSponsored', {
-        isSponsored: filterDto.isSponsored,
-      });
-    }
+    // Apply family member filters
+    applyFamilyMemberFilters(qb, 'family_member', filterDto);
+    // Apply person filters
     if (filterDto.person) {
-      if (filterDto.person.firstName) {
-        qb.andWhere('person.firstName ILIKE :firstName', {
-          firstName: `%${filterDto.person.firstName}%`,
-        });
-      }
-
-      if (filterDto.person.lastName) {
-        qb.andWhere('person.lastName ILIKE :lastName', {
-          lastName: `%${filterDto.person.lastName}%`,
-        });
-      }
-
-      if (filterDto.person.nationalId) {
-        qb.andWhere('person.nationalId LIKE :nationalId', {
-          nationalId: `%${filterDto.person.nationalId}%`,
-        });
-      }
-
-      if (filterDto.person.isPalestinian !== undefined) {
-        qb.andWhere('person.isPalestinian = :isPalestinian', {
-          isPalestinian: filterDto.person.isPalestinian,
-        });
-      }
-
-      if (filterDto.person.gender) {
-        qb.andWhere('person.gender = :gender', {
-          gender: filterDto.person.gender,
-        });
-      }
-      if (filterDto.person.nationality) {
-        qb.andWhere('person.nationality LIKE :nationality', {
-          nationality: `%${filterDto.person.nationality}%`,
-        });
-      }
-
-      if (filterDto.person.phone) {
-        qb.andWhere('person.phone LIKE :phone', {
-          phone: `%${filterDto.person.phone}%`,
-        });
-      }
-
-      if (filterDto.person.email) {
-        qb.andWhere('person.email LIKE :email', {
-          email: `%${filterDto.person.email}%`,
-        });
-      }
-
-      if (filterDto.person.birthDateFrom && filterDto.person.birthDateTo) {
-        qb.andWhere('person.birthDate BETWEEN :birthDateFrom AND :birthDateTo', {
-          birthDateFrom: filterDto.person.birthDateFrom,
-          birthDateTo: filterDto.person.birthDateTo,
-        });
-      } else if (filterDto.person.birthDateFrom) {
-        qb.andWhere('person.birthDate >= :birthDateFrom', {
-          birthDateFrom: filterDto.person.birthDateFrom,
-        });
-      } else if (filterDto.person.birthDateTo) {
-        qb.andWhere('person.birthDate <= :birthDateTo', {
-          birthDateTo: filterDto.person.birthDateTo,
-        });
-      }
+      applyPersonFilters(qb, 'person', filterDto.person);
     }
 
     return paginate(qb, filterDto, FamilyMemberResponseDto);

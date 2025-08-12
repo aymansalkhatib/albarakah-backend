@@ -13,9 +13,10 @@ import { Expose } from 'class-transformer';
 import { IsLessThanOrEqual } from '../../../../common/decorators/is-less-than-or-equal.decorator';
 import { StrictBoolean } from '../../../../common/decorators/strict-boolean.decorator';
 import { ValidateMinMaxPairs } from '../../../../common/decorators/validate-min-max-pairs-constraint';
+import { PaginationDto } from '@app/common/pagination/dto/pagination.dto';
 
 @ValidateMinMaxPairs()
-export class FilterFamilyDto {
+export class FilterFamilyDto extends PaginationDto {
   @IsOptional()
   @IsString()
   @MaxLength(64)

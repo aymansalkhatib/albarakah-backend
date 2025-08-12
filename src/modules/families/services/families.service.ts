@@ -5,14 +5,11 @@ import { UpdateFamilyDto } from '../dtos/requests/update-family-dto';
 import { Family } from '../entities/families.entity';
 import { CreateFamilyDto } from '../dtos/requests/create-family-dto';
 import { FilterFamilyDto } from '../dtos/queries/filter-family.dto';
-import {
-  Between,
-  FindOptionsWhere,
-  ILike,
-  LessThanOrEqual,
-  MoreThanOrEqual,
-  Repository,
-} from 'typeorm';
+import { Repository } from 'typeorm';
+import { applyFamilyFilters } from '../utils';
+import { paginate } from '@app/common/pagination/paginate.service';
+import { FamilyResponseDto } from '../dtos/responses/family-response.dto';
+import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
 
 @Injectable()
 export class FamiliesService {
@@ -32,9 +29,10 @@ export class FamiliesService {
     return this.familyRepository.save(family);
   }
 
-  async findAll(filter: FilterFamilyDto): Promise<Family[]> {
-    const where = this.buildWhereClause(filter);
-    return this.familyRepository.find({ where });
+  async findAll(filter: FilterFamilyDto): Promise<PaginationResponseDto<FamilyResponseDto>> {
+    const queryBuilder = this.familyRepository.createQueryBuilder('family');
+    applyFamilyFilters(queryBuilder, 'family', filter);
+    return paginate(queryBuilder, filter, FamilyResponseDto);
   }
 
   async findOne(id: number): Promise<Family> {
@@ -74,95 +72,5 @@ export class FamiliesService {
   // private methods
   private findOneByFamilyBookNumber(familyBookNumber: string): Promise<Family | undefined> {
     return this.familyRepository.findOneBy({ familyBookNumber });
-  }
-
-  private buildWhereClause(filter: FilterFamilyDto): any {
-    const where: FindOptionsWhere<Family> = {};
-
-    // String filters with case-insensitive search
-    if (filter.familyName) {
-      where.familyName = ILike(`%${filter.familyName}%`);
-    }
-
-    if (filter.familyBookNumber) {
-      where.familyBookNumber = ILike(`%${filter.familyBookNumber}%`);
-    }
-
-    if (filter.landlinePhone) {
-      where.landlinePhone = ILike(`%${filter.landlinePhone}%`);
-    }
-
-    if (filter.suspensionReason) {
-      where.suspensionReason = ILike(`%${filter.suspensionReason}%`);
-    }
-
-    if (filter.notes) {
-      where.notes = ILike(`%${filter.notes}%`);
-    }
-
-    // Boolean filters (explicit check for undefined to allow false values)
-    if (filter.isDisplaced !== undefined) {
-      where.isDisplaced = filter.isDisplaced;
-    }
-
-    if (filter.isExtremelyPoor !== undefined) {
-      where.isExtremelyPoor = filter.isExtremelyPoor;
-    }
-
-    if (filter.motherIsTrainingBeneficiary !== undefined) {
-      where.motherIsTrainingBeneficiary = filter.motherIsTrainingBeneficiary;
-    }
-
-    // Numeric range filters
-    this.applyRangeFilter(where, 'voucherAmount', filter.minVoucherAmount, filter.maxVoucherAmount);
-    this.applyRangeFilter(
-      where,
-      'childrenSchoolExpenses',
-      filter.minChildrenSchoolExpenses,
-      filter.maxChildrenSchoolExpenses,
-    );
-    this.applyRangeFilter(
-      where,
-      'incomeFromBarakaAssociation',
-      filter.minIncomeFromBarakaAssociation,
-      filter.maxIncomeFromBarakaAssociation,
-    );
-
-    // Date range filters
-    this.applyRangeFilter(
-      where,
-      'familySuspensionDate',
-      filter.familySuspensionDateFrom,
-      filter.familySuspensionDateTo,
-    );
-    this.applyRangeFilter(
-      where,
-      'registrationDate',
-      filter.registrationDateFrom,
-      filter.registrationDateTo,
-    );
-    this.applyRangeFilter(
-      where,
-      'lastAssessmentDate',
-      filter.lastAssessmentDateFrom,
-      filter.lastAssessmentDateTo,
-    );
-
-    return where;
-  }
-
-  private applyRangeFilter(
-    where: any,
-    field: string,
-    min?: number | Date,
-    max?: number | Date,
-  ): void {
-    if (min !== undefined && max !== undefined) {
-      where[field] = Between(min, max);
-    } else if (min !== undefined) {
-      where[field] = MoreThanOrEqual(min);
-    } else if (max !== undefined) {
-      where[field] = LessThanOrEqual(max);
-    }
   }
 }

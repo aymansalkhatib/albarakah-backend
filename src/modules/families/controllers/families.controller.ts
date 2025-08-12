@@ -20,6 +20,7 @@ import { CreateFamilyDto } from '../dtos/requests/create-family-dto';
 import { Protected } from '../../../common/decorators/protected.decorator';
 import { Permission } from '../../../modules/roles/enums/permission.enum';
 import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
+import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
 
 @Controller('families')
 export class FamiliesController {
@@ -34,8 +35,9 @@ export class FamiliesController {
 
   @Get()
   @Protected(Permission.READ_FAMILY)
-  @SerializeResponse(FamilyResponseDto)
-  async findAll(@Query() filter: FilterFamilyDto): Promise<FamilyResponseDto[]> {
+  async findAll(
+    @Query() filter: FilterFamilyDto,
+  ): Promise<PaginationResponseDto<FamilyResponseDto>> {
     return await this.familiesService.findAll(filter);
   }
 

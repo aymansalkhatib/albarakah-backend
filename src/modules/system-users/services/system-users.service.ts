@@ -1,6 +1,8 @@
 import { Employee } from '../../../modules/employees/entities/employee.entity';
 import { EmployeesService } from '../../../modules/employees/services/employee.service';
 import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
+import { applyEmployeeFilters } from '../../employees/utils/employee-filter.util';
+import { applyPersonFilters } from '../../../modules/persons/utils/person-filter.util';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Not, Repository } from 'typeorm';
@@ -139,112 +141,15 @@ export class SystemUsersService {
 
     // Employee filters
     if (filterDto.employee) {
-      if (filterDto.employee.position) {
-        queryBuilder.andWhere('employee.position ILIKE :position', {
-          position: `%${filterDto.employee.position}%`,
-        });
-      }
-
-      if (filterDto.employee.hireDateFrom) {
-        queryBuilder.andWhere('employee.hireDate >= :hireDateFrom', {
-          hireDateFrom: filterDto.employee.hireDateFrom,
-        });
-      }
-
-      if (filterDto.employee.hireDateTo) {
-        queryBuilder.andWhere('employee.hireDate <= :hireDateTo', {
-          hireDateTo: filterDto.employee.hireDateTo,
-        });
-      }
-
-      if (filterDto.employee.terminationDateFrom) {
-        queryBuilder.andWhere('employee.terminationDate >= :terminationDateFrom', {
-          terminationDateFrom: filterDto.employee.terminationDateFrom,
-        });
-      }
-
-      if (filterDto.employee.terminationDateTo) {
-        queryBuilder.andWhere('employee.terminationDate <= :terminationDateTo', {
-          terminationDateTo: filterDto.employee.terminationDateTo,
-        });
-      }
-
-      if (filterDto.employee.search) {
-        queryBuilder.andWhere(
-          '(person.firstName ILIKE :employeeSearch OR person.lastName ILIKE :employeeSearch OR employee.position ILIKE :employeeSearch)',
-          { employeeSearch: `%${filterDto.employee.search}%` },
-        );
-      }
+      // Apply employee filters using utility (excluding search)
+      const { search, person, ...employeeFilters } = filterDto.employee;
+      applyEmployeeFilters(queryBuilder, 'employee', employeeFilters);
 
       // Person filters (nested under employee)
       if (filterDto.employee.person) {
-        if (filterDto.employee.person.firstName) {
-          queryBuilder.andWhere('person.firstName ILIKE :firstName', {
-            firstName: `%${filterDto.employee.person.firstName}%`,
-          });
-        }
-
-        if (filterDto.employee.person.lastName) {
-          queryBuilder.andWhere('person.lastName ILIKE :lastName', {
-            lastName: `%${filterDto.employee.person.lastName}%`,
-          });
-        }
-
-        if (filterDto.employee.person.nationalId) {
-          queryBuilder.andWhere('person.nationalId ILIKE :nationalId', {
-            nationalId: `%${filterDto.employee.person.nationalId}%`,
-          });
-        }
-
-        if (filterDto.employee.person.isPalestinian !== undefined) {
-          queryBuilder.andWhere('person.isPalestinian = :isPalestinian', {
-            isPalestinian: filterDto.employee.person.isPalestinian,
-          });
-        }
-
-        if (filterDto.employee.person.gender) {
-          queryBuilder.andWhere('person.gender = :gender', {
-            gender: filterDto.employee.person.gender,
-          });
-        }
-
-        if (filterDto.employee.person.nationality) {
-          queryBuilder.andWhere('person.nationality ILIKE :nationality', {
-            nationality: `%${filterDto.employee.person.nationality}%`,
-          });
-        }
-
-        if (filterDto.employee.person.phone) {
-          queryBuilder.andWhere('person.phone ILIKE :phone', {
-            phone: `%${filterDto.employee.person.phone}%`,
-          });
-        }
-
-        if (filterDto.employee.person.email) {
-          queryBuilder.andWhere('person.email ILIKE :email', {
-            email: `%${filterDto.employee.person.email}%`,
-          });
-        }
-
-        // Birth date range filter
-        if (filterDto.employee.person.birthDateFrom && filterDto.employee.person.birthDateTo) {
-          queryBuilder.andWhere('person.birthDate BETWEEN :birthDateFrom AND :birthDateTo', {
-            birthDateFrom: filterDto.employee.person.birthDateFrom,
-            birthDateTo: filterDto.employee.person.birthDateTo,
-          });
-        } else if (filterDto.employee.person.birthDateFrom) {
-          queryBuilder.andWhere('person.birthDate >= :birthDateFrom', {
-            birthDateFrom: filterDto.employee.person.birthDateFrom,
-          });
-        } else if (filterDto.employee.person.birthDateTo) {
-          queryBuilder.andWhere('person.birthDate <= :birthDateTo', {
-            birthDateTo: filterDto.employee.person.birthDateTo,
-          });
-        }
+        applyPersonFilters(queryBuilder, 'person', filterDto.employee.person);
       }
     }
-
-    queryBuilder.orderBy('systemUser.createdAt', 'DESC');
 
     return paginate(queryBuilder, filterDto, SystemUserResponseDto);
   }
