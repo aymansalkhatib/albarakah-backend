@@ -19,6 +19,7 @@ import { SupporterChildSponsorship } from '../entities/supporters-children.entit
 import { Protected } from '../../../common/decorators/protected.decorator';
 import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
 import { Permission } from '../../../modules/roles/enums/permission.enum';
+import { SupporterChildSponsorshipResponseDto } from '../dtos/responses/supporter-child-sponsorship-response.dto';
 
 @Controller('supporter-child-sponsorships')
 export class SupporterChildSponsorshipController {
@@ -28,7 +29,7 @@ export class SupporterChildSponsorshipController {
 
   @Post()
   @Protected(Permission.CREATE_SUPPORTER_CHILD_SPONSORSHIP)
-  @SerializeResponse(SupporterChildSponsorship)
+  @SerializeResponse(SupporterChildSponsorshipResponseDto)
   async create(
     @Body() createDto: CreateSupporterChildSponsorshipDto,
   ): Promise<SupporterChildSponsorship> {
@@ -37,7 +38,7 @@ export class SupporterChildSponsorshipController {
 
   @Get()
   @Protected(Permission.READ_SUPPORTER_CHILD_SPONSORSHIP)
-  @SerializeResponse(SupporterChildSponsorship)
+  @SerializeResponse(SupporterChildSponsorshipResponseDto)
   async findAll(
     @Query() filterDto?: FilterSupporterChildSponsorshipDto,
   ): Promise<SupporterChildSponsorship[]> {
@@ -46,7 +47,7 @@ export class SupporterChildSponsorshipController {
 
   @Get(':id')
   @Protected(Permission.READ_SUPPORTER_CHILD_SPONSORSHIP)
-  @SerializeResponse(SupporterChildSponsorship)
+  @SerializeResponse(SupporterChildSponsorshipResponseDto)
   async findOne(@Param('id', ParseIntPipe) id: number): Promise<SupporterChildSponsorship> {
     return await this.supporterChildSponsorshipService.findOne(id, {
       relations: ['supporter', 'familyMember', 'familyMember.person'],
@@ -55,7 +56,7 @@ export class SupporterChildSponsorshipController {
 
   @Patch(':id')
   @Protected(Permission.UPDATE_SUPPORTER_CHILD_SPONSORSHIP)
-  @SerializeResponse(SupporterChildSponsorship)
+  @SerializeResponse(SupporterChildSponsorshipResponseDto)
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateDto: UpdateSupporterChildSponsorshipDto,
@@ -65,7 +66,7 @@ export class SupporterChildSponsorshipController {
 
   @Delete(':id')
   @Protected(Permission.DELETE_SUPPORTER_CHILD_SPONSORSHIP)
-  @SerializeResponse(SupporterChildSponsorship)
+  @SerializeResponse(SupporterChildSponsorshipResponseDto)
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
     return await this.supporterChildSponsorshipService.delete(id);

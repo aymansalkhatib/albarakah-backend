@@ -37,8 +37,8 @@ export class FamilyMembersController {
   @Get(':id')
   @Protected(Permission.READ_FAMILY_MEMBER)
   @SerializeResponse(FamilyMemberResponseDto)
-  async findOne(@Param('id', ParseIntPipe) id: number): Promise<FamilyMemberResponseDto> {
-    return await this.familyMembersService.findOne(id);
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<any> {
+    return await this.familyMembersService.findOneDetailed(id);
   }
 
   @Post()

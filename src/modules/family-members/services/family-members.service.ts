@@ -82,7 +82,16 @@ export class FamilyMembersService {
     const qb = this.familyMemberRepository
       .createQueryBuilder('family_member')
       .leftJoinAndSelect('family_member.person', 'person')
-      .leftJoinAndSelect('family_member.family', 'family');
+      .leftJoinAndSelect('family_member.family', 'family')
+      // join active sponsorships and map its supporter as currentSponsor on the root entity
+      .leftJoinAndSelect(
+        'family_member.childSponsorships',
+        'childSponsorships',
+        'childSponsorships.sponsorshipStatus = :activeStatus',
+        { activeStatus: 'active' },
+      )
+      .leftJoinAndSelect('childSponsorships.supporter', 'supporter')
+      .leftJoinAndSelect('supporter.person', 'supporterPerson');
 
     if (filterDto.familyId) {
       qb.andWhere('family_member.familyId = :familyId', { familyId: filterDto.familyId });
@@ -178,9 +187,32 @@ export class FamilyMembersService {
     return familyMember;
   }
 
+  async findOneDetailed(id: number): Promise<FamilyMember> {
+    // Use query builder to include current active sponsor relations only
+    const familyMember = await this.familyMemberRepository
+      .createQueryBuilder('family_member')
+      .leftJoinAndSelect('family_member.person', 'person')
+      .leftJoinAndSelect('family_member.family', 'family')
+      .leftJoinAndSelect(
+        'family_member.childSponsorships',
+        'childSponsorships',
+        'childSponsorships.sponsorshipStatus = :activeStatus',
+        { activeStatus: 'active' },
+      )
+      .leftJoinAndSelect('childSponsorships.supporter', 'supporter')
+      .leftJoinAndSelect('supporter.person', 'supporterPerson')
+      .where('family_member.id = :id', { id })
+      .getOne();
+
+    if (!familyMember) {
+      throw new NotFoundException(`Family member with ID ${id} not found`);
+    }
+    return familyMember;
+  }
+
   async update(id: number, updateData: UpdateFamilyMemberDto): Promise<FamilyMember> {
     return await this.familyMemberRepository.manager.transaction(async (entityManager) => {
-      const familyMember = await this.findOne(id, { relations: ['person', 'childSponsorships'] });
+      const familyMember = await this.findOneDetailed(id);
 
       if (
         updateData.relationType &&
