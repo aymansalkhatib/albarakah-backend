@@ -17,9 +17,9 @@ import { UpdateRoleDto } from '../../.././modules/roles/dtos/requests/update-rol
 import { FilterRoleDto } from '../../.././modules/roles/dtos/queries/filter-role.dto';
 import { PaginationResponseDto } from '../../.././common/pagination/dto/pagination-response.dto';
 import { RoleResponseDto } from '../dtos/responses/role-response.dto';
-import { Protected } from '@app/common/decorators/protected.decorator';
+import { Protected } from '../../../common/decorators/protected.decorator';
 import { Permission } from '../enums/permission.enum';
-import { SerializeResponse } from '@app/common/decorators/serialize-response.decorator';
+import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
 
 @Controller('roles')
 export class RolesController {

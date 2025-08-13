@@ -4,8 +4,8 @@ import { PositiveIntegerId } from '../../../../common/decorators/positive-intege
 import { IsLessThanOrEqual } from '../../../../common/decorators/is-less-than-or-equal.decorator';
 import { Type } from 'class-transformer';
 import { FilterPersonDto } from '../../../../modules/persons/dtos/queries/filter-person.dto';
-import { FilterFamilyDto } from '@app/modules/families/dtos/queries/filter-family.dto';
-import { FilterEmployeeDto } from '@app/modules/employees/dtos/queries/filter-employee.dto';
+import { FilterFamilyDto } from '../../../families/dtos/queries/filter-family.dto';
+import { FilterEmployeeDto } from '../../../employees/dtos/queries/filter-employee.dto';
 
 export class FilterInterviewDto extends PaginationQueryDto {
   @IsOptional()

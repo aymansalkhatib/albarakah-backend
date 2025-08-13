@@ -13,9 +13,9 @@ import { UserPermissionsService } from '../services/user-permissions.service';
 import { AssignUserPermissionDto } from '../dtos/requests/assign-user-permission.dto';
 import { BulkAssignUserPermissionsDto } from '../dtos/requests/bulk-assign-user-permissions.dto';
 import { UserPermissionResponseDto } from '../dtos/responses/user-permission-response.dto';
-import { Protected } from '@app/common/decorators/protected.decorator';
+import { Protected } from '../../../common/decorators/protected.decorator';
 import { Permission } from '../enums/permission.enum';
-import { SerializeResponse } from '@app/common/decorators/serialize-response.decorator';
+import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
 
 @Controller('user-permissions')
 export class UserPermissionsController {

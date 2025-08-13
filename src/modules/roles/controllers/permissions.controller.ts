@@ -3,10 +3,10 @@ import { PermissionsService } from '../services/permissions.service';
 import { FilterPermissionDto } from '../dtos/queries/filter-permission.dto';
 import { toDto } from '../../.././common/helpers/to-dto';
 import { PermissionResponseDto } from '../dtos/responses/permission-response.dto';
-import { Protected } from '@app/common/decorators/protected.decorator';
+import { Protected } from '../../../common/decorators/protected.decorator';
 import { Permission } from '../enums/permission.enum';
-import { SerializeResponse } from '@app/common/decorators/serialize-response.decorator';
-import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
+import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 
 @Controller('permissions')
 export class PermissionsController {

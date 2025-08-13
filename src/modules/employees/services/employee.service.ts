@@ -12,7 +12,7 @@ import { PersonRelation } from '../../../modules/persons/enums/person-relation.e
 import { paginate } from '../../../common/pagination/paginate.service';
 import { EmployeeResponseDto } from '../dtos/responses/employee-response.dto';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
-import { applyPersonFilters } from '@app/modules/persons/utils/person-filter.util';
+import { applyPersonFilters } from '../../persons/utils/person-filter.util';
 import { applyEmployeeFilters } from '../utils/employee-filter.util';
 
 @Injectable()

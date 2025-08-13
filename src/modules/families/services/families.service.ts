@@ -7,9 +7,9 @@ import { CreateFamilyDto } from '../dtos/requests/create-family-dto';
 import { FilterFamilyDto } from '../dtos/queries/filter-family.dto';
 import { Repository } from 'typeorm';
 import { applyFamilyFilters } from '../utils';
-import { paginate } from '@app/common/pagination/paginate.service';
+import { paginate } from '../../../common/pagination/paginate.service';
 import { FamilyResponseDto } from '../dtos/responses/family-response.dto';
-import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 
 @Injectable()
 export class FamiliesService {
