@@ -88,13 +88,14 @@ export class PermissionsService {
     // Extract permission entities from allowed user permissions
     const userPermissionEntities = allowedUserPermissions.map((up) => up.permission);
 
-    // Combine and remove duplicates based on permission ID
+    // Combine and remove duplicates based on permission ID using a map for O(n)
     const allPermissions = [...rolePermissions, ...userPermissionEntities];
-
-    const uniquePermissions = allPermissions.filter(
-      (permission, index, self) => index === self.findIndex((p) => p.id === permission.id),
-    );
-
-    return uniquePermissions;
+    const idToPermission = new Map<number, PermissionEntity>();
+    for (const perm of allPermissions) {
+      if (!idToPermission.has(perm.id)) {
+        idToPermission.set(perm.id, perm);
+      }
+    }
+    return Array.from(idToPermission.values());
   }
 }

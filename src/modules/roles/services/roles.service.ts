@@ -14,8 +14,9 @@ import { UpdateRoleDto } from '../../../modules/roles/dtos/requests/update-role.
 import { FilterRoleDto } from '../../../modules/roles/dtos/queries/filter-role.dto';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { paginate } from '../../../common/pagination/paginate.service';
-import { isProtectedSystemUserPermission } from '../constants/protected-permissions.constant';
+import { isProtectedRoleName } from '../constants/protected-permissions.constant';
 import { RoleResponseDto } from '../dtos/responses/role-response.dto';
+import { SystemUser } from '../../system-users/entities/system-user.entity';
 
 @Injectable()
 export class RolesService {
@@ -26,6 +27,8 @@ export class RolesService {
     private readonly permissionRepository: Repository<PermissionEntity>,
     @InjectRepository(RolePermission)
     private readonly rolePermissionRepository: Repository<RolePermission>,
+    @InjectRepository(SystemUser)
+    private readonly systemUserRepository: Repository<SystemUser>,
   ) {}
 
   async createRole(createRoleDto: CreateRoleDto): Promise<Role> {
@@ -34,28 +37,31 @@ export class RolesService {
       throw new ConflictException(`Role with name "${createRoleDto.name}" already exists`);
     }
 
-    const permissions = await this.validatePermissions(createRoleDto.permissionIds);
-
     const role = this.roleRepository.create({
       name: createRoleDto.name,
       description: createRoleDto.description,
-      rolePermissions: permissions.map((permission) => ({
-        permission: permission,
-      })),
     });
 
-    return await this.roleRepository.save(role);
+    await this.roleRepository.save(role);
+
+    await this.assignPermissionsToRole(role, createRoleDto.permissionIds);
+
+    return this.findRoleById(role.id);
   }
 
   async findAllRole(filterDto: FilterRoleDto): Promise<PaginationResponseDto<RoleResponseDto>> {
     const queryBuilder = this.roleRepository.createQueryBuilder('role');
-
-    if (filterDto.id) {
-      queryBuilder.andWhere('role.id = :id', { id: filterDto.id });
-    }
+    queryBuilder.leftJoinAndSelect('role.rolePermissions', 'rolePermissions');
+    queryBuilder.leftJoinAndSelect('rolePermissions.permission', 'permission');
 
     if (filterDto.name) {
-      queryBuilder.andWhere('role.name LIKE :name', { name: `%${filterDto.name}%` });
+      queryBuilder.andWhere('role.name ILIKE :name', { name: `%${filterDto.name}%` });
+    }
+
+    if (filterDto.description) {
+      queryBuilder.andWhere('role.description ILIKE :description', {
+        description: `%${filterDto.description}%`,
+      });
     }
 
     return paginate(queryBuilder, filterDto, RoleResponseDto);
@@ -74,28 +80,14 @@ export class RolesService {
     return role;
   }
 
-  async findByName(name: string): Promise<Role> {
-    const role = await this.roleRepository.findOne({
-      where: { name },
-      relations: ['rolePermissions', 'rolePermissions.permission'],
-    });
-
-    if (!role) {
-      throw new NotFoundException(`Role with name ${name} not found`);
-    }
-
-    return role;
-  }
-
   async updateRole(id: number, updateRoleDto: UpdateRoleDto): Promise<Role> {
     const role = await this.findRoleById(id);
 
+    if (isProtectedRoleName(role.name)) {
+      throw new ForbiddenException('This role is protected by the system and cannot be changed.');
+    }
+
     if (updateRoleDto.name) {
-      if (role.name.toLowerCase() === 'superadmin') {
-        throw new ForbiddenException(
-          'Superadmin role name cannot be changed as it contains protected system user permissions.',
-        );
-      }
       const existingRole = await this.roleRepository.findOne({
         where: { name: updateRoleDto.name },
       });
@@ -112,7 +104,7 @@ export class RolesService {
 
     if (updateRoleDto.permissionIds) {
       await this.rolePermissionRepository.delete({ roleId: id });
-      await this.assignPermissionsToRole(id, updateRoleDto.permissionIds);
+      await this.assignPermissionsToRole(role, updateRoleDto.permissionIds);
     }
 
     return this.findRoleById(id);
@@ -120,71 +112,39 @@ export class RolesService {
 
   async deleteRole(id: number): Promise<void> {
     const role = await this.findRoleById(id);
-    this.validateSuperAdminRoleDeletion(role);
 
-    // Check if role is associated with any users
-    const userCount = await this.roleRepository.count({
-      where: {
-        id,
-        systemUsers: {
-          roleId: id,
-        },
-      },
-    });
+    if (isProtectedRoleName(role.name)) {
+      throw new ForbiddenException(
+        'Superadmin role cannot be deleted as it contains protected system user permissions.',
+      );
+    }
 
-    console.log(userCount);
+    const userCount = await this.systemUserRepository.count({ where: { roleId: id } });
     if (userCount > 0) {
       throw new ConflictException(
         'Cannot delete role because it is associated with one or more users. Please reassign users to different roles before deleting.',
       );
     }
 
-    await this.roleRepository.remove(role);
+    await this.roleRepository.delete(role.id);
   }
 
-  async assignPermissionsToRole(roleId: number, permissionIds: number[]): Promise<void> {
-    const permissions = await this.validatePermissions(permissionIds);
-    this.validateSystemUserPermissions(permissions);
-
-    const rolePermissions = permissionIds.map((permissionId) => ({
-      roleId,
-      permissionId,
-    }));
-
-    await this.rolePermissionRepository.save(rolePermissions);
-  }
-
-  private validateSystemUserPermissions(permissions: PermissionEntity[]): void {
-    const protectedPermissions = permissions.filter((p) => isProtectedSystemUserPermission(p.name));
-
-    if (protectedPermissions.length > 0) {
-      const protectedNames = protectedPermissions.map((p) => p.name).join(', ');
-      throw new ForbiddenException(
-        `System user management permissions (${protectedNames}) can only be assigned to superadmin role. These permissions are protected and cannot be modified.`,
-      );
-    }
-  }
-
-  private validateSuperAdminRoleDeletion(role: Role): void {
-    if (role.name.toLowerCase() === 'superadmin') {
-      throw new ForbiddenException(
-        'Superadmin role cannot be deleted as it contains protected system user permissions.',
-      );
-    }
-  }
-
-  private async validatePermissions(
-    permissionIds: number[] | undefined,
-  ): Promise<PermissionEntity[]> {
-    if (!permissionIds) return [];
+  async assignPermissionsToRole(role: Role, permissionIds: number[]): Promise<void> {
+    if (!permissionIds) return;
 
     const foundPermissions = await this.permissionRepository.find({
       where: { id: In(permissionIds) },
     });
+
     if (foundPermissions.length !== permissionIds.length) {
       throw new NotFoundException('One or more permission IDs do not exist');
     }
-    this.validateSystemUserPermissions(foundPermissions);
-    return foundPermissions;
+
+    const rolePermissions = permissionIds.map((permissionId) => ({
+      roleId: role.id,
+      permissionId,
+    }));
+
+    await this.rolePermissionRepository.save(rolePermissions);
   }
 }

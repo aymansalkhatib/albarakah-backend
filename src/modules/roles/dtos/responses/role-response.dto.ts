@@ -16,7 +16,7 @@ export class RoleResponseDto {
   @Transform(
     ({ obj }) => {
       const permissions = (obj.rolePermissions ?? []).map((e: { permission: any }) => e.permission);
-      return permissions.length > 0 ? permissions : undefined;
+      return permissions.length > 0 ? permissions : [];
     },
     { toClassOnly: true },
   )

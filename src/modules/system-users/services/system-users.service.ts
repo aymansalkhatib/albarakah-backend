@@ -126,12 +126,6 @@ export class SystemUsersService {
 
     // Role filters
     if (filterDto.role) {
-      if (filterDto.role.id) {
-        queryBuilder.andWhere('role.id = :roleId', {
-          roleId: filterDto.role.id,
-        });
-      }
-
       if (filterDto.role.name) {
         queryBuilder.andWhere('(role.name ILIKE :name)', {
           name: `%${filterDto.role.name}%`,

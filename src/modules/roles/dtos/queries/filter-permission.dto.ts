@@ -10,8 +10,4 @@ export class FilterPermissionDto extends PaginationDto {
   @IsOptional()
   @IsString()
   name?: string;
-
-  @IsOptional()
-  @PositiveIntegerId({ nullable: true })
-  roleId?: number;
 }

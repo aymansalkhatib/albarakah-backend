@@ -14,21 +14,22 @@ export class PermissionsController {
     return permissions;
   }
 
-  @Get(':id')
-  async findPermissionById(@Param('id', ParseIntPipe) id: number) {
-    const permission = await this.permissionsService.findPermissionById(id);
-    return toDto(PermissionResponseDto, permission);
+  @Get('user/:userId/allowed')
+  async getAllPermissionsForUser(@Param('userId', ParseIntPipe) userId: number) {
+    const permissions = await this.permissionsService.getAllAllowedPermissionsForUser(userId);
+    return toDto(PermissionResponseDto, permissions);
   }
 
+  // Order specific routes before dynamic :id to avoid conflicts
   @Get(':id/role')
   async findPermissionRoleById(@Param('id', ParseIntPipe) id: number) {
     const permissionRole = await this.permissionsService.getPermissionsForRole(id);
     return toDto(PermissionResponseDto, permissionRole);
   }
 
-  @Get('user/:userId/allowed')
-  async getAllPermissionsForUser(@Param('userId', ParseIntPipe) userId: number) {
-    const permissions = await this.permissionsService.getAllAllowedPermissionsForUser(userId);
-    return toDto(PermissionResponseDto, permissions);
+  @Get(':id')
+  async findPermissionById(@Param('id', ParseIntPipe) id: number) {
+    const permission = await this.permissionsService.findPermissionById(id);
+    return toDto(PermissionResponseDto, permission);
   }
 }

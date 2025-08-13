@@ -73,6 +73,5 @@ export class SystemUser {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
     this.passwordChangedAt = new Date();
-    console.log(this.passwordChangedAt);
   }
 }
