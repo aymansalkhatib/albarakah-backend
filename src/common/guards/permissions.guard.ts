@@ -31,9 +31,7 @@ export class PermissionsGuard implements CanActivate {
       throw new ForbiddenException('User not authenticated');
     }
 
-    const allowedPermissions = await this.permissionsService.getAllAllowedPermissionsForUser(
-      user.id,
-    );
+    const allowedPermissions = await this.permissionsService.getEffectiveUserPermissions(user.id);
 
     if (
       !allowedPermissions ||

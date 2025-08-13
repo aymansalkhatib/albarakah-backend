@@ -24,13 +24,15 @@ export class PermissionsService {
   ): Promise<PaginationResponseDto<PermissionResponseDto>> {
     const queryBuilder = this.permissionRepository.createQueryBuilder('permission');
 
-    if (filterDto.id) {
-      queryBuilder.andWhere('permission.id = :id', { id: filterDto.id });
+    if (filterDto.name) {
+      queryBuilder.andWhere('permission.name = :name', {
+        name: filterDto.name,
+      });
     }
 
-    if (filterDto.name) {
-      queryBuilder.andWhere('(permission.name LIKE :name)', {
-        name: `%${filterDto.name}%`,
+    if (filterDto.description) {
+      queryBuilder.andWhere('(permission.description ILIKE :description)', {
+        description: `%${filterDto.description}%`,
       });
     }
 
@@ -59,43 +61,44 @@ export class PermissionsService {
     return permissions;
   }
 
-  async getAllAllowedPermissionsForUser(systemUserId: number): Promise<PermissionEntity[]> {
+  async getEffectiveUserPermissions(userId: number): Promise<PermissionEntity[]> {
+    // Fetch user with role permissions
     const user = await this.systemUserRepository.findOne({
-      where: { id: systemUserId },
+      where: { id: userId },
       relations: ['role', 'role.rolePermissions', 'role.rolePermissions.permission'],
     });
 
     if (!user) {
-      throw new NotFoundException(`System user with ID ${systemUserId} not found`);
+      throw new NotFoundException(`User with ID ${userId} not found`);
     }
 
-    if (!user.role) {
-      throw new NotFoundException(`User with ID ${systemUserId} has no role assigned`);
-    }
+    // Fetch and categorize user-specific permissions
+    const allUserPermissions = await this.userPermissionsService.getUserPermissions(userId);
+    const allowedUserPermissions = allUserPermissions.filter((permission) => permission.isAllowed);
+    const deniedUserPermissions = allUserPermissions.filter((permission) => !permission.isAllowed);
 
-    const userPermissions = await this.userPermissionsService.getUserPermissions(systemUserId);
-    const allowedUserPermissions = userPermissions.filter((up) => up.isAllowed);
-    const disallowedUserPermissions = userPermissions.filter((up) => !up.isAllowed);
-
-    // Remove disallowed user permissions from role permissions
-    const filteredRolePermissions = user.role.rolePermissions.filter(
-      (rp) => !disallowedUserPermissions.some((up) => up.permissionId === rp.permissionId),
+    // Create set of denied permission IDs for efficient lookup
+    const deniedPermissionIds = new Set(
+      deniedUserPermissions.map((permission) => permission.permissionId),
     );
 
-    // Extract permission entities from filtered role permissions
-    const rolePermissions = filteredRolePermissions.map((rp) => rp.permission);
+    // Filter role permissions, excluding denied user permissions
+    const effectiveRolePermissions = user.role.rolePermissions.filter(
+      (rolePermission) => !deniedPermissionIds.has(rolePermission.permissionId),
+    );
 
-    // Extract permission entities from allowed user permissions
-    const userPermissionEntities = allowedUserPermissions.map((up) => up.permission);
+    // Extract permission entities from both sources
+    const permissionsFromRole = effectiveRolePermissions.map((rp) => rp.permission);
+    const permissionsFromUser = allowedUserPermissions.map((up) => up.permission);
 
-    // Combine and remove duplicates based on permission ID using a map for O(n)
-    const allPermissions = [...rolePermissions, ...userPermissionEntities];
-    const idToPermission = new Map<number, PermissionEntity>();
-    for (const perm of allPermissions) {
-      if (!idToPermission.has(perm.id)) {
-        idToPermission.set(perm.id, perm);
-      }
-    }
-    return Array.from(idToPermission.values());
+    // Combine and remove duplicates using Map for O(n) complexity
+    const allEffectivePermissions = [...permissionsFromRole, ...permissionsFromUser];
+    const uniquePermissionsMap = new Map<number, PermissionEntity>();
+
+    allEffectivePermissions.forEach((permission) => {
+      uniquePermissionsMap.set(permission.id, permission);
+    });
+
+    return Array.from(uniquePermissionsMap.values());
   }
 }
