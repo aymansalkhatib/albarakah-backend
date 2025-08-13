@@ -11,6 +11,11 @@ export enum Permission {
   UPDATE_PERMISSION = 'update_permission',
   DELETE_PERMISSION = 'delete_permission',
 
+  // User Permissions Management
+  CREATE_USER_PERMISSION = 'create_user_permission',
+  READ_USER_PERMISSION = 'read_user_permission',
+  DELETE_USER_PERMISSION = 'delete_user_permission',
+
   // Family Management
   CREATE_FAMILY = 'create_family',
   READ_FAMILY = 'read_family',

@@ -26,30 +26,52 @@ export class SystemUsersService {
   async create(createUserAccountDto: CreateSystemUserDto): Promise<SystemUser> {
     let employee: Employee;
 
-    const existingUser = await this.systemUserRepository.exists({
-      where: { username: createUserAccountDto.username },
-    });
+    const saved: SystemUser = await this.systemUserRepository.manager.transaction(
+      async (manager) => {
+        const systemUserRepo = manager.getRepository(SystemUser);
 
-    if (existingUser) {
-      throw new ConflictException(this.translateHelper.tr('system-users.errors.username_taken'));
-    }
+        const existingUser = await systemUserRepo.exists({
+          where: { username: createUserAccountDto.username },
+        });
 
-    if (createUserAccountDto.employeeId) {
-      employee = await this.employeesService.findOne(createUserAccountDto.employeeId, {
-        relations: ['systemUser'],
-      });
+        if (existingUser) {
+          throw new ConflictException(
+            this.translateHelper.tr('system-users.errors.username_taken'),
+          );
+        }
 
-      if (employee.systemUser) {
-        throw new ConflictException(
-          this.translateHelper.tr('system-users.errors.employee_has_system_account'),
-        );
-      }
-    } else {
-      employee = await this.employeesService.create(createUserAccountDto.employee);
-    }
+        // Check if role exists
+        const roleRepo = manager.getRepository('Role');
+        const role = await roleRepo.findOne({
+          where: { id: createUserAccountDto.roleId },
+        });
+        if (!role) {
+          throw new NotFoundException(`Role with ID ${createUserAccountDto.roleId} not found`);
+        }
 
-    const systemUser = this.systemUserRepository.create({ ...createUserAccountDto, employee });
-    const saved = await this.systemUserRepository.save(systemUser);
+        if (createUserAccountDto.employeeId) {
+          employee = await this.employeesService.findOne(createUserAccountDto.employeeId, {
+            relations: ['systemUser'],
+          });
+
+          if (employee.systemUser) {
+            throw new ConflictException(
+              this.translateHelper.tr('system-users.errors.employee_has_system_account'),
+            );
+          }
+        } else {
+          employee = await this.employeesService.create(createUserAccountDto.employee);
+        }
+
+        const systemUser = systemUserRepo.create({
+          ...createUserAccountDto,
+          employee: employee,
+        });
+
+        return await systemUserRepo.save(systemUser);
+      },
+    );
+
     return this.findOne(saved.id, { relations: ['employee', 'role', 'employee.person'] });
   }
 

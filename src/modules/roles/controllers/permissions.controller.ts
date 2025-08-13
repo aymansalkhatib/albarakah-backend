@@ -5,6 +5,8 @@ import { toDto } from '../../.././common/helpers/to-dto';
 import { PermissionResponseDto } from '../dtos/responses/permission-response.dto';
 import { Protected } from '@app/common/decorators/protected.decorator';
 import { Permission } from '../enums/permission.enum';
+import { SerializeResponse } from '@app/common/decorators/serialize-response.decorator';
+import { PaginationResponseDto } from '@app/common/pagination/dto/pagination-response.dto';
 
 @Controller('permissions')
 export class PermissionsController {
@@ -12,30 +14,35 @@ export class PermissionsController {
 
   @Get()
   @Protected(Permission.READ_PERMISSION)
-  async findAllPermissions(@Query() filterDto: FilterPermissionDto) {
-    const permissions = await this.permissionsService.findAllPermissions(filterDto);
-    return permissions;
+  async findAllPermissions(
+    @Query() filterDto: FilterPermissionDto,
+  ): Promise<PaginationResponseDto<PermissionResponseDto>> {
+    return await this.permissionsService.findAllPermissions(filterDto);
   }
 
   @Get('user/:userId/allowed')
   @Protected(Permission.READ_PERMISSION)
-  async getAllPermissionsForUser(@Param('userId', ParseIntPipe) userId: number) {
-    const permissions = await this.permissionsService.getEffectiveUserPermissions(userId);
-    return toDto(PermissionResponseDto, permissions);
+  @SerializeResponse(PermissionResponseDto)
+  async getAllPermissionsForUser(
+    @Param('userId', ParseIntPipe) userId: number,
+  ): Promise<PermissionResponseDto[]> {
+    return await this.permissionsService.getEffectiveUserPermissions(userId);
   }
 
   // Order specific routes before dynamic :id to avoid conflicts
   @Get(':id/role')
   @Protected(Permission.READ_PERMISSION)
-  async findPermissionRoleById(@Param('id', ParseIntPipe) id: number) {
-    const permissionRole = await this.permissionsService.getPermissionsForRole(id);
-    return toDto(PermissionResponseDto, permissionRole);
+  @SerializeResponse(PermissionResponseDto)
+  async findPermissionRoleById(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<PermissionResponseDto[]> {
+    return await this.permissionsService.getPermissionsForRole(id);
   }
 
   @Get(':id')
   @Protected(Permission.READ_PERMISSION)
-  async findPermissionById(@Param('id', ParseIntPipe) id: number) {
-    const permission = await this.permissionsService.findPermissionById(id);
-    return toDto(PermissionResponseDto, permission);
+  @SerializeResponse(PermissionResponseDto)
+  async findPermissionById(@Param('id', ParseIntPipe) id: number): Promise<PermissionResponseDto> {
+    return await this.permissionsService.findPermissionById(id);
   }
 }

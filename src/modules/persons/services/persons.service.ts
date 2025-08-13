@@ -42,20 +42,6 @@ export class PersonsService {
     return this.create(createPersonDto, entityManager);
   }
 
-  async createManyWithTransaction(
-    createPersonDtos: CreatePersonDto[],
-    entityManager: EntityManager,
-  ): Promise<Person[]> {
-    const createdPersons: Person[] = [];
-
-    for (const createPersonDto of createPersonDtos) {
-      const person = await this.create(createPersonDto, entityManager);
-      createdPersons.push(person);
-    }
-
-    return createdPersons;
-  }
-
   async update(id: number, updatePersonDto: UpdatePersonDto): Promise<Person> {
     const person = await this.findOne(id);
     const mergedPerson = this.personRepository.merge(person, updatePersonDto);

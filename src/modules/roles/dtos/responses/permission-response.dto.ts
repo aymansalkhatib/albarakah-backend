@@ -1,5 +1,6 @@
 import { Exclude, Expose, Transform, Type } from 'class-transformer';
 import { RoleResponseDto } from './role-response.dto';
+import { Permission } from '../../enums/permission.enum';
 
 @Exclude()
 export class PermissionResponseDto {
@@ -7,7 +8,7 @@ export class PermissionResponseDto {
   id: number;
 
   @Expose()
-  name?: string;
+  name: Permission;
 
   @Expose()
   description?: string;

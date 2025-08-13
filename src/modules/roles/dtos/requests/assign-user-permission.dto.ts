@@ -12,5 +12,5 @@ export class AssignUserPermissionDto {
   permissionId: number;
 
   @StrictBoolean()
-  isAllowed?: boolean;
+  isAllowed: boolean;
 }

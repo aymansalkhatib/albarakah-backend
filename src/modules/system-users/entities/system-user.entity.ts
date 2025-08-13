@@ -21,8 +21,6 @@ import * as bcrypt from 'bcrypt';
 @Entity('system_users')
 @Index('idx_system_users_username', ['username'], { unique: true })
 @Index('idx_system_users_employee_id', ['employeeId'], { unique: true })
-@Index('idx_system_users_role_id', ['roleId'])
-@Index('idx_system_users_last_login', ['lastLogin'])
 export class SystemUser {
   @PrimaryGeneratedColumn()
   id: number;

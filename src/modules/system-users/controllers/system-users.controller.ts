@@ -53,6 +53,7 @@ export class SystemUsersController {
   }
 
   @Get('me')
+  @Protected()
   @SerializeResponse(SystemUserResponseDto)
   async getCurrentUser(@CurrentUser() systemUser: SystemUser): Promise<SystemUserResponseDto> {
     return systemUser;
