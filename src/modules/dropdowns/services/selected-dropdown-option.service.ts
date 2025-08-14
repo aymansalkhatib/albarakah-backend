@@ -1,13 +1,18 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { SelectedDropdownOption } from '../entities/selected-dropdown-option.entity';
 import { CreateSelectedDropdownOptionDto } from '../dtos/selected-dropdown-option/create-selected-dropdown-option.dto';
+import { FilterSelectedDropdownOptionDto } from '../dtos/selected-dropdown-option/filter-selected-dropdown-option.dto';
 import { DropdownService } from './dropdown.service';
 import { DropdownOptionService } from './dropdown-option.service';
-import { DropdownSelectionType } from '../entities/dropdown.entity';
 import { DropdownCategoryService } from './dropdown-category.service';
 import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
+import { DropdownSelectionType } from '../enums/dropdown-selection-type.enum';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
+import { ResponseSelectedDropdownOptionDto } from '../dtos/selected-dropdown-option/response-selected-dropdown-option.dto';
+import { paginate } from '@app/common/pagination/paginate.service';
+import { DropdownCategory } from '../entities/dropdown-category.entity';
 
 @Injectable()
 export class SelectedDropdownOptionService {
@@ -23,7 +28,7 @@ export class SelectedDropdownOptionService {
   async upsert(createDto: CreateSelectedDropdownOptionDto): Promise<any> {
     const category = await this.dropdownCategoryService.findOne(createDto.categoryId);
 
-    const dropdown = await this.dropdownService.ensureExists(createDto.dropdownId);
+    const dropdown = await this.dropdownService.findOne(createDto.dropdownId);
 
     if (category.id !== dropdown.dropdownCategoryId) {
       throw new BadRequestException(
@@ -33,6 +38,9 @@ export class SelectedDropdownOptionService {
         }),
       );
     }
+
+    // Validate that record type matches category root name
+    await this.validateRecordTypeMatchesCategoryRoot(createDto.entityType, category);
 
     switch (dropdown.selectionType) {
       case DropdownSelectionType.SINGLE:
@@ -46,6 +54,65 @@ export class SelectedDropdownOptionService {
           this.translateHelper.tr('dropdowns.errors.invalid_selection_type'),
         );
     }
+  }
+
+  async findOne(id: number): Promise<SelectedDropdownOption> {
+    const selection = await this.selectedDropdownOptionRepository.findOne({
+      where: { id },
+      relations: ['dropdown', 'selectedOption', 'category'],
+    });
+    if (!selection) {
+      throw new NotFoundException(
+        this.translateHelper.tr('dropdowns.errors.selection_not_found', { id }),
+      );
+    }
+    return selection;
+  }
+
+  async delete(id: number): Promise<void> {
+    const result = await this.selectedDropdownOptionRepository.delete({ id });
+    if (result.affected === 0) {
+      throw new NotFoundException(
+        this.translateHelper.tr('dropdowns.errors.selection_not_found', { id }),
+      );
+    }
+  }
+
+  async findAll(
+    filterDto: FilterSelectedDropdownOptionDto,
+  ): Promise<PaginationResponseDto<ResponseSelectedDropdownOptionDto>> {
+    const queryBuilder = this.selectedDropdownOptionRepository.createQueryBuilder('selection');
+
+    // Apply filters
+    if (filterDto.recordId) {
+      queryBuilder.andWhere('selection.recordId = :recordId', { recordId: filterDto.recordId });
+    }
+
+    if (filterDto.entityType) {
+      queryBuilder.andWhere('selection.entityType = :entityType', {
+        entityType: filterDto.entityType,
+      });
+    }
+
+    if (filterDto.dropdownId) {
+      queryBuilder.andWhere('selection.dropdownId = :dropdownId', {
+        dropdownId: filterDto.dropdownId,
+      });
+    }
+
+    if (filterDto.categoryId) {
+      queryBuilder.andWhere('selection.categoryId = :categoryId', {
+        categoryId: filterDto.categoryId,
+      });
+    }
+
+    if (filterDto.selectedOptionId) {
+      queryBuilder.andWhere('selection.selectedOptionId = :selectedOptionId', {
+        selectedOptionId: filterDto.selectedOptionId,
+      });
+    }
+
+    return paginate(queryBuilder, filterDto, ResponseSelectedDropdownOptionDto);
   }
 
   private async handleSingleSelectionWithTransaction(
@@ -73,6 +140,11 @@ export class SelectedDropdownOptionService {
     if (existingSelection) {
       // Update existing selection
       existingSelection.selectedOptionId = createDto.selectedOptionId[0];
+      existingSelection.categoryId = createDto.categoryId;
+      existingSelection.dropdownId = createDto.dropdownId;
+      existingSelection.entityType = createDto.entityType;
+      existingSelection.recordId = createDto.recordId;
+
       return this.selectedDropdownOptionRepository.save(existingSelection);
     } else {
       // Create new selection
@@ -131,5 +203,26 @@ export class SelectedDropdownOptionService {
     }
 
     return this.selectedDropdownOptionRepository.save(selections);
+  }
+
+  private async validateRecordTypeMatchesCategoryRoot(
+    entityType: string,
+    category: DropdownCategory,
+  ): Promise<void> {
+    // Get the root category (category with depth = 1)
+    let rootCategory = category;
+    while (rootCategory.parentId) {
+      rootCategory = await this.dropdownCategoryService.findOne(rootCategory.parentId);
+    }
+
+    // Check if the root category name matches the entity type
+    if (rootCategory.name !== entityType) {
+      throw new BadRequestException(
+        this.translateHelper.tr('dropdowns.errors.category_mismatch', {
+          categoryId: rootCategory.name,
+          dropdownCategoryId: entityType,
+        }),
+      );
+    }
   }
 }

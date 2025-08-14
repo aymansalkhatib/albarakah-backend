@@ -1,6 +1,7 @@
 import { Expose, Type } from 'class-transformer';
 import { ResponseDropdownDto } from '../dropdown/response-dropdown.dto';
 import { ResponseDropdownOptionDto } from '../dropdown-option/response-dropdown-option.dto';
+import { ResponseDropdownCategoryDto } from '../dropdown-category/response-dropdown-category.dto';
 
 export class ResponseSelectedDropdownOptionDto {
   @Expose()
@@ -33,4 +34,12 @@ export class ResponseSelectedDropdownOptionDto {
   @Expose()
   @Type(() => ResponseDropdownOptionDto)
   selectedOption?: ResponseDropdownOptionDto;
+
+  @Expose()
+  @Type(() => ResponseDropdownCategoryDto)
+  category?: ResponseDropdownCategoryDto;
+
+  @Expose()
+  @Type(() => ResponseDropdownCategoryDto)
+  categoryPath?: ResponseDropdownCategoryDto[];
 }

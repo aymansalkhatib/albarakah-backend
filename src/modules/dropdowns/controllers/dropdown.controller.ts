@@ -24,7 +24,7 @@ export class DropdownController {
   @Post()
   @Protected(Permission.CREATE_DROPDOWN)
   @SerializeResponse(ResponseDropdownDto)
-  create(@Body() createDto: UpsertDropdownDto): Promise<Dropdown> {
+  upsert(@Body() createDto: UpsertDropdownDto): Promise<Dropdown> {
     return this.dropdownService.upsert(createDto);
   }
 

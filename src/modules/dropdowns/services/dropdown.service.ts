@@ -29,6 +29,7 @@ export class DropdownService {
     return await this.dataSource.transaction(async (manager) => {
       // Validate category exists
       await this.dropdownCategoryService.findOne(upsertDto.dropdownCategoryId);
+      if (upsertDto.id) await this.findOne(upsertDto.id);
 
       // Check for duplicate dropdown name
       await this.checkDuplicateDropdownName(
@@ -108,6 +109,7 @@ export class DropdownService {
     await this.dropdownCategoryService.findOne(categoryId);
     return this.dropdownRepository.find({
       where: { dropdownCategory: { id: categoryId } },
+      relations: ['options'],
     });
   }
 
@@ -123,16 +125,6 @@ export class DropdownService {
       );
     }
 
-    return dropdown;
-  }
-
-  async ensureExists(id: number): Promise<Dropdown> {
-    const dropdown = await this.dropdownRepository.findOne({ where: { id } });
-    if (!dropdown) {
-      throw new NotFoundException(
-        this.translateHelper.tr('dropdowns.errors.dropdown_not_found', { id }),
-      );
-    }
     return dropdown;
   }
 

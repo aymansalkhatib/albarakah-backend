@@ -7,18 +7,15 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { DropdownSelectionType } from '../../entities/dropdown.entity';
 import { PositiveIntegerId } from '../../../../common/decorators/positive-integer-id.decorator';
 import { UpsertDropdownOptionDto } from '../dropdown-option/create-dropdown-option.dto';
-import { OnlyOneOf } from '../../../../common/decorators/validate-one-of-two-fields.validator';
+import { DropdownSelectionType } from '../../enums/dropdown-selection-type.enum';
 
-@OnlyOneOf([{ fields: ['id', 'dropdownCategoryId'], isRequired: true }], {})
 export class UpsertDropdownDto {
   @IsOptional()
   @PositiveIntegerId()
   id?: number;
 
-  @IsOptional()
   @PositiveIntegerId()
   dropdownCategoryId: number;
 

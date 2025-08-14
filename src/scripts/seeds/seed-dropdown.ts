@@ -1,11 +1,12 @@
 import { PersonDropdown } from '../../modules/persons/enums/type-dropdown.enum';
 import { DropdownCategory } from '../../modules/dropdowns/entities/dropdown-category.entity';
 import { DropdownOption } from '../../modules/dropdowns/entities/dropdown-option.entity';
-import { Dropdown, DropdownSelectionType } from '../../modules/dropdowns/entities/dropdown.entity';
+import { Dropdown } from '../../modules/dropdowns/entities/dropdown.entity';
 import { SelectedDropdownOption } from '../../modules/dropdowns/entities/selected-dropdown-option.entity';
 import { Person } from '../../modules/persons/entities/person.entity';
 import { House } from '../../modules/houses/entities/house.entity';
 import { QueryRunner } from 'typeorm';
+import { DropdownSelectionType } from '@app/modules/dropdowns/enums/dropdown-selection-type.enum';
 
 export async function seedDropdowns(queryRunner: QueryRunner) {
   console.log('🌱 Starting dropdown seeding process...');

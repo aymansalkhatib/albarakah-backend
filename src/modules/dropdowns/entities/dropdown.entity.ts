@@ -11,12 +11,7 @@ import {
 } from 'typeorm';
 import { DropdownCategory } from './dropdown-category.entity';
 import { DropdownOption } from './dropdown-option.entity';
-
-export enum DropdownSelectionType {
-  SINGLE = 'single',
-  MULTIPLE = 'multiple',
-  MULTIPLE_DUPLICATED = 'multiple_with_duplicated',
-}
+import { DropdownSelectionType } from '../enums/dropdown-selection-type.enum';
 
 @Entity('dropdown')
 @Unique('UQ_dropdown_name_category_id', ['dropdownName', 'dropdownCategoryId'])

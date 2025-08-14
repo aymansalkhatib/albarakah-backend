@@ -10,6 +10,8 @@ import { paginate } from '../../../common/pagination/paginate.service';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { ResponseDropdownCategoryDto } from '../dtos/dropdown-category/response-dropdown-category.dto';
 import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
+import { House } from '@app/modules/houses/entities/house.entity';
+import { Person } from '@app/modules/persons/entities/person.entity';
 
 @Injectable()
 export class DropdownCategoryService {
@@ -67,6 +69,12 @@ export class DropdownCategoryService {
 
   async delete(id: number): Promise<void> {
     const category = await this.findOne(id, { relations: ['dropdowns', 'children'] });
+    
+    if (category.name == House.name || category.name == Person.name) {
+      throw new BadRequestException(
+        this.translateHelper.tr('dropdowns.errors.cannot_delete_core_category'),
+      );
+    }
 
     if (category.dropdowns && category.dropdowns.length > 0) {
       throw new BadRequestException(

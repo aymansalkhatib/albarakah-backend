@@ -128,6 +128,11 @@ export enum Permission {
   UPDATE_DROPDOWN = 'update_dropdown',
   DELETE_DROPDOWN = 'delete_dropdown',
 
+  // Selected Dropdown Option Management
+  CREATE_SELECTED_DROPDOWN_OPTION = 'create_selected_dropdown_option',
+  READ_SELECTED_DROPDOWN_OPTION = 'read_selected_dropdown_option',
+  DELETE_SELECTED_DROPDOWN_OPTION = 'delete_selected_dropdown_option',
+
   // Dropdown Category Management
   CREATE_DROPDOWN_CATEGORY = 'create_dropdown_category',
   READ_DROPDOWN_CATEGORY = 'read_dropdown_category',

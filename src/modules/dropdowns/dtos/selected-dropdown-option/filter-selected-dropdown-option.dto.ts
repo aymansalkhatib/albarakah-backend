@@ -18,5 +18,9 @@ export class FilterSelectedDropdownOptionDto extends PaginationDto {
 
   @IsOptional()
   @PositiveIntegerId()
+  categoryId?: number;
+
+  @IsOptional()
+  @PositiveIntegerId()
   selectedOptionId?: number;
 }
