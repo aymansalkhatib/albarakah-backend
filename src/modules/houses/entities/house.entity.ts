@@ -12,8 +12,6 @@ import {
 import { Family } from '../../families/entities/families.entity';
 
 @Entity('houses')
-@Index(['familyId'])
-@Index(['isRented'])
 export class House {
   @PrimaryGeneratedColumn()
   id: number;
