@@ -14,8 +14,8 @@ import { Dropdown } from '../entities/dropdown.entity';
 import { UpsertDropdownDto } from '../dtos/dropdown/upsert-dropdown.dto';
 import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
 import { ResponseDropdownDto } from '../dtos/dropdown/response-dropdown.dto';
-import { Protected } from '@app/common/decorators/protected.decorator';
-import { Permission } from '@app/modules/roles/enums/permission.enum';
+import { Protected } from '../../../common/decorators/protected.decorator';
+import { Permission } from '../../roles/enums/permission.enum';
 
 @Controller('dropdowns')
 export class DropdownController {

@@ -6,7 +6,7 @@ import { SelectedDropdownOption } from '../../modules/dropdowns/entities/selecte
 import { Person } from '../../modules/persons/entities/person.entity';
 import { House } from '../../modules/houses/entities/house.entity';
 import { QueryRunner } from 'typeorm';
-import { DropdownSelectionType } from '@app/modules/dropdowns/enums/dropdown-selection-type.enum';
+import { DropdownSelectionType } from '../../modules/dropdowns/enums/dropdown-selection-type.enum';
 
 export async function seedDropdowns(queryRunner: QueryRunner) {
   console.log('🌱 Starting dropdown seeding process...');

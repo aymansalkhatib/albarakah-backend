@@ -11,7 +11,7 @@ import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.help
 import { DropdownSelectionType } from '../enums/dropdown-selection-type.enum';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { ResponseSelectedDropdownOptionDto } from '../dtos/selected-dropdown-option/response-selected-dropdown-option.dto';
-import { paginate } from '@app/common/pagination/paginate.service';
+import { paginate } from '../../../common/pagination/paginate.service';
 import { DropdownCategory } from '../entities/dropdown-category.entity';
 
 @Injectable()

@@ -6,7 +6,7 @@ import { Family } from '../../families/entities/families.entity';
 import { CreateHouseDto } from '../dtos/requests/create-house.dto';
 import { UpdateHouseDto } from '../dtos/requests/update-house.dto';
 import { HouseQueryDto } from '../dtos/queries/house-query.dto';
-import { FamiliesService } from '@app/modules/families/services/families.service';
+import { FamiliesService } from '../../families/services/families.service';
 
 @Injectable()
 export class HousesService {

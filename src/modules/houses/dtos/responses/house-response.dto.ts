@@ -1,4 +1,4 @@
-import { FamilyResponseDto } from '@app/modules/families/dtos/responses/family-response.dto';
+import { FamilyResponseDto } from '../../../families/dtos/responses/family-response.dto';
 import { Expose, Type } from 'class-transformer';
 
 export class HouseResponseDto {

@@ -19,8 +19,8 @@ import { ResponseDropdownCategoryDto } from '../dtos/dropdown-category/response-
 import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
 import { FilterDropdownCategoryDto } from '../dtos/dropdown-category/filter-dropdown-category.dto';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
-import { Protected } from '@app/common/decorators/protected.decorator';
-import { Permission } from '@app/modules/roles/enums/permission.enum';
+import { Protected } from '../../../common/decorators/protected.decorator';
+import { Permission } from '../../roles/enums/permission.enum';
 
 @Controller('dropdown-categories')
 export class DropdownCategoryController {

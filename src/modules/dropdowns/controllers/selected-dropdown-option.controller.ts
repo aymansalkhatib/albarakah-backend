@@ -15,8 +15,8 @@ import { CreateSelectedDropdownOptionDto } from '../dtos/selected-dropdown-optio
 import { ResponseSelectedDropdownOptionDto } from '../dtos/selected-dropdown-option/response-selected-dropdown-option.dto';
 import { FilterSelectedDropdownOptionDto } from '../dtos/selected-dropdown-option/filter-selected-dropdown-option.dto';
 import { SelectedDropdownOptionService } from '../services/selected-dropdown-option.service';
-import { Protected } from '@app/common/decorators/protected.decorator';
-import { Permission } from '@app/modules/roles/enums/permission.enum';
+import { Protected } from '../../../common/decorators/protected.decorator';
+import { Permission } from '../../roles/enums/permission.enum';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 
 @Controller('selected-dropdown-options')
