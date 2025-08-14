@@ -3,7 +3,7 @@ import { CreateDropdownCategoryDto } from '../dtos/dropdown-category/create-drop
 import { UpdateDropdownCategoryDto } from '../dtos/dropdown-category/update-dropdown-category.dto';
 import { DropdownCategory } from '../entities/dropdown-category.entity';
 
-import { Repository } from 'typeorm';
+import { FindOneOptions, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FilterDropdownCategoryDto } from '../dtos/dropdown-category/filter-dropdown-category.dto';
 import { paginate } from '../../../common/pagination/paginate.service';
@@ -80,16 +80,16 @@ export class DropdownCategoryService {
       );
     }
 
-    await this.dropdownCategoryRepository.remove(category);
+    await this.dropdownCategoryRepository.delete(category.id);
   }
 
   async findOne(
     id: number,
-    { relations }: { relations?: string[] } = {},
+    options: FindOneOptions<DropdownCategory> = {},
   ): Promise<DropdownCategory> {
     const category = await this.dropdownCategoryRepository.findOne({
       where: { id },
-      relations: relations || [],
+      ...options,
     });
 
     if (!category) {
@@ -119,16 +119,6 @@ export class DropdownCategoryService {
       }
     }
     return paginate(qb, filter, ResponseDropdownCategoryDto);
-  }
-
-  async ensureExists(id: number): Promise<DropdownCategory> {
-    const exists = await this.dropdownCategoryRepository.findOne({ where: { id } });
-    if (!exists) {
-      throw new NotFoundException(
-        this.translateHelper.tr('dropdowns.errors.category_not_found', { id }),
-      );
-    }
-    return exists;
   }
 
   private async checkDuplicateCategoryName(name: string, parentId: number | null): Promise<void> {

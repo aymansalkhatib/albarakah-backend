@@ -21,7 +21,7 @@ export class SelectedDropdownOptionService {
   ) {}
 
   async upsert(createDto: CreateSelectedDropdownOptionDto): Promise<any> {
-    const category = await this.dropdownCategoryService.ensureExists(createDto.categoryId);
+    const category = await this.dropdownCategoryService.findOne(createDto.categoryId);
 
     const dropdown = await this.dropdownService.ensureExists(createDto.dropdownId);
 

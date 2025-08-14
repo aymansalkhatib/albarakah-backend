@@ -11,6 +11,7 @@ import { DropdownCategoryService } from './dropdown-category.service';
 import { UpsertDropdownDto } from '../dtos/dropdown/upsert-dropdown.dto';
 import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
 import { DropdownOption } from '../entities/dropdown-option.entity';
+import { UpsertDropdownOptionDto } from '../dtos/dropdown-option/create-dropdown-option.dto';
 
 @Injectable()
 export class DropdownService {
@@ -27,7 +28,7 @@ export class DropdownService {
   async upsert(upsertDto: UpsertDropdownDto): Promise<Dropdown> {
     return await this.dataSource.transaction(async (manager) => {
       // Validate category exists
-      await this.dropdownCategoryService.ensureExists(upsertDto.dropdownCategoryId);
+      await this.dropdownCategoryService.findOne(upsertDto.dropdownCategoryId);
 
       // Check for duplicate dropdown name
       await this.checkDuplicateDropdownName(
@@ -59,7 +60,7 @@ export class DropdownService {
     });
   }
 
-  async remove(id: number): Promise<void> {
+  async delete(id: number): Promise<void> {
     return await this.dataSource.transaction(async (manager) => {
       // Find dropdown with options
       const dropdown = await manager.findOne(Dropdown, {
@@ -77,7 +78,7 @@ export class DropdownService {
       if (dropdown.options && dropdown.options.length > 0) {
         for (const option of dropdown.options) {
           try {
-            await manager.remove(DropdownOption, option);
+            await manager.delete(DropdownOption, option.id);
           } catch (err: any) {
             if (err?.code === '23503') {
               throw new BadRequestException(
@@ -91,7 +92,7 @@ export class DropdownService {
 
       // Delete dropdown
       try {
-        await manager.remove(Dropdown, dropdown);
+        await manager.delete(Dropdown, dropdown.id);
       } catch (err: any) {
         if (err?.code === '23503') {
           throw new BadRequestException(
@@ -104,7 +105,7 @@ export class DropdownService {
   }
 
   async findByCategory(categoryId: number): Promise<Dropdown[]> {
-    await this.dropdownCategoryService.ensureExists(categoryId);
+    await this.dropdownCategoryService.findOne(categoryId);
     return this.dropdownRepository.find({
       where: { dropdownCategory: { id: categoryId } },
     });
@@ -194,7 +195,7 @@ export class DropdownService {
 
   private async handleOptionsUpsert(
     dropdownId: number,
-    optionsDto: any[],
+    optionsDto: UpsertDropdownOptionDto[],
     manager: any,
   ): Promise<void> {
     // Validate duplicates in requests
@@ -295,17 +296,12 @@ export class DropdownService {
     dropdownCategoryId: number,
     excludeId?: number,
   ): Promise<void> {
-    const where: any = {
-      dropdownName,
-      dropdownCategoryId,
-    };
-
-    if (excludeId !== undefined) {
-      where.id = Not(excludeId);
-    }
-
     const existingDropdown = await this.dropdownRepository.findOne({
-      where,
+      where: {
+        id: Not(excludeId),
+        dropdownCategoryId,
+        dropdownName,
+      },
     });
 
     if (existingDropdown) {
@@ -315,7 +311,10 @@ export class DropdownService {
     }
   }
 
-  private validateOptionsExist(optionsDto: any[], existingOptions: DropdownOption[]): void {
+  private validateOptionsExist(
+    optionsDto: UpsertDropdownOptionDto[],
+    existingOptions: DropdownOption[],
+  ): void {
     const optionIdsToUpdate = optionsDto.filter((opt) => opt.id).map((opt) => opt.id);
 
     if (optionIdsToUpdate.length > 0) {

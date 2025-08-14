@@ -130,22 +130,4 @@ export class DropdownCategory extends BaseEntity {
     this.isDropdownCreationEnabled = canAddDrop;
     await this.save();
   }
-
-  async isLeafNode(): Promise<boolean> {
-    const categoryWithChildren = await DropdownCategory.findOne({
-      where: { id: this.id },
-      relations: ['children'],
-    });
-
-    return !(categoryWithChildren?.children && categoryWithChildren.children.length > 0);
-  }
-
-  async hasDropdowns(): Promise<boolean> {
-    const categoryWithDropdowns = await DropdownCategory.findOne({
-      where: { id: this.id },
-      relations: ['dropdowns'],
-    });
-
-    return !!(categoryWithDropdowns?.dropdowns && categoryWithDropdowns.dropdowns.length > 0);
-  }
 }

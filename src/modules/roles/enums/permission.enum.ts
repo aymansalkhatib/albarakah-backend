@@ -121,4 +121,16 @@ export enum Permission {
   READ_FAMILY_INCOME = 'read_family_income',
   UPDATE_FAMILY_INCOME = 'update_family_income',
   DELETE_FAMILY_INCOME = 'delete_family_income',
+
+  // Dropdown Management
+  CREATE_DROPDOWN = 'create_dropdown',
+  READ_DROPDOWN = 'read_dropdown',
+  UPDATE_DROPDOWN = 'update_dropdown',
+  DELETE_DROPDOWN = 'delete_dropdown',
+
+  // Dropdown Category Management
+  CREATE_DROPDOWN_CATEGORY = 'create_dropdown_category',
+  READ_DROPDOWN_CATEGORY = 'read_dropdown_category',
+  UPDATE_DROPDOWN_CATEGORY = 'update_dropdown_category',
+  DELETE_DROPDOWN_CATEGORY = 'delete_dropdown_category',
 }
