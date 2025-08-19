@@ -1,23 +1,36 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { FamiliesService } from '../../families/services/families.service';
+import { HousesService } from '../../houses/services/houses.service';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Visit } from '../entities/visit.entity';
-import { CreateVisitDto } from '../dtos/requests/create-visit.dto';
-import { UpdateVisitDto } from '../dtos/requests/update-visit.dto';
-import { FilterVisitDto } from '../dtos/queries/filter-visit.dto';
-import { VisitResponseDto } from '../dtos/responses/visit-response.dto';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { paginate } from '../../../common/pagination/paginate.service';
+import { FilterVisitDto } from '../dtos/queries/filter-visit.dto';
+import { CreateVisitDto } from '../dtos/requests/create-visit.dto';
+import { UpdateVisitDto } from '../dtos/requests/update-visit.dto';
+import { VisitResponseDto } from '../dtos/responses/visit-response.dto';
+import { Visit } from '../entities/visit.entity';
 
 @Injectable()
 export class VisitsService {
   constructor(
     @InjectRepository(Visit)
     private readonly visitRepository: Repository<Visit>,
+    private readonly housesService: HousesService,
+    private readonly familiesService: FamiliesService,
   ) {}
 
   async create(createVisitDto: CreateVisitDto): Promise<Visit> {
-    const visit = this.visitRepository.create(createVisitDto);
+    if (createVisitDto.familyId != createVisitDto.house.familyId) {
+      throw new BadRequestException('Family ID and house family ID do not match');
+    }
+
+    await this.familiesService.findOne(createVisitDto.familyId);
+    const house = await this.housesService.create(createVisitDto.house);
+    const visit = this.visitRepository.create({
+      ...createVisitDto,
+      house: house,
+    });
     return this.visitRepository.save(visit);
   }
 
@@ -102,7 +115,11 @@ export class VisitsService {
   }
 
   async findOne(id: number): Promise<Visit> {
-    const visit = await this.visitRepository.findOneById(id);
+    const visit = await this.visitRepository.findOne({
+      where: { id },
+      relations: ['house', 'family'],
+    });
+
     if (!visit) {
       throw new NotFoundException('Visit not found');
     }
@@ -110,10 +127,18 @@ export class VisitsService {
   }
 
   async update(id: number, updateVisitDto: UpdateVisitDto): Promise<Visit> {
-    const visit = await this.visitRepository.findOneById(id);
+    const visit = await this.visitRepository.findOne({
+      where: { id },
+      relations: ['house', 'family'],
+    });
 
     if (!visit) {
       throw new NotFoundException('Visit not found');
+    }
+
+    if (updateVisitDto.house) {
+      const house = await this.housesService.update(visit.houseId, updateVisitDto.house);
+      visit.house = house;
     }
 
     const updatedVisit = this.visitRepository.merge(visit, updateVisitDto);
@@ -121,9 +146,12 @@ export class VisitsService {
   }
 
   async delete(id: number): Promise<void> {
-    const result = await this.visitRepository.delete(id);
-    if (!result.affected) {
-      throw new NotFoundException('Visit not found');
-    }
+    const visit = await this.visitRepository.findOne({
+      where: { id },
+      relations: ['house', 'family'],
+    });
+
+    await this.visitRepository.delete(id);
+    await this.housesService.delete(visit.houseId);
   }
 }

@@ -1,9 +1,11 @@
+import { Visit } from '../../visits/entities/visit.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -42,4 +44,7 @@ export class House {
   })
   @JoinColumn({ name: 'family_id' })
   family: Family;
+
+  @OneToMany(() => Visit, (visit) => visit.house)
+  visits: Visit[];
 }

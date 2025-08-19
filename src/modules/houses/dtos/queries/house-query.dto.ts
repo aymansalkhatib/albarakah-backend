@@ -1,7 +1,8 @@
-import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
+import { PaginationQueryDto } from '../../../../common/pagination/dto/pagination-query.dto';
 import { Transform } from 'class-transformer';
+import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
 
-export class HouseQueryDto {
+export class HouseQueryDto extends PaginationQueryDto {
   @IsOptional()
   @IsNumber()
   @Transform(({ value }) => parseInt(value))

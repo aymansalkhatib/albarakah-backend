@@ -1,3 +1,5 @@
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
+import { paginate } from '../../../common/pagination/paginate.service';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -5,7 +7,9 @@ import { FamiliesService } from '../../families/services/families.service';
 import { HouseQueryDto } from '../dtos/queries/house-query.dto';
 import { CreateHouseDto } from '../dtos/requests/create-house.dto';
 import { UpdateHouseDto } from '../dtos/requests/update-house.dto';
+import { HouseResponseDto } from '../dtos/responses/house-response.dto';
 import { House } from '../entities/house.entity';
+import { applyHouseFilters } from '../utils/house-filter.util';
 
 @Injectable()
 export class HousesService {
@@ -28,40 +32,14 @@ export class HousesService {
     return await this.houseRepository.save(house);
   }
 
-  async findAll(query: HouseQueryDto): Promise<House[]> {
+  async findAll(query: HouseQueryDto): Promise<PaginationResponseDto<HouseResponseDto>> {
     const queryBuilder = this.houseRepository
       .createQueryBuilder('house')
       .leftJoinAndSelect('house.family', 'family');
 
-    if (query.familyId) {
-      queryBuilder.andWhere('house.familyId = :familyId', { familyId: query.familyId });
-    }
+    applyHouseFilters(queryBuilder, 'house', query);
 
-    if (query.locationText) {
-      queryBuilder.andWhere('house.locationText ILIKE :locationText', {
-        locationText: `%${query.locationText}%`,
-      });
-    }
-
-    if (query.isRented !== undefined) {
-      queryBuilder.andWhere('house.isRented = :isRented', { isRented: query.isRented });
-    }
-
-    if (query.minRentAmount !== undefined) {
-      queryBuilder.andWhere('house.rentAmount >= :minRentAmount', {
-        minRentAmount: query.minRentAmount,
-      });
-    }
-
-    if (query.maxRentAmount !== undefined) {
-      queryBuilder.andWhere('house.rentAmount <= :maxRentAmount', {
-        maxRentAmount: query.maxRentAmount,
-      });
-    }
-
-    queryBuilder.orderBy('house.createdAt', 'DESC');
-
-    return await queryBuilder.getMany();
+    return paginate(queryBuilder, query, HouseResponseDto);
   }
 
   async findOne(id: number): Promise<House> {
@@ -104,7 +82,7 @@ export class HousesService {
     return await this.houseRepository.save(house);
   }
 
-  async remove(id: number): Promise<void> {
+  async delete(id: number): Promise<void> {
     const house = await this.findOne(id);
     await this.houseRepository.remove(house);
   }

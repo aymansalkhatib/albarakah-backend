@@ -1,4 +1,6 @@
-import { Expose } from 'class-transformer';
+import { FamilyResponseDto } from '../../../families/dtos/responses/family-response.dto';
+import { HouseResponseDto } from '../../../houses/dtos';
+import { Expose, Type } from 'class-transformer';
 
 export class VisitResponseDto {
   @Expose()
@@ -39,4 +41,12 @@ export class VisitResponseDto {
 
   @Expose()
   updatedAt: Date;
+
+  @Expose()
+  @Type(() => FamilyResponseDto)
+  family?: FamilyResponseDto;
+
+  @Expose()
+  @Type(() => HouseResponseDto)
+  house?: HouseResponseDto;
 }

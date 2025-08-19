@@ -1,8 +1,8 @@
+import { House } from '../../houses/entities/house.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
-  Index,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -11,14 +11,15 @@ import {
 import { Family } from '../../families/entities/families.entity';
 
 @Entity('visits')
-@Index(['visitDate'])
-@Index(['visitDispatchDate'])
 export class Visit {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ name: 'family_id', nullable: true })
   familyId?: number;
+
+  @Column({ name: 'house_id' })
+  houseId: number;
 
   @Column({ name: 'visit_date', type: 'date' })
   visitDate: Date;
@@ -61,4 +62,10 @@ export class Visit {
   })
   @JoinColumn({ name: 'family_id' })
   family?: Family;
+
+  @ManyToOne(() => House, (house) => house.visits, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'house_id' })
+  house: House;
 }
