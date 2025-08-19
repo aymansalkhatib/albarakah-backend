@@ -1,7 +1,5 @@
 #!/bin/sh
-# --- run convert-imports script only ---
 if [ -f "scripts/convert-imports.js" ]; then
   node scripts/convert-imports.js && echo "convert-imports: done"
-  # إذا السكربت عدّل ملفات، أضفها للـ commit
   git add .
 fi
