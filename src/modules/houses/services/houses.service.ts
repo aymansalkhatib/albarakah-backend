@@ -1,8 +1,9 @@
-import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
-import { paginate } from '../../../common/pagination/paginate.service';
+import { applyFamilyFilters } from '../../families/utils/family-filter.util';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
+import { paginate } from '../../../common/pagination/paginate.service';
 import { FamiliesService } from '../../families/services/families.service';
 import { HouseQueryDto } from '../dtos/queries/house-query.dto';
 import { CreateHouseDto } from '../dtos/requests/create-house.dto';
@@ -38,6 +39,7 @@ export class HousesService {
       .leftJoinAndSelect('house.family', 'family');
 
     applyHouseFilters(queryBuilder, 'house', query);
+    applyFamilyFilters(queryBuilder, 'family', query);
 
     return paginate(queryBuilder, query, HouseResponseDto);
   }
