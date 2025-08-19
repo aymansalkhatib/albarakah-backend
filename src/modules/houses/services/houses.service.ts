@@ -1,10 +1,10 @@
-import { applyFamilyFilters } from '../../families/utils/family-filter.util';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { paginate } from '../../../common/pagination/paginate.service';
 import { FamiliesService } from '../../families/services/families.service';
+import { applyFamilyFilters } from '../../families/utils/family-filter.util';
 import { HouseQueryDto } from '../dtos/queries/house-query.dto';
 import { CreateHouseDto } from '../dtos/requests/create-house.dto';
 import { UpdateHouseDto } from '../dtos/requests/update-house.dto';

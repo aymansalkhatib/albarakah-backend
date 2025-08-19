@@ -1,4 +1,11 @@
+import { CreateFamilyDto } from '../../../families/dtos/requests/create-family-dto';
+import { CreateFamilyMemberDto } from '../../../family-members/dtos/requests/create-family-member.dto';
+import { CreateGuardianDto } from '../../../guardians/dtos/requests/create-guardian.dto';
+import { CreateHouseDto } from '../../../houses/dtos/requests/create-house.dto';
+import { Expose, Type } from 'class-transformer';
 import {
+  ArrayMinSize,
+  IsArray,
   IsBoolean,
   IsDateString,
   IsNotEmpty,
@@ -8,8 +15,8 @@ import {
   Max,
   MaxLength,
   Min,
+  ValidateNested,
 } from 'class-validator';
-import { Expose } from 'class-transformer';
 import { PositiveIntegerId } from '../../../../common/decorators/positive-integer-id.decorator';
 import { RequestStatus } from '../../enums/request-status.enum';
 
@@ -94,4 +101,23 @@ export class CreateFamilyRegistrationFormDto {
   @Max(100)
   @Expose()
   mealtimeParticipants?: number;
+
+  @IsNotEmpty()
+  @Type(() => CreateFamilyDto)
+  family: CreateFamilyDto;
+
+  @IsNotEmpty()
+  @IsOptional()
+  @Type(() => CreateHouseDto)
+  house?: CreateHouseDto;
+
+  @IsNotEmpty()
+  @Type(() => CreateGuardianDto)
+  guardians: CreateGuardianDto;
+
+  @IsArray()
+  @ArrayMinSize(1)
+  @ValidateNested({ each: true })
+  @Type(() => CreateFamilyMemberDto)
+  familyMembers: CreateFamilyMemberDto[];
 }
