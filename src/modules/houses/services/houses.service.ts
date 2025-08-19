@@ -1,12 +1,11 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { House } from '../entities/house.entity';
-import { Family } from '../../families/entities/families.entity';
+import { FamiliesService } from '../../families/services/families.service';
+import { HouseQueryDto } from '../dtos/queries/house-query.dto';
 import { CreateHouseDto } from '../dtos/requests/create-house.dto';
 import { UpdateHouseDto } from '../dtos/requests/update-house.dto';
-import { HouseQueryDto } from '../dtos/queries/house-query.dto';
-import { FamiliesService } from '../../families/services/families.service';
+import { House } from '../entities/house.entity';
 
 @Injectable()
 export class HousesService {
@@ -23,17 +22,6 @@ export class HousesService {
 
     if (!family) {
       throw new NotFoundException(`Family with ID ${createHouseDto.familyId} not found`);
-    }
-
-    // Check if family already has a house
-    const existingHouse = await this.houseRepository.findOne({
-      where: { familyId: createHouseDto.familyId },
-    });
-
-    if (existingHouse) {
-      throw new BadRequestException(
-        `Family with ID ${createHouseDto.familyId} already has a house`,
-      );
     }
 
     const house = this.houseRepository.create(createHouseDto);
