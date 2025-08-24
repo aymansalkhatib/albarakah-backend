@@ -1,4 +1,4 @@
-import { IsEnum, IsNumber, IsOptional, IsString, IsBoolean } from 'class-validator';
+import { IsEnum, IsNumber, IsOptional, IsString, IsBoolean, ValidateNested } from 'class-validator';
 import { FamilyRelationType } from '../../enums/family-relation-type.enum';
 import { Type } from 'class-transformer';
 import { PaginationDto } from '../../../../common/pagination/dto/pagination.dto';
@@ -28,6 +28,7 @@ export class FamilyMemberFilterDto extends PaginationDto {
   isSponsored?: boolean;
 
   @IsOptional()
+  @ValidateNested()
   @Type(() => FilterPersonDto)
   person?: FilterPersonDto;
 }

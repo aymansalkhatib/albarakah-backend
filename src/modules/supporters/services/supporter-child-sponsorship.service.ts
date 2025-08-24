@@ -1,14 +1,15 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOneOptions, Not, Repository } from 'typeorm';
-import { SupporterChildSponsorship } from '../entities/supporters-children.entity';
+import { FamilyRelationType } from '../../../modules/family-members/enums/family-relation-type.enum';
+import { FamilyMembersService } from '../../../modules/family-members/services/family-members.service';
+import { applyPersonFilters } from '../../../modules/persons/utils/person-filter.util';
+import { FilterSupporterChildSponsorshipDto } from '../dtos/queries/filter-supporter-child-sponsorship.dto';
 import { CreateSupporterChildSponsorshipDto } from '../dtos/requests/create-supporter-child-sponsorship.dto';
 import { UpdateSupporterChildSponsorshipDto } from '../dtos/requests/update-supporter-child-sponsorship.dto';
-import { FilterSupporterChildSponsorshipDto } from '../dtos/queries/filter-supporter-child-sponsorship.dto';
+import { SupporterChildSponsorship } from '../entities/supporters-children.entity';
 import { SponsorshipStatus } from '../enums/sponsorship-status.enum';
-import { FamilyMembersService } from '../../../modules/family-members/services/family-members.service';
-import { FamilyRelationType } from '../../../modules/family-members/enums/family-relation-type.enum';
-import { applyPersonFilters } from '../../../modules/persons/utils/person-filter.util';
+import { applySupporterChildSponsorshipFilters } from '../utils/supporter-child-sponsorship-filter.util';
 
 @Injectable()
 export class SupporterChildSponsorshipService {
@@ -52,40 +53,8 @@ export class SupporterChildSponsorshipService {
       .leftJoinAndSelect('sponsorship.familyMember', 'familyMember')
       .leftJoinAndSelect('familyMember.person', 'person');
 
-    // Filter by supporterId
-    if (filterDto?.supporterId) {
-      queryBuilder.andWhere('sponsorship.supporterId = :supporterId', {
-        supporterId: filterDto.supporterId,
-      });
-    }
-
-    // Filter by familyMemberId
-    if (filterDto?.familyMemberId) {
-      queryBuilder.andWhere('sponsorship.familyMemberId = :familyMemberId', {
-        familyMemberId: filterDto.familyMemberId,
-      });
-    }
-
-    // Filter by sponsorshipStatus
-    if (filterDto?.sponsorshipStatus) {
-      queryBuilder.andWhere('sponsorship.sponsorshipStatus = :sponsorshipStatus', {
-        sponsorshipStatus: filterDto.sponsorshipStatus,
-      });
-    }
-
-    // Filter by sponsorshipStartDate (greater than or equal)
-    if (filterDto?.sponsorshipStartDate) {
-      queryBuilder.andWhere('sponsorship.sponsorshipStartDate >= :sponsorshipStartDate', {
-        sponsorshipStartDate: filterDto.sponsorshipStartDate,
-      });
-    }
-
-    // Filter by sponsorshipEndDate (less than or equal)
-    if (filterDto?.sponsorshipEndDate) {
-      queryBuilder.andWhere('sponsorship.sponsorshipEndDate <= :sponsorshipEndDate', {
-        sponsorshipEndDate: filterDto.sponsorshipEndDate,
-      });
-    }
+    // Apply supporter child sponsorship filters
+    applySupporterChildSponsorshipFilters(queryBuilder, 'sponsorship', filterDto);
 
     // Filter by person fields if provided
     if (filterDto?.person) {

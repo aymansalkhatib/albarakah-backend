@@ -1,9 +1,9 @@
-import { IsDate, IsEnum, IsOptional } from 'class-validator';
-import { SponsorshipStatus } from '../../enums/sponsorship-status.enum';
-import { PositiveIntegerId } from '../../../../common/decorators/positive-integer-id.decorator';
-import { IsLessThanOrEqual } from '../../../../common/decorators/is-less-than-or-equal.decorator';
-import { FilterPersonDto } from '../../../../modules/persons/dtos/queries/filter-person.dto';
 import { Type } from 'class-transformer';
+import { IsDate, IsEnum, IsOptional, ValidateNested } from 'class-validator';
+import { IsLessThanOrEqual } from '../../../../common/decorators/is-less-than-or-equal.decorator';
+import { PositiveIntegerId } from '../../../../common/decorators/positive-integer-id.decorator';
+import { FilterPersonDto } from '../../../../modules/persons/dtos/queries/filter-person.dto';
+import { SponsorshipStatus } from '../../enums/sponsorship-status.enum';
 
 export class FilterSupporterChildSponsorshipDto {
   @IsOptional()
@@ -28,6 +28,7 @@ export class FilterSupporterChildSponsorshipDto {
   sponsorshipEndDate?: Date;
 
   @IsOptional()
+  @ValidateNested()
   @Type(() => FilterPersonDto)
   person?: FilterPersonDto;
 }
