@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityManager, Repository } from 'typeorm';
+import { EntityManager, FindOneOptions, Repository } from 'typeorm';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { paginate } from '../../../common/pagination/paginate.service';
 import { FamiliesService } from '../../families/services/families.service';
@@ -46,10 +46,10 @@ export class HousesService {
     return paginate(queryBuilder, query, HouseResponseDto);
   }
 
-  async findOne(id: number): Promise<House> {
+  async findOne(id: number, options: FindOneOptions<House> = {}): Promise<House> {
     const house = await this.houseRepository.findOne({
       where: { id },
-      relations: ['family'],
+      ...options,
     });
 
     if (!house) {
@@ -60,7 +60,9 @@ export class HousesService {
   }
 
   async update(id: number, updateHouseDto: UpdateHouseDto): Promise<House> {
-    const house = await this.findOne(id);
+    const house = await this.findOne(id, {
+      relations: ['family'],
+    });
 
     // If updating familyId, check if the new family exists
     if (updateHouseDto.familyId && updateHouseDto.familyId !== house.familyId) {
@@ -87,7 +89,9 @@ export class HousesService {
   }
 
   async delete(id: number): Promise<void> {
-    const house = await this.findOne(id);
+    const house = await this.findOne(id, {
+      relations: ['family'],
+    });
     await this.houseRepository.remove(house);
   }
 }

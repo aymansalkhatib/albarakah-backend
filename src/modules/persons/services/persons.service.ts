@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityManager, Repository } from 'typeorm';
+import { EntityManager, FindOneOptions, Repository } from 'typeorm';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { paginate } from '../../../common/pagination/paginate.service';
 import { DropdownService } from '../../../modules/dropdowns/services/dropdown.service';
@@ -77,14 +77,14 @@ export class PersonsService {
 
   async findOne(
     id: number,
-    { relations }: { relations?: string[] } = {},
+    options: FindOneOptions<Person> = {},
     entityManager?: EntityManager,
   ): Promise<Person> {
     const personRepository = entityManager?.getRepository(Person) ?? this.personRepository;
 
     const person = await personRepository.findOne({
       where: { id },
-      relations: relations || [],
+      ...options,
     });
 
     if (!person) {

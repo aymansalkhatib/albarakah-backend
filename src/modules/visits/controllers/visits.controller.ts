@@ -11,15 +11,15 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { VisitsService } from '../services/visits.service';
+import { Protected } from '../../../common/decorators/protected.decorator';
+import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
+import { Permission } from '../../roles/enums/permission.enum';
+import { FilterVisitDto } from '../dtos/queries/filter-visit.dto';
 import { CreateVisitDto } from '../dtos/requests/create-visit.dto';
 import { UpdateVisitDto } from '../dtos/requests/update-visit.dto';
-import { FilterVisitDto } from '../dtos/queries/filter-visit.dto';
 import { VisitResponseDto } from '../dtos/responses/visit-response.dto';
-import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
-import { Protected } from '../../../common/decorators/protected.decorator';
-import { Permission } from '../../roles/enums/permission.enum';
-import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
+import { VisitsService } from '../services/visits.service';
 
 @Controller('visits')
 export class VisitsController {
@@ -42,7 +42,9 @@ export class VisitsController {
   @Protected(Permission.READ_VISIT)
   @SerializeResponse(VisitResponseDto)
   async findOne(@Param('id', ParseIntPipe) id: number): Promise<VisitResponseDto> {
-    return await this.visitsService.findOne(id);
+    return await this.visitsService.findOne(id, {
+      relations: ['house', 'family'],
+    });
   }
 
   @Patch(':id')

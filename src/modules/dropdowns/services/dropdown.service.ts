@@ -4,14 +4,14 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Dropdown } from '../entities/dropdown.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Not, Repository } from 'typeorm';
-import { DropdownCategoryService } from './dropdown-category.service';
-import { UpsertDropdownDto } from '../dtos/dropdown/upsert-dropdown.dto';
+import { DataSource, FindOneOptions, Not, Repository } from 'typeorm';
 import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
-import { DropdownOption } from '../entities/dropdown-option.entity';
 import { UpsertDropdownOptionDto } from '../dtos/dropdown-option/create-dropdown-option.dto';
+import { UpsertDropdownDto } from '../dtos/dropdown/upsert-dropdown.dto';
+import { DropdownOption } from '../entities/dropdown-option.entity';
+import { Dropdown } from '../entities/dropdown.entity';
+import { DropdownCategoryService } from './dropdown-category.service';
 
 @Injectable()
 export class DropdownService {
@@ -113,10 +113,10 @@ export class DropdownService {
     });
   }
 
-  async findOne(id: number): Promise<Dropdown> {
+  async findOne(id: number, options: FindOneOptions<Dropdown> = {}): Promise<Dropdown> {
     const dropdown = await this.dropdownRepository.findOne({
       where: { id },
-      relations: ['options'],
+      ...options,
     });
 
     if (!dropdown) {

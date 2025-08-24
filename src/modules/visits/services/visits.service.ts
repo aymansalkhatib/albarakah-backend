@@ -1,10 +1,10 @@
-import { FamiliesService } from '../../families/services/families.service';
-import { HousesService } from '../../houses/services/houses.service';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOneOptions, Repository } from 'typeorm';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { paginate } from '../../../common/pagination/paginate.service';
+import { FamiliesService } from '../../families/services/families.service';
+import { HousesService } from '../../houses/services/houses.service';
 import { FilterVisitDto } from '../dtos/queries/filter-visit.dto';
 import { CreateVisitDto } from '../dtos/requests/create-visit.dto';
 import { UpdateVisitDto } from '../dtos/requests/update-visit.dto';
@@ -114,10 +114,10 @@ export class VisitsService {
     return paginate(queryBuilder, filter, VisitResponseDto);
   }
 
-  async findOne(id: number): Promise<Visit> {
+  async findOne(id: number, options: FindOneOptions<Visit> = {}): Promise<Visit> {
     const visit = await this.visitRepository.findOne({
       where: { id },
-      relations: ['house', 'family'],
+      ...options,
     });
 
     if (!visit) {

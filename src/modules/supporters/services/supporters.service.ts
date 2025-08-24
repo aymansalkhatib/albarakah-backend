@@ -1,13 +1,13 @@
-import { applyPersonFilters } from '../../persons/utils/person-filter.util';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityManager, Repository } from 'typeorm';
+import { EntityManager, FindOneOptions, Repository } from 'typeorm';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { paginate } from '../../../common/pagination/paginate.service';
 import { Person } from '../../../modules/persons/entities/person.entity';
 import { PersonRelation } from '../../../modules/persons/enums/person-relation.enum';
 import { PersonsService } from '../../../modules/persons/services/persons.service';
 import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
+import { applyPersonFilters } from '../../persons/utils/person-filter.util';
 import { FilterSupporterDto } from '../dtos/queries/filter-supporter.dto';
 import { CreateSupporterDto } from '../dtos/requests/create-supporter.dto';
 import { UpdateSupporterDto } from '../dtos/requests/update-supporter.dto';
@@ -77,7 +77,8 @@ export class SupportersService {
 
   async findOne(
     id: number,
-    { relations }: { relations?: string[] } = {},
+    options: FindOneOptions<Supporter> = {},
+
     entityManager?: EntityManager,
   ): Promise<Supporter> {
     //
@@ -88,7 +89,7 @@ export class SupportersService {
     // Find the supporter
     const supporter = await supporterRepository.findOne({
       where: { id },
-      relations: relations,
+      ...options,
     });
 
     if (!supporter) {

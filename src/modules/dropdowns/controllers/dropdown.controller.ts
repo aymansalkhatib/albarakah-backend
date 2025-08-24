@@ -39,7 +39,9 @@ export class DropdownController {
   @Protected(Permission.READ_DROPDOWN)
   @SerializeResponse(ResponseDropdownDto)
   findOne(@Param('id', ParseIntPipe) id: number): Promise<ResponseDropdownDto> {
-    return this.dropdownService.findOne(id);
+    return this.dropdownService.findOne(id, {
+      relations: ['options'],
+    });
   }
 
   @Get('category/:categoryId')

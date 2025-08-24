@@ -42,7 +42,9 @@ export class HousesController {
   @Protected(Permission.READ_HOUSE)
   @SerializeResponse(HouseResponseDto)
   async findOne(@Param('id', ParseIntPipe) id: number): Promise<HouseResponseDto> {
-    return await this.housesService.findOne(id);
+    return await this.housesService.findOne(id, {
+      relations: ['family'],
+    });
   }
 
   @Patch(':id')

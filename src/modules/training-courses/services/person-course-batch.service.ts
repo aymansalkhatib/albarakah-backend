@@ -5,18 +5,18 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { PersonCourseBatch } from '../entities/person-course-batch.entity';
+import { FindOneOptions, Repository } from 'typeorm';
+import { normalizeDate } from '../../../common/helpers/date.helper';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
+import { paginate } from '../../../common/pagination/paginate.service';
+import { FamilyMembersService } from '../../../modules/family-members/services/family-members.service';
+import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
+import { FilterPersonCourseBatchDto } from '../dtos/queries/filter-person-course-batch.dto';
 import { CreatePersonCourseBatchDto } from '../dtos/requests/create-person-course-batch.dto';
 import { UpdatePersonCourseBatchDto } from '../dtos/requests/update-person-course-batch.dto';
-import { FilterPersonCourseBatchDto } from '../dtos/queries/filter-person-course-batch.dto';
-import { paginate } from '../../../common/pagination/paginate.service';
-import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { PersonCourseBatchResponseDto } from '../dtos/responses/person-course-batch-response.dto';
-import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
-import { normalizeDate } from '../../../common/helpers/date.helper';
+import { PersonCourseBatch } from '../entities/person-course-batch.entity';
 import { CourseBatchService } from './course-batch.service';
-import { FamilyMembersService } from '../../../modules/family-members/services/family-members.service';
 
 @Injectable()
 export class PersonCourseBatchService {
@@ -89,10 +89,13 @@ export class PersonCourseBatchService {
     }
   }
 
-  async findOne(id: number, relations: string[] = []): Promise<PersonCourseBatch> {
+  async findOne(
+    id: number,
+    options: FindOneOptions<PersonCourseBatch> = {},
+  ): Promise<PersonCourseBatch> {
     const personCourseBatch = await this.personCourseBatchRepository.findOne({
       where: { id },
-      relations,
+      ...options,
     });
 
     if (!personCourseBatch) {

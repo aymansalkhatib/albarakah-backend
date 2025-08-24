@@ -1,14 +1,14 @@
-import { applyFamilyFilters } from '../../families/utils/family-filter.util';
-import { applyPersonFilters } from '../../persons/utils/person-filter.util';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityManager, Repository } from 'typeorm';
+import { EntityManager, FindOneOptions, Repository } from 'typeorm';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { paginate } from '../../../common/pagination/paginate.service';
 import { PersonRelation } from '../../../modules/persons/enums/person-relation.enum';
 import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
+import { applyFamilyFilters } from '../../families/utils/family-filter.util';
 import { Person } from '../../persons/entities/person.entity';
 import { PersonsService } from '../../persons/services/persons.service';
+import { applyPersonFilters } from '../../persons/utils/person-filter.util';
 import { FilterGuardianDto } from '../dtos/queries/filter-guardian.dto';
 import { CreateGuardianDto } from '../dtos/requests/create-guardian.dto';
 import { UpdateGuardianDto } from '../dtos/requests/update-guardian.dto';
@@ -81,14 +81,14 @@ export class GuardiansService {
 
   async findOne(
     id: number,
-    { relations }: { relations?: string[] } = {},
+    options: FindOneOptions<Guardian> = {},
     entityManager?: EntityManager,
   ): Promise<Guardian> {
     const guardianRepository = entityManager?.getRepository(Guardian) ?? this.guardianRepository;
 
     const guardian = await guardianRepository.findOne({
       where: { id },
-      relations: relations,
+      ...options,
     });
 
     if (!guardian) {

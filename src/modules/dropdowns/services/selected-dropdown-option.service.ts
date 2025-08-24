@@ -1,18 +1,18 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { SelectedDropdownOption } from '../entities/selected-dropdown-option.entity';
+import { FindOneOptions, Repository } from 'typeorm';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
+import { paginate } from '../../../common/pagination/paginate.service';
+import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
 import { CreateSelectedDropdownOptionDto } from '../dtos/selected-dropdown-option/create-selected-dropdown-option.dto';
 import { FilterSelectedDropdownOptionDto } from '../dtos/selected-dropdown-option/filter-selected-dropdown-option.dto';
-import { DropdownService } from './dropdown.service';
-import { DropdownOptionService } from './dropdown-option.service';
-import { DropdownCategoryService } from './dropdown-category.service';
-import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
-import { DropdownSelectionType } from '../enums/dropdown-selection-type.enum';
-import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { ResponseSelectedDropdownOptionDto } from '../dtos/selected-dropdown-option/response-selected-dropdown-option.dto';
-import { paginate } from '../../../common/pagination/paginate.service';
 import { DropdownCategory } from '../entities/dropdown-category.entity';
+import { SelectedDropdownOption } from '../entities/selected-dropdown-option.entity';
+import { DropdownSelectionType } from '../enums/dropdown-selection-type.enum';
+import { DropdownCategoryService } from './dropdown-category.service';
+import { DropdownOptionService } from './dropdown-option.service';
+import { DropdownService } from './dropdown.service';
 
 @Injectable()
 export class SelectedDropdownOptionService {
@@ -28,7 +28,9 @@ export class SelectedDropdownOptionService {
   async upsert(createDto: CreateSelectedDropdownOptionDto): Promise<any> {
     const category = await this.dropdownCategoryService.findOne(createDto.categoryId);
 
-    const dropdown = await this.dropdownService.findOne(createDto.dropdownId);
+    const dropdown = await this.dropdownService.findOne(createDto.dropdownId, {
+      relations: ['options'],
+    });
 
     if (category.id !== dropdown.dropdownCategoryId) {
       throw new BadRequestException(
@@ -56,10 +58,13 @@ export class SelectedDropdownOptionService {
     }
   }
 
-  async findOne(id: number): Promise<SelectedDropdownOption> {
+  async findOne(
+    id: number,
+    options: FindOneOptions<SelectedDropdownOption> = {},
+  ): Promise<SelectedDropdownOption> {
     const selection = await this.selectedDropdownOptionRepository.findOne({
       where: { id },
-      relations: ['dropdown', 'selectedOption', 'category'],
+      ...options,
     });
     if (!selection) {
       throw new NotFoundException(

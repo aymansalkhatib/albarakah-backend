@@ -11,14 +11,14 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { CourseBatchService } from '../services/course-batch.service';
+import { Protected } from '../../../common/decorators/protected.decorator';
+import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
+import { Permission } from '../../roles/enums/permission.enum';
+import { FilterCourseBatchDto } from '../dtos/queries/filter-course-batch.dto';
 import { CreateCourseBatchDto } from '../dtos/requests/create-course-batch.dto';
 import { UpdateCourseBatchDto } from '../dtos/requests/update-course-batch.dto';
-import { FilterCourseBatchDto } from '../dtos/queries/filter-course-batch.dto';
 import { CourseBatchResponseDto } from '../dtos/responses/course-batch-response.dto';
-import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
-import { Protected } from '../../../common/decorators/protected.decorator';
-import { Permission } from '../../roles/enums/permission.enum';
+import { CourseBatchService } from '../services/course-batch.service';
 
 @Controller('course-batches')
 export class CourseBatchController {
@@ -52,7 +52,9 @@ export class CourseBatchController {
   @Protected(Permission.READ_TRAINING_COURSE)
   @SerializeResponse(CourseBatchResponseDto)
   async findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.courseBatchService.findOne(id, ['trainingCourse']);
+    return this.courseBatchService.findOne(id, {
+      relations: ['trainingCourse'],
+    });
   }
 
   @Get()

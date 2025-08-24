@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOneOptions, Repository } from 'typeorm';
 import { CourseBatch } from '../entities/course-batch.entity';
 import { CreateCourseBatchDto } from '../dtos/requests/create-course-batch.dto';
 import { UpdateCourseBatchDto } from '../dtos/requests/update-course-batch.dto';
@@ -79,10 +79,10 @@ export class CourseBatchService {
     }
   }
 
-  async findOne(id: number, relations: string[] = []): Promise<CourseBatch> {
+  async findOne(id: number, options: FindOneOptions<CourseBatch> = {}): Promise<CourseBatch> {
     const courseBatch = await this.courseBatchRepository.findOne({
       where: { id },
-      relations,
+      ...options,
     });
 
     if (!courseBatch) {

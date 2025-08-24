@@ -12,15 +12,15 @@ import {
   Query,
 } from '@nestjs/common';
 
-import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
+import { Protected } from '../../../common/decorators/protected.decorator';
 import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
+import { Permission } from '../../../modules/roles/enums/permission.enum';
 import { FilterCallLogDto } from '../dtos/queries/filter-call-log.dto';
 import { CreateCallLogDto } from '../dtos/requests/create-call-log.dto';
 import { UpdateCallLogDto } from '../dtos/requests/update-call-log.dto';
 import { CallLogResponseDto } from '../dtos/responses/call-log-response.dto';
 import { CallLogsService } from '../services/call-logs.service';
-import { Protected } from '../../../common/decorators/protected.decorator';
-import { Permission } from '../../../modules/roles/enums/permission.enum';
 
 @Controller('call-logs')
 export class CallLogsController {
@@ -45,7 +45,9 @@ export class CallLogsController {
   @Protected(Permission.READ_CALL_LOG)
   @SerializeResponse(CallLogResponseDto)
   async findOne(@Param('id', ParseIntPipe) id: number): Promise<CallLogResponseDto> {
-    return this.callLogsService.findOne(id);
+    return this.callLogsService.findOne(id, {
+      relations: ['responsibleEmployee', 'externalParty', 'responsibleEmployee.person'],
+    });
   }
 
   @Patch(':id')

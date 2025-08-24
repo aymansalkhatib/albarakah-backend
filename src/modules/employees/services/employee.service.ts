@@ -1,12 +1,12 @@
-import { Person } from '../../persons/entities/person.entity';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityManager, Repository } from 'typeorm';
+import { EntityManager, FindOneOptions, Repository } from 'typeorm';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { paginate } from '../../../common/pagination/paginate.service';
 import { PersonRelation } from '../../../modules/persons/enums/person-relation.enum';
 import { PersonsService } from '../../../modules/persons/services/persons.service';
 import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
+import { Person } from '../../persons/entities/person.entity';
 import { applyPersonFilters } from '../../persons/utils/person-filter.util';
 import { FilterEmployeeDto } from '../dtos/queries/filter-employee.dto';
 import { CreateEmployeeDto } from '../dtos/requests/create-employee.dto';
@@ -63,7 +63,7 @@ export class EmployeesService {
 
   async findOne(
     id: number,
-    { relations }: { relations?: string[] } = {},
+    options: FindOneOptions<Employee> = {},
     entityManager?: EntityManager,
   ): Promise<Employee> {
     const employeeRepository = entityManager
@@ -72,7 +72,7 @@ export class EmployeesService {
 
     const employee = await employeeRepository.findOne({
       where: { id },
-      relations: relations,
+      ...options,
     });
 
     if (!employee) {

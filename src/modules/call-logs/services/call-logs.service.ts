@@ -1,21 +1,21 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOneOptions, Repository } from 'typeorm';
 
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { paginate } from '../../../common/pagination/paginate.service';
 import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
 
-import { CallLog } from '../entities/call-log.entity';
-import { ExternalPartyType } from '../enums/recipient-type.enum';
+import { EmployeesService } from '../../../modules/employees/services/employee.service';
+import { FamilyMembersService } from '../../../modules/family-members/services/family-members.service';
+import { GuardiansService } from '../../../modules/guardians/services/guardians.service';
 import { SupportersService } from '../../../modules/supporters/services/supporters.service';
 import { FilterCallLogDto } from '../dtos/queries/filter-call-log.dto';
 import { CreateCallLogDto } from '../dtos/requests/create-call-log.dto';
 import { UpdateCallLogDto } from '../dtos/requests/update-call-log.dto';
 import { CallLogResponseDto } from '../dtos/responses/call-log-response.dto';
-import { EmployeesService } from '../../../modules/employees/services/employee.service';
-import { GuardiansService } from '../../../modules/guardians/services/guardians.service';
-import { FamilyMembersService } from '../../../modules/family-members/services/family-members.service';
+import { CallLog } from '../entities/call-log.entity';
+import { ExternalPartyType } from '../enums/recipient-type.enum';
 
 @Injectable()
 export class CallLogsService {
@@ -120,10 +120,10 @@ export class CallLogsService {
     return paginate<CallLog, CallLogResponseDto>(queryBuilder, filterDto, CallLogResponseDto);
   }
 
-  async findOne(id: number): Promise<CallLog> {
+  async findOne(id: number, options: FindOneOptions<CallLog> = {}): Promise<CallLog> {
     const callLog = await this.callLogRepository.findOne({
       where: { id },
-      relations: ['responsibleEmployee', 'externalParty', 'responsibleEmployee.person'],
+      ...options,
     });
 
     if (!callLog) {
@@ -134,7 +134,9 @@ export class CallLogsService {
   }
 
   async update(id: number, updateCallLogDto: UpdateCallLogDto): Promise<CallLog> {
-    const callLog = await this.findOne(id);
+    const callLog = await this.findOne(id, {
+      relations: ['responsibleEmployee', 'externalParty', 'responsibleEmployee.person'],
+    });
     this.callLogRepository.merge(callLog, updateCallLogDto);
     return await this.callLogRepository.save(callLog);
   }

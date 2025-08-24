@@ -1,14 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { TrainingCourse } from '../entities/training-course.entity';
+import { FindOneOptions, Repository } from 'typeorm';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
+import { paginate } from '../../../common/pagination/paginate.service';
+import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
+import { FilterTrainingCourseDto } from '../dtos/queries/filter-training-course.dto';
 import { CreateTrainingCourseDto } from '../dtos/requests/create-training-course.dto';
 import { UpdateTrainingCourseDto } from '../dtos/requests/update-training-course.dto';
-import { FilterTrainingCourseDto } from '../dtos/queries/filter-training-course.dto';
-import { paginate } from '../../../common/pagination/paginate.service';
-import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { TrainingCourseResponseDto } from '../dtos/responses/training-course-response.dto';
-import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
+import { TrainingCourse } from '../entities/training-course.entity';
 
 @Injectable()
 export class TrainingCoursesService {
@@ -47,10 +47,10 @@ export class TrainingCoursesService {
     }
   }
 
-  async findOne(id: number, relations: string[] = []): Promise<TrainingCourse> {
+  async findOne(id: number, options: FindOneOptions<TrainingCourse> = {}): Promise<TrainingCourse> {
     const trainingCourse = await this.trainingCourseRepository.findOne({
       where: { id },
-      relations,
+      ...options,
     });
 
     if (!trainingCourse) {

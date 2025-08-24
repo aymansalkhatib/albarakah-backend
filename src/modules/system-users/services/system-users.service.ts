@@ -142,7 +142,7 @@ export class SystemUsersService {
 
   async findOne(
     id: number,
-    options: FindOneOptions<SystemUser>,
+    options: FindOneOptions<SystemUser> = {},
     manager?: EntityManager,
   ): Promise<SystemUser> {
     const systemUserRepository = manager
