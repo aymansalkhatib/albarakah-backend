@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { SystemUser } from './entities/system-user.entity';
 import { EmployeesModule } from '../employees/employee.module';
 import { SystemUsersController } from './controllers/system-users.controller';
+import { SystemUser } from './entities/system-user.entity';
 import { SystemUsersService } from './services/system-users.service';
 
 @Module({

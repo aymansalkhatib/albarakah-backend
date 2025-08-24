@@ -1,4 +1,3 @@
-import { RolesService } from '../../roles/services/roles.service';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, FindOneOptions, Not, Repository } from 'typeorm';
@@ -9,11 +8,13 @@ import { EmployeesService } from '../../../modules/employees/services/employee.s
 import { applyPersonFilters } from '../../../modules/persons/utils/person-filter.util';
 import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
 import { applyEmployeeFilters } from '../../employees/utils/employee-filter.util';
+import { RolesService } from '../../roles/services/roles.service';
 import { FilterSystemUserDto } from '../dtos/queries/filter-system-user.dto';
 import { CreateSystemUserDto } from '../dtos/requests/create-system-user.dto';
 import { UpdateSystemUserDto } from '../dtos/requests/update-system-user.dto';
 import { SystemUserResponseDto } from '../dtos/responses/system-user-response.dto';
 import { SystemUser } from '../entities/system-user.entity';
+import { applySystemUserFilters } from '../utils/system-user-filter.util';
 
 @Injectable()
 export class SystemUsersService {
@@ -169,28 +170,8 @@ export class SystemUsersService {
       .leftJoinAndSelect('employee.person', 'person')
       .leftJoinAndSelect('systemUser.role', 'role');
 
-    // Filter by roleId (direct role ID)
-    if (filterDto.roleId) {
-      queryBuilder.andWhere('systemUser.roleId = :roleId', {
-        roleId: filterDto.roleId,
-      });
-    }
-
-    // Filter by username
-    if (filterDto.username) {
-      queryBuilder.andWhere('systemUser.username ILIKE :username', {
-        username: `%${filterDto.username}%`,
-      });
-    }
-
-    // Role filters
-    if (filterDto.role) {
-      if (filterDto.role.name) {
-        queryBuilder.andWhere('(role.name ILIKE :name)', {
-          name: `%${filterDto.role.name}%`,
-        });
-      }
-    }
+    // Apply system user filters
+    applySystemUserFilters(queryBuilder, 'systemUser', filterDto);
 
     // Employee filters
     if (filterDto.employee) {
