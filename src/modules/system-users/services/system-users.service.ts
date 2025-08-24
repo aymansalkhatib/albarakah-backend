@@ -1,18 +1,19 @@
-import { Employee } from '../../../modules/employees/entities/employee.entity';
-import { EmployeesService } from '../../../modules/employees/services/employee.service';
-import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
-import { applyEmployeeFilters } from '../../employees/utils/employee-filter.util';
-import { applyPersonFilters } from '../../../modules/persons/utils/person-filter.util';
+import { RolesService } from '../../roles/services/roles.service';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Not, Repository } from 'typeorm';
+import { EntityManager, FindOneOptions, Not, Repository } from 'typeorm';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
+import { paginate } from '../../../common/pagination/paginate.service';
+import { Employee } from '../../../modules/employees/entities/employee.entity';
+import { EmployeesService } from '../../../modules/employees/services/employee.service';
+import { applyPersonFilters } from '../../../modules/persons/utils/person-filter.util';
+import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
+import { applyEmployeeFilters } from '../../employees/utils/employee-filter.util';
 import { FilterSystemUserDto } from '../dtos/queries/filter-system-user.dto';
 import { CreateSystemUserDto } from '../dtos/requests/create-system-user.dto';
 import { UpdateSystemUserDto } from '../dtos/requests/update-system-user.dto';
-import { SystemUser } from '../entities/system-user.entity';
-import { paginate } from '../../../common/pagination/paginate.service';
 import { SystemUserResponseDto } from '../dtos/responses/system-user-response.dto';
-import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
+import { SystemUser } from '../entities/system-user.entity';
 
 @Injectable()
 export class SystemUsersService {
@@ -21,6 +22,7 @@ export class SystemUsersService {
     private readonly systemUserRepository: Repository<SystemUser>,
     private readonly translateHelper: TranslateHelper,
     private readonly employeesService: EmployeesService,
+    private readonly rolesService: RolesService,
   ) {}
 
   async create(createUserAccountDto: CreateSystemUserDto): Promise<SystemUser> {
@@ -41,18 +43,17 @@ export class SystemUsersService {
         }
 
         // Check if role exists
-        const roleRepo = manager.getRepository('Role');
-        const role = await roleRepo.findOne({
-          where: { id: createUserAccountDto.roleId },
-        });
-        if (!role) {
-          throw new NotFoundException(`Role with ID ${createUserAccountDto.roleId} not found`);
-        }
+
+        await this.rolesService.findOne(createUserAccountDto.roleId, {}, manager);
 
         if (createUserAccountDto.employeeId) {
-          employee = await this.employeesService.findOne(createUserAccountDto.employeeId, {
-            relations: ['systemUser'],
-          });
+          employee = await this.employeesService.findOne(
+            createUserAccountDto.employeeId,
+            {
+              relations: ['systemUser'],
+            },
+            manager,
+          );
 
           if (employee.systemUser) {
             throw new ConflictException(
@@ -60,7 +61,7 @@ export class SystemUsersService {
             );
           }
         } else {
-          employee = await this.employeesService.create(createUserAccountDto.employee);
+          employee = await this.employeesService.create(createUserAccountDto.employee, manager);
         }
 
         const systemUser = systemUserRepo.create({
@@ -72,34 +73,62 @@ export class SystemUsersService {
       },
     );
 
-    return this.findOne(saved.id, { relations: ['employee', 'role', 'employee.person'] });
+    return this.findOne(saved.id, {
+      relations: ['employee', 'role', 'employee.person'],
+    });
   }
 
   async update(id: number, updateSystemUserDto: UpdateSystemUserDto): Promise<SystemUser> {
-    const systemUser = await this.findOne(id, { relations: ['employee', 'role'] });
+    return await this.systemUserRepository.manager.transaction(async (manager) => {
+      const systemUserRepo = manager.getRepository(SystemUser);
 
-    if (updateSystemUserDto.username) {
-      const existingUser = await this.systemUserRepository.findOne({
-        where: {
-          id: Not(id),
-          username: updateSystemUserDto.username,
+      const systemUser = await this.findOne(
+        id,
+        {
+          relations: ['employee', 'role'],
         },
-      });
-      if (existingUser) {
-        throw new ConflictException(this.translateHelper.tr('system-users.errors.username_taken'));
-      }
-    }
-
-    if (updateSystemUserDto.employee) {
-      systemUser.employee = await this.employeesService.update(
-        systemUser.employeeId,
-        updateSystemUserDto.employee,
+        manager,
       );
-      delete updateSystemUserDto.employee;
-    }
 
-    this.systemUserRepository.merge(systemUser, updateSystemUserDto);
-    return this.systemUserRepository.save(systemUser);
+      if (!systemUser) {
+        throw new NotFoundException(
+          this.translateHelper.tr('system-users.errors.not_found', { id }),
+        );
+      }
+
+      if (updateSystemUserDto.username) {
+        const existingUser = await systemUserRepo.findOne({
+          where: {
+            id: Not(id),
+            username: updateSystemUserDto.username,
+          },
+        });
+        if (existingUser) {
+          throw new ConflictException(
+            this.translateHelper.tr('system-users.errors.username_taken'),
+          );
+        }
+      }
+
+      if (updateSystemUserDto.employee) {
+        // Use the employeesService with the transaction manager
+        systemUser.employee = await this.employeesService.update(
+          systemUser.employeeId,
+          updateSystemUserDto.employee,
+          manager,
+        );
+        delete updateSystemUserDto.employee;
+      }
+
+      systemUserRepo.merge(systemUser, updateSystemUserDto);
+      const saved = await systemUserRepo.save(systemUser);
+
+      // Optionally reload with relations
+
+      return this.findOne(saved.id, {
+        relations: ['employee', 'role', 'employee.person'],
+      });
+    });
   }
 
   async delete(id: number): Promise<void> {
@@ -110,10 +139,18 @@ export class SystemUsersService {
     }
   }
 
-  async findOne(id: number, { relations }: { relations?: string[] } = {}): Promise<SystemUser> {
-    const systemUser = await this.systemUserRepository.findOne({
+  async findOne(
+    id: number,
+    options: FindOneOptions<SystemUser>,
+    manager?: EntityManager,
+  ): Promise<SystemUser> {
+    const systemUserRepository = manager
+      ? manager.getRepository(SystemUser)
+      : this.systemUserRepository;
+
+    const systemUser = await systemUserRepository.findOne({
       where: { id },
-      relations,
+      ...options,
     });
 
     if (!systemUser) {
@@ -158,8 +195,7 @@ export class SystemUsersService {
     // Employee filters
     if (filterDto.employee) {
       // Apply employee filters using utility (excluding search)
-      const { search, person, ...employeeFilters } = filterDto.employee;
-      applyEmployeeFilters(queryBuilder, 'employee', employeeFilters);
+      applyEmployeeFilters(queryBuilder, 'employee', filterDto.employee);
 
       // Person filters (nested under employee)
       if (filterDto.employee.person) {

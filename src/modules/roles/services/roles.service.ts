@@ -5,18 +5,18 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
-import { Role } from '../entities/roles.entity';
-import { PermissionEntity } from '../entities/permissions.entity';
-import { RolePermission } from '../entities/role-permission.entity';
-import { CreateRoleDto } from '../../../modules/roles/dtos/requests/create-role.dto';
-import { UpdateRoleDto } from '../../../modules/roles/dtos/requests/update-role.dto';
-import { FilterRoleDto } from '../../../modules/roles/dtos/queries/filter-role.dto';
+import { EntityManager, FindOneOptions, In, Repository } from 'typeorm';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { paginate } from '../../../common/pagination/paginate.service';
+import { FilterRoleDto } from '../../../modules/roles/dtos/queries/filter-role.dto';
+import { CreateRoleDto } from '../../../modules/roles/dtos/requests/create-role.dto';
+import { UpdateRoleDto } from '../../../modules/roles/dtos/requests/update-role.dto';
+import { SystemUser } from '../../system-users/entities/system-user.entity';
 import { isProtectedRoleName } from '../constants/protected-permissions.constant';
 import { RoleResponseDto } from '../dtos/responses/role-response.dto';
-import { SystemUser } from '../../system-users/entities/system-user.entity';
+import { PermissionEntity } from '../entities/permissions.entity';
+import { RolePermission } from '../entities/role-permission.entity';
+import { Role } from '../entities/roles.entity';
 
 @Injectable()
 export class RolesService {
@@ -146,5 +146,21 @@ export class RolesService {
     }));
 
     await this.rolePermissionRepository.save(rolePermissions);
+  }
+
+  async findOne(
+    id: number,
+    options: FindOneOptions<Role> = {},
+    entityManager?: EntityManager,
+  ): Promise<Role> {
+    const roleRepository = entityManager ? entityManager.getRepository(Role) : this.roleRepository;
+
+    const role = await roleRepository.findOne({ where: { id }, ...options });
+
+    if (!role) {
+      throw new NotFoundException(`Role with ID ${id} not found`);
+    }
+
+    return role;
   }
 }
