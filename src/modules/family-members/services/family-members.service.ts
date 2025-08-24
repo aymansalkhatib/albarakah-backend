@@ -1,21 +1,21 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { EntityManager, FindOneOptions, Repository } from 'typeorm';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
+import { paginate } from '../../../common/pagination/paginate.service';
+import { FamiliesService } from '../../../modules/families/services/families.service';
+import { Person } from '../../../modules/persons/entities/person.entity';
+import { GenderType } from '../../../modules/persons/enums/gender-type.enum';
+import { PersonRelation } from '../../../modules/persons/enums/person-relation.enum';
+import { PersonsService } from '../../../modules/persons/services/persons.service';
+import { applyPersonFilters } from '../../persons/utils/person-filter.util';
+import { FamilyMemberFilterDto } from '../dtos/queries/family-member-filter.dto';
+import { CreateFamilyMemberDto } from '../dtos/requests/create-family-member.dto';
+import { UpdateFamilyMemberDto } from '../dtos/requests/update-family-member.dto';
+import { FamilyMemberResponseDto } from '../dtos/responses/family-member-response.dto';
 import { FamilyMember } from '../entities/family-members.entity';
 import { FamilyRelationType } from '../enums/family-relation-type.enum';
-import { CreateFamilyMemberDto } from '../dtos/requests/create-family-member.dto';
-import { FamiliesService } from '../../../modules/families/services/families.service';
-import { paginate } from '../../../common/pagination/paginate.service';
-import { FamilyMemberResponseDto } from '../dtos/responses/family-member-response.dto';
-import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
-import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
-import { PersonsService } from '../../../modules/persons/services/persons.service';
-import { GenderType } from '../../../modules/persons/enums/gender-type.enum';
-import { FamilyMemberFilterDto } from '../dtos/queries/family-member-filter.dto';
-import { Person } from '../../../modules/persons/entities/person.entity';
-import { PersonRelation } from '../../../modules/persons/enums/person-relation.enum';
-import { UpdateFamilyMemberDto } from '../dtos/requests/update-family-member.dto';
 import { applyFamilyMemberFilters } from '../utils';
-import { applyPersonFilters } from '../../persons/utils/person-filter.util';
 
 @Injectable()
 export class FamilyMembersService {
@@ -26,56 +26,71 @@ export class FamilyMembersService {
     private readonly personsService: PersonsService,
   ) {}
 
-  async create(createFamilyMemberDto: CreateFamilyMemberDto): Promise<FamilyMember> {
-    return await this.familyMemberRepository.manager.transaction(async (entityManager) => {
-      await this.familiesService.findOne(createFamilyMemberDto.familyId);
+  async create(
+    createFamilyMemberDto: CreateFamilyMemberDto,
+    entityManager?: EntityManager,
+  ): Promise<FamilyMember> {
+    const repo = entityManager?.getRepository(FamilyMember) ?? this.familyMemberRepository;
 
-      let person: Person;
-
-      if (createFamilyMemberDto.personId) {
-        const foundPerson = await this.personsService.findOne(createFamilyMemberDto.personId, {
-          relations: ['familyMember'],
-        });
-
-        if (foundPerson.familyMember) {
-          throw new ConflictException('Person is already a member of a family');
-        }
-        person = foundPerson;
-      } else {
-        person = await this.personsService.createWithTransaction(
-          createFamilyMemberDto.person,
-          entityManager,
-        );
-      }
-
-      if (createFamilyMemberDto.relationType === FamilyRelationType.FATHER) {
-        const member = await entityManager.findOne(FamilyMember, {
-          where: {
-            familyId: createFamilyMemberDto.familyId,
-            relationType: FamilyRelationType.FATHER,
-          },
-        });
-        if (member) {
-          throw new ConflictException('The family already has a father');
-        }
-      }
-
-      await this.validateGenderRelationType(person.gender, createFamilyMemberDto.relationType);
-
-      if (createFamilyMemberDto.isSponsored) {
-        const relation = createFamilyMemberDto.relationType;
-        if (relation !== FamilyRelationType.DAUGHTER && relation !== FamilyRelationType.SON) {
-          throw new ConflictException('Only daughters and sons can be sponsored');
-        }
-      }
-
-      const entity = this.familyMemberRepository.create({
-        ...createFamilyMemberDto,
-        person: person,
+    if (entityManager) {
+      return this.createFamilyMemberInternal(createFamilyMemberDto, entityManager);
+    } else {
+      return repo.manager.transaction(async (em) => {
+        return this.createFamilyMemberInternal(createFamilyMemberDto, em);
       });
+    }
+  }
 
-      return await entityManager.save(FamilyMember, entity);
+  private async createFamilyMemberInternal(
+    createFamilyMemberDto: CreateFamilyMemberDto,
+    em: EntityManager,
+  ): Promise<FamilyMember> {
+    await this.familiesService.findOne(createFamilyMemberDto.familyId, {}, em);
+
+    let person: Person;
+
+    if (createFamilyMemberDto.personId) {
+      const foundPerson = await this.personsService.findOne(
+        createFamilyMemberDto.personId,
+        { relations: ['familyMember'] },
+        em,
+      );
+
+      if (foundPerson.familyMember) {
+        throw new ConflictException('Person is already a member of a family');
+      }
+      person = foundPerson;
+    } else {
+      person = await this.personsService.create(createFamilyMemberDto.person, em);
+    }
+
+    if (createFamilyMemberDto.relationType === FamilyRelationType.FATHER) {
+      const member = await em.findOne(FamilyMember, {
+        where: {
+          familyId: createFamilyMemberDto.familyId,
+          relationType: FamilyRelationType.FATHER,
+        },
+      });
+      if (member) {
+        throw new ConflictException('The family already has a father');
+      }
+    }
+
+    await this.validateGenderRelationType(person.gender, createFamilyMemberDto.relationType);
+
+    if (createFamilyMemberDto.isSponsored) {
+      const relation = createFamilyMemberDto.relationType;
+      if (relation !== FamilyRelationType.DAUGHTER && relation !== FamilyRelationType.SON) {
+        throw new ConflictException('Only daughters and sons can be sponsored');
+      }
+    }
+
+    const entity = this.familyMemberRepository.create({
+      ...createFamilyMemberDto,
+      person: person,
     });
+
+    return await em.save(FamilyMember, entity);
   }
 
   async findAll(

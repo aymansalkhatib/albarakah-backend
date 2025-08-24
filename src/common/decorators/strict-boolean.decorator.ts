@@ -1,10 +1,12 @@
 // File: strict-boolean.decorator.ts
+import { TranslateHelper } from '../../shared/modules/app-i18n/translate.helper';
 import { applyDecorators, BadRequestException } from '@nestjs/common';
 import { Transform } from 'class-transformer';
-import { IsBoolean } from 'class-validator';
+import { IsBoolean, ValidationOptions } from 'class-validator';
 
 interface StrictBooleanOptions {
   default?: boolean;
+  message?: ValidationOptions['message'];
 }
 
 export function StrictBoolean(options?: StrictBooleanOptions) {
@@ -21,7 +23,10 @@ export function StrictBoolean(options?: StrictBooleanOptions) {
       if (value === 0 || value === '0' || value === 'false') return false;
 
       throw new BadRequestException(
-        `Invalid boolean value for ${key}. Only true, false, 1, 0 are allowed.`,
+        options?.message ||
+          TranslateHelper.trValMsg('pipes.validation.invalid_boolean_value', {
+            key,
+          }),
       );
     }),
     IsBoolean(),

@@ -1,12 +1,10 @@
-import { Expose, Transform } from 'class-transformer';
+import { FamilyResponseDto } from '../../../families/dtos/responses/family-response.dto';
+import { Expose, Transform, Type } from 'class-transformer';
 import { RequestStatus } from '../../enums/request-status.enum';
 
 export class FamilyRegistrationFormResponseDto {
   @Expose()
   id: number;
-
-  @Expose()
-  familyId: number;
 
   @Expose()
   motherAgreesTraining?: boolean;
@@ -15,7 +13,7 @@ export class FamilyRegistrationFormResponseDto {
   isFormOrganized?: boolean;
 
   @Expose()
-  @Transform(({ value }) => value ? new Date(value).toISOString().split('T')[0] : null)
+  @Transform(({ value }) => (value ? new Date(value).toISOString().split('T')[0] : null))
   interviewDate?: Date;
 
   @Expose()
@@ -34,11 +32,11 @@ export class FamilyRegistrationFormResponseDto {
   registeredInOtherCharity?: boolean;
 
   @Expose()
-  @Transform(({ value }) => value ? new Date(value).toISOString().split('T')[0] : null)
+  @Transform(({ value }) => (value ? new Date(value).toISOString().split('T')[0] : null))
   emailArrivalDate?: Date;
 
   @Expose()
-  @Transform(({ value }) => value ? new Date(value).toISOString().split('T')[0] : null)
+  @Transform(({ value }) => (value ? new Date(value).toISOString().split('T')[0] : null))
   applicationApprovalDate?: Date;
 
   @Expose()
@@ -54,13 +52,14 @@ export class FamilyRegistrationFormResponseDto {
   mealtimeParticipants?: number;
 
   @Expose()
-  @Transform(({ value }) => value ? new Date(value).toISOString() : null)
+  @Transform(({ value }) => (value ? new Date(value).toISOString() : null))
   createdAt: Date;
 
   @Expose()
-  @Transform(({ value }) => value ? new Date(value).toISOString() : null)
+  @Transform(({ value }) => (value ? new Date(value).toISOString() : null))
   updatedAt: Date;
 
   @Expose()
-  family?: any;
+  @Type(() => FamilyResponseDto)
+  family?: FamilyResponseDto;
 }

@@ -1,3 +1,4 @@
+import { TranslateHelper } from '../../shared/modules/app-i18n/translate.helper';
 import { applyDecorators } from '@nestjs/common';
 import { Transform } from 'class-transformer';
 import { IsArray, IsInt, IsNotEmpty, Min } from 'class-validator';
@@ -33,9 +34,12 @@ export function PositiveIntegerIdArray({ nullable = false }: { nullable?: boolea
 
       return undefined;
     }),
-    IsArray({ message: 'Must be an array' }),
-    IsNotEmpty({ each: true, message: 'Each ID must not be empty' }),
-    IsInt({ each: true, message: 'Each ID must be an integer' }),
-    Min(1, { each: true, message: 'Each ID must be a positive integer greater than 0' }),
+    IsArray({ message: TranslateHelper.trValMsg('pipes.validation.array_required') }),
+    IsNotEmpty({ each: true, message: TranslateHelper.trValMsg('pipes.validation.id_not_empty') }),
+    IsInt({ each: true, message: TranslateHelper.trValMsg('pipes.validation.id_integer') }),
+    Min(1, {
+      each: true,
+      message: TranslateHelper.trValMsg('pipes.validation.id_positive'),
+    }),
   );
 }

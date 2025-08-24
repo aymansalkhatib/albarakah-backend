@@ -1,3 +1,4 @@
+import { TranslateHelper } from '../../shared/modules/app-i18n/translate.helper';
 import { registerDecorator, ValidationArguments, ValidationOptions } from 'class-validator';
 
 export function NotEqualTo(property: string, validationOptions?: ValidationOptions) {
@@ -16,7 +17,10 @@ export function NotEqualTo(property: string, validationOptions?: ValidationOptio
         },
         defaultMessage(args: ValidationArguments) {
           const [relatedPropertyName] = args.constraints;
-          return `${args.property} must not be equal to ${relatedPropertyName}`;
+          return TranslateHelper.trValMsg('pipes.validation.must_not_equal', {
+            property: args.property,
+            relatedProperty: relatedPropertyName,
+          })(args);
         },
       },
     });

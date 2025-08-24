@@ -1,3 +1,5 @@
+import { House } from '../../houses/entities/house.entity';
+import { Max } from 'class-validator';
 import {
   Column,
   CreateDateColumn,
@@ -8,25 +10,28 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-  RelationId,
 } from 'typeorm';
-import { Max } from 'class-validator';
-import { FamilyNeed } from '../../family-needs/entities/family-need.entity';
-import { Guardian } from '../../guardians/entities/guardian.entity';
-import { EmergencyAidRequest } from '../../emergency-aid-request/entities/emergency-aid-request.entity';
-import { ReceivedAssistance } from '../../received-assistance/entities/received-assistance.entity';
-import { House } from '../../houses/entities/house.entity';
-import { Interview } from '../../interviews/entities/interview.entity';
-import { FamilyRegistrationForm } from '../../family-registration-forms/entities/family-registration-form.entity';
-import { Visit } from '../../visits/entities/visit.entity';
 import { FamilyIncome } from '../../../modules/family-income/entities/family-income.entity';
 import { FamilyMember } from '../../../modules/family-members/entities/family-members.entity';
+import { EmergencyAidRequest } from '../../emergency-aid-request/entities/emergency-aid-request.entity';
+import { FamilyNeed } from '../../family-needs/entities/family-need.entity';
+import { FamilyRegistrationForm } from '../../family-registration-forms/entities/family-registration-form.entity';
+import { Guardian } from '../../guardians/entities/guardian.entity';
+import { Interview } from '../../interviews/entities/interview.entity';
+import { ReceivedAssistance } from '../../received-assistance/entities/received-assistance.entity';
+import { Visit } from '../../visits/entities/visit.entity';
 
 @Entity('families')
 @Index(['familyBookNumber'], { unique: true })
 export class Family {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column({ name: 'registration_form_id', type: 'number' })
+  registrationFormId: number;
+
+  @Column({ name: 'guardian_id', type: 'number' })
+  guardianId: number;
 
   // Basic Information
   @Column({ name: 'family_name', type: 'varchar', length: 64 })
@@ -37,9 +42,6 @@ export class Family {
 
   @Column({ name: 'registration_date', type: 'timestamp' })
   registrationDate: Date;
-
-  @Column({ name: 'guardian_id', type: 'number', nullable: true })
-  guardianId?: number;
 
   // Contact Information
   @Column({ name: 'landline_phone', type: 'varchar', length: 10, nullable: true })
@@ -95,19 +97,18 @@ export class Family {
 
   @OneToOne(() => Guardian, (guardian) => guardian.family)
   @JoinColumn({ name: 'guardian_id' })
-  guardian?: Guardian;
+  guardian: Guardian;
 
-  @OneToMany(() => House, (house) => house.family)
-  houses: House[];
-
-  @OneToOne(() => FamilyRegistrationForm, (form) => form.family, {
-    onDelete: 'CASCADE',
-  })
-  registrationForm?: FamilyRegistrationForm;
+  @OneToOne(() => FamilyRegistrationForm, (form) => form.family, { nullable: false })
+  @JoinColumn({ name: 'registration_form_id' })
+  registrationForm: FamilyRegistrationForm;
 
   // One-to-Many Relationships
   @OneToMany(() => FamilyMember, (member) => member.family)
-  members: FamilyMember[];
+  familyMembers: FamilyMember[];
+
+  @OneToMany(() => House, (house) => house.family)
+  houses: House[];
 
   @OneToMany(() => FamilyNeed, (need) => need.family)
   needs: FamilyNeed[];

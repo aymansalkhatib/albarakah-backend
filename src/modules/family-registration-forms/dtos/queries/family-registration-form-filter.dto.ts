@@ -1,7 +1,7 @@
-import { IsEnum, IsOptional, IsString } from 'class-validator';
 import { Expose } from 'class-transformer';
-import { RequestStatus } from '../../enums/request-status.enum';
+import { IsEnum, IsOptional, IsString } from 'class-validator';
 import { PaginationQueryDto } from '../../../../common/pagination/dto/pagination-query.dto';
+import { RequestStatus } from '../../enums/request-status.enum';
 
 export class FamilyRegistrationFormFilterDto extends PaginationQueryDto {
   @IsOptional()
@@ -13,9 +13,4 @@ export class FamilyRegistrationFormFilterDto extends PaginationQueryDto {
   @IsEnum(RequestStatus)
   @Expose()
   requestStatus?: RequestStatus;
-
-  @IsOptional()
-  @IsString()
-  @Expose()
-  familyId?: string;
 }

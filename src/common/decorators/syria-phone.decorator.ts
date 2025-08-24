@@ -1,3 +1,4 @@
+import { TranslateHelper } from '../../shared/modules/app-i18n/translate.helper';
 import { applyDecorators } from '@nestjs/common';
 import { Transform } from 'class-transformer';
 import {
@@ -68,7 +69,9 @@ export function SyriaPhone(options?: SyriaPhoneOptions, validationOptions?: Vali
             return isValidSyriaPhone(value);
           },
           defaultMessage(args: ValidationArguments) {
-            return `Invalid Syria phone number format for ${args.property}. Use: 09XXXXXXXX or +9639XXXXXXXX`;
+            return TranslateHelper.trValMsg('pipes.validation.invalid_syria_phone', {
+              property: args.property,
+            })(args);
           },
         },
       });

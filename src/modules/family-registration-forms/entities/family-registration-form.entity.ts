@@ -2,7 +2,6 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -14,9 +13,6 @@ import { RequestStatus } from '../enums/request-status.enum';
 export class FamilyRegistrationForm {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column({ name: 'family_id' })
-  familyId: number;
 
   @Column({ name: 'mother_agrees_training', type: 'boolean', nullable: true })
   motherAgreesTraining?: boolean;
@@ -73,10 +69,7 @@ export class FamilyRegistrationForm {
 
   // Relationships
 
-  @OneToOne(() => Family, (family) => family.registrationForm, {
-    onDelete: 'RESTRICT',
-    nullable: false,
-  })
-  @JoinColumn({ name: 'family_id' })
+  // One-to-One Relationships
+  @OneToOne(() => Family, (family) => family.registrationForm, { nullable: false })
   family: Family;
 }

@@ -26,6 +26,7 @@ import { ReceivedAssistanceModule } from './modules/received-assistance/received
 import { InterviewsModule } from './modules/interviews/interviews.module';
 import { HousesModule } from './modules/houses/houses.module';
 import { VisitsModule } from './modules/visits/visits.module';
+import { FamilyRegistrationFormsModule } from './modules/family-registration-forms/family-registration-forms.module';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { VisitsModule } from './modules/visits/visits.module';
     InterviewsModule,
     HousesModule,
     VisitsModule,
+    FamilyRegistrationFormsModule,
   ],
 
   controllers: [AppController],

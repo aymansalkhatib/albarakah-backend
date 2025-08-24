@@ -1,8 +1,9 @@
+import { TranslateHelper } from '../../shared/modules/app-i18n/translate.helper';
 import { applyDecorators } from '@nestjs/common';
 import { Transform } from 'class-transformer';
-import { IsInt, IsNotEmpty, Min } from 'class-validator';
+import { IsInt, IsNotEmpty, Min, ValidationOptions } from 'class-validator';
 
-export function PositiveIntegerId({ nullable = false }: { nullable?: boolean } = {}) {
+export function PositiveIntegerId({ nullable = false, message }: { nullable?: boolean, message?: ValidationOptions['message'] } = {}) {
   return applyDecorators(
     Transform(({ obj, key }) => {
       const value = obj[key];
@@ -13,7 +14,7 @@ export function PositiveIntegerId({ nullable = false }: { nullable?: boolean } =
       return isNaN(num) ? undefined : num;
     }),
     IsNotEmpty(),
-    IsInt({ message: 'ID must be an integer' }),
-    Min(1, { message: 'ID must be a positive integer greater than 0' }),
+    IsInt({ message: TranslateHelper.trValMsg('pipes.validation.id_integer') }),
+    Min(1, { message: TranslateHelper.trValMsg('pipes.validation.id_positive') }),
   );
 }

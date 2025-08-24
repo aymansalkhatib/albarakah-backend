@@ -1,3 +1,4 @@
+import { TranslateHelper } from '../../shared/modules/app-i18n/translate.helper';
 import {
   registerDecorator,
   ValidationArguments,
@@ -46,17 +47,26 @@ export class OnlyOneOfConstraint implements ValidatorConstraintInterface {
     return this.invalidGroup.length === 0;
   }
 
-  defaultMessage(_: ValidationArguments): string {
+  defaultMessage(args: ValidationArguments): string {
+    // If a custom message is provided, use it
+    if (args.constraints[1] && typeof args.constraints[1] === 'string') {
+      return args.constraints[1];
+    }
+
     let messages: string[] = [];
 
     this.invalidGroup.forEach((group) => {
       if (group.isRequired) {
         messages.push(
-          `You must provide exactly one of the following fields: ${group.fields.join(', ')}`,
+          TranslateHelper.trValMsg('pipes.validation.exactly_one_of_fields', {
+            fields: group.fields.join(', '),
+          })(args),
         );
       } else {
         messages.push(
-          `You can provide at most one of the following fields: ${group.fields.join(', ')}`,
+          TranslateHelper.trValMsg('pipes.validation.only_one_of_fields', {
+            fields: group.fields.join(', '),
+          })(args),
         );
       }
     });
@@ -66,12 +76,15 @@ export class OnlyOneOfConstraint implements ValidatorConstraintInterface {
 }
 
 export function OnlyOneOf(fieldGroups: FieldGroup[], validationOptions?: ValidationOptions) {
-  return function (constructor: Function) {
+  return function (constructor: any) {
+    // Extract message from validationOptions if provided
+    const message = validationOptions?.message;
+
     registerDecorator({
       name: 'OnlyOneOf',
       target: constructor,
       options: validationOptions,
-      constraints: [fieldGroups],
+      constraints: [fieldGroups, message],
       validator: OnlyOneOfConstraint,
       propertyName: undefined!,
     });

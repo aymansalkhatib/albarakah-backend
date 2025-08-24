@@ -1,8 +1,8 @@
 export enum RequestStatus {
-  PENDING = 'pending',
-  APPROVED = 'approved',
-  REJECTED = 'rejected',
-  UNDER_REVIEW = 'under_review',
-  INCOMPLETE = 'incomplete',
-  CANCELLED = 'cancelled',
+  PENDING = 'Pending',
+  APPROVED = 'Approved',
+  REJECTED = 'Rejected',
+  UNDER_REVIEW = 'Under Review',
+  INCOMPLETE = 'Incomplete',
+  CANCELLED = 'Cancelled',
 }

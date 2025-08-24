@@ -1,10 +1,10 @@
 import { ConflictException } from '@nestjs/common';
+import { Not, Repository } from 'typeorm';
+import { DropdownService } from '../../../modules/dropdowns/services/dropdown.service';
+import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
+import { CreatePersonDto } from '../dtos/requests/create-person.dto';
 import { UpdatePersonDto } from '../dtos/requests/update-person.dto';
 import { Person } from '../entities/person.entity';
-import { Not, Repository } from 'typeorm';
-import { CreatePersonDto } from '../dtos/requests/create-person.dto';
-import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
-import { DropdownService } from '../../../modules/dropdowns/services/dropdown.service';
 import { PersonDropdown } from '../enums/type-dropdown.enum';
 
 export async function validatePersonUniqueness(
@@ -61,15 +61,11 @@ export async function validatePersonUniqueness(
   if (existingPerson) {
     // Provide specific error messages based on conflict type
     if (dto.email && existingPerson.email === dto.email) {
-      throw new ConflictException(
-        translateHelper.tr('persons.errors.email_exists', { email: dto.email }),
-      );
+      throw new ConflictException(translateHelper.tr('persons.errors.email_exists'));
     }
 
     if (dto.nationalId && existingPerson.nationalId === dto.nationalId) {
-      throw new ConflictException(
-        translateHelper.tr('persons.errors.national_id_exists', { nationalId: dto.nationalId }),
-      );
+      throw new ConflictException(translateHelper.tr('persons.errors.national_id_exists'));
     }
 
     if (
@@ -87,12 +83,7 @@ export async function validatePersonUniqueness(
       existingPerson.firstName === dto.firstName &&
       existingPerson.lastName === dto.lastName
     ) {
-      throw new ConflictException(
-        translateHelper.tr('persons.errors.father_name_exists', {
-          firstName: dto.firstName,
-          lastName: dto.lastName,
-        }),
-      );
+      throw new ConflictException(translateHelper.tr('persons.errors.father_name_exists'));
     }
 
     // Generic fallback error

@@ -1,3 +1,4 @@
+import { TranslateHelper } from '../../shared/modules/app-i18n/translate.helper';
 import { registerDecorator, ValidationArguments, ValidationOptions } from 'class-validator';
 
 export function IsLessThanOrEqual(property: string, validationOptions?: ValidationOptions) {
@@ -21,7 +22,10 @@ export function IsLessThanOrEqual(property: string, validationOptions?: Validati
         },
         defaultMessage: (args: ValidationArguments) => {
           const [relatedPropertyName] = args.constraints;
-          return `${args.property} must be less than or equal to ${relatedPropertyName}`;
+          return TranslateHelper.trValMsg('pipes.validation.is_less_than_or_equal', {
+            property: args.property,
+            relatedProperty: relatedPropertyName,
+          })(args);
         },
       },
     });

@@ -1,18 +1,21 @@
+import { applyFamilyFilters } from '../../families/utils/family-filter.util';
+import { applyPersonFilters } from '../../persons/utils/person-filter.util';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Guardian } from '../entities/guardian.entity';
-import { UpdateGuardianDto } from '../dtos/requests/update-guardian.dto';
-import { PersonsService } from '../../persons/services/persons.service';
-import { Person } from '../../persons/entities/person.entity';
-import { CreateGuardianDto } from '../dtos/requests/create-guardian.dto';
-import { FilterGuardianDto } from '../dtos/queries/filter-guardian.dto';
-import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
-import { PersonRelation } from '../../../modules/persons/enums/person-relation.enum';
- import { GuardianResponseDto } from '../dtos/responses/guardian-response.dto';
+import { EntityManager, Repository } from 'typeorm';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { paginate } from '../../../common/pagination/paginate.service';
- 
+import { PersonRelation } from '../../../modules/persons/enums/person-relation.enum';
+import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
+import { Person } from '../../persons/entities/person.entity';
+import { PersonsService } from '../../persons/services/persons.service';
+import { FilterGuardianDto } from '../dtos/queries/filter-guardian.dto';
+import { CreateGuardianDto } from '../dtos/requests/create-guardian.dto';
+import { UpdateGuardianDto } from '../dtos/requests/update-guardian.dto';
+import { GuardianResponseDto } from '../dtos/responses/guardian-response.dto';
+import { Guardian } from '../entities/guardian.entity';
+import { applyGuardianFilters } from '../utils/guardian-filter.util';
+
 @Injectable()
 export class GuardiansService {
   constructor(
@@ -22,23 +25,45 @@ export class GuardiansService {
     private readonly translateHelper: TranslateHelper,
   ) {}
 
-  async create(createGuardianDto: CreateGuardianDto): Promise<Guardian> {
+  async create(
+    createGuardianDto: CreateGuardianDto,
+    entityManager?: EntityManager,
+  ): Promise<Guardian> {
+    if (entityManager) {
+      // If an entityManager is provided, use it directly (assume already in a transaction)
+      return await this.createWithManager(createGuardianDto, entityManager);
+    } else {
+      // Otherwise, start a transaction
+      return await this.guardianRepository.manager.transaction(async (manager) => {
+        return await this.createWithManager(createGuardianDto, manager);
+      });
+    }
+  }
+
+  private async createWithManager(
+    createGuardianDto: CreateGuardianDto,
+    entityManager: EntityManager,
+  ): Promise<Guardian> {
+    const guardianRepository = entityManager.getRepository(Guardian);
+
     let person: Person;
 
     if (createGuardianDto.personId) {
-      person = await this.personsService.findOne(createGuardianDto.personId, {
-        relations: ['guardian'],
-      });
+      person = await this.personsService.findOne(
+        createGuardianDto.personId,
+        { relations: ['guardian'] },
+        entityManager,
+      );
 
       if (person.guardian) {
         throw new ConflictException(this.translateHelper.tr('guardians.errors.already_guardian'));
       }
     } else {
-      person = await this.personsService.create(createGuardianDto.person);
+      person = await this.personsService.create(createGuardianDto.person, entityManager);
     }
 
-    const guardian = this.guardianRepository.create({ ...createGuardianDto, person });
-    return await this.guardianRepository.save(guardian);
+    const guardian = guardianRepository.create({ ...createGuardianDto, person });
+    return await guardianRepository.save(guardian);
   }
 
   async findAll(filterDto: FilterGuardianDto): Promise<PaginationResponseDto<GuardianResponseDto>> {
@@ -47,90 +72,21 @@ export class GuardiansService {
       .leftJoinAndSelect('guardian.person', 'person')
       .leftJoinAndSelect('guardian.family', 'family');
 
-    if (filterDto.relationType) {
-      queryBuilder.andWhere('guardian.relationType = :relationType', {
-        relationType: filterDto.relationType,
-      });
-    }
-
-    if (filterDto.search) {
-      queryBuilder.andWhere(
-        '(person.firstName LIKE :search OR person.lastName LIKE :search OR guardian.notes LIKE :search)',
-        { search: `%${filterDto.search}%` },
-      );
-    }
-
-    // Add person filters
-    if (filterDto.person) {
-      if (filterDto.person.firstName) {
-        queryBuilder.andWhere('person.firstName LIKE :firstName', {
-          firstName: `%${filterDto.person.firstName}%`,
-        });
-      }
-
-      if (filterDto.person.lastName) {
-        queryBuilder.andWhere('person.lastName LIKE :lastName', {
-          lastName: `%${filterDto.person.lastName}%`,
-        });
-      }
-
-      if (filterDto.person.nationalId) {
-        queryBuilder.andWhere('person.nationalId LIKE :nationalId', {
-          nationalId: `%${filterDto.person.nationalId}%`,
-        });
-      }
-
-      if (filterDto.person.isPalestinian !== undefined) {
-        queryBuilder.andWhere('person.isPalestinian = :isPalestinian', {
-          isPalestinian: filterDto.person.isPalestinian,
-        });
-      }
-
-      if (filterDto.person.gender) {
-        queryBuilder.andWhere('person.gender = :gender', {
-          gender: filterDto.person.gender,
-        });
-      }
-
-      if (filterDto.person.nationality) {
-        queryBuilder.andWhere('person.nationality ILIKE :nationality', {
-          nationality: `%${filterDto.person.nationality}%`,
-        });
-      }
-
-      if (filterDto.person.phone) {
-        queryBuilder.andWhere('person.phone LIKE :phone', {
-          phone: `%${filterDto.person.phone}%`,
-        });
-      }
-
-      if (filterDto.person.email) {
-        queryBuilder.andWhere('person.email LIKE :email', {
-          email: `%${filterDto.person.email}%`,
-        });
-      }
-
-      if (filterDto.person.birthDateFrom && filterDto.person.birthDateTo) {
-        queryBuilder.andWhere('person.birthDate BETWEEN :birthDateFrom AND :birthDateTo', {
-          birthDateFrom: filterDto.person.birthDateFrom,
-          birthDateTo: filterDto.person.birthDateTo,
-        });
-      } else if (filterDto.person.birthDateFrom) {
-        queryBuilder.andWhere('person.birthDate >= :birthDateFrom', {
-          birthDateFrom: filterDto.person.birthDateFrom,
-        });
-      } else if (filterDto.person.birthDateTo) {
-        queryBuilder.andWhere('person.birthDate <= :birthDateTo', {
-          birthDateTo: filterDto.person.birthDateTo,
-        });
-      }
-    }
+    applyPersonFilters(queryBuilder, 'person', filterDto);
+    applyGuardianFilters(queryBuilder, 'guardian', filterDto);
+    applyFamilyFilters(queryBuilder, 'family', filterDto);
 
     return paginate(queryBuilder, filterDto, GuardianResponseDto);
   }
 
-  async findOne(id: number, { relations }: { relations?: string[] } = {}): Promise<Guardian> {
-    const guardian = await this.guardianRepository.findOne({
+  async findOne(
+    id: number,
+    { relations }: { relations?: string[] } = {},
+    entityManager?: EntityManager,
+  ): Promise<Guardian> {
+    const guardianRepository = entityManager?.getRepository(Guardian) ?? this.guardianRepository;
+
+    const guardian = await guardianRepository.findOne({
       where: { id },
       relations: relations,
     });
@@ -143,18 +99,22 @@ export class GuardiansService {
   }
 
   async update(id: number, updateGuardianDto: UpdateGuardianDto): Promise<Guardian> {
-    const guardian = await this.findOne(id, { relations: ['person', 'family'] });
+    return await this.guardianRepository.manager.transaction(async (manager) => {
+      const guardianRepository = manager.getRepository(Guardian);
 
-    if (updateGuardianDto.person) {
-      guardian.person = await this.personsService.update(
-        guardian.person.id,
-        updateGuardianDto.person,
-      );
-      delete updateGuardianDto.person;
-    }
+      const guardian = await this.findOne(id, { relations: ['person', 'family'] }, manager);
 
-    this.guardianRepository.merge(guardian, updateGuardianDto);
-    return await this.guardianRepository.save(guardian);
+      if (updateGuardianDto.person) {
+        guardian.person = await this.personsService.update(
+          guardian.person.id,
+          updateGuardianDto.person,
+        );
+        delete updateGuardianDto.person;
+      }
+
+      guardianRepository.merge(guardian, updateGuardianDto);
+      return await guardianRepository.save(guardian);
+    });
   }
 
   async delete(id: number): Promise<void> {

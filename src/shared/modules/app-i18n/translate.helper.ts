@@ -18,8 +18,15 @@ export class TranslateHelper {
    * @param key - The i18n translation key for validation (e.g., 'validation.MAX_LENGTH')
    * @returns A function that receives validation arguments and returns the translated message
    */
-  static trValMsg(key: TranslationKey): (a: ValidationArguments) => string {
-    return i18nValidationMessage(key);
+  static trValMsg(key: TranslationKey, interpolations?: any): (a: ValidationArguments) => string {
+    return (args: ValidationArguments) => {
+      return i18nValidationMessage(key, {
+        ...interpolations,
+        property: I18nContext.current()?.translate
+          ? I18nContext.current().translate('keys.' + args.property)
+          : args.property,
+      })(args);
+    };
   }
 
   /**

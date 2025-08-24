@@ -11,13 +11,13 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { FamilyRegistrationFormsService } from '../services/family-registration-forms.service';
+import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
+import { FamilyRegistrationFormFilterDto } from '../dtos/queries/family-registration-form-filter.dto';
 import { CreateFamilyRegistrationFormDto } from '../dtos/requests/create-family-registration-form.dto';
 import { UpdateFamilyRegistrationFormDto } from '../dtos/requests/update-family-registration-form.dto';
-import { FamilyRegistrationFormFilterDto } from '../dtos/queries/family-registration-form-filter.dto';
 import { FamilyRegistrationFormResponseDto } from '../dtos/responses/family-registration-form-response.dto';
-import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
-import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
+import { FamilyRegistrationFormsService } from '../services/family-registration-forms.service';
 
 @Controller('family-registration-forms')
 export class FamilyRegistrationFormsController {
@@ -25,7 +25,9 @@ export class FamilyRegistrationFormsController {
 
   @Post()
   @SerializeResponse(FamilyRegistrationFormResponseDto)
-  async create(@Body() createDto: CreateFamilyRegistrationFormDto): Promise<FamilyRegistrationFormResponseDto> {
+  async create(
+    @Body() createDto: CreateFamilyRegistrationFormDto,
+  ): Promise<FamilyRegistrationFormResponseDto> {
     return await this.familyRegistrationFormsService.create(createDto);
   }
 

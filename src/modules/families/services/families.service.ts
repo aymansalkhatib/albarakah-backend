@@ -1,15 +1,15 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { UpdateFamilyDto } from '../dtos/requests/update-family-dto';
-import { Family } from '../entities/families.entity';
-import { CreateFamilyDto } from '../dtos/requests/create-family-dto';
-import { FilterFamilyDto } from '../dtos/queries/filter-family.dto';
-import { Repository } from 'typeorm';
-import { applyFamilyFilters } from '../utils';
-import { paginate } from '../../../common/pagination/paginate.service';
-import { FamilyResponseDto } from '../dtos/responses/family-response.dto';
+import { EntityManager, FindOneOptions, Repository } from 'typeorm';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
+import { paginate } from '../../../common/pagination/paginate.service';
+import { FilterFamilyDto } from '../dtos/queries/filter-family.dto';
+import { CreateFamilyDto } from '../dtos/requests/create-family-dto';
+import { UpdateFamilyDto } from '../dtos/requests/update-family-dto';
+import { FamilyResponseDto } from '../dtos/responses/family-response.dto';
+import { Family } from '../entities/families.entity';
+import { applyFamilyFilters } from '../utils';
 
 @Injectable()
 export class FamiliesService {
@@ -18,15 +18,17 @@ export class FamiliesService {
     private readonly familyRepository: Repository<Family>,
   ) {}
 
-  async create(createFamilyDto: CreateFamilyDto): Promise<Family> {
+  async create(createFamilyDto: CreateFamilyDto, entityManager?: EntityManager): Promise<Family> {
+    const familyRepository = entityManager?.getRepository(Family) ?? this.familyRepository;
+
     if (createFamilyDto.familyBookNumber) {
       const existingFamily = await this.findOneByFamilyBookNumber(createFamilyDto.familyBookNumber);
       if (existingFamily) {
         throw new ConflictException('Family book number already exists');
       }
     }
-    const family = this.familyRepository.create(createFamilyDto);
-    return this.familyRepository.save(family);
+    const family = familyRepository.create(createFamilyDto);
+    return familyRepository.save(family);
   }
 
   async findAll(filter: FilterFamilyDto): Promise<PaginationResponseDto<FamilyResponseDto>> {
@@ -35,8 +37,14 @@ export class FamiliesService {
     return paginate(queryBuilder, filter, FamilyResponseDto);
   }
 
-  async findOne(id: number): Promise<Family> {
-    const family = await this.familyRepository.findOneById(id);
+  async findOne(
+    id: number,
+    options: FindOneOptions<Family> = {},
+    entityManager?: EntityManager,
+  ): Promise<Family> {
+    const familyRepository = entityManager?.getRepository(Family) ?? this.familyRepository;
+
+    const family = await familyRepository.findOne({ where: { id }, ...options });
     if (!family) {
       throw new NotFoundException('family not found');
     }

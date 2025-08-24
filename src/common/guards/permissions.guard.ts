@@ -2,14 +2,16 @@ import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 import { Permission } from '../../modules/roles/enums/permission.enum';
-import { PERMISSIONS_KEY } from '../decorators/protected.decorator';
 import { PermissionsService } from '../../modules/roles/services/permissions.service';
+import { TranslateHelper } from '../../shared/modules/app-i18n/translate.helper';
+import { PERMISSIONS_KEY } from '../decorators/protected.decorator';
 
 @Injectable()
 export class PermissionsGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
     private readonly permissionsService: PermissionsService,
+    private readonly translateHelper: TranslateHelper,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -28,7 +30,7 @@ export class PermissionsGuard implements CanActivate {
     const user = request.user;
 
     if (!user) {
-      throw new ForbiddenException('User not authenticated');
+      throw new ForbiddenException(this.translateHelper.tr('guards.errors.user_not_authenticated'));
     }
 
     const allowedPermissions = await this.permissionsService.getEffectiveUserPermissions(user.id);
@@ -39,7 +41,9 @@ export class PermissionsGuard implements CanActivate {
       !allowedPermissions.some((p) => requiredPermissions.includes(p.name))
     ) {
       throw new ForbiddenException(
-        `Access denied. Required permissions: ${requiredPermissions.join(', ')}`,
+        this.translateHelper.tr('guards.errors.access_denied', {
+          permissions: requiredPermissions.join(', '),
+        }),
       );
     }
 

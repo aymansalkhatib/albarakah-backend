@@ -1,3 +1,4 @@
+import { TranslateHelper } from '../../shared/modules/app-i18n/translate.helper';
 import {
   registerDecorator,
   ValidationArguments,
@@ -33,7 +34,12 @@ export class ValidateMinMaxPairsConstraint implements ValidatorConstraintInterfa
 
           this.validationErrors.push({
             field: pair.maxField,
-            message: `${fieldDisplayName} (${maxValue}) must be greater than or equal to ${minFieldDisplayName} (${minValue})`,
+            message: TranslateHelper.trValMsg('pipes.validation.max_greater_than_or_equal_min', {
+              maxField: fieldDisplayName,
+              maxValue,
+              minField: minFieldDisplayName,
+              minValue,
+            })(args),
           });
         }
       }

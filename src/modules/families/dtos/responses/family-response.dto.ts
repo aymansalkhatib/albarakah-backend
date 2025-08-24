@@ -1,4 +1,7 @@
-import { Expose } from 'class-transformer';
+import { FamilyMemberResponseDto } from '../../../family-members/dtos/responses/family-member-response.dto';
+import { GuardianResponseDto } from '../../../guardians/dtos/responses/guardian-response.dto';
+import { HouseResponseDto } from '../../../houses/dtos/responses/house-response.dto';
+import { Expose, Type } from 'class-transformer';
 
 export class FamilyResponseDto {
   @Expose()
@@ -54,4 +57,16 @@ export class FamilyResponseDto {
 
   @Expose()
   guardianId?: number;
+
+  @Expose()
+  @Type(() => GuardianResponseDto)
+  guardian?: GuardianResponseDto;
+
+  @Expose()
+  @Type(() => HouseResponseDto)
+  houses?: HouseResponseDto[];
+
+  @Expose()
+  @Type(() => FamilyMemberResponseDto)
+  familyMembers?: FamilyMemberResponseDto[];
 }

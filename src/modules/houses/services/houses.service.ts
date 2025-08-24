@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { paginate } from '../../../common/pagination/paginate.service';
 import { FamiliesService } from '../../families/services/families.service';
@@ -21,16 +21,18 @@ export class HousesService {
     private readonly familiesService: FamiliesService,
   ) {}
 
-  async create(createHouseDto: CreateHouseDto): Promise<House> {
+  async create(createHouseDto: CreateHouseDto, entityManager?: EntityManager): Promise<House> {
+    const houseRepository = entityManager?.getRepository(House) ?? this.houseRepository;
+
     // Check if family exists
-    const family = await this.familiesService.findOne(createHouseDto.familyId);
+    const family = await this.familiesService.findOne(createHouseDto.familyId, {}, entityManager);
 
     if (!family) {
       throw new NotFoundException(`Family with ID ${createHouseDto.familyId} not found`);
     }
 
-    const house = this.houseRepository.create(createHouseDto);
-    return await this.houseRepository.save(house);
+    const house = houseRepository.create(createHouseDto);
+    return await houseRepository.save(house);
   }
 
   async findAll(query: HouseQueryDto): Promise<PaginationResponseDto<HouseResponseDto>> {

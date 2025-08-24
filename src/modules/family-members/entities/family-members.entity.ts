@@ -9,13 +9,13 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Person } from '../../persons/entities/person.entity';
-import { FamilyRelationType } from '../enums/family-relation-type.enum';
-import { PersonCourseBatch } from '../../training-courses/entities/person-course-batch.entity';
-import { ReceivedAssistance } from '../../received-assistance/entities/received-assistance.entity';
 import { Family } from '../../../modules/families/entities/families.entity';
-import { SupporterChildSponsorship } from '../../supporters/entities/supporters-children.entity';
 import { FamilyIncome } from '../../family-income/entities/family-income.entity';
+import { Person } from '../../persons/entities/person.entity';
+import { ReceivedAssistance } from '../../received-assistance/entities/received-assistance.entity';
+import { SupporterChildSponsorship } from '../../supporters/entities/supporters-children.entity';
+import { PersonCourseBatch } from '../../training-courses/entities/person-course-batch.entity';
+import { FamilyRelationType } from '../enums/family-relation-type.enum';
 
 @Entity('family_members')
 @Index(['familyId', 'personId'], { unique: true })
@@ -56,7 +56,7 @@ export class FamilyMember {
   @JoinColumn({ name: 'person_id' })
   person: Person;
 
-  @ManyToOne(() => Family, (family) => family.members, {
+  @ManyToOne(() => Family, (family) => family.familyMembers, {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'family_id' })

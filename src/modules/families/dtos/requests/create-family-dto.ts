@@ -11,13 +11,15 @@ import {
 } from 'class-validator';
 
 import { Expose, Transform } from 'class-transformer';
-import { StrictBoolean } from '../../../../common/decorators/strict-boolean.decorator';
 import { PositiveIntegerId } from '../../../../common/decorators/positive-integer-id.decorator';
+import { StrictBoolean } from '../../../../common/decorators/strict-boolean.decorator';
 
 export class CreateFamilyDto {
-  @IsOptional()
   @PositiveIntegerId()
   guardianId: number;
+
+  @PositiveIntegerId()
+  registrationFormId: number;
 
   @IsString()
   @IsNotEmpty()
@@ -103,36 +105,4 @@ export class CreateFamilyDto {
   @MaxLength(2000)
   @Expose()
   notes?: string;
-
-  // @ValidateNested()
-  // @Type(() => CreateFamilyRegistrationFormDto)
-  // @Expose()
-  // registrationForm: CreateFamilyRegistrationFormDto;
-
-  // @IsOptional()
-  // @IsArray()
-  // @ValidateNested({ each: true })
-  // @Type(() => CreateFamilyMemberDto)
-  // @Expose()
-  // members?: CreateFamilyMemberDto[];
-
-  // @IsOptional()
-  // @IsArray()
-  // @ValidateNested({ each: true })
-  // @Type(() => CreateFamilyNeedDto)
-  // @Expose()
-  // needs?: CreateFamilyNeedDto[];
-
-  // @IsOptional()
-  // @IsArray()
-  // @ValidateNested({ each: true })
-  // @Type(() => CreateFamilyIncomeDto)
-  // @Expose()
-  // income?: CreateFamilyIncomeDto[];
-
-  // @IsOptional()
-  // @ValidateNested()
-  // @Type(() => CreateHouseDto)
-  // @Expose()
-  // house?: CreateHouseDto;
 }
