@@ -10,7 +10,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { FamilyIncome } from '../../../modules/family-income/entities/family-income.entity';
 import { FamilyMember } from '../../../modules/family-members/entities/family-members.entity';
 import { EmergencyAidRequest } from '../../emergency-aid-request/entities/emergency-aid-request.entity';
 import { FamilyNeed } from '../../family-needs/entities/family-need.entity';
@@ -28,15 +27,6 @@ export class Family {
 
   @Column({ name: 'guardian_id', type: 'number' })
   guardianId: number;
-
-
-
-
-
-
-
-
-
 
   // Basic Information
   @Column({ name: 'family_name', type: 'varchar', length: 64 })
@@ -113,9 +103,6 @@ export class Family {
 
   @OneToMany(() => FamilyNeed, (need) => need.family)
   needs: FamilyNeed[];
-
-  @OneToMany(() => FamilyIncome, (income) => income.family)
-  income: FamilyIncome[];
 
   @OneToMany(() => ReceivedAssistance, (assistance) => assistance.family)
   receivedAssistance: ReceivedAssistance[];

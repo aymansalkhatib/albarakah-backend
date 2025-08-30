@@ -10,7 +10,6 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Family } from '../../../modules/families/entities/families.entity';
-import { FamilyIncome } from '../../family-income/entities/family-income.entity';
 import { Person } from '../../persons/entities/person.entity';
 import { ReceivedAssistance } from '../../received-assistance/entities/received-assistance.entity';
 import { SupporterChildSponsorship } from '../../supporters/entities/supporters-children.entity';
@@ -67,9 +66,6 @@ export class FamilyMember {
 
   @OneToMany(() => ReceivedAssistance, (assistance) => assistance.familyMember)
   receivedAssistance: ReceivedAssistance[];
-
-  @OneToMany(() => FamilyIncome, (income) => income.familyMember)
-  income: FamilyIncome[];
 
   // === COMPUTED PROPERTIES ===
 

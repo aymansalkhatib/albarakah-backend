@@ -9,7 +9,6 @@ import { DropdownsModule } from './modules/dropdowns/dropdowns.module';
 import { EmergencyAidRequestModule } from './modules/emergency-aid-request/emergency-aid-request.module';
 import { EmployeesModule } from './modules/employees/employee.module';
 import { FamiliesModule } from './modules/families/families.module';
-import { FamiliesIncomeModule } from './modules/family-income/family-income.module';
 import { FamilyMembersModule } from './modules/family-members/family-members.module';
 import { FamilyNeedsModule } from './modules/family-needs/family-needs.module';
 import { GuardiansModule } from './modules/guardians/guardians.module';
@@ -38,7 +37,6 @@ import { AppTypeOrmModule } from './shared/modules/app-type-orm/app-type-orm.mod
     DropdownsModule,
     FamiliesModule,
     FamilyMembersModule,
-    FamiliesIncomeModule,
     EmployeesModule,
     SystemUsersModule,
     RolesModule,
