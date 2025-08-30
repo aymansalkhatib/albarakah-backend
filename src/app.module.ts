@@ -4,7 +4,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ParseQueryMiddleware } from './common/middlewares/parse-query.middleware';
 import { AuthModule } from './modules/auth/auth.module';
-import { CallLogsModule } from './modules/call-logs/call-logs.module';
 import { DropdownsModule } from './modules/dropdowns/dropdowns.module';
 import { EmergencyAidRequestModule } from './modules/emergency-aid-request/emergency-aid-request.module';
 import { EmployeesModule } from './modules/employees/employee.module';
@@ -42,7 +41,6 @@ import { AppTypeOrmModule } from './shared/modules/app-type-orm/app-type-orm.mod
     RolesModule,
     TrainingCoursesModule,
     GuardiansModule,
-    CallLogsModule,
     FamilyMembersModule,
     EmergencyAidRequestModule,
     FamilyNeedsModule,
@@ -58,9 +56,6 @@ import { AppTypeOrmModule } from './shared/modules/app-type-orm/app-type-orm.mod
     AppService,
     ErrorHandlerFactory,
     {
-
-
-
       provide: APP_FILTER,
       useClass: GlobalExceptionFilter,
     },

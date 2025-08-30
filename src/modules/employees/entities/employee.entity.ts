@@ -1,4 +1,3 @@
-import { Person } from '../../persons/entities/person.entity';
 import {
   Column,
   CreateDateColumn,
@@ -12,8 +11,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Interview } from '../../interviews/entities/interview.entity';
+import { Person } from '../../persons/entities/person.entity';
 import { SystemUser } from '../../system-users/entities/system-user.entity';
-import { CallLog } from '../../../modules/call-logs/entities/call-log.entity';
 
 @Entity('employees')
 @Index('idx_employees_person_id', ['personId'], { unique: true })
@@ -53,7 +52,4 @@ export class Employee {
 
   @OneToMany(() => Interview, (interview) => interview.interviewer)
   interviews: Interview[];
-
-  @OneToMany(() => CallLog, (callLog) => callLog.responsibleEmployee)
-  callLogs: CallLog[];
 }
