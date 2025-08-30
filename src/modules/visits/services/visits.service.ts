@@ -1,10 +1,9 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOneOptions, Repository } from 'typeorm';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { paginate } from '../../../common/pagination/paginate.service';
 import { FamiliesService } from '../../families/services/families.service';
-import { HousesService } from '../../houses/services/houses.service';
 import { FilterVisitDto } from '../dtos/queries/filter-visit.dto';
 import { CreateVisitDto } from '../dtos/requests/create-visit.dto';
 import { UpdateVisitDto } from '../dtos/requests/update-visit.dto';
@@ -16,20 +15,13 @@ export class VisitsService {
   constructor(
     @InjectRepository(Visit)
     private readonly visitRepository: Repository<Visit>,
-    private readonly housesService: HousesService,
     private readonly familiesService: FamiliesService,
   ) {}
 
   async create(createVisitDto: CreateVisitDto): Promise<Visit> {
-    if (createVisitDto.familyId != createVisitDto.house.familyId) {
-      throw new BadRequestException('Family ID and house family ID do not match');
-    }
-
     await this.familiesService.findOne(createVisitDto.familyId);
-    const house = await this.housesService.create(createVisitDto.house);
     const visit = this.visitRepository.create({
       ...createVisitDto,
-      house: house,
     });
     return this.visitRepository.save(visit);
   }
@@ -136,22 +128,16 @@ export class VisitsService {
       throw new NotFoundException('Visit not found');
     }
 
-    if (updateVisitDto.house) {
-      const house = await this.housesService.update(visit.houseId, updateVisitDto.house);
-      visit.house = house;
-    }
-
     const updatedVisit = this.visitRepository.merge(visit, updateVisitDto);
     return this.visitRepository.save(updatedVisit);
   }
 
   async delete(id: number): Promise<void> {
-    const visit = await this.visitRepository.findOne({
+    await this.visitRepository.findOne({
       where: { id },
       relations: ['house', 'family'],
     });
 
     await this.visitRepository.delete(id);
-    await this.housesService.delete(visit.houseId);
   }
 }

@@ -11,7 +11,6 @@ import { UpsertDropdownOptionDto } from '../dtos/dropdown-option/create-dropdown
 import { UpsertDropdownDto } from '../dtos/dropdown/upsert-dropdown.dto';
 import { DropdownOption } from '../entities/dropdown-option.entity';
 import { Dropdown } from '../entities/dropdown.entity';
-import { DropdownCategoryService } from './dropdown-category.service';
 
 @Injectable()
 export class DropdownService {
@@ -20,7 +19,6 @@ export class DropdownService {
     public readonly dropdownRepository: Repository<Dropdown>,
     @InjectRepository(DropdownOption)
     private readonly dropdownOptionRepository: Repository<DropdownOption>,
-    private readonly dropdownCategoryService: DropdownCategoryService,
     private readonly translateHelper: TranslateHelper,
     private readonly dataSource: DataSource,
   ) {}
@@ -28,20 +26,14 @@ export class DropdownService {
   async upsert(upsertDto: UpsertDropdownDto): Promise<Dropdown> {
     return await this.dataSource.transaction(async (manager) => {
       // Validate category exists
-      await this.dropdownCategoryService.findOne(upsertDto.dropdownCategoryId);
       if (upsertDto.id) await this.findOne(upsertDto.id);
 
       // Check for duplicate dropdown name
-      await this.checkDuplicateDropdownName(
-        upsertDto.dropdownName,
-        upsertDto.dropdownCategoryId,
-        upsertDto.id,
-      );
+      await this.checkDuplicateDropdownName(upsertDto.dropdownName, upsertDto.id);
 
       // Create or update dropdown
       let dropdown = this.dropdownRepository.create({
         id: upsertDto.id,
-        dropdownCategoryId: upsertDto.dropdownCategoryId,
         dropdownName: upsertDto.dropdownName,
         selectionType: upsertDto.selectionType,
       });
@@ -105,14 +97,6 @@ export class DropdownService {
     });
   }
 
-  async findByCategory(categoryId: number): Promise<Dropdown[]> {
-    await this.dropdownCategoryService.findOne(categoryId);
-    return this.dropdownRepository.find({
-      where: { dropdownCategory: { id: categoryId } },
-      relations: ['options'],
-    });
-  }
-
   async findOne(id: number, options: FindOneOptions<Dropdown> = {}): Promise<Dropdown> {
     const dropdown = await this.dropdownRepository.findOne({
       where: { id },
@@ -155,11 +139,6 @@ export class DropdownService {
       select: {
         id: true,
         dropdownName: true,
-        dropdownCategory: {
-          id: true,
-          name: true,
-          parentId: true,
-        },
       },
     });
 
@@ -291,7 +270,6 @@ export class DropdownService {
     const existingDropdown = await this.dropdownRepository.findOne({
       where: {
         id: Not(excludeId),
-        dropdownCategoryId,
         dropdownName,
       },
     });

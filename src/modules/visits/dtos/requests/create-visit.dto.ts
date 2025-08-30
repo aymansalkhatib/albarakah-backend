@@ -1,5 +1,3 @@
-import { CreateHouseDto } from '../../../houses/dtos';
-import { Type } from 'class-transformer';
 import {
   IsArray,
   IsDateString,
@@ -63,8 +61,4 @@ export class CreateVisitDto {
   @IsString({ each: true })
   @MaxLength(100, { each: true })
   visitCommitteeMembers?: string[];
-
-  @IsNotEmpty()
-  @Type(() => CreateHouseDto)
-  house: CreateHouseDto;
 }

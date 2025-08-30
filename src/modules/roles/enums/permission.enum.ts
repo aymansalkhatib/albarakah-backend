@@ -39,10 +39,6 @@ export enum Permission {
   READ_EMERGENCY_AID = 'read_emergency_aid',
   UPDATE_EMERGENCY_AID = 'update_emergency_aid',
   DELETE_EMERGENCY_AID = 'delete_emergency_aid',
-  APPROVE_EMERGENCY_AID = 'approve_emergency_aid',
-  REJECT_EMERGENCY_AID = 'reject_emergency_aid',
-  DISBURSE_EMERGENCY_AID = 'disburse_emergency_aid',
-  CANCEL_EMERGENCY_AID = 'cancel_emergency_aid',
 
   // Family Needs Management
   CREATE_FAMILY_NEED = 'create_family_need',
@@ -56,18 +52,6 @@ export enum Permission {
   UPDATE_RECEIVED_ASSISTANCE = 'update_received_assistance',
   DELETE_RECEIVED_ASSISTANCE = 'delete_received_assistance',
 
-  // Call Log Management
-  CREATE_CALL_LOG = 'create_call_log',
-  READ_CALL_LOG = 'read_call_log',
-  UPDATE_CALL_LOG = 'update_call_log',
-  DELETE_CALL_LOG = 'delete_call_log',
-
-  // House Management
-  CREATE_HOUSE = 'create_house',
-  READ_HOUSE = 'read_house',
-  UPDATE_HOUSE = 'update_house',
-  DELETE_HOUSE = 'delete_house',
-
   // Interview Management
   CREATE_INTERVIEW = 'create_interview',
   READ_INTERVIEW = 'read_interview',
@@ -79,12 +63,6 @@ export enum Permission {
   READ_EMPLOYEE = 'read_employee',
   UPDATE_EMPLOYEE = 'update_employee',
   DELETE_EMPLOYEE = 'delete_employee',
-
-  // Guardian Management
-  CREATE_GUARDIAN = 'create_guardian',
-  READ_GUARDIAN = 'read_guardian',
-  UPDATE_GUARDIAN = 'update_guardian',
-  DELETE_GUARDIAN = 'delete_guardian',
 
   // Supporter Management
   CREATE_SUPPORTER = 'create_supporter',
@@ -116,12 +94,6 @@ export enum Permission {
   UPDATE_FAMILY_MEMBER = 'update_family_member',
   DELETE_FAMILY_MEMBER = 'delete_family_member',
 
-  // Family Income Management
-  CREATE_FAMILY_INCOME = 'create_family_income',
-  READ_FAMILY_INCOME = 'read_family_income',
-  UPDATE_FAMILY_INCOME = 'update_family_income',
-  DELETE_FAMILY_INCOME = 'delete_family_income',
-
   // Dropdown Management
   CREATE_DROPDOWN = 'create_dropdown',
   READ_DROPDOWN = 'read_dropdown',
@@ -132,10 +104,4 @@ export enum Permission {
   CREATE_SELECTED_DROPDOWN_OPTION = 'create_selected_dropdown_option',
   READ_SELECTED_DROPDOWN_OPTION = 'read_selected_dropdown_option',
   DELETE_SELECTED_DROPDOWN_OPTION = 'delete_selected_dropdown_option',
-
-  // Dropdown Category Management
-  CREATE_DROPDOWN_CATEGORY = 'create_dropdown_category',
-  READ_DROPDOWN_CATEGORY = 'read_dropdown_category',
-  UPDATE_DROPDOWN_CATEGORY = 'update_dropdown_category',
-  DELETE_DROPDOWN_CATEGORY = 'delete_dropdown_category',
 }

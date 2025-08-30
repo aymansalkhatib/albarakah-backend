@@ -9,13 +9,13 @@ import {
   ParseIntPipe,
   Post,
 } from '@nestjs/common';
-import { DropdownService } from '../services/dropdown.service';
-import { Dropdown } from '../entities/dropdown.entity';
-import { UpsertDropdownDto } from '../dtos/dropdown/upsert-dropdown.dto';
-import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
-import { ResponseDropdownDto } from '../dtos/dropdown/response-dropdown.dto';
 import { Protected } from '../../../common/decorators/protected.decorator';
+import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
 import { Permission } from '../../roles/enums/permission.enum';
+import { ResponseDropdownDto } from '../dtos/dropdown/response-dropdown.dto';
+import { UpsertDropdownDto } from '../dtos/dropdown/upsert-dropdown.dto';
+import { Dropdown } from '../entities/dropdown.entity';
+import { DropdownService } from '../services/dropdown.service';
 
 @Controller('dropdowns')
 export class DropdownController {
@@ -42,12 +42,5 @@ export class DropdownController {
     return this.dropdownService.findOne(id, {
       relations: ['options'],
     });
-  }
-
-  @Get('category/:categoryId')
-  @Protected(Permission.READ_DROPDOWN)
-  @SerializeResponse(ResponseDropdownDto)
-  findByCategory(@Param('categoryId', ParseIntPipe) categoryId: number): Promise<Dropdown[]> {
-    return this.dropdownService.findByCategory(categoryId);
   }
 }

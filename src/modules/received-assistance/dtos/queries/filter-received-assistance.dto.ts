@@ -43,5 +43,3 @@ export class FilterReceivedAssistanceDto extends PaginationDto {
   @IsString()
   notes?: string;
 }
-
-

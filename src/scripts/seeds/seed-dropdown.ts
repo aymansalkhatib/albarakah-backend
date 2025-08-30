@@ -1,19 +1,11 @@
-import { PersonDropdown } from '../../modules/persons/enums/type-dropdown.enum';
-import { DropdownCategory } from '../../modules/dropdowns/entities/dropdown-category.entity';
+import { QueryRunner } from 'typeorm';
 import { DropdownOption } from '../../modules/dropdowns/entities/dropdown-option.entity';
 import { Dropdown } from '../../modules/dropdowns/entities/dropdown.entity';
-import { SelectedDropdownOption } from '../../modules/dropdowns/entities/selected-dropdown-option.entity';
-import { Person } from '../../modules/persons/entities/person.entity';
-import { House } from '../../modules/houses/entities/house.entity';
-import { QueryRunner } from 'typeorm';
 import { DropdownSelectionType } from '../../modules/dropdowns/enums/dropdown-selection-type.enum';
+import { PersonDropdown } from '../../modules/persons/enums/type-dropdown.enum';
 
 export async function seedDropdowns(queryRunner: QueryRunner) {
   console.log('🌱 Starting dropdown seeding process...');
-
-  const selectedDropdownOptionRepo = queryRunner.manager.getRepository(SelectedDropdownOption);
-  console.log('🗑️ Cleaning up selected dropdown options...');
-  await selectedDropdownOptionRepo.deleteAll();
 
   const dropdownOptionRepo = queryRunner.manager.getRepository(DropdownOption);
   console.log('🗑️ Cleaning up dropdown options...');
@@ -23,22 +15,12 @@ export async function seedDropdowns(queryRunner: QueryRunner) {
   console.log('🗑️ Cleaning up dropdowns...');
   await dropdownRepo.deleteAll();
 
-  const categoryRepo = queryRunner.manager.getRepository(DropdownCategory);
-  console.log('🗑️ Cleaning up dropdown categories...');
-  await categoryRepo.deleteAll();
-
   // Profile
-  // Create a new category with the name 'profile'
-  console.log('📁 Creating dropdown categories...');
-  const profileCategory = await categoryRepo.create({ name: Person.name }).save();
-  const homeCategory = await categoryRepo.create({ name: House.name }).save();
-  console.log(`✅ Created categories: ${Person.name}, ${House.name}`);
 
   // Marital Status
   console.log('💍 Creating Marital Status dropdown...');
   const maritalStatusDropdown = dropdownRepo.create({
     dropdownName: PersonDropdown.MARITAL_STATUS,
-    dropdownCategory: profileCategory,
     selectionType: DropdownSelectionType.SINGLE,
   });
   await dropdownRepo.save(maritalStatusDropdown);
@@ -57,7 +39,6 @@ export async function seedDropdowns(queryRunner: QueryRunner) {
   console.log('🏥 Creating Health Status dropdown...');
   const healthStatusDropdown = dropdownRepo.create({
     dropdownName: PersonDropdown.HEALTH_STATUS,
-    dropdownCategory: profileCategory,
     selectionType: DropdownSelectionType.SINGLE,
   });
   await dropdownRepo.save(healthStatusDropdown);
@@ -85,7 +66,6 @@ export async function seedDropdowns(queryRunner: QueryRunner) {
   console.log('🎓 Creating Education Level dropdown...');
   const educationLevelDropdown = dropdownRepo.create({
     dropdownName: PersonDropdown.EDUCATION_LEVEL,
-    dropdownCategory: profileCategory,
     selectionType: DropdownSelectionType.SINGLE,
   });
   await dropdownRepo.save(educationLevelDropdown);
@@ -115,7 +95,6 @@ export async function seedDropdowns(queryRunner: QueryRunner) {
   console.log('🏫 Creating School Type dropdown...');
   const schoolTypeDropdown = dropdownRepo.create({
     dropdownName: PersonDropdown.SCHOOL_TYPE,
-    dropdownCategory: profileCategory,
     selectionType: DropdownSelectionType.SINGLE,
   });
   await dropdownRepo.save(schoolTypeDropdown);
@@ -145,7 +124,6 @@ export async function seedDropdowns(queryRunner: QueryRunner) {
   console.log('📚 Creating Grade Level dropdown...');
   const gradeLevelDropdown = dropdownRepo.create({
     dropdownName: PersonDropdown.GRADE_LEVEL,
-    dropdownCategory: profileCategory,
     selectionType: DropdownSelectionType.SINGLE,
   });
   await dropdownRepo.save(gradeLevelDropdown);
@@ -190,13 +168,6 @@ export async function seedDropdowns(queryRunner: QueryRunner) {
     await dropdownOptionRepo.save(option);
   }
   console.log(`✅ Created ${gradeLevels.length} grade level options`);
-
-  console.log('🔧 Updating profile category settings...');
-  await categoryRepo.save({
-    ...profileCategory,
-    isDropdownCreationEnabled: false,
-    isSubcategoryCreationEnabled: false,
-  });
 
   console.log('🎉 Dropdown seeding completed successfully!');
   console.log(

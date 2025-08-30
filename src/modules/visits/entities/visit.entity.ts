@@ -1,4 +1,3 @@
-import { House } from '../../houses/entities/house.entity';
 import {
   Column,
   CreateDateColumn,
@@ -62,10 +61,4 @@ export class Visit {
   })
   @JoinColumn({ name: 'family_id' })
   family?: Family;
-
-  @ManyToOne(() => House, (house) => house.visits, {
-    onDelete: 'CASCADE',
-  })
-  @JoinColumn({ name: 'house_id' })
-  house: House;
 }

@@ -16,9 +16,6 @@ import { StrictBoolean } from '../../../../common/decorators/strict-boolean.deco
 
 export class CreateFamilyDto {
   @PositiveIntegerId()
-  guardianId: number;
-
-  @PositiveIntegerId()
   registrationFormId: number;
 
   @IsString()

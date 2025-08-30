@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import {
   IsEnum,
   IsNotEmpty,
@@ -6,18 +7,14 @@ import {
   MaxLength,
   ValidateNested,
 } from 'class-validator';
-import { Type } from 'class-transformer';
 import { PositiveIntegerId } from '../../../../common/decorators/positive-integer-id.decorator';
-import { UpsertDropdownOptionDto } from '../dropdown-option/create-dropdown-option.dto';
 import { DropdownSelectionType } from '../../enums/dropdown-selection-type.enum';
+import { UpsertDropdownOptionDto } from '../dropdown-option/create-dropdown-option.dto';
 
 export class UpsertDropdownDto {
   @IsOptional()
   @PositiveIntegerId()
   id?: number;
-
-  @PositiveIntegerId()
-  dropdownCategoryId: number;
 
   @IsString()
   @IsNotEmpty()

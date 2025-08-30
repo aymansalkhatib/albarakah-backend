@@ -3,7 +3,10 @@ import { applyDecorators } from '@nestjs/common';
 import { Transform } from 'class-transformer';
 import { IsInt, IsNotEmpty, Min, ValidationOptions } from 'class-validator';
 
-export function PositiveIntegerId({ nullable = false, message }: { nullable?: boolean, message?: ValidationOptions['message'] } = {}) {
+export function PositiveIntegerId({
+  nullable = false,
+  message,
+}: { nullable?: boolean; message?: ValidationOptions['message'] } = {}) {
   return applyDecorators(
     Transform(({ obj, key }) => {
       const value = obj[key];

@@ -8,13 +8,12 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { FamilyMember } from '../../../modules/family-members/entities/family-members.entity';
 import { DropdownOption } from '../../dropdowns/entities/dropdown-option.entity';
-import { GenderType } from '../enums/gender-type.enum';
-import { ClothingSize } from '../enums/clothing-size.enum';
-import { Guardian } from '../../guardians/entities/guardian.entity';
 import { Employee } from '../../employees/entities/employee.entity';
 import { Supporter } from '../../supporters/entities/supporters.entity';
-import { FamilyMember } from '../../../modules/family-members/entities/family-members.entity';
+import { ClothingSize } from '../enums/clothing-size.enum';
+import { GenderType } from '../enums/gender-type.enum';
 
 @Entity('person')
 @Index('idx_person_national_id', ['nationalId'], { unique: true, where: 'national_id IS NOT NULL' })
@@ -137,10 +136,6 @@ export class Person {
   gradeLevel?: DropdownOption;
 
   // one-to-one relations
-  @OneToOne(() => Guardian, (guardian) => guardian.person, {
-    nullable: true,
-  })
-  guardian?: Guardian;
 
   @OneToOne(() => FamilyMember, (member) => member.person, {
     nullable: true,

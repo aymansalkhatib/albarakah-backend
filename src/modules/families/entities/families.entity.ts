@@ -4,17 +4,13 @@ import {
   CreateDateColumn,
   Entity,
   Index,
-  JoinColumn,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { FamilyMember } from '../../../modules/family-members/entities/family-members.entity';
 import { EmergencyAidRequest } from '../../emergency-aid-request/entities/emergency-aid-request.entity';
 import { FamilyNeed } from '../../family-needs/entities/family-need.entity';
-import { Guardian } from '../../guardians/entities/guardian.entity';
-import { House } from '../../houses/entities/house.entity';
 import { Interview } from '../../interviews/entities/interview.entity';
 import { ReceivedAssistance } from '../../received-assistance/entities/received-assistance.entity';
 import { Visit } from '../../visits/entities/visit.entity';
@@ -24,9 +20,6 @@ import { Visit } from '../../visits/entities/visit.entity';
 export class Family {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column({ name: 'guardian_id', type: 'number' })
-  guardianId: number;
 
   // Basic Information
   @Column({ name: 'family_name', type: 'varchar', length: 64 })
@@ -88,18 +81,9 @@ export class Family {
 
   // === RELATIONSHIPS ===
 
-  // One-to-One Relationships
-
-  @OneToOne(() => Guardian, (guardian) => guardian.family)
-  @JoinColumn({ name: 'guardian_id' })
-  guardian: Guardian;
-
   // One-to-Many Relationships
   @OneToMany(() => FamilyMember, (member) => member.family)
   familyMembers: FamilyMember[];
-
-  @OneToMany(() => House, (house) => house.family)
-  houses: House[];
 
   @OneToMany(() => FamilyNeed, (need) => need.family)
   needs: FamilyNeed[];
