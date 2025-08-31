@@ -10,47 +10,52 @@ import {
   Min,
   MinDate,
 } from 'class-validator';
-import { Transform } from 'class-transformer';
 import { IsLessThanOrEqual } from '../../../../common/decorators/is-less-than-or-equal.decorator';
 import { StrictBoolean } from '../../../../common/decorators/strict-boolean.decorator';
-import { ClothingSize } from '../../enums/clothing-size.enum';
-import { GenderType } from '../../enums/gender-type.enum';
-import { PositiveIntegerId } from '../../../../common/decorators/positive-integer-id.decorator';
 import { PaginationDto } from '../../../../common/pagination/dto/pagination.dto';
+import { CurrentStudyStatus } from '../../enums/current-study-status.enum';
+import { EducationLevel } from '../../enums/education-level.enum';
+import { GenderType } from '../../enums/gender-type.enum';
+import { MaritalStatus } from '../../enums/marital-status.enum';
+import { SchoolType } from '../../enums/school-type.enum';
+import { SuccessCertificateSubmission } from '../../enums/success-certificate-submission-2023-2024.enum';
 
 export class FilterPersonDto extends PaginationDto {
+  // fullName and motherName (match entity)
   @IsOptional()
   @IsString()
-  @Length(1, 100)
-  fatherName?: string;
+  @Length(1, 300)
+  fullName?: string;
 
   @IsOptional()
   @IsString()
   @Length(1, 100)
   motherName?: string;
 
+  // birth date range
   @IsOptional()
-  @IsString()
-  @Length(1, 100)
-  firstName?: string;
+  @IsDate()
+  @IsLessThanOrEqual('birthDateTo')
+  @MinDate(new Date('1900-01-01'))
+  @MaxDate(new Date())
+  birthDateFrom?: Date;
+
+  @IsOptional()
+  @IsDate()
+  @MinDate(new Date('1900-01-01'))
+  @MaxDate(new Date())
+  birthDateTo?: Date;
 
   @IsOptional()
   @IsString()
-  @Length(1, 100)
-  lastName?: string;
+  @Length(1, 200)
+  birthPlace?: string;
 
+  // nationalId exact 11 chars (optional)
   @IsOptional()
   @IsString()
-  @Length(1, 11, { message: 'National ID must be exactly 11 characters long' })
+  @Length(11, 11, { message: 'National ID must be exactly 11 characters long' })
   nationalId?: string;
-
-  @IsOptional()
-  @StrictBoolean()
-  isPalestinian?: boolean;
-
-  @IsOptional()
-  @IsEnum(GenderType)
-  gender?: GenderType;
 
   @IsOptional()
   @IsString()
@@ -60,7 +65,28 @@ export class FilterPersonDto extends PaginationDto {
   @IsOptional()
   @IsString()
   @Length(1, 100)
-  birthPlace?: string;
+  motherNationality?: string;
+
+  // booleans / enums
+  @IsOptional()
+  @StrictBoolean()
+  isPalestinian?: boolean;
+
+  @IsOptional()
+  @IsEnum(GenderType)
+  gender?: GenderType;
+
+  // shoe size (exact or range)
+  @IsOptional()
+  @IsInt()
+  @Min(16)
+  @Max(48)
+  shoeSize?: number;
+
+  // marital & work
+  @IsOptional()
+  @IsEnum(MaritalStatus)
+  maritalStatus?: MaritalStatus;
 
   @IsOptional()
   @StrictBoolean()
@@ -68,36 +94,37 @@ export class FilterPersonDto extends PaginationDto {
 
   @IsOptional()
   @IsString()
-  @Length(1, 100)
+  @Length(1, 200)
   currentJob?: string;
+
+  @IsOptional()
+  @IsString()
+  @Length(1, 500)
+  jobDetails?: string;
 
   @IsOptional()
   @StrictBoolean()
   isSmoker?: boolean;
 
+  // health
   @IsOptional()
-  @PositiveIntegerId()
-  healthStatusId?: number;
+  @IsString()
+  @Length(1, 200)
+  healthStatus?: string;
 
   @IsOptional()
-  @PositiveIntegerId()
-  educationLevelId?: number;
+  @StrictBoolean()
+  isHealthInsuranceUsed?: boolean;
 
+  // success certificate submission (enum)
   @IsOptional()
-  @PositiveIntegerId()
-  schoolTypeId?: number;
+  @IsEnum(SuccessCertificateSubmission)
+  isSuccessCertificateSubmitted?: SuccessCertificateSubmission;
 
+  // education / study
   @IsOptional()
-  @PositiveIntegerId()
-  personStatusId?: number;
-
-  @IsOptional()
-  @PositiveIntegerId()
-  maritalStatusId?: number;
-
-  @IsOptional()
-  @PositiveIntegerId()
-  gradeLevelId?: number;
+  @IsEnum(EducationLevel)
+  educationLevel?: EducationLevel;
 
   @IsOptional()
   @IsString()
@@ -105,44 +132,37 @@ export class FilterPersonDto extends PaginationDto {
   universityMajor?: string;
 
   @IsOptional()
-  @Length(1, 255)
-  @Transform(({ value }) => value?.trim().toLowerCase())
-  email?: string;
+  @IsEnum(CurrentStudyStatus)
+  currentStudyStatus?: CurrentStudyStatus;
 
   @IsOptional()
-  @IsString()
-  @Length(1, 10)
-  phone?: string;
-
-  @IsOptional()
-  @IsString()
-  notes?: string;
+  @IsEnum(SchoolType)
+  schoolType?: SchoolType;
 
   @IsOptional()
   @IsString()
   @Length(1, 200)
-  address?: string;
+  schoolName?: string;
+
+  // phones
+  @IsOptional()
+  @IsString()
+  @Length(3, 15)
+  mobilePhone?: string;
 
   @IsOptional()
-  @IsInt()
-  @Min(16)
-  @Max(48)
-  shoeSize?: number;
+  @IsString()
+  @Length(3, 15)
+  landlinePhone?: string;
 
   @IsOptional()
-  @IsEnum(ClothingSize)
-  clothingSize?: ClothingSize;
+  @IsString()
+  @Length(3, 15)
+  whatsappNumber?: string;
 
+  // notes / address / clothing
   @IsOptional()
-  @IsDate()
-  @IsLessThanOrEqual('birthDateTo')
-  @MinDate(new Date('1900-01-01'), { message: 'Birth date must be after 1900-01-01' })
-  @MaxDate(new Date(), { message: 'Birth date must be before today' })
-  birthDateFrom?: Date;
-
-  @IsOptional()
-  @IsDate()
-  @MinDate(new Date('1900-01-01'), { message: 'Birth date must be after 1900-01-01' })
-  @MaxDate(new Date(), { message: 'Birth date must be before today' })
-  birthDateTo?: Date;
+  @IsString()
+  @Length(1, 2000)
+  notes?: string;
 }

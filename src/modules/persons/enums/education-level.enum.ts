@@ -1,0 +1,15 @@
+export enum EducationLevel {
+  Primary = 'primary',
+  Preparatory = 'preparatory',
+  CompletedAllStages = 'completed_all_stages',
+  Illiterate = 'illiterate',
+  Vocational = 'vocational',
+  Secondary = 'secondary',
+  University = 'university',
+  NotEnrolled = 'not_enrolled',
+  NotStudying = 'not_studying',
+  Institute = 'institute',
+  EnrolledUniversity = 'enrolled_university',
+  EnrolledSchool = 'enrolled_school',
+  BasicLiterate = 'basic_literate',
+}

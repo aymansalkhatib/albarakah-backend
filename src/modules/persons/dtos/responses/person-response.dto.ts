@@ -1,29 +1,36 @@
-import { Exclude, Expose } from 'class-transformer';
-import { GenderType } from '../../enums/gender-type.enum';
+import { Expose } from 'class-transformer';
 import { ClothingSize } from '../../enums/clothing-size.enum';
+import { CurrentStudyStatus } from '../../enums/current-study-status.enum';
+import { EducationLevel } from '../../enums/education-level.enum';
+import { GenderType } from '../../enums/gender-type.enum';
+import { MaritalStatus } from '../../enums/marital-status.enum';
+import { SchoolType } from '../../enums/school-type.enum';
+import { SuccessCertificateSubmission } from '../../enums/success-certificate-submission-2023-2024.enum';
 
-@Exclude()
 export class PersonResponseDto {
   @Expose()
   id: number;
 
   @Expose()
-  fatherName?: string;
+  fullName: string;
 
   @Expose()
   motherName?: string;
 
   @Expose()
-  firstName: string;
-
-  @Expose()
-  lastName: string;
-
-  @Expose()
   birthDate?: Date;
 
   @Expose()
+  birthPlace?: string;
+
+  @Expose()
   nationalId?: string;
+
+  @Expose()
+  nationality?: string;
+
+  @Expose()
+  motherNationality?: string;
 
   @Expose()
   isPalestinian?: boolean;
@@ -31,11 +38,9 @@ export class PersonResponseDto {
   @Expose()
   gender?: GenderType;
 
-  @Expose()
-  nationality?: string;
+  shoeSize?: number;
 
-  @Expose()
-  birthPlace?: string;
+  maritalStatus?: MaritalStatus;
 
   @Expose()
   isWorking?: boolean;
@@ -49,42 +54,46 @@ export class PersonResponseDto {
   @Expose()
   isSmoker?: boolean;
 
+  // If healthStatus is a free text in DB (string)
   @Expose()
-  healthStatusId?: number;
+  healthStatus?: string;
 
   @Expose()
-  educationLevelId?: number;
+  isHealthInsuranceUsed?: boolean;
 
+  // Success certificate submission status (enum)
   @Expose()
-  schoolTypeId?: number;
+  isSuccessCertificateSubmitted?: SuccessCertificateSubmission;
 
+  // Education / study enums
   @Expose()
-  personStatusId?: number;
-
-  @Expose()
-  maritalStatusId?: number;
-
-  @Expose()
-  gradeLevelId?: number;
+  educationLevel?: EducationLevel;
 
   @Expose()
   universityMajor?: string;
 
   @Expose()
-  email?: string;
+  currentStudyStatus?: CurrentStudyStatus;
 
   @Expose()
-  phone?: string;
+  schoolType?: SchoolType;
 
   @Expose()
-  address?: string;
+  schoolName?: string;
+
+  // Phones
+  @Expose()
+  mobilePhone?: string;
 
   @Expose()
-  shoeSize?: number;
+  landlinePhone?: string;
 
   @Expose()
-  clothingSize?: ClothingSize;
+  whatsappNumber?: string;
 
   @Expose()
   notes?: string;
+
+  @Expose()
+  clothingSize?: ClothingSize;
 }

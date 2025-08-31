@@ -1,10 +1,10 @@
-import { QueryRunner } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
-import { Person } from '../../modules/persons/entities/person.entity';
+import { QueryRunner } from 'typeorm';
 import { Employee } from '../../modules/employees/entities/employee.entity';
-import { SystemUser } from '../../modules/system-users/entities/system-user.entity';
-import { Role } from '../../modules/roles/entities/roles.entity';
+import { Person } from '../../modules/persons/entities/person.entity';
 import { GenderType } from '../../modules/persons/enums/gender-type.enum';
+import { Role } from '../../modules/roles/entities/roles.entity';
+import { SystemUser } from '../../modules/system-users/entities/system-user.entity';
 import { EnvironmentConfig } from '../../shared/modules/app-config/env.schema';
 
 export async function seedSystemUsers(
@@ -20,10 +20,11 @@ export async function seedSystemUsers(
 
   // Get existing roles (should be created by seed-roles-permissions.ts first)
   console.log('🔍 Looking for existing roles...');
-  const adminRole = await roleRepo.findOne({ where: { name: 'admin' } });
-  const superAdminRole = await roleRepo.findOne({ where: { name: 'superadmin' } });
+  const superAdminRole = await roleRepo.findOne({
+    where: { name: 'superadmin' },
+  });
 
-  if (!adminRole || !superAdminRole) {
+  if (!superAdminRole) {
     console.log('❌ Required roles not found!');
     throw new Error(
       'Roles must be seeded before creating system users. Run permission seed first.',
@@ -45,21 +46,16 @@ export async function seedSystemUsers(
   const usersData = [
     {
       person: {
-        firstName: 'Super',
-        lastName: 'Admin',
-        email: 'superadmin@albarakah.org',
+        fullName: 'Super Admin',
         phone: '0959123456',
         nationalId: '123456789',
         birthDate: new Date('1990-01-15'),
         gender: GenderType.MALE,
         isPalestinian: true,
-        address: 'Gaza City, Palestine',
         nationality: 'Palestinian',
       },
       employee: {
         position: 'System Administrator',
-        hireDate: new Date('2024-01-01'),
-        notes: 'Super administrator with full system access',
       },
       systemUser: {
         username: 'superadmin',
@@ -84,7 +80,9 @@ export async function seedSystemUsers(
     });
 
     if (existingUser) {
-      console.log(`⏭️ User ${userData.systemUser.username} already exists, skipping...`);
+      console.log(
+        `⏭️ User ${userData.systemUser.username} already exists, skipping...`,
+      );
       skippedUsers++;
       continue;
     }
@@ -103,7 +101,7 @@ export async function seedSystemUsers(
     }
 
     // Create Person
-    console.log(`👥 Creating person: ${userData.person.firstName} ${userData.person.lastName}`);
+    console.log(`👥 Creating person: ${userData.person.fullName}`);
     const person = personRepo.create(userData.person);
     const savedPerson = await personRepo.save(person);
     console.log(`✅ Person created with ID: ${savedPerson.id}`);

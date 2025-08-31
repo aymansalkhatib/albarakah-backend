@@ -157,31 +157,44 @@ interface TrainingcoursesPersoncoursebatchesErrorsAlreadyenrolledParams {
 }
 
 const TranslationKeys = {
-  'dropdowns.errors.cannot_create_subcategory': 'dropdowns.errors.cannot_create_subcategory',
-  'dropdowns.errors.cannot_delete_core_category': 'dropdowns.errors.cannot_delete_core_category',
-  'dropdowns.errors.category_has_children': 'dropdowns.errors.category_has_children',
-  'dropdowns.errors.category_has_dropdowns': 'dropdowns.errors.category_has_dropdowns',
+  'dropdowns.errors.cannot_create_subcategory':
+    'dropdowns.errors.cannot_create_subcategory',
+  'dropdowns.errors.cannot_delete_core_category':
+    'dropdowns.errors.cannot_delete_core_category',
+  'dropdowns.errors.category_has_children':
+    'dropdowns.errors.category_has_children',
+  'dropdowns.errors.category_has_dropdowns':
+    'dropdowns.errors.category_has_dropdowns',
   'dropdowns.errors.category_mismatch': 'dropdowns.errors.category_mismatch',
-  'dropdowns.errors.category_name_exists': 'dropdowns.errors.category_name_exists',
+  'dropdowns.errors.category_name_exists':
+    'dropdowns.errors.category_name_exists',
   'dropdowns.errors.category_not_found': 'dropdowns.errors.category_not_found',
-  'dropdowns.errors.dropdown_has_options': 'dropdowns.errors.dropdown_has_options',
-  'dropdowns.errors.dropdown_name_exists': 'dropdowns.errors.dropdown_name_exists',
+  'dropdowns.errors.dropdown_has_options':
+    'dropdowns.errors.dropdown_has_options',
+  'dropdowns.errors.dropdown_name_exists':
+    'dropdowns.errors.dropdown_name_exists',
   'dropdowns.errors.dropdown_not_found': 'dropdowns.errors.dropdown_not_found',
   'dropdowns.errors.dropdown_not_found_in_category':
     'dropdowns.errors.dropdown_not_found_in_category',
   'dropdowns.errors.duplicate_options_not_allowed':
     'dropdowns.errors.duplicate_options_not_allowed',
-  'dropdowns.errors.invalid_selection_type': 'dropdowns.errors.invalid_selection_type',
+  'dropdowns.errors.invalid_selection_type':
+    'dropdowns.errors.invalid_selection_type',
   'dropdowns.errors.max_depth_exceeded': 'dropdowns.errors.max_depth_exceeded',
   'dropdowns.errors.multiple_selection_requires_at_least_one_option':
     'dropdowns.errors.multiple_selection_requires_at_least_one_option',
-  'dropdowns.errors.option_has_selections': 'dropdowns.errors.option_has_selections',
+  'dropdowns.errors.option_has_selections':
+    'dropdowns.errors.option_has_selections',
   'dropdowns.errors.option_name_exists': 'dropdowns.errors.option_name_exists',
   'dropdowns.errors.option_not_found': 'dropdowns.errors.option_not_found',
-  'dropdowns.errors.option_not_found_in_dropdown': 'dropdowns.errors.option_not_found_in_dropdown',
-  'dropdowns.errors.option_not_in_dropdown': 'dropdowns.errors.option_not_in_dropdown',
-  'dropdowns.errors.selection_not_found': 'dropdowns.errors.selection_not_found',
-  'dropdowns.errors.single_selection_exists': 'dropdowns.errors.single_selection_exists',
+  'dropdowns.errors.option_not_found_in_dropdown':
+    'dropdowns.errors.option_not_found_in_dropdown',
+  'dropdowns.errors.option_not_in_dropdown':
+    'dropdowns.errors.option_not_in_dropdown',
+  'dropdowns.errors.selection_not_found':
+    'dropdowns.errors.selection_not_found',
+  'dropdowns.errors.single_selection_exists':
+    'dropdowns.errors.single_selection_exists',
   'dropdowns.errors.single_selection_requires_one_option':
     'dropdowns.errors.single_selection_requires_one_option',
   'emergency-aid-request.errors.cannot_approve_non_pending':
@@ -192,41 +205,55 @@ const TranslationKeys = {
     'emergency-aid-request.errors.cannot_disburse_non_approved',
   'emergency-aid-request.errors.cannot_reject_non_pending':
     'emergency-aid-request.errors.cannot_reject_non_pending',
-  'emergency-aid-request.errors.not_found': 'emergency-aid-request.errors.not_found',
+  'emergency-aid-request.errors.not_found':
+    'emergency-aid-request.errors.not_found',
   'employees.errors.already_employee': 'employees.errors.already_employee',
   'employees.errors.cannot_delete_with_system_account':
     'employees.errors.cannot_delete_with_system_account',
   'employees.errors.not_found': 'employees.errors.not_found',
   'guards.errors.access_denied': 'guards.errors.access_denied',
   'guards.errors.access_token_required': 'guards.errors.access_token_required',
-  'guards.errors.token_issued_before_login': 'guards.errors.token_issued_before_login',
+  'guards.errors.token_issued_before_login':
+    'guards.errors.token_issued_before_login',
   'guards.errors.token_issued_before_password_change':
     'guards.errors.token_issued_before_password_change',
-  'guards.errors.user_not_authenticated': 'guards.errors.user_not_authenticated',
+  'guards.errors.user_not_authenticated':
+    'guards.errors.user_not_authenticated',
   'interviews.errors.not_found': 'interviews.errors.not_found',
   'persons.errors.email_exists': 'persons.errors.email_exists',
   'persons.errors.father_name_exists': 'persons.errors.father_name_exists',
-  'persons.errors.name_no_parent_exists': 'persons.errors.name_no_parent_exists',
+  'persons.errors.full_name_exists': 'persons.errors.full_name_exists',
+  'persons.errors.name_no_parent_exists':
+    'persons.errors.name_no_parent_exists',
   'persons.errors.national_id_exists': 'persons.errors.national_id_exists',
   'persons.errors.not_found': 'persons.errors.not_found',
   'persons.errors.not_found_by_name': 'persons.errors.not_found_by_name',
-  'persons.errors.person_details_exists': 'persons.errors.person_details_exists',
+  'persons.errors.person_details_exists':
+    'persons.errors.person_details_exists',
   'pipes.validation.array_required': 'pipes.validation.array_required',
-  'pipes.validation.exactly_one_of_fields': 'pipes.validation.exactly_one_of_fields',
+  'pipes.validation.exactly_one_of_fields':
+    'pipes.validation.exactly_one_of_fields',
   'pipes.validation.id_integer': 'pipes.validation.id_integer',
   'pipes.validation.id_not_empty': 'pipes.validation.id_not_empty',
   'pipes.validation.id_positive': 'pipes.validation.id_positive',
-  'pipes.validation.invalid_boolean_value': 'pipes.validation.invalid_boolean_value',
-  'pipes.validation.invalid_syria_phone': 'pipes.validation.invalid_syria_phone',
-  'pipes.validation.is_less_than_or_equal': 'pipes.validation.is_less_than_or_equal',
+  'pipes.validation.invalid_boolean_value':
+    'pipes.validation.invalid_boolean_value',
+  'pipes.validation.invalid_syria_phone':
+    'pipes.validation.invalid_syria_phone',
+  'pipes.validation.is_less_than_or_equal':
+    'pipes.validation.is_less_than_or_equal',
   'pipes.validation.max_greater_than_or_equal_min':
     'pipes.validation.max_greater_than_or_equal_min',
-  'pipes.validation.min_max_validation_failed': 'pipes.validation.min_max_validation_failed',
-  'pipes.validation.multiple_validation_errors': 'pipes.validation.multiple_validation_errors',
+  'pipes.validation.min_max_validation_failed':
+    'pipes.validation.min_max_validation_failed',
+  'pipes.validation.multiple_validation_errors':
+    'pipes.validation.multiple_validation_errors',
   'pipes.validation.must_not_equal': 'pipes.validation.must_not_equal',
   'pipes.validation.only_one_of_fields': 'pipes.validation.only_one_of_fields',
-  'pipes.validation.positive_integer_required': 'pipes.validation.positive_integer_required',
-  'received-assistance.errors.not_found': 'received-assistance.errors.not_found',
+  'pipes.validation.positive_integer_required':
+    'pipes.validation.positive_integer_required',
+  'received-assistance.errors.not_found':
+    'received-assistance.errors.not_found',
   'supporters.errors.already_supporter': 'supporters.errors.already_supporter',
   'supporters.errors.not_found': 'supporters.errors.not_found',
   'system-users.errors.employee_has_system_account':
@@ -302,6 +329,7 @@ export interface TranslationInterpolations {
   'interviews.errors.not_found': NoParams;
   'persons.errors.email_exists': NoParams;
   'persons.errors.father_name_exists': NoParams;
+  'persons.errors.full_name_exists': NoParams;
   'persons.errors.name_no_parent_exists': NoParams;
   'persons.errors.national_id_exists': NoParams;
   'persons.errors.not_found': PersonsErrorsNotfoundParams;

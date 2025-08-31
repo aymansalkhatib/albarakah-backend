@@ -1,27 +1,15 @@
 import { SelectQueryBuilder } from 'typeorm';
-import { Person } from '../entities/person.entity';
 import { FilterPersonDto } from '../dtos/queries/filter-person.dto';
+import { Person } from '../entities/person.entity';
 
 export function applyPersonFilters(
   qb: SelectQueryBuilder<any>,
   alias: string,
   filter: FilterPersonDto,
 ): SelectQueryBuilder<Person> {
-  if (filter.firstName) {
-    qb.andWhere(`${alias}.firstName ILIKE :firstName`, {
-      firstName: `%${filter.firstName}%`,
-    });
-  }
-
-  if (filter.lastName) {
-    qb.andWhere(`${alias}.lastName ILIKE :lastName`, {
-      lastName: `%${filter.lastName}%`,
-    });
-  }
-
-  if (filter.fatherName) {
-    qb.andWhere(`${alias}.fatherName ILIKE :fatherName`, {
-      fatherName: `%${filter.fatherName}%`,
+  if (filter.fullName) {
+    qb.andWhere(`${alias}.fullName ILIKE :fullName`, {
+      fullName: `%${filter.fullName}%`,
     });
   }
 
@@ -37,6 +25,18 @@ export function applyPersonFilters(
     });
   }
 
+  if (filter.nationality) {
+    qb.andWhere(`${alias}.nationality ILIKE :nationality`, {
+      nationality: `%${filter.nationality}%`,
+    });
+  }
+
+  if (filter.motherNationality) {
+    qb.andWhere(`${alias}.motherNationality ILIKE :motherNationality`, {
+      motherNationality: `%${filter.motherNationality}%`,
+    });
+  }
+
   if (filter.isPalestinian !== undefined) {
     qb.andWhere(`${alias}.isPalestinian = :isPalestinian`, {
       isPalestinian: filter.isPalestinian,
@@ -49,15 +49,15 @@ export function applyPersonFilters(
     });
   }
 
-  if (filter.nationality) {
-    qb.andWhere(`${alias}.nationality ILIKE :nationality`, {
-      nationality: `%${filter.nationality}%`,
+  if (filter.shoeSize) {
+    qb.andWhere(`${alias}.shoeSize = :shoeSize`, {
+      shoeSize: filter.shoeSize,
     });
   }
 
-  if (filter.birthPlace) {
-    qb.andWhere(`${alias}.birthPlace ILIKE :birthPlace`, {
-      birthPlace: `%${filter.birthPlace}%`,
+  if (filter.maritalStatus) {
+    qb.andWhere(`${alias}.maritalStatus = :maritalStatus`, {
+      maritalStatus: filter.maritalStatus,
     });
   }
 
@@ -73,45 +73,42 @@ export function applyPersonFilters(
     });
   }
 
+  if (filter.jobDetails) {
+    qb.andWhere(`${alias}.jobDetails ILIKE :jobDetails`, {
+      jobDetails: `%${filter.jobDetails}%`,
+    });
+  }
+
   if (filter.isSmoker !== undefined) {
     qb.andWhere(`${alias}.isSmoker = :isSmoker`, {
       isSmoker: filter.isSmoker,
     });
   }
 
-  if (filter.healthStatusId) {
-    qb.andWhere(`${alias}.healthStatusId = :healthStatusId`, {
-      healthStatusId: filter.healthStatusId,
+  if (filter.healthStatus) {
+    qb.andWhere(`${alias}.healthStatus ILIKE :healthStatus`, {
+      healthStatus: `%${filter.healthStatus}%`,
     });
   }
 
-  if (filter.educationLevelId) {
-    qb.andWhere(`${alias}.educationLevelId = :educationLevelId`, {
-      educationLevelId: filter.educationLevelId,
+  if (filter.isHealthInsuranceUsed !== undefined) {
+    qb.andWhere(`${alias}.isHealthInsuranceUsed = :isHealthInsuranceUsed`, {
+      isHealthInsuranceUsed: filter.isHealthInsuranceUsed,
     });
   }
 
-  if (filter.schoolTypeId) {
-    qb.andWhere(`${alias}.schoolTypeId = :schoolTypeId`, {
-      schoolTypeId: filter.schoolTypeId,
-    });
+  if (filter.isSuccessCertificateSubmitted) {
+    qb.andWhere(
+      `${alias}.isSuccessCertificateSubmitted = :isSuccessCertificateSubmitted`,
+      {
+        isSuccessCertificateSubmitted: filter.isSuccessCertificateSubmitted,
+      },
+    );
   }
 
-  if (filter.personStatusId) {
-    qb.andWhere(`${alias}.personStatusId = :personStatusId`, {
-      personStatusId: filter.personStatusId,
-    });
-  }
-
-  if (filter.maritalStatusId) {
-    qb.andWhere(`${alias}.maritalStatusId = :maritalStatusId`, {
-      maritalStatusId: filter.maritalStatusId,
-    });
-  }
-
-  if (filter.gradeLevelId) {
-    qb.andWhere(`${alias}.gradeLevelId = :gradeLevelId`, {
-      gradeLevelId: filter.gradeLevelId,
+  if (filter.educationLevel) {
+    qb.andWhere(`${alias}.educationLevel = :educationLevel`, {
+      educationLevel: filter.educationLevel,
     });
   }
 
@@ -121,15 +118,39 @@ export function applyPersonFilters(
     });
   }
 
-  if (filter.email) {
-    qb.andWhere(`${alias}.email ILIKE :email`, {
-      email: `%${filter.email}%`,
+  if (filter.currentStudyStatus) {
+    qb.andWhere(`${alias}.currentStudyStatus = :currentStudyStatus`, {
+      currentStudyStatus: filter.currentStudyStatus,
     });
   }
 
-  if (filter.phone) {
-    qb.andWhere(`${alias}.phone ILIKE :phone`, {
-      phone: `%${filter.phone}%`,
+  if (filter.schoolType) {
+    qb.andWhere(`${alias}.schoolType = :schoolType`, {
+      schoolType: filter.schoolType,
+    });
+  }
+
+  if (filter.schoolName) {
+    qb.andWhere(`${alias}.schoolName ILIKE :schoolName`, {
+      schoolName: `%${filter.schoolName}%`,
+    });
+  }
+
+  if (filter.mobilePhone) {
+    qb.andWhere(`${alias}.mobilePhone ILIKE :mobilePhone`, {
+      mobilePhone: `%${filter.mobilePhone}%`,
+    });
+  }
+
+  if (filter.landlinePhone) {
+    qb.andWhere(`${alias}.landlinePhone ILIKE :landlinePhone`, {
+      landlinePhone: `%${filter.landlinePhone}%`,
+    });
+  }
+
+  if (filter.whatsappNumber) {
+    qb.andWhere(`${alias}.whatsappNumber ILIKE :whatsappNumber`, {
+      whatsappNumber: `%${filter.whatsappNumber}%`,
     });
   }
 
@@ -139,21 +160,9 @@ export function applyPersonFilters(
     });
   }
 
-  if (filter.address) {
-    qb.andWhere(`${alias}.address ILIKE :address`, {
-      address: `%${filter.address}%`,
-    });
-  }
-
-  if (filter.shoeSize) {
-    qb.andWhere(`${alias}.shoeSize = :shoeSize`, {
-      shoeSize: filter.shoeSize,
-    });
-  }
-
-  if (filter.clothingSize) {
-    qb.andWhere(`${alias}.clothingSize = :clothingSize`, {
-      clothingSize: filter.clothingSize,
+  if (filter.birthPlace) {
+    qb.andWhere(`${alias}.birthPlace ILIKE :birthPlace`, {
+      birthPlace: `%${filter.birthPlace}%`,
     });
   }
 
