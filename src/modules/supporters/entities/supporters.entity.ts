@@ -1,22 +1,18 @@
-import { Person } from '../../persons/entities/person.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
-  Index,
   JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-  OneToMany,
 } from 'typeorm';
+import { Person } from '../../persons/entities/person.entity';
 import { SupportType } from '../enums/support-type';
 import { SupporterChildSponsorship } from './supporters-children.entity';
 
 @Entity('supporters')
-@Index(['personId'])
-@Index(['supportType'])
-@Index(['supportStartDate', 'supportEndDate'])
 export class Supporter {
   @PrimaryGeneratedColumn()
   id: number;
@@ -46,7 +42,10 @@ export class Supporter {
 
   // Relationships
 
-  @OneToMany(() => SupporterChildSponsorship, (sponsorship) => sponsorship.supporter)
+  @OneToMany(
+    () => SupporterChildSponsorship,
+    (sponsorship) => sponsorship.supporter,
+  )
   childSponsorships: SupporterChildSponsorship[];
 
   @OneToOne(() => Person, { nullable: false, onDelete: 'CASCADE' })
