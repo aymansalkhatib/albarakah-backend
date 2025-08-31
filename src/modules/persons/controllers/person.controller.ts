@@ -11,15 +11,15 @@ import {
   // Post,
   Query,
 } from '@nestjs/common';
-import { PersonsService } from '../services/persons.service';
-import { UpdatePersonDto } from '../dtos/requests/update-person.dto';
 import { FilterPersonDto } from '../dtos/queries/filter-person.dto';
+import { UpdatePersonDto } from '../dtos/requests/update-person.dto';
+import { PersonsService } from '../services/persons.service';
 // import { CreatePersonDto } from '../dtos/requests/create-person.dto';
-import { PersonResponseDto } from '../dtos/responses/person-response.dto';
+import { Protected } from '../../../common/decorators/protected.decorator';
 import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
-import { Protected } from '../../../common/decorators/protected.decorator';
 import { Permission } from '../../../modules/roles/enums/permission.enum';
+import { PersonResponseDto } from '../dtos/responses/person-response.dto';
 
 @Controller('persons')
 export class PersonController {
@@ -28,7 +28,7 @@ export class PersonController {
   // @Post()
   // @Protected(Permission.CREATE_PERSON)
   // @SerializeResponse(PersonResponseDto)
-  // async create(@Body() createPersonDto: CreatePersonDto): Promise<PersonResponseDto> {
+  // async create(@Body() createPersonDto: CreatePersonDto): Promise<any> {
   //   return this.personsService.create(createPersonDto);
   // }
 
@@ -52,8 +52,10 @@ export class PersonController {
   @Get(':id')
   @Protected(Permission.READ_PERSON)
   @SerializeResponse(PersonResponseDto)
-  async findOne(@Param('id', ParseIntPipe) id: number): Promise<PersonResponseDto> {
-    return this.personsService.findOne(id, { relations: ['father', 'mother'] });
+  async findOne(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<PersonResponseDto> {
+    return this.personsService.findOne(id);
   }
 
   @Get()

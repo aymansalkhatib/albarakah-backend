@@ -60,6 +60,7 @@ export class Person {
   @Column({
     name: 'marital_status',
     type: 'enum',
+    nullable: true,
     enum: MaritalStatus,
   })
   maritalStatus: MaritalStatus;
