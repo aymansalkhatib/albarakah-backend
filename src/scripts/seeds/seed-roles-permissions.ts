@@ -117,7 +117,7 @@ export async function seedRolesAndPermissions(queryRunner: QueryRunner) {
     if (!restrictedPermissionsForAdmin.includes(permissionName)) {
       const adminExists = await rolePermissionRepo.findOne({
         where: { roleId: adminRole.id, permissionId: perm.id },
-      });
+      }); 
       if (!adminExists) {
         await rolePermissionRepo.save(
           rolePermissionRepo.create({ roleId: adminRole.id, permissionId: perm.id }),
