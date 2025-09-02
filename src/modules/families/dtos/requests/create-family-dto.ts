@@ -82,12 +82,9 @@ export class CreateFamilyDto {
   @IsEnum(ArchiveLocation)
   archiveLocation?: ArchiveLocation;
 
-  @MaxLength(20)
+  @MaxLength(12)
   @IsNotEmpty()
   @IsString()
-  @Matches(/^[0-9]+$/, {
-    message: 'Family book number must be exactly 20 digits',
-  })
   familyBookNumber: string;
 
   @IsOptional()

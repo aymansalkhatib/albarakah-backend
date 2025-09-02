@@ -178,6 +178,8 @@ const TranslationKeys = {
   'employees.errors.not_found': 'employees.errors.not_found',
   'families.family_book_number_exists': 'families.family_book_number_exists',
   'families.family_book_number_exists_another': 'families.family_book_number_exists_another',
+  'families.form_number_exists': 'families.form_number_exists',
+  'families.form_number_exists_another': 'families.form_number_exists_another',
   'families.not_found': 'families.not_found',
   'families.request_number_exists': 'families.request_number_exists',
   'families.request_number_exists_another': 'families.request_number_exists_another',
@@ -268,6 +270,8 @@ export interface TranslationInterpolations {
   'employees.errors.not_found': EmployeesErrorsNotfoundParams;
   'families.family_book_number_exists': NoParams;
   'families.family_book_number_exists_another': NoParams;
+  'families.form_number_exists': NoParams;
+  'families.form_number_exists_another': NoParams;
   'families.not_found': NoParams;
   'families.request_number_exists': NoParams;
   'families.request_number_exists_another': NoParams;

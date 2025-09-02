@@ -169,35 +169,5 @@ export function applyFamilyFilters(
     });
   }
 
-  if (filter.createdAtFrom && filter.createdAtTo) {
-    qb.andWhere(`${alias}.createdAt BETWEEN :createdAtFrom AND :createdAtTo`, {
-      createdAtFrom: filter.createdAtFrom,
-      createdAtTo: filter.createdAtTo,
-    });
-  } else if (filter.createdAtFrom) {
-    qb.andWhere(`${alias}.createdAt >= :createdAtFrom`, {
-      createdAtFrom: filter.createdAtFrom,
-    });
-  } else if (filter.createdAtTo) {
-    qb.andWhere(`${alias}.createdAt <= :createdAtTo`, {
-      createdAtTo: filter.createdAtTo,
-    });
-  }
-
-  if (filter.updatedAtFrom && filter.updatedAtTo) {
-    qb.andWhere(`${alias}.updatedAt BETWEEN :updatedAtFrom AND :updatedAtTo`, {
-      updatedAtFrom: filter.updatedAtFrom,
-      updatedAtTo: filter.updatedAtTo,
-    });
-  } else if (filter.updatedAtFrom) {
-    qb.andWhere(`${alias}.updatedAt >= :updatedAtFrom`, {
-      updatedAtFrom: filter.updatedAtFrom,
-    });
-  } else if (filter.updatedAtTo) {
-    qb.andWhere(`${alias}.updatedAt <= :updatedAtTo`, {
-      updatedAtTo: filter.updatedAtTo,
-    });
-  }
-
   return qb;
 }

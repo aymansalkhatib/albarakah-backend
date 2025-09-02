@@ -1,0 +1,275 @@
+{
+  "info": {
+    "name": "al-barakah-charity-association_New",
+    "description": "API Collection for Al Barakah Charity Association",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "AI Collection",
+      "item": [
+        {
+          "name": "families",
+          "item": [
+            {
+              "name": "Create Family",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/families",
+                  "host": ["{{url}}"],
+                  "path": ["families"]
+                },
+                "description": "Create a new family record",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"requestNumber\": \"REQ001\",\n  \"familyName\": \"Al-Ahmad Family\",\n  \"isHusbandPalestinian\": false,\n  \"identityDocuments\": \"Passport, ID Card\",\n  \"emailArrivalDate\": \"2024-01-15\",\n  \"contactedByEmployeeId\": 1,\n  \"isRegisteredInOtherOrphanAssociation\": false,\n  \"otherOrphanAssociationName\": \"\",\n  \"residencePlace\": \"Damascus, Syria\",\n  \"formOrganizationStatus\": \"done\",\n  \"formNumber\": \"FORM123456\",\n  \"interviewDate\": \"2024-01-20\",\n  \"managementDecision\": \"sponsorship\",\n  \"formOrganizerNotes\": \"Family needs immediate assistance\",\n  \"archiveLocation\": \"direct_acceptance_interview_forms\",\n  \"familyBookNumber\": \"12345678901234567890\",\n  \"landlinePhone\": \"0112345678\",\n  \"mobilePhone\": \"0933123456\",\n  \"isRefugee\": true,\n  \"isExtremelyPoor\": true,\n  \"sponsorshipStatus\": \"yes\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get All Families",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/families?requestNumber=REQ001&familyName=Al-Ahmad&isHusbandPalestinian=false&identityDocuments=Passport&emailArrivalDateFrom=2024-01-01&emailArrivalDateTo=2024-12-31&contactedByEmployeeId=1&isRegisteredInOtherOrphanAssociation=false&otherOrphanAssociationName=Test&residencePlace=Damascus&formOrganizationStatus=done&formNumber=FORM123&interviewDateFrom=2024-01-01&interviewDateTo=2024-12-31&managementDecision=sponsorship&formOrganizerNotes=notes&archiveLocation=direct_acceptance_interview_forms&familyBookNumber=12345678901234567890&landlinePhone=0112345678&mobilePhone=0933123456&isRefugee=true&isExtremelyPoor=true&sponsorshipStatus=yes&createdAtFrom=2024-01-01&createdAtTo=2024-12-31&updatedAtFrom=2024-01-01&updatedAtTo=2024-12-31&page=1&limit=10",
+                  "host": ["{{url}}"],
+                  "path": ["families"],
+                  "query": [
+                    {
+                      "key": "requestNumber",
+                      "value": "REQ001",
+                      "description": "Filter by request number (string, max 32 chars)"
+                    },
+                    {
+                      "key": "familyName",
+                      "value": "Al-Ahmad",
+                      "description": "Filter by family name (string, max 64 chars)"
+                    },
+                    {
+                      "key": "isHusbandPalestinian",
+                      "value": "false",
+                      "description": "Filter by husband Palestinian status (true/false)"
+                    },
+                    {
+                      "key": "identityDocuments",
+                      "value": "Passport",
+                      "description": "Filter by identity documents (string)"
+                    },
+                    {
+                      "key": "emailArrivalDateFrom",
+                      "value": "2024-01-01",
+                      "description": "Email arrival date from (Date)"
+                    },
+                    {
+                      "key": "emailArrivalDateTo",
+                      "value": "2024-12-31",
+                      "description": "Email arrival date to (Date)"
+                    },
+                    {
+                      "key": "contactedByEmployeeId",
+                      "value": "1",
+                      "description": "Filter by contacted employee ID (number)"
+                    },
+                    {
+                      "key": "isRegisteredInOtherOrphanAssociation",
+                      "value": "false",
+                      "description": "Filter by registration in other association (true/false)"
+                    },
+                    {
+                      "key": "otherOrphanAssociationName",
+                      "value": "Test",
+                      "description": "Filter by other association name (string, max 128 chars)"
+                    },
+                    {
+                      "key": "residencePlace",
+                      "value": "Damascus",
+                      "description": "Filter by residence place (string, max 200 chars)"
+                    },
+                    {
+                      "key": "formOrganizationStatus",
+                      "value": "done",
+                      "description": "Filter by form organization status (enum: done, done_outside_sponsorship_conditions, submitted_to_other_association, registered_in_other_association, outside_sponsorship_conditions, did_not_attend_no_apology, no_contact, request_remains_in_relief, no)"
+                    },
+                    {
+                      "key": "formNumber",
+                      "value": "FORM123",
+                      "description": "Filter by form number (string, max 64 chars)"
+                    },
+                    {
+                      "key": "interviewDateFrom",
+                      "value": "2024-01-01",
+                      "description": "Interview date from (Date)"
+                    },
+                    {
+                      "key": "interviewDateTo",
+                      "value": "2024-12-31",
+                      "description": "Interview date to (Date)"
+                    },
+                    {
+                      "key": "managementDecision",
+                      "value": "sponsorship",
+                      "description": "Filter by management decision (enum: decision_after_visit_opinion, sponsorship, no_sponsorship)"
+                    },
+                    {
+                      "key": "formOrganizerNotes",
+                      "value": "notes",
+                      "description": "Filter by form organizer notes (string)"
+                    },
+                    {
+                      "key": "archiveLocation",
+                      "value": "direct_acceptance_interview_forms",
+                      "description": "Filter by archive location (enum: direct_non_acceptance_interview_forms, acceptance_interview_and_visit_forms_after_visit, non_acceptance_interview_and_visit_forms_after_visit, barzeh_residences, under_visit, archived_in_folder_administration_archive, no_paper_form_created, direct_acceptance_interview_forms)"
+                    },
+                    {
+                      "key": "familyBookNumber",
+                      "value": "12345678901234567890",
+                      "description": "Filter by family book number (string, max 20 chars, digits only)"
+                    },
+                    {
+                      "key": "landlinePhone",
+                      "value": "0112345678",
+                      "description": "Filter by landline phone (string, max 10 chars, Syrian format)"
+                    },
+                    {
+                      "key": "mobilePhone",
+                      "value": "0933123456",
+                      "description": "Filter by mobile phone (string, max 15 chars, Syrian format)"
+                    },
+                    {
+                      "key": "isRefugee",
+                      "value": "true",
+                      "description": "Filter by refugee status (true/false)"
+                    },
+                    {
+                      "key": "isExtremelyPoor",
+                      "value": "true",
+                      "description": "Filter by extremely poor status (true/false)"
+                    },
+                    {
+                      "key": "sponsorshipStatus",
+                      "value": "yes",
+                      "description": "Filter by sponsorship status (enum: yes, no, under_visit)"
+                    },
+                    {
+                      "key": "createdAtFrom",
+                      "value": "2024-01-01",
+                      "description": "Created date from (Date)"
+                    },
+                    {
+                      "key": "createdAtTo",
+                      "value": "2024-12-31",
+                      "description": "Created date to (Date)"
+                    },
+                    {
+                      "key": "updatedAtFrom",
+                      "value": "2024-01-01",
+                      "description": "Updated date from (Date)"
+                    },
+                    {
+                      "key": "updatedAtTo",
+                      "value": "2024-12-31",
+                      "description": "Updated date to (Date)"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "description": "Page number for pagination (number)"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "description": "Number of items per page (number)"
+                    }
+                  ]
+                },
+                "description": "Get all families with optional filtering and pagination"
+              },
+              "response": []
+            },
+            {
+              "name": "Get Family by ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/families/:id",
+                  "host": ["{{url}}"],
+                  "path": ["families", ":id"]
+                },
+                "description": "Get a specific family by ID",
+                "variable": [
+                  {
+                    "key": "id",
+                    "value": "1",
+                    "description": "Family ID (number)"
+                  }
+                ]
+              },
+              "response": []
+            },
+            {
+              "name": "Update Family",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/families/:id",
+                  "host": ["{{url}}"],
+                  "path": ["families", ":id"]
+                },
+                "description": "Update an existing family record",
+                "variable": [
+                  {
+                    "key": "id",
+                    "value": "1",
+                    "description": "Family ID (number)"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"familyName\": \"Updated Al-Ahmad Family\",\n  \"isHusbandPalestinian\": true,\n  \"identityDocuments\": \"Updated Passport, ID Card\",\n  \"emailArrivalDate\": \"2024-02-15\",\n  \"contactedByEmployeeId\": 2,\n  \"isRegisteredInOtherOrphanAssociation\": true,\n  \"otherOrphanAssociationName\": \"Other Association\",\n  \"residencePlace\": \"Aleppo, Syria\",\n  \"formOrganizationStatus\": \"done_outside_sponsorship_conditions\",\n  \"formNumber\": \"FORM654321\",\n  \"interviewDate\": \"2024-02-20\",\n  \"managementDecision\": \"no_sponsorship\",\n  \"formOrganizerNotes\": \"Updated notes\",\n  \"archiveLocation\": \"archived_in_folder_administration_archive\",\n  \"familyBookNumber\": \"09876543210987654321\",\n  \"landlinePhone\": \"0223456789\",\n  \"mobilePhone\": \"0944455566\",\n  \"isRefugee\": false,\n  \"isExtremelyPoor\": false,\n  \"sponsorshipStatus\": \"no\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Family",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/families/:id",
+                  "host": ["{{url}}"],
+                  "path": ["families", ":id"]
+                },
+                "description": "Delete a family record",
+                "variable": [
+                  {
+                    "key": "id",
+                    "value": "1",
+                    "description": "Family ID (number)"
+                  }
+                ]
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -23,6 +23,7 @@ import { SponsorshipStatus } from '../enums/sponsorship-status.enum';
 @Entity('families')
 @Index(['familyBookNumber'], { unique: true })
 @Index(['requestNumber'], { unique: true })
+@Index(['formNumber'], { unique: true })
 export class Family {
   @PrimaryGeneratedColumn()
   id: number;
@@ -113,8 +114,7 @@ export class Family {
   @Column({
     name: 'family_book_number',
     type: 'varchar',
-    length: 20,
-    unique: true,
+    length: 12,
   })
   familyBookNumber: string;
 

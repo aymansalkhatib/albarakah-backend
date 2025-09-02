@@ -52,6 +52,18 @@ export class FamiliesService {
         );
       }
     }
+
+    if (createFamilyDto.formNumber) {
+      const existingFamily = await this.findOneByFormNumber(
+        createFamilyDto.formNumber,
+      );
+      if (existingFamily) {
+        throw new ConflictException(
+          this.translateHelper.tr('families.form_number_exists'),
+        );
+      }
+    }
+
     const family = familyRepository.create(createFamilyDto);
     return familyRepository.save(family);
   }
@@ -116,6 +128,17 @@ export class FamiliesService {
       }
     }
 
+    if (updateFamilyDto.formNumber) {
+      const existingFamily = await this.findOneByFormNumber(
+        updateFamilyDto.formNumber,
+      );
+      if (existingFamily && existingFamily.id !== id) {
+        throw new ConflictException(
+          this.translateHelper.tr('families.form_number_exists_another'),
+        );
+      }
+    }
+
     const updatedFamily = this.familyRepository.merge(family, updateFamilyDto);
     return this.familyRepository.save(updatedFamily);
   }
@@ -140,5 +163,9 @@ export class FamiliesService {
     requestNumber: string,
   ): Promise<Family | undefined> {
     return this.familyRepository.findOneBy({ requestNumber });
+  }
+
+  private findOneByFormNumber(formNumber: string): Promise<Family | undefined> {
+    return this.familyRepository.findOneBy({ formNumber });
   }
 }

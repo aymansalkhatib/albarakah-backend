@@ -91,7 +91,7 @@ export class FilterFamilyDto extends PaginationDto {
   archiveLocation?: ArchiveLocation;
 
   @IsOptional()
-  @MaxLength(20)
+  @MaxLength(12)
   @IsNotEmpty()
   @IsString()
   familyBookNumber?: string;
@@ -118,20 +118,4 @@ export class FilterFamilyDto extends PaginationDto {
   @IsOptional()
   @IsEnum(SponsorshipStatus)
   sponsorshipStatus?: SponsorshipStatus;
-
-  @IsOptional()
-  @IsDate()
-  createdAtFrom?: Date;
-
-  @IsOptional()
-  @IsDate()
-  createdAtTo?: Date;
-
-  @IsOptional()
-  @IsDate()
-  updatedAtFrom?: Date;
-
-  @IsOptional()
-  @IsDate()
-  updatedAtTo?: Date;
 }
