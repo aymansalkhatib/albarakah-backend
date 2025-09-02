@@ -51,7 +51,6 @@ export async function seedSystemUsers(
         nationalId: '123456789',
         birthDate: new Date('1990-01-15'),
         gender: GenderType.MALE,
-        isPalestinian: true,
         nationality: 'Palestinian',
       },
       employee: {

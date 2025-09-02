@@ -1,6 +1,6 @@
 import { SelectQueryBuilder } from 'typeorm';
-import { Family } from '../entities/families.entity';
 import { FilterFamilyDto } from '../dtos/queries/filter-family.dto';
+import { Family } from '../entities/families.entity';
 
 export function applyFamilyFilters(
   qb: SelectQueryBuilder<any>,
@@ -8,6 +8,12 @@ export function applyFamilyFilters(
   filter: FilterFamilyDto,
 ): SelectQueryBuilder<Family> {
   // String filters with case-insensitive search
+  if (filter.requestNumber) {
+    qb.andWhere(`${alias}.requestNumber ILIKE :requestNumber`, {
+      requestNumber: `%${filter.requestNumber}%`,
+    });
+  }
+
   if (filter.familyName) {
     qb.andWhere(`${alias}.familyName ILIKE :familyName`, {
       familyName: `%${filter.familyName}%`,
@@ -26,22 +32,65 @@ export function applyFamilyFilters(
     });
   }
 
-  if (filter.suspensionReason) {
-    qb.andWhere(`${alias}.suspensionReason ILIKE :suspensionReason`, {
-      suspensionReason: `%${filter.suspensionReason}%`,
+  if (filter.mobilePhone) {
+    qb.andWhere(`${alias}.mobilePhone ILIKE :mobilePhone`, {
+      mobilePhone: `%${filter.mobilePhone}%`,
     });
   }
 
-  if (filter.notes) {
-    qb.andWhere(`${alias}.notes ILIKE :notes`, {
-      notes: `%${filter.notes}%`,
+  if (filter.identityDocuments) {
+    qb.andWhere(`${alias}.identityDocuments ILIKE :identityDocuments`, {
+      identityDocuments: `%${filter.identityDocuments}%`,
+    });
+  }
+
+  if (filter.otherOrphanAssociationName) {
+    qb.andWhere(
+      `${alias}.otherOrphanAssociationName ILIKE :otherOrphanAssociationName`,
+      {
+        otherOrphanAssociationName: `%${filter.otherOrphanAssociationName}%`,
+      },
+    );
+  }
+
+  if (filter.residencePlace) {
+    qb.andWhere(`${alias}.residencePlace ILIKE :residencePlace`, {
+      residencePlace: `%${filter.residencePlace}%`,
+    });
+  }
+
+  if (filter.formNumber) {
+    qb.andWhere(`${alias}.formNumber ILIKE :formNumber`, {
+      formNumber: `%${filter.formNumber}%`,
+    });
+  }
+
+  if (filter.formOrganizerNotes) {
+    qb.andWhere(`${alias}.formOrganizerNotes ILIKE :formOrganizerNotes`, {
+      formOrganizerNotes: `%${filter.formOrganizerNotes}%`,
     });
   }
 
   // Boolean filters (explicit check for undefined to allow false values)
-  if (filter.isDisplaced !== undefined) {
-    qb.andWhere(`${alias}.isDisplaced = :isDisplaced`, {
-      isDisplaced: filter.isDisplaced,
+  if (filter.isHusbandPalestinian !== undefined) {
+    qb.andWhere(`${alias}.isHusbandPalestinian = :isHusbandPalestinian`, {
+      isHusbandPalestinian: filter.isHusbandPalestinian,
+    });
+  }
+
+  if (filter.isRegisteredInOtherOrphanAssociation !== undefined) {
+    qb.andWhere(
+      `${alias}.isRegisteredInOtherOrphanAssociation = :isRegisteredInOtherOrphanAssociation`,
+      {
+        isRegisteredInOtherOrphanAssociation:
+          filter.isRegisteredInOtherOrphanAssociation,
+      },
+    );
+  }
+
+  if (filter.isRefugee !== undefined) {
+    qb.andWhere(`${alias}.isRefugee = :isRefugee`, {
+      isRefugee: filter.isRefugee,
     });
   }
 
@@ -51,119 +100,102 @@ export function applyFamilyFilters(
     });
   }
 
-  if (filter.motherIsTrainingBeneficiary !== undefined) {
-    qb.andWhere(`${alias}.motherIsTrainingBeneficiary = :motherIsTrainingBeneficiary`, {
-      motherIsTrainingBeneficiary: filter.motherIsTrainingBeneficiary,
+  // Enum filters
+  if (filter.formOrganizationStatus) {
+    qb.andWhere(`${alias}.formOrganizationStatus = :formOrganizationStatus`, {
+      formOrganizationStatus: filter.formOrganizationStatus,
     });
   }
 
-  // Numeric range filters
-  if (filter.minVoucherAmount !== undefined && filter.maxVoucherAmount !== undefined) {
-    qb.andWhere(`${alias}.voucherAmount BETWEEN :minVoucherAmount AND :maxVoucherAmount`, {
-      minVoucherAmount: filter.minVoucherAmount,
-      maxVoucherAmount: filter.maxVoucherAmount,
-    });
-  } else if (filter.minVoucherAmount !== undefined) {
-    qb.andWhere(`${alias}.voucherAmount >= :minVoucherAmount`, {
-      minVoucherAmount: filter.minVoucherAmount,
-    });
-  } else if (filter.maxVoucherAmount !== undefined) {
-    qb.andWhere(`${alias}.voucherAmount <= :maxVoucherAmount`, {
-      maxVoucherAmount: filter.maxVoucherAmount,
+  if (filter.managementDecision) {
+    qb.andWhere(`${alias}.managementDecision = :managementDecision`, {
+      managementDecision: filter.managementDecision,
     });
   }
 
-  if (
-    filter.minChildrenSchoolExpenses !== undefined &&
-    filter.maxChildrenSchoolExpenses !== undefined
-  ) {
-    qb.andWhere(
-      `${alias}.childrenSchoolExpenses BETWEEN :minChildrenSchoolExpenses AND :maxChildrenSchoolExpenses`,
-      {
-        minChildrenSchoolExpenses: filter.minChildrenSchoolExpenses,
-        maxChildrenSchoolExpenses: filter.maxChildrenSchoolExpenses,
-      },
-    );
-  } else if (filter.minChildrenSchoolExpenses !== undefined) {
-    qb.andWhere(`${alias}.childrenSchoolExpenses >= :minChildrenSchoolExpenses`, {
-      minChildrenSchoolExpenses: filter.minChildrenSchoolExpenses,
-    });
-  } else if (filter.maxChildrenSchoolExpenses !== undefined) {
-    qb.andWhere(`${alias}.childrenSchoolExpenses <= :maxChildrenSchoolExpenses`, {
-      maxChildrenSchoolExpenses: filter.maxChildrenSchoolExpenses,
+  if (filter.archiveLocation) {
+    qb.andWhere(`${alias}.archiveLocation = :archiveLocation`, {
+      archiveLocation: filter.archiveLocation,
     });
   }
 
-  if (
-    filter.minIncomeFromBarakaAssociation !== undefined &&
-    filter.maxIncomeFromBarakaAssociation !== undefined
-  ) {
-    qb.andWhere(
-      `${alias}.incomeFromBarakaAssociation BETWEEN :minIncomeFromBarakaAssociation AND :maxIncomeFromBarakaAssociation`,
-      {
-        minIncomeFromBarakaAssociation: filter.minIncomeFromBarakaAssociation,
-        maxIncomeFromBarakaAssociation: filter.maxIncomeFromBarakaAssociation,
-      },
-    );
-  } else if (filter.minIncomeFromBarakaAssociation !== undefined) {
-    qb.andWhere(`${alias}.incomeFromBarakaAssociation >= :minIncomeFromBarakaAssociation`, {
-      minIncomeFromBarakaAssociation: filter.minIncomeFromBarakaAssociation,
+  if (filter.sponsorshipStatus) {
+    qb.andWhere(`${alias}.sponsorshipStatus = :sponsorshipStatus`, {
+      sponsorshipStatus: filter.sponsorshipStatus,
     });
-  } else if (filter.maxIncomeFromBarakaAssociation !== undefined) {
-    qb.andWhere(`${alias}.incomeFromBarakaAssociation <= :maxIncomeFromBarakaAssociation`, {
-      maxIncomeFromBarakaAssociation: filter.maxIncomeFromBarakaAssociation,
+  }
+
+  // Numeric filters
+  if (filter.contactedByEmployeeId) {
+    qb.andWhere(`${alias}.contactedByEmployeeId = :contactedByEmployeeId`, {
+      contactedByEmployeeId: filter.contactedByEmployeeId,
     });
   }
 
   // Date range filters
-  if (filter.familySuspensionDateFrom && filter.familySuspensionDateTo) {
+  if (filter.emailArrivalDateFrom && filter.emailArrivalDateTo) {
     qb.andWhere(
-      `${alias}.familySuspensionDate BETWEEN :familySuspensionDateFrom AND :familySuspensionDateTo`,
+      `${alias}.emailArrivalDate BETWEEN :emailArrivalDateFrom AND :emailArrivalDateTo`,
       {
-        familySuspensionDateFrom: filter.familySuspensionDateFrom,
-        familySuspensionDateTo: filter.familySuspensionDateTo,
+        emailArrivalDateFrom: filter.emailArrivalDateFrom,
+        emailArrivalDateTo: filter.emailArrivalDateTo,
       },
     );
-  } else if (filter.familySuspensionDateFrom) {
-    qb.andWhere(`${alias}.familySuspensionDate >= :familySuspensionDateFrom`, {
-      familySuspensionDateFrom: filter.familySuspensionDateFrom,
+  } else if (filter.emailArrivalDateFrom) {
+    qb.andWhere(`${alias}.emailArrivalDate >= :emailArrivalDateFrom`, {
+      emailArrivalDateFrom: filter.emailArrivalDateFrom,
     });
-  } else if (filter.familySuspensionDateTo) {
-    qb.andWhere(`${alias}.familySuspensionDate <= :familySuspensionDateTo`, {
-      familySuspensionDateTo: filter.familySuspensionDateTo,
+  } else if (filter.emailArrivalDateTo) {
+    qb.andWhere(`${alias}.emailArrivalDate <= :emailArrivalDateTo`, {
+      emailArrivalDateTo: filter.emailArrivalDateTo,
     });
   }
 
-  if (filter.registrationDateFrom && filter.registrationDateTo) {
-    qb.andWhere(`${alias}.registrationDate BETWEEN :registrationDateFrom AND :registrationDateTo`, {
-      registrationDateFrom: filter.registrationDateFrom,
-      registrationDateTo: filter.registrationDateTo,
+  if (filter.interviewDateFrom && filter.interviewDateTo) {
+    qb.andWhere(
+      `${alias}.interviewDate BETWEEN :interviewDateFrom AND :interviewDateTo`,
+      {
+        interviewDateFrom: filter.interviewDateFrom,
+        interviewDateTo: filter.interviewDateTo,
+      },
+    );
+  } else if (filter.interviewDateFrom) {
+    qb.andWhere(`${alias}.interviewDate >= :interviewDateFrom`, {
+      interviewDateFrom: filter.interviewDateFrom,
     });
-  } else if (filter.registrationDateFrom) {
-    qb.andWhere(`${alias}.registrationDate >= :registrationDateFrom`, {
-      registrationDateFrom: filter.registrationDateFrom,
-    });
-  } else if (filter.registrationDateTo) {
-    qb.andWhere(`${alias}.registrationDate <= :registrationDateTo`, {
-      registrationDateTo: filter.registrationDateTo,
+  } else if (filter.interviewDateTo) {
+    qb.andWhere(`${alias}.interviewDate <= :interviewDateTo`, {
+      interviewDateTo: filter.interviewDateTo,
     });
   }
 
-  if (filter.lastAssessmentDateFrom && filter.lastAssessmentDateTo) {
-    qb.andWhere(
-      `${alias}.lastAssessmentDate BETWEEN :lastAssessmentDateFrom AND :lastAssessmentDateTo`,
-      {
-        lastAssessmentDateFrom: filter.lastAssessmentDateFrom,
-        lastAssessmentDateTo: filter.lastAssessmentDateTo,
-      },
-    );
-  } else if (filter.lastAssessmentDateFrom) {
-    qb.andWhere(`${alias}.lastAssessmentDate >= :lastAssessmentDateFrom`, {
-      lastAssessmentDateFrom: filter.lastAssessmentDateFrom,
+  if (filter.createdAtFrom && filter.createdAtTo) {
+    qb.andWhere(`${alias}.createdAt BETWEEN :createdAtFrom AND :createdAtTo`, {
+      createdAtFrom: filter.createdAtFrom,
+      createdAtTo: filter.createdAtTo,
     });
-  } else if (filter.lastAssessmentDateTo) {
-    qb.andWhere(`${alias}.lastAssessmentDate <= :lastAssessmentDateTo`, {
-      lastAssessmentDateTo: filter.lastAssessmentDateTo,
+  } else if (filter.createdAtFrom) {
+    qb.andWhere(`${alias}.createdAt >= :createdAtFrom`, {
+      createdAtFrom: filter.createdAtFrom,
+    });
+  } else if (filter.createdAtTo) {
+    qb.andWhere(`${alias}.createdAt <= :createdAtTo`, {
+      createdAtTo: filter.createdAtTo,
+    });
+  }
+
+  if (filter.updatedAtFrom && filter.updatedAtTo) {
+    qb.andWhere(`${alias}.updatedAt BETWEEN :updatedAtFrom AND :updatedAtTo`, {
+      updatedAtFrom: filter.updatedAtFrom,
+      updatedAtTo: filter.updatedAtTo,
+    });
+  } else if (filter.updatedAtFrom) {
+    qb.andWhere(`${alias}.updatedAt >= :updatedAtFrom`, {
+      updatedAtFrom: filter.updatedAtFrom,
+    });
+  } else if (filter.updatedAtTo) {
+    qb.andWhere(`${alias}.updatedAt <= :updatedAtTo`, {
+      updatedAtTo: filter.updatedAtTo,
     });
   }
 

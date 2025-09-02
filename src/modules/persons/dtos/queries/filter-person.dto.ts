@@ -67,11 +67,6 @@ export class FilterPersonDto extends PaginationDto {
   @Length(1, 100)
   motherNationality?: string;
 
-  // booleans / enums
-  @IsOptional()
-  @StrictBoolean()
-  isPalestinian?: boolean;
-
   @IsOptional()
   @IsEnum(GenderType)
   gender?: GenderType;
@@ -149,11 +144,6 @@ export class FilterPersonDto extends PaginationDto {
   @IsString()
   @Length(3, 15)
   mobilePhone?: string;
-
-  @IsOptional()
-  @IsString()
-  @Length(3, 15)
-  landlinePhone?: string;
 
   @IsOptional()
   @IsString()

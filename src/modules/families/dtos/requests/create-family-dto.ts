@@ -1,34 +1,93 @@
 import {
   IsDateString,
+  IsEnum,
   IsNotEmpty,
-  IsNumber,
   IsOptional,
   IsString,
   Matches,
-  Max,
   MaxLength,
-  Min,
 } from 'class-validator';
 
-import { Expose, Transform } from 'class-transformer';
 import { PositiveIntegerId } from '../../../../common/decorators/positive-integer-id.decorator';
 import { StrictBoolean } from '../../../../common/decorators/strict-boolean.decorator';
+import { SyriaPhone } from '../../../../common/decorators/syria-phone.decorator';
+import { ArchiveLocation } from '../../enums/archive-location.enum';
+import { FormOrganizationStatus } from '../../enums/form-organization-status.enum';
+import { ManagementDecision } from '../../enums/management-decision.enum';
+import { SponsorshipStatus } from '../../enums/sponsorship-status.enum';
 
 export class CreateFamilyDto {
-  @PositiveIntegerId()
-  registrationFormId: number;
+  @IsOptional()
+  @IsString()
+  @MaxLength(32)
+  requestNumber?: string;
 
   @IsString()
   @IsNotEmpty()
   @MaxLength(64)
-  @Expose()
   familyName: string;
+
+  @IsOptional()
+  @StrictBoolean()
+  isHusbandPalestinian?: boolean;
+
+  @IsOptional()
+  @IsString()
+  identityDocuments?: string;
+
+  @IsOptional()
+  @IsDateString()
+  emailArrivalDate?: string;
+
+  @IsOptional()
+  @PositiveIntegerId()
+  contactedByEmployeeId?: number;
+
+  @IsOptional()
+  @StrictBoolean()
+  isRegisteredInOtherOrphanAssociation?: boolean;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(128)
+  otherOrphanAssociationName?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(200)
+  residencePlace?: string;
+
+  @IsOptional()
+  @IsEnum(FormOrganizationStatus)
+  formOrganizationStatus?: FormOrganizationStatus;
+
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(64)
+  formNumber: string;
+
+  @IsOptional()
+  @IsDateString()
+  interviewDate?: string;
+
+  @IsOptional()
+  @IsEnum(ManagementDecision)
+  managementDecision?: ManagementDecision;
+
+  @IsOptional()
+  @IsString()
+  formOrganizerNotes?: string;
+
+  @IsOptional()
+  @IsEnum(ArchiveLocation)
+  archiveLocation?: ArchiveLocation;
 
   @MaxLength(20)
   @IsNotEmpty()
   @IsString()
-  @Matches(/^[0-9]+$/, { message: 'Family book number must be exactly 20 digits' })
-  @Expose()
+  @Matches(/^[0-9]+$/, {
+    message: 'Family book number must be exactly 20 digits',
+  })
   familyBookNumber: string;
 
   @IsOptional()
@@ -38,68 +97,22 @@ export class CreateFamilyDto {
     message:
       'The Syrian landline number must start with 0, followed by a 2-digit area code and then 6 or 7 digits.',
   })
-  @Expose()
   landlinePhone?: string;
 
   @IsOptional()
-  @StrictBoolean()
-  @Expose()
-  isDisplaced?: boolean;
+  @IsString()
+  @SyriaPhone({ formatToLocal: true })
+  mobilePhone?: string;
 
   @IsOptional()
   @StrictBoolean()
-  @Expose()
+  isRefugee?: boolean;
+
+  @IsOptional()
+  @StrictBoolean()
   isExtremelyPoor?: boolean;
 
   @IsOptional()
-  @IsNumber({ maxDecimalPlaces: 0 })
-  @Min(0)
-  @Max(1_000_000_000)
-  @Expose()
-  voucherAmount?: number;
-
-  @IsOptional()
-  @IsDateString()
-  @Expose()
-  familySuspensionDate?: string;
-
-  @IsOptional()
-  @IsString()
-  @MaxLength(1000)
-  @Expose()
-  suspensionReason?: string;
-
-  @IsOptional()
-  @StrictBoolean()
-  @Expose()
-  motherIsTrainingBeneficiary?: boolean;
-
-  @IsNumber({ maxDecimalPlaces: 0 })
-  @Min(0)
-  @Max(1_000_000_000)
-  @Expose()
-  childrenSchoolExpenses: number;
-
-  @IsNumber({ maxDecimalPlaces: 0 })
-  @Min(0)
-  @Max(1_000_000_000)
-  @Expose()
-  incomeFromBarakaAssociation: number;
-
-  @IsOptional()
-  @IsDateString()
-  @Transform(({ value }) => value || new Date().toISOString().split('T')[0])
-  @Expose()
-  registrationDate?: string;
-
-  @IsOptional()
-  @IsDateString()
-  @Expose()
-  lastAssessmentDate?: string;
-
-  @IsOptional()
-  @IsString()
-  @MaxLength(2000)
-  @Expose()
-  notes?: string;
+  @IsEnum(SponsorshipStatus)
+  sponsorshipStatus?: SponsorshipStatus;
 }

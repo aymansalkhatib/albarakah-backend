@@ -1,5 +1,4 @@
 import { Expose } from 'class-transformer';
-import { ClothingSize } from '../../enums/clothing-size.enum';
 import { CurrentStudyStatus } from '../../enums/current-study-status.enum';
 import { EducationLevel } from '../../enums/education-level.enum';
 import { GenderType } from '../../enums/gender-type.enum';
@@ -33,13 +32,12 @@ export class PersonResponseDto {
   motherNationality?: string;
 
   @Expose()
-  isPalestinian?: boolean;
-
-  @Expose()
   gender?: GenderType;
 
+  @Expose()
   shoeSize?: number;
 
+  @Expose()
   maritalStatus?: MaritalStatus;
 
   @Expose()
@@ -86,14 +84,8 @@ export class PersonResponseDto {
   mobilePhone?: string;
 
   @Expose()
-  landlinePhone?: string;
-
-  @Expose()
   whatsappNumber?: string;
 
   @Expose()
   notes?: string;
-
-  @Expose()
-  clothingSize?: ClothingSize;
 }

@@ -5,12 +5,10 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
-  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Interview } from '../../interviews/entities/interview.entity';
 import { Person } from '../../persons/entities/person.entity';
 import { SystemUser } from '../../system-users/entities/system-user.entity';
 
@@ -49,7 +47,4 @@ export class Employee {
     cascade: true,
   })
   systemUser?: SystemUser;
-
-  @OneToMany(() => Interview, (interview) => interview.interviewer)
-  interviews: Interview[];
 }

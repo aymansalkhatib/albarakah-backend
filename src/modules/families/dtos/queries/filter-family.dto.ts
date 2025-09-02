@@ -1,141 +1,137 @@
 import {
   IsDate,
+  IsEnum,
   IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
-  Matches,
-  Max,
   MaxLength,
-  Min,
 } from 'class-validator';
-import { Expose } from 'class-transformer';
-import { IsLessThanOrEqual } from '../../../../common/decorators/is-less-than-or-equal.decorator';
 import { StrictBoolean } from '../../../../common/decorators/strict-boolean.decorator';
 import { ValidateMinMaxPairs } from '../../../../common/decorators/validate-min-max-pairs-constraint';
 import { PaginationDto } from '../../../../common/pagination/dto/pagination.dto';
+import { ArchiveLocation } from '../../enums/archive-location.enum';
+import { FormOrganizationStatus } from '../../enums/form-organization-status.enum';
+import { ManagementDecision } from '../../enums/management-decision.enum';
+import { SponsorshipStatus } from '../../enums/sponsorship-status.enum';
 
 @ValidateMinMaxPairs()
 export class FilterFamilyDto extends PaginationDto {
   @IsOptional()
   @IsString()
+  @MaxLength(32)
+  requestNumber?: string;
+
+  @IsOptional()
+  @IsString()
   @MaxLength(64)
-  @Expose()
   familyName?: string;
+
+  @IsOptional()
+  @StrictBoolean()
+  isHusbandPalestinian?: boolean;
+
+  @IsOptional()
+  @IsString()
+  identityDocuments?: string;
+
+  @IsOptional()
+  @IsDate()
+  emailArrivalDateFrom?: Date;
+
+  @IsOptional()
+  @IsDate()
+  emailArrivalDateTo?: Date;
+
+  @IsOptional()
+  @IsNumber()
+  contactedByEmployeeId?: number;
+
+  @IsOptional()
+  @StrictBoolean()
+  isRegisteredInOtherOrphanAssociation?: boolean;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(128)
+  otherOrphanAssociationName?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(200)
+  residencePlace?: string;
+
+  @IsOptional()
+  @IsEnum(FormOrganizationStatus)
+  formOrganizationStatus?: FormOrganizationStatus;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(64)
+  formNumber?: string;
+
+  @IsOptional()
+  @IsDate()
+  interviewDateFrom?: Date;
+
+  @IsOptional()
+  @IsDate()
+  interviewDateTo?: Date;
+
+  @IsOptional()
+  @IsEnum(ManagementDecision)
+  managementDecision?: ManagementDecision;
+
+  @IsOptional()
+  @IsString()
+  formOrganizerNotes?: string;
+
+  @IsOptional()
+  @IsEnum(ArchiveLocation)
+  archiveLocation?: ArchiveLocation;
 
   @IsOptional()
   @MaxLength(20)
   @IsNotEmpty()
   @IsString()
-  @Matches(/^[0-9]+$/, { message: 'Family book number must be exactly 20 digits' })
-  @Expose()
   familyBookNumber?: string;
 
   @IsOptional()
   @IsString()
   @MaxLength(10)
   @IsNotEmpty()
-  @Expose()
   landlinePhone?: string;
 
   @IsOptional()
-  @StrictBoolean()
-  @Expose()
-  isDisplaced?: boolean;
+  @IsString()
+  @MaxLength(15)
+  mobilePhone?: string;
 
   @IsOptional()
   @StrictBoolean()
-  @Expose()
+  isRefugee?: boolean;
+
+  @IsOptional()
+  @StrictBoolean()
   isExtremelyPoor?: boolean;
 
   @IsOptional()
-  @IsNumber({ maxDecimalPlaces: 0 })
-  @Min(0)
-  @Max(1_000_000_000)
-  @Expose()
-  minVoucherAmount?: number;
-
-  @IsOptional()
-  @IsNumber({ maxDecimalPlaces: 0 })
-  @Min(0)
-  @Max(1_000_000_000)
-  @Expose()
-  maxVoucherAmount?: number;
-
-  @IsOptional()
-  @IsLessThanOrEqual('familySuspensionDateTo', {
-    message: 'Date from must be before or equal to date to',
-  })
-  @Expose()
-  familySuspensionDateFrom?: Date;
+  @IsEnum(SponsorshipStatus)
+  sponsorshipStatus?: SponsorshipStatus;
 
   @IsOptional()
   @IsDate()
-  @Expose()
-  familySuspensionDateTo?: Date;
-
-  @IsOptional()
-  @IsString()
-  @MaxLength(1000)
-  @Expose()
-  suspensionReason?: string;
-
-  @IsOptional()
-  @StrictBoolean()
-  @Expose()
-  motherIsTrainingBeneficiary?: boolean;
-
-  @IsOptional()
-  @IsNumber({ maxDecimalPlaces: 0 })
-  @Min(0)
-  @Max(1_000_000_000)
-  @Expose()
-  minChildrenSchoolExpenses?: number;
-
-  @IsOptional()
-  @IsNumber({ maxDecimalPlaces: 0 })
-  @Min(0)
-  @Max(1_000_000_000)
-  @Expose()
-  maxChildrenSchoolExpenses?: number;
-
-  @IsOptional()
-  @IsNumber({ maxDecimalPlaces: 0 })
-  @Min(0)
-  @Max(1_000_000_000)
-  @Expose()
-  minIncomeFromBarakaAssociation?: number;
-
-  @IsOptional()
-  @IsNumber({ maxDecimalPlaces: 0 })
-  @Min(0)
-  @Max(1_000_000_000)
-  @Expose()
-  maxIncomeFromBarakaAssociation?: number;
+  createdAtFrom?: Date;
 
   @IsOptional()
   @IsDate()
-  @Expose()
-  registrationDateFrom?: Date;
+  createdAtTo?: Date;
 
   @IsOptional()
   @IsDate()
-  @Expose()
-  registrationDateTo?: Date;
+  updatedAtFrom?: Date;
 
   @IsOptional()
   @IsDate()
-  @Expose()
-  lastAssessmentDateFrom?: Date;
-
-  @IsOptional()
-  @IsDate()
-  @Expose()
-  lastAssessmentDateTo?: Date;
-
-  @IsOptional()
-  @IsString()
-  @MaxLength(2000)
-  @Expose()
-  notes?: string;
+  updatedAtTo?: Date;
 }

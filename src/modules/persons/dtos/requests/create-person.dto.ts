@@ -11,7 +11,7 @@ import {
   MinDate,
 } from 'class-validator';
 import { StrictBoolean } from '../../../../common/decorators/strict-boolean.decorator';
-import { ClothingSize } from '../../enums/clothing-size.enum';
+import { SyriaPhone } from '../../../../common/decorators/syria-phone.decorator';
 import { CurrentStudyStatus } from '../../enums/current-study-status.enum';
 import { EducationLevel } from '../../enums/education-level.enum';
 import { GenderType } from '../../enums/gender-type.enum';
@@ -58,10 +58,6 @@ export class CreatePersonDto {
   @IsString()
   @Length(3, 100)
   motherNationality?: string;
-
-  @IsOptional()
-  @StrictBoolean()
-  isPalestinian?: boolean;
 
   @IsOptional()
   @IsEnum(GenderType)
@@ -136,13 +132,8 @@ export class CreatePersonDto {
   // Phones
   @IsOptional()
   @IsString()
-  @Length(3, 15)
+  @SyriaPhone({ formatToLocal: true })
   mobilePhone?: string;
-
-  @IsOptional()
-  @IsString()
-  @Length(3, 15)
-  landlinePhone?: string;
 
   @IsOptional()
   @IsString()
@@ -153,9 +144,4 @@ export class CreatePersonDto {
   @IsString()
   @Length(1, 2000)
   notes?: string;
-
-  // Clothing & other optional fields kept from previous DTO
-  @IsOptional()
-  @IsEnum(ClothingSize)
-  clothingSize?: ClothingSize;
 }

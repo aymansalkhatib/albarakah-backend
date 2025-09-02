@@ -1,4 +1,9 @@
-import { ClassSerializerInterceptor, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+} from '@nestjs/common';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -10,7 +15,6 @@ import { EmployeesModule } from './modules/employees/employee.module';
 import { FamiliesModule } from './modules/families/families.module';
 import { FamilyMembersModule } from './modules/family-members/family-members.module';
 import { FamilyNeedsModule } from './modules/family-needs/family-needs.module';
-import { InterviewsModule } from './modules/interviews/interviews.module';
 import { ReceivedAssistanceModule } from './modules/received-assistance/received-assistance.module';
 import { RolesModule } from './modules/roles/roles.module';
 import { SystemUsersModule } from './modules/system-users/system-users.module';
@@ -42,7 +46,6 @@ import { AppTypeOrmModule } from './shared/modules/app-type-orm/app-type-orm.mod
     EmergencyAidRequestModule,
     FamilyNeedsModule,
     ReceivedAssistanceModule,
-    InterviewsModule,
     VisitsModule,
   ],
 

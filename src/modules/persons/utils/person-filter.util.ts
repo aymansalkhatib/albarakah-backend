@@ -37,12 +37,6 @@ export function applyPersonFilters(
     });
   }
 
-  if (filter.isPalestinian !== undefined) {
-    qb.andWhere(`${alias}.isPalestinian = :isPalestinian`, {
-      isPalestinian: filter.isPalestinian,
-    });
-  }
-
   if (filter.gender) {
     qb.andWhere(`${alias}.gender = :gender`, {
       gender: filter.gender,
@@ -139,12 +133,6 @@ export function applyPersonFilters(
   if (filter.mobilePhone) {
     qb.andWhere(`${alias}.mobilePhone ILIKE :mobilePhone`, {
       mobilePhone: `%${filter.mobilePhone}%`,
-    });
-  }
-
-  if (filter.landlinePhone) {
-    qb.andWhere(`${alias}.landlinePhone ILIKE :landlinePhone`, {
-      landlinePhone: `%${filter.landlinePhone}%`,
     });
   }
 

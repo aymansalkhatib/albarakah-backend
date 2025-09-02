@@ -48,9 +48,6 @@ export class Person {
   @Column({ length: 100, nullable: true, name: 'mother_nationality' })
   motherNationality?: string;
 
-  @Column({ type: 'boolean', name: 'is_palestinian', nullable: true })
-  isPalestinian?: boolean;
-
   @Column({ type: 'enum', enum: GenderType, nullable: true, name: 'gender' })
   gender: GenderType;
 
@@ -123,9 +120,6 @@ export class Person {
 
   @Column({ length: 15, nullable: true })
   mobilePhone: string;
-
-  @Column({ length: 15, nullable: true })
-  landlinePhone: string;
 
   @Column({ length: 15, nullable: true })
   whatsappNumber: string;
