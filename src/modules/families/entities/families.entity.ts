@@ -22,6 +22,7 @@ import { SponsorshipStatus } from '../enums/sponsorship-status.enum';
 
 @Entity('families')
 @Index(['familyBookNumber'], { unique: true })
+@Index(['requestNumber'], { unique: true })
 export class Family {
   @PrimaryGeneratedColumn()
   id: number;
