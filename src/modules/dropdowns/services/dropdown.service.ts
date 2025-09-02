@@ -35,7 +35,6 @@ export class DropdownService {
       let dropdown = this.dropdownRepository.create({
         id: upsertDto.id,
         dropdownName: upsertDto.dropdownName,
-        selectionType: upsertDto.selectionType,
       });
 
       dropdown = await manager.save(Dropdown, dropdown);

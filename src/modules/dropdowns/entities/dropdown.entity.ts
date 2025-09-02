@@ -6,7 +6,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { DropdownSelectionType } from '../enums/dropdown-selection-type.enum';
 import { DropdownOption } from './dropdown-option.entity';
 
 @Entity('dropdown')
@@ -16,13 +15,6 @@ export class Dropdown {
 
   @Column({ length: 100, name: 'dropdown_name' })
   dropdownName: string;
-
-  @Column({
-    type: 'enum',
-    enum: DropdownSelectionType,
-    name: 'selection_type',
-  })
-  selectionType: DropdownSelectionType;
 
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt: Date;

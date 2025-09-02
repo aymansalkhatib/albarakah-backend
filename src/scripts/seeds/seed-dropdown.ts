@@ -1,7 +1,6 @@
 import { QueryRunner } from 'typeorm';
 import { DropdownOption } from '../../modules/dropdowns/entities/dropdown-option.entity';
 import { Dropdown } from '../../modules/dropdowns/entities/dropdown.entity';
-import { DropdownSelectionType } from '../../modules/dropdowns/enums/dropdown-selection-type.enum';
 import { PersonDropdown } from '../../modules/persons/enums/type-dropdown.enum';
 
 export async function seedDropdowns(queryRunner: QueryRunner) {
@@ -21,7 +20,6 @@ export async function seedDropdowns(queryRunner: QueryRunner) {
   console.log('💍 Creating Marital Status dropdown...');
   const maritalStatusDropdown = dropdownRepo.create({
     dropdownName: PersonDropdown.MARITAL_STATUS,
-    selectionType: DropdownSelectionType.SINGLE,
   });
   await dropdownRepo.save(maritalStatusDropdown);
 
@@ -39,7 +37,6 @@ export async function seedDropdowns(queryRunner: QueryRunner) {
   console.log('🏥 Creating Health Status dropdown...');
   const healthStatusDropdown = dropdownRepo.create({
     dropdownName: PersonDropdown.HEALTH_STATUS,
-    selectionType: DropdownSelectionType.SINGLE,
   });
   await dropdownRepo.save(healthStatusDropdown);
 
@@ -66,7 +63,6 @@ export async function seedDropdowns(queryRunner: QueryRunner) {
   console.log('🎓 Creating Education Level dropdown...');
   const educationLevelDropdown = dropdownRepo.create({
     dropdownName: PersonDropdown.EDUCATION_LEVEL,
-    selectionType: DropdownSelectionType.SINGLE,
   });
   await dropdownRepo.save(educationLevelDropdown);
 
@@ -95,7 +91,6 @@ export async function seedDropdowns(queryRunner: QueryRunner) {
   console.log('🏫 Creating School Type dropdown...');
   const schoolTypeDropdown = dropdownRepo.create({
     dropdownName: PersonDropdown.SCHOOL_TYPE,
-    selectionType: DropdownSelectionType.SINGLE,
   });
   await dropdownRepo.save(schoolTypeDropdown);
 
@@ -124,7 +119,6 @@ export async function seedDropdowns(queryRunner: QueryRunner) {
   console.log('📚 Creating Grade Level dropdown...');
   const gradeLevelDropdown = dropdownRepo.create({
     dropdownName: PersonDropdown.GRADE_LEVEL,
-    selectionType: DropdownSelectionType.SINGLE,
   });
   await dropdownRepo.save(gradeLevelDropdown);
 

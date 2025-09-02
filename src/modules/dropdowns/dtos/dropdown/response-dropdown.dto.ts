@@ -1,5 +1,4 @@
 import { Expose, Type } from 'class-transformer';
-import { DropdownSelectionType } from '../../enums/dropdown-selection-type.enum';
 import { ResponseDropdownOptionDto } from '../dropdown-option/response-dropdown-option.dto';
 
 export class ResponseDropdownDto {
@@ -8,9 +7,6 @@ export class ResponseDropdownDto {
 
   @Expose()
   dropdownName: string;
-
-  @Expose()
-  selectionType: DropdownSelectionType;
 
   @Expose()
   createdAt: Date;

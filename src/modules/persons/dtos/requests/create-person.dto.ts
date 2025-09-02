@@ -17,7 +17,7 @@ import { EducationLevel } from '../../enums/education-level.enum';
 import { GenderType } from '../../enums/gender-type.enum';
 import { MaritalStatus } from '../../enums/marital-status.enum';
 import { SchoolType } from '../../enums/school-type.enum';
-import { SuccessCertificateSubmission } from '../../enums/success-certificate-submission-2023-2024.enum';
+import { SuccessCertificateSubmission } from '../../enums/success-certificate-submission.enum';
 
 export class CreatePersonDto {
   @IsString()
