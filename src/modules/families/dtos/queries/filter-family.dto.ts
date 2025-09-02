@@ -57,11 +57,6 @@ export class FilterFamilyDto extends PaginationDto {
   otherOrphanAssociationName?: string;
 
   @IsOptional()
-  @IsString()
-  @MaxLength(200)
-  residencePlace?: string;
-
-  @IsOptional()
   @IsEnum(FormOrganizationStatus)
   formOrganizationStatus?: FormOrganizationStatus;
 
@@ -118,4 +113,68 @@ export class FilterFamilyDto extends PaginationDto {
   @IsOptional()
   @IsEnum(SponsorshipStatus)
   sponsorshipStatus?: SponsorshipStatus;
+
+  // === REQUEST INFO ===
+  @IsOptional()
+  @IsDate()
+  requestAcceptanceDateFrom?: Date;
+
+  @IsOptional()
+  @IsDate()
+  requestAcceptanceDateTo?: Date;
+
+  @IsOptional()
+  @IsDate()
+  requestSuspensionDateFrom?: Date;
+
+  @IsOptional()
+  @IsDate()
+  requestSuspensionDateTo?: Date;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(32)
+  requestStatus?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(32)
+  previousRequestStatus?: string;
+
+  @IsOptional()
+  @StrictBoolean()
+  isStatusUpdatedAtSocialAffairs?: boolean;
+
+  // === COUNTS & VALUES ===
+  @IsOptional()
+  @IsNumber()
+  beneficiaryFamilyMembersCountMin?: number;
+
+  @IsOptional()
+  @IsNumber()
+  beneficiaryFamilyMembersCountMax?: number;
+
+  @IsOptional()
+  @IsNumber()
+  guardianFamilyMembersCountMin?: number;
+
+  @IsOptional()
+  @IsNumber()
+  guardianFamilyMembersCountMax?: number;
+
+  @IsOptional()
+  @IsNumber()
+  sharedMealMembersCountMin?: number;
+
+  @IsOptional()
+  @IsNumber()
+  sharedMealMembersCountMax?: number;
+
+  @IsOptional()
+  @IsNumber()
+  voucherValueMin?: number;
+
+  @IsOptional()
+  @IsNumber()
+  voucherValueMax?: number;
 }

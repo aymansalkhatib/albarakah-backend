@@ -28,15 +28,7 @@ export class Family {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({
-    name: 'request_number',
-    type: 'varchar',
-    length: 32,
-    nullable: true,
-  })
-  requestNumber?: string;
-
-  // Basic Information
+  // === BASIC INFORMATION ===
   @Column({ name: 'family_name', type: 'varchar', length: 64 })
   familyName: string;
 
@@ -46,37 +38,17 @@ export class Family {
   @Column({ name: 'identity_documents', type: 'text', nullable: true })
   identityDocuments?: string;
 
-  @Column({ name: 'email_arrival_date', type: 'date', nullable: true })
-  emailArrivalDate?: Date;
+  @Column({ name: 'family_book_number', type: 'varchar', length: 12 })
+  familyBookNumber: string;
 
+  // === FORM & DECISION ===
   @Column({
-    name: 'contacted_by_employee_id',
-    nullable: true,
-  })
-  contactedByEmployeeId?: number;
-
-  @Column({
-    name: 'is_registered_in_other_orphan_association',
-    type: 'boolean',
-    nullable: true,
-  })
-  isRegisteredInOtherOrphanAssociation?: boolean;
-
-  @Column({
-    name: 'other_orphan_association_name',
+    name: 'form_number',
     type: 'varchar',
-    length: 128,
-    nullable: true,
+    length: 64,
+    unique: true,
   })
-  otherOrphanAssociationName?: string;
-
-  @Column({
-    name: 'residence_place',
-    type: 'varchar',
-    length: 200,
-    nullable: true,
-  })
-  residencePlace?: string;
+  formNumber: string;
 
   @Column({
     name: 'form_organization_status',
@@ -85,12 +57,6 @@ export class Family {
     nullable: true,
   })
   formOrganizationStatus: FormOrganizationStatus;
-
-  @Column({ name: 'form_number', type: 'varchar', length: 64, unique: true })
-  formNumber: string;
-
-  @Column({ name: 'interview_date', type: 'timestamp', nullable: true })
-  interviewDate?: Date;
 
   @Column({
     name: 'management_decision',
@@ -111,14 +77,51 @@ export class Family {
   })
   archiveLocation?: ArchiveLocation;
 
+  // === REQUEST INFO ===
   @Column({
-    name: 'family_book_number',
+    name: 'request_number',
     type: 'varchar',
-    length: 12,
+    length: 32,
+    nullable: true,
   })
-  familyBookNumber: string;
+  requestNumber?: string;
 
-  // Contact Information
+  @Column({ name: 'email_arrival_date', type: 'date', nullable: true })
+  emailArrivalDate?: Date;
+
+  @Column({ name: 'interview_date', type: 'timestamp', nullable: true })
+  interviewDate?: Date;
+
+  @Column({ name: 'request_acceptance_date', type: 'date', nullable: true })
+  requestAcceptanceDate?: Date;
+
+  @Column({ name: 'request_suspension_date', type: 'date', nullable: true })
+  requestSuspensionDate?: Date;
+
+  @Column({
+    name: 'request_status',
+    type: 'varchar',
+    length: 32,
+    nullable: true,
+  })
+  requestStatus?: string;
+
+  @Column({
+    name: 'previous_request_status',
+    type: 'varchar',
+    length: 32,
+    nullable: true,
+  })
+  previousRequestStatus?: string;
+
+  @Column({
+    name: 'is_status_updated_at_social_affairs',
+    type: 'boolean',
+    default: false,
+  })
+  isStatusUpdatedAtSocialAffairs: boolean;
+
+  // === CONTACT INFORMATION ===
   @Column({
     name: 'landline_phone',
     type: 'varchar',
@@ -135,12 +138,33 @@ export class Family {
   })
   mobilePhone?: string;
 
-  // Status Flags
+  @Column({
+    name: 'contacted_by_employee_id',
+    nullable: true,
+  })
+  contactedByEmployeeId?: number;
+
+  // === FLAGS & STATUS ===
   @Column({ name: 'is_refugee', default: false })
   isRefugee: boolean;
 
   @Column({ name: 'is_extremely_poor', default: false })
   isExtremelyPoor: boolean;
+
+  @Column({
+    name: 'is_registered_in_other_orphan_association',
+    type: 'boolean',
+    nullable: true,
+  })
+  isRegisteredInOtherOrphanAssociation?: boolean;
+
+  @Column({
+    name: 'other_orphan_association_name',
+    type: 'varchar',
+    length: 128,
+    nullable: true,
+  })
+  otherOrphanAssociationName?: string;
 
   @Column({
     name: 'sponsorship_status',
@@ -150,7 +174,26 @@ export class Family {
   })
   sponsorshipStatus?: SponsorshipStatus;
 
-  // Timestamps
+  // === COUNTS & VALUES ===
+  @Column({ name: 'beneficiary_family_members_count', type: 'int', default: 0 })
+  beneficiaryFamilyMembersCount: number;
+
+  @Column({ name: 'guardian_family_members_count', type: 'int', default: 0 })
+  guardianFamilyMembersCount: number;
+
+  @Column({ name: 'shared_meal_members_count', type: 'int', default: 0 })
+  sharedMealMembersCount: number;
+
+  @Column({
+    name: 'voucher_value',
+    type: 'decimal',
+    precision: 10,
+    scale: 2,
+    nullable: true,
+  })
+  voucherValue?: number;
+
+  // === TIMESTAMPS ===
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
@@ -158,8 +201,6 @@ export class Family {
   updatedAt: Date;
 
   // === RELATIONSHIPS ===
-
-  // One-to-Many Relationships
   @OneToMany(() => FamilyMember, (member) => member.family)
   familyMembers: FamilyMember[];
 

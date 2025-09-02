@@ -35,9 +35,6 @@ export class FamilyResponseDto {
   otherOrphanAssociationName?: string;
 
   @Expose()
-  residencePlace?: string;
-
-  @Expose()
   formOrganizationStatus?: FormOrganizationStatus;
 
   @Expose()
@@ -72,6 +69,35 @@ export class FamilyResponseDto {
 
   @Expose()
   sponsorshipStatus?: SponsorshipStatus;
+
+  // === REQUEST INFO ===
+  @Expose()
+  requestAcceptanceDate?: Date;
+
+  @Expose()
+  requestSuspensionDate?: Date;
+
+  @Expose()
+  requestStatus?: string;
+
+  @Expose()
+  previousRequestStatus?: string;
+
+  @Expose()
+  isStatusUpdatedAtSocialAffairs?: boolean;
+
+  // === COUNTS & VALUES ===
+  @Expose()
+  beneficiaryFamilyMembersCount?: number;
+
+  @Expose()
+  guardianFamilyMembersCount?: number;
+
+  @Expose()
+  sharedMealMembersCount?: number;
+
+  @Expose()
+  voucherValue?: number;
 
   @Expose()
   createdAt: Date;

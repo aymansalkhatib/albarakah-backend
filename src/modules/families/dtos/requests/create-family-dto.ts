@@ -2,6 +2,7 @@ import {
   IsDateString,
   IsEnum,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
   Matches,
@@ -51,11 +52,6 @@ export class CreateFamilyDto {
   @IsString()
   @MaxLength(128)
   otherOrphanAssociationName?: string;
-
-  @IsOptional()
-  @IsString()
-  @MaxLength(200)
-  residencePlace?: string;
 
   @IsOptional()
   @IsEnum(FormOrganizationStatus)
@@ -112,4 +108,44 @@ export class CreateFamilyDto {
   @IsOptional()
   @IsEnum(SponsorshipStatus)
   sponsorshipStatus?: SponsorshipStatus;
+
+  // === REQUEST INFO ===
+  @IsOptional()
+  @IsDateString()
+  requestAcceptanceDate?: string;
+
+  @IsOptional()
+  @IsDateString()
+  requestSuspensionDate?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(32)
+  requestStatus?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(32)
+  previousRequestStatus?: string;
+
+  @IsOptional()
+  @StrictBoolean()
+  isStatusUpdatedAtSocialAffairs?: boolean;
+
+  // === COUNTS & VALUES ===
+  @IsOptional()
+  @IsNumber()
+  beneficiaryFamilyMembersCount?: number;
+
+  @IsOptional()
+  @IsNumber()
+  guardianFamilyMembersCount?: number;
+
+  @IsOptional()
+  @IsNumber()
+  sharedMealMembersCount?: number;
+
+  @IsOptional()
+  @IsNumber()
+  voucherValue?: number;
 }

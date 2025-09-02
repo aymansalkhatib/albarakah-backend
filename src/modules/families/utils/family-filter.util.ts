@@ -53,12 +53,6 @@ export function applyFamilyFilters(
     );
   }
 
-  if (filter.residencePlace) {
-    qb.andWhere(`${alias}.residencePlace ILIKE :residencePlace`, {
-      residencePlace: `%${filter.residencePlace}%`,
-    });
-  }
-
   if (filter.formNumber) {
     qb.andWhere(`${alias}.formNumber ILIKE :formNumber`, {
       formNumber: `%${filter.formNumber}%`,
@@ -98,6 +92,15 @@ export function applyFamilyFilters(
     qb.andWhere(`${alias}.isExtremelyPoor = :isExtremelyPoor`, {
       isExtremelyPoor: filter.isExtremelyPoor,
     });
+  }
+
+  if (filter.isStatusUpdatedAtSocialAffairs !== undefined) {
+    qb.andWhere(
+      `${alias}.isStatusUpdatedAtSocialAffairs = :isStatusUpdatedAtSocialAffairs`,
+      {
+        isStatusUpdatedAtSocialAffairs: filter.isStatusUpdatedAtSocialAffairs,
+      },
+    );
   }
 
   // Enum filters
@@ -166,6 +169,171 @@ export function applyFamilyFilters(
   } else if (filter.interviewDateTo) {
     qb.andWhere(`${alias}.interviewDate <= :interviewDateTo`, {
       interviewDateTo: filter.interviewDateTo,
+    });
+  }
+
+  // Request acceptance date range filters
+  if (filter.requestAcceptanceDateFrom && filter.requestAcceptanceDateTo) {
+    qb.andWhere(
+      `${alias}.requestAcceptanceDate BETWEEN :requestAcceptanceDateFrom AND :requestAcceptanceDateTo`,
+      {
+        requestAcceptanceDateFrom: filter.requestAcceptanceDateFrom,
+        requestAcceptanceDateTo: filter.requestAcceptanceDateTo,
+      },
+    );
+  } else if (filter.requestAcceptanceDateFrom) {
+    qb.andWhere(
+      `${alias}.requestAcceptanceDate >= :requestAcceptanceDateFrom`,
+      {
+        requestAcceptanceDateFrom: filter.requestAcceptanceDateFrom,
+      },
+    );
+  } else if (filter.requestAcceptanceDateTo) {
+    qb.andWhere(`${alias}.requestAcceptanceDate <= :requestAcceptanceDateTo`, {
+      requestAcceptanceDateTo: filter.requestAcceptanceDateTo,
+    });
+  }
+
+  // Request suspension date range filters
+  if (filter.requestSuspensionDateFrom && filter.requestSuspensionDateTo) {
+    qb.andWhere(
+      `${alias}.requestSuspensionDate BETWEEN :requestSuspensionDateFrom AND :requestSuspensionDateTo`,
+      {
+        requestSuspensionDateFrom: filter.requestSuspensionDateFrom,
+        requestSuspensionDateTo: filter.requestSuspensionDateTo,
+      },
+    );
+  } else if (filter.requestSuspensionDateFrom) {
+    qb.andWhere(
+      `${alias}.requestSuspensionDate >= :requestSuspensionDateFrom`,
+      {
+        requestSuspensionDateFrom: filter.requestSuspensionDateFrom,
+      },
+    );
+  } else if (filter.requestSuspensionDateTo) {
+    qb.andWhere(`${alias}.requestSuspensionDate <= :requestSuspensionDateTo`, {
+      requestSuspensionDateTo: filter.requestSuspensionDateTo,
+    });
+  }
+
+  // String filters for request status
+  if (filter.requestStatus) {
+    qb.andWhere(`${alias}.requestStatus ILIKE :requestStatus`, {
+      requestStatus: `%${filter.requestStatus}%`,
+    });
+  }
+
+  if (filter.previousRequestStatus) {
+    qb.andWhere(`${alias}.previousRequestStatus ILIKE :previousRequestStatus`, {
+      previousRequestStatus: `%${filter.previousRequestStatus}%`,
+    });
+  }
+
+  // Count range filters
+  if (
+    filter.beneficiaryFamilyMembersCountMin !== undefined &&
+    filter.beneficiaryFamilyMembersCountMax !== undefined
+  ) {
+    qb.andWhere(
+      `${alias}.beneficiaryFamilyMembersCount BETWEEN :beneficiaryFamilyMembersCountMin AND :beneficiaryFamilyMembersCountMax`,
+      {
+        beneficiaryFamilyMembersCountMin:
+          filter.beneficiaryFamilyMembersCountMin,
+        beneficiaryFamilyMembersCountMax:
+          filter.beneficiaryFamilyMembersCountMax,
+      },
+    );
+  } else if (filter.beneficiaryFamilyMembersCountMin !== undefined) {
+    qb.andWhere(
+      `${alias}.beneficiaryFamilyMembersCount >= :beneficiaryFamilyMembersCountMin`,
+      {
+        beneficiaryFamilyMembersCountMin:
+          filter.beneficiaryFamilyMembersCountMin,
+      },
+    );
+  } else if (filter.beneficiaryFamilyMembersCountMax !== undefined) {
+    qb.andWhere(
+      `${alias}.beneficiaryFamilyMembersCount <= :beneficiaryFamilyMembersCountMax`,
+      {
+        beneficiaryFamilyMembersCountMax:
+          filter.beneficiaryFamilyMembersCountMax,
+      },
+    );
+  }
+
+  if (
+    filter.guardianFamilyMembersCountMin !== undefined &&
+    filter.guardianFamilyMembersCountMax !== undefined
+  ) {
+    qb.andWhere(
+      `${alias}.guardianFamilyMembersCount BETWEEN :guardianFamilyMembersCountMin AND :guardianFamilyMembersCountMax`,
+      {
+        guardianFamilyMembersCountMin: filter.guardianFamilyMembersCountMin,
+        guardianFamilyMembersCountMax: filter.guardianFamilyMembersCountMax,
+      },
+    );
+  } else if (filter.guardianFamilyMembersCountMin !== undefined) {
+    qb.andWhere(
+      `${alias}.guardianFamilyMembersCount >= :guardianFamilyMembersCountMin`,
+      {
+        guardianFamilyMembersCountMin: filter.guardianFamilyMembersCountMin,
+      },
+    );
+  } else if (filter.guardianFamilyMembersCountMax !== undefined) {
+    qb.andWhere(
+      `${alias}.guardianFamilyMembersCount <= :guardianFamilyMembersCountMax`,
+      {
+        guardianFamilyMembersCountMax: filter.guardianFamilyMembersCountMax,
+      },
+    );
+  }
+
+  if (
+    filter.sharedMealMembersCountMin !== undefined &&
+    filter.sharedMealMembersCountMax !== undefined
+  ) {
+    qb.andWhere(
+      `${alias}.sharedMealMembersCount BETWEEN :sharedMealMembersCountMin AND :sharedMealMembersCountMax`,
+      {
+        sharedMealMembersCountMin: filter.sharedMealMembersCountMin,
+        sharedMealMembersCountMax: filter.sharedMealMembersCountMax,
+      },
+    );
+  } else if (filter.sharedMealMembersCountMin !== undefined) {
+    qb.andWhere(
+      `${alias}.sharedMealMembersCount >= :sharedMealMembersCountMin`,
+      {
+        sharedMealMembersCountMin: filter.sharedMealMembersCountMin,
+      },
+    );
+  } else if (filter.sharedMealMembersCountMax !== undefined) {
+    qb.andWhere(
+      `${alias}.sharedMealMembersCount <= :sharedMealMembersCountMax`,
+      {
+        sharedMealMembersCountMax: filter.sharedMealMembersCountMax,
+      },
+    );
+  }
+
+  // Voucher value range filters
+  if (
+    filter.voucherValueMin !== undefined &&
+    filter.voucherValueMax !== undefined
+  ) {
+    qb.andWhere(
+      `${alias}.voucherValue BETWEEN :voucherValueMin AND :voucherValueMax`,
+      {
+        voucherValueMin: filter.voucherValueMin,
+        voucherValueMax: filter.voucherValueMax,
+      },
+    );
+  } else if (filter.voucherValueMin !== undefined) {
+    qb.andWhere(`${alias}.voucherValue >= :voucherValueMin`, {
+      voucherValueMin: filter.voucherValueMin,
+    });
+  } else if (filter.voucherValueMax !== undefined) {
+    qb.andWhere(`${alias}.voucherValue <= :voucherValueMax`, {
+      voucherValueMax: filter.voucherValueMax,
     });
   }
 
