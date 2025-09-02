@@ -218,8 +218,8 @@ export function applyFamilyFilters(
 
   // String filters for request status
   if (filter.requestStatus) {
-    qb.andWhere(`${alias}.requestStatus ILIKE :requestStatus`, {
-      requestStatus: `%${filter.requestStatus}%`,
+    qb.andWhere(`${alias}.requestStatus = :requestStatus`, {
+      requestStatus: filter.requestStatus,
     });
   }
 
@@ -315,25 +315,34 @@ export function applyFamilyFilters(
     );
   }
 
-  // Voucher value range filters
-  if (
-    filter.voucherValueMin !== undefined &&
-    filter.voucherValueMax !== undefined
-  ) {
+  // Voucher value filter
+  if (filter.voucherValue) {
+    qb.andWhere(`${alias}.voucherValue = :voucherValue`, {
+      voucherValue: filter.voucherValue,
+    });
+  }
+
+  // House type filter
+  if (filter.houseType) {
+    qb.andWhere(`${alias}.houseType = :houseType`, {
+      houseType: filter.houseType,
+    });
+  }
+
+  // Current residence address filter
+  if (filter.currentResidenceAddress) {
     qb.andWhere(
-      `${alias}.voucherValue BETWEEN :voucherValueMin AND :voucherValueMax`,
+      `${alias}.currentResidenceAddress ILIKE :currentResidenceAddress`,
       {
-        voucherValueMin: filter.voucherValueMin,
-        voucherValueMax: filter.voucherValueMax,
+        currentResidenceAddress: `%${filter.currentResidenceAddress}%`,
       },
     );
-  } else if (filter.voucherValueMin !== undefined) {
-    qb.andWhere(`${alias}.voucherValue >= :voucherValueMin`, {
-      voucherValueMin: filter.voucherValueMin,
-    });
-  } else if (filter.voucherValueMax !== undefined) {
-    qb.andWhere(`${alias}.voucherValue <= :voucherValueMax`, {
-      voucherValueMax: filter.voucherValueMax,
+  }
+
+  // Current residence area filter
+  if (filter.currentResidenceArea) {
+    qb.andWhere(`${alias}.currentResidenceArea ILIKE :currentResidenceArea`, {
+      currentResidenceArea: `%${filter.currentResidenceArea}%`,
     });
   }
 

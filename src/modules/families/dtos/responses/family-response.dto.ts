@@ -3,8 +3,11 @@ import { EmployeeResponseDto } from '../../../employees/dtos/responses/employee-
 import { FamilyMemberResponseDto } from '../../../family-members/dtos/responses/family-member-response.dto';
 import { ArchiveLocation } from '../../enums/archive-location.enum';
 import { FormOrganizationStatus } from '../../enums/form-organization-status.enum';
+import { HouseType } from '../../enums/house-type.enum';
 import { ManagementDecision } from '../../enums/management-decision.enum';
+import { RequestStatus } from '../../enums/request-status.enum';
 import { SponsorshipStatus } from '../../enums/sponsorship-status.enum';
+import { VoucherValue } from '../../enums/voucher-value.enum';
 
 export class FamilyResponseDto {
   @Expose()
@@ -78,7 +81,7 @@ export class FamilyResponseDto {
   requestSuspensionDate?: Date;
 
   @Expose()
-  requestStatus?: string;
+  requestStatus?: RequestStatus;
 
   @Expose()
   previousRequestStatus?: string;
@@ -97,7 +100,16 @@ export class FamilyResponseDto {
   sharedMealMembersCount?: number;
 
   @Expose()
-  voucherValue?: number;
+  voucherValue?: VoucherValue;
+
+  @Expose()
+  houseType?: HouseType;
+
+  @Expose()
+  currentResidenceAddress?: string;
+
+  @Expose()
+  currentResidenceArea?: string;
 
   @Expose()
   createdAt: Date;

@@ -17,8 +17,11 @@ import { ReceivedAssistance } from '../../received-assistance/entities/received-
 import { Visit } from '../../visits/entities/visit.entity';
 import { ArchiveLocation } from '../enums/archive-location.enum';
 import { FormOrganizationStatus } from '../enums/form-organization-status.enum';
+import { HouseType } from '../enums/house-type.enum';
 import { ManagementDecision } from '../enums/management-decision.enum';
+import { RequestStatus } from '../enums/request-status.enum';
 import { SponsorshipStatus } from '../enums/sponsorship-status.enum';
+import { VoucherValue } from '../enums/voucher-value.enum';
 
 @Entity('families')
 @Index(['familyBookNumber'], { unique: true })
@@ -100,11 +103,11 @@ export class Family {
 
   @Column({
     name: 'request_status',
-    type: 'varchar',
-    length: 32,
+    type: 'enum',
+    enum: RequestStatus,
     nullable: true,
   })
-  requestStatus?: string;
+  requestStatus?: RequestStatus;
 
   @Column({
     name: 'previous_request_status',
@@ -186,12 +189,33 @@ export class Family {
 
   @Column({
     name: 'voucher_value',
-    type: 'decimal',
-    precision: 10,
-    scale: 2,
+    type: 'enum',
+    enum: VoucherValue,
     nullable: true,
   })
-  voucherValue?: number;
+  voucherValue?: VoucherValue;
+
+  @Column({
+    name: 'house_type',
+    type: 'enum',
+    enum: HouseType,
+    nullable: true,
+  })
+  houseType?: HouseType;
+
+  @Column({
+    name: 'current_residence_address',
+    type: 'varchar',
+    nullable: true,
+  })
+  currentResidenceAddress?: string;
+
+  @Column({
+    name: 'current_residence_area',
+    type: 'varchar',
+    nullable: true,
+  })
+  currentResidenceArea?: string;
 
   // === TIMESTAMPS ===
   @CreateDateColumn({ name: 'created_at' })

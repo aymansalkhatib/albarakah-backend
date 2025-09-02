@@ -1,0 +1,6 @@
+export enum VoucherValue {
+  UNSPECIFIED = 'unspecified',
+  THREE_HUNDRED_THOUSAND = '300000',
+  THREE_HUNDRED_FIFTY_THOUSAND = '350000',
+  FOUR_HUNDRED_THOUSAND = '400000',
+}

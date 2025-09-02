@@ -14,8 +14,11 @@ import { StrictBoolean } from '../../../../common/decorators/strict-boolean.deco
 import { SyriaPhone } from '../../../../common/decorators/syria-phone.decorator';
 import { ArchiveLocation } from '../../enums/archive-location.enum';
 import { FormOrganizationStatus } from '../../enums/form-organization-status.enum';
+import { HouseType } from '../../enums/house-type.enum';
 import { ManagementDecision } from '../../enums/management-decision.enum';
+import { RequestStatus } from '../../enums/request-status.enum';
 import { SponsorshipStatus } from '../../enums/sponsorship-status.enum';
+import { VoucherValue } from '../../enums/voucher-value.enum';
 
 export class CreateFamilyDto {
   @IsOptional()
@@ -119,9 +122,8 @@ export class CreateFamilyDto {
   requestSuspensionDate?: string;
 
   @IsOptional()
-  @IsString()
-  @MaxLength(32)
-  requestStatus?: string;
+  @IsEnum(RequestStatus)
+  requestStatus?: RequestStatus;
 
   @IsOptional()
   @IsString()
@@ -146,6 +148,20 @@ export class CreateFamilyDto {
   sharedMealMembersCount?: number;
 
   @IsOptional()
-  @IsNumber()
-  voucherValue?: number;
+  @IsEnum(VoucherValue)
+  voucherValue?: VoucherValue;
+
+  @IsOptional()
+  @IsEnum(HouseType)
+  houseType?: HouseType;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(255)
+  currentResidenceAddress?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(255)
+  currentResidenceArea?: string;
 }
