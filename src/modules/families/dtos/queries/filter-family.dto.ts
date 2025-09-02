@@ -99,7 +99,7 @@ export class FilterFamilyDto extends PaginationDto {
 
   @IsOptional()
   @IsString()
-  @MaxLength(15)
+  @MaxLength(10)
   mobilePhone?: string;
 
   @IsOptional()

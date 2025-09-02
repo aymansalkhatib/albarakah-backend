@@ -9,6 +9,7 @@ import { EntityManager, FindOneOptions, Repository } from 'typeorm';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { paginate } from '../../../common/pagination/paginate.service';
 import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
+import { EmployeesService } from '../../employees/services/employee.service';
 import { FilterFamilyDto } from '../dtos/queries/filter-family.dto';
 import { CreateFamilyDto } from '../dtos/requests/create-family-dto';
 import { UpdateFamilyDto } from '../dtos/requests/update-family-dto';
@@ -22,6 +23,7 @@ export class FamiliesService {
     @InjectRepository(Family)
     private readonly familyRepository: Repository<Family>,
     private readonly translateHelper: TranslateHelper,
+    private readonly employeesService: EmployeesService,
   ) {}
 
   async create(
@@ -30,6 +32,12 @@ export class FamiliesService {
   ): Promise<Family> {
     const familyRepository =
       entityManager?.getRepository(Family) ?? this.familyRepository;
+
+    if (createFamilyDto.contactedByEmployeeId) {
+      await this.employeesService.findOne(
+        createFamilyDto.contactedByEmployeeId,
+      );
+    }
 
     if (createFamilyDto.familyBookNumber) {
       const existingFamily = await this.findOneByFamilyBookNumber(
@@ -102,6 +110,12 @@ export class FamiliesService {
     if (!family) {
       throw new NotFoundException(
         this.translateHelper.tr('families.not_found'),
+      );
+    }
+
+    if (updateFamilyDto.contactedByEmployeeId) {
+      await this.employeesService.findOne(
+        updateFamilyDto.contactedByEmployeeId,
       );
     }
 
