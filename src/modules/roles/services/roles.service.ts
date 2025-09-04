@@ -11,6 +11,7 @@ import { paginate } from '../../../common/pagination/paginate.service';
 import { FilterRoleDto } from '../../../modules/roles/dtos/queries/filter-role.dto';
 import { CreateRoleDto } from '../../../modules/roles/dtos/requests/create-role.dto';
 import { UpdateRoleDto } from '../../../modules/roles/dtos/requests/update-role.dto';
+import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
 import { SystemUser } from '../../system-users/entities/system-user.entity';
 import { isProtectedRoleName } from '../constants/protected-permissions.constant';
 import { RoleResponseDto } from '../dtos/responses/role-response.dto';
@@ -29,12 +30,19 @@ export class RolesService {
     private readonly rolePermissionRepository: Repository<RolePermission>,
     @InjectRepository(SystemUser)
     private readonly systemUserRepository: Repository<SystemUser>,
+    private readonly t: TranslateHelper,
   ) {}
 
   async createRole(createRoleDto: CreateRoleDto): Promise<Role> {
-    const existingRole = await this.roleRepository.findOne({ where: { name: createRoleDto.name } });
+    const existingRole = await this.roleRepository.findOne({
+      where: { name: createRoleDto.name },
+    });
     if (existingRole) {
-      throw new ConflictException(`Role with name "${createRoleDto.name}" already exists`);
+      throw new ConflictException(
+        this.t.tr('roles.errors.role_name_exists', {
+          name: createRoleDto.name,
+        }),
+      );
     }
 
     const role = this.roleRepository.create({
@@ -49,13 +57,17 @@ export class RolesService {
     return this.findRoleById(role.id);
   }
 
-  async findAllRole(filterDto: FilterRoleDto): Promise<PaginationResponseDto<RoleResponseDto>> {
+  async findAllRole(
+    filterDto: FilterRoleDto,
+  ): Promise<PaginationResponseDto<RoleResponseDto>> {
     const queryBuilder = this.roleRepository.createQueryBuilder('role');
     queryBuilder.leftJoinAndSelect('role.rolePermissions', 'rolePermissions');
     queryBuilder.leftJoinAndSelect('rolePermissions.permission', 'permission');
 
     if (filterDto.name) {
-      queryBuilder.andWhere('role.name ILIKE :name', { name: `%${filterDto.name}%` });
+      queryBuilder.andWhere('role.name ILIKE :name', {
+        name: `%${filterDto.name}%`,
+      });
     }
 
     if (filterDto.description) {
@@ -74,7 +86,9 @@ export class RolesService {
     });
 
     if (!role) {
-      throw new NotFoundException(`Role with ID ${id} not found`);
+      throw new NotFoundException(
+        this.t.tr('roles.errors.role_not_found', { id }),
+      );
     }
 
     return role;
@@ -84,7 +98,7 @@ export class RolesService {
     const role = await this.findRoleById(id);
 
     if (isProtectedRoleName(role.name)) {
-      throw new ForbiddenException('This role is protected by the system and cannot be changed.');
+      throw new ForbiddenException(this.t.tr('roles.errors.role_protected'));
     }
 
     if (updateRoleDto.name) {
@@ -92,7 +106,11 @@ export class RolesService {
         where: { name: updateRoleDto.name },
       });
       if (existingRole && existingRole.id !== id) {
-        throw new ConflictException(`Role name "${updateRoleDto.name}" is already in use`);
+        throw new ConflictException(
+          this.t.tr('roles.errors.role_name_in_use', {
+            name: updateRoleDto.name,
+          }),
+        );
       }
       role.name = updateRoleDto.name;
     }
@@ -115,21 +133,24 @@ export class RolesService {
 
     if (isProtectedRoleName(role.name)) {
       throw new ForbiddenException(
-        'Superadmin role cannot be deleted as it contains protected system user permissions.',
+        this.t.tr('roles.errors.superadmin_role_protected'),
       );
     }
 
-    const userCount = await this.systemUserRepository.count({ where: { roleId: id } });
+    const userCount = await this.systemUserRepository.count({
+      where: { roleId: id },
+    });
     if (userCount > 0) {
-      throw new ConflictException(
-        'Cannot delete role because it is associated with one or more users. Please reassign users to different roles before deleting.',
-      );
+      throw new ConflictException(this.t.tr('roles.errors.role_has_users'));
     }
 
     await this.roleRepository.delete(role.id);
   }
 
-  async assignPermissionsToRole(role: Role, permissionIds: number[]): Promise<void> {
+  async assignPermissionsToRole(
+    role: Role,
+    permissionIds: number[],
+  ): Promise<void> {
     if (!permissionIds) return;
 
     const foundPermissions = await this.permissionRepository.find({
@@ -137,7 +158,9 @@ export class RolesService {
     });
 
     if (foundPermissions.length !== permissionIds.length) {
-      throw new NotFoundException('One or more permission IDs do not exist');
+      throw new NotFoundException(
+        this.t.tr('roles.errors.permission_ids_not_exist'),
+      );
     }
 
     const rolePermissions = permissionIds.map((permissionId) => ({
@@ -153,12 +176,16 @@ export class RolesService {
     options: FindOneOptions<Role> = {},
     entityManager?: EntityManager,
   ): Promise<Role> {
-    const roleRepository = entityManager ? entityManager.getRepository(Role) : this.roleRepository;
+    const roleRepository = entityManager
+      ? entityManager.getRepository(Role)
+      : this.roleRepository;
 
     const role = await roleRepository.findOne({ where: { id }, ...options });
 
     if (!role) {
-      throw new NotFoundException(`Role with ID ${id} not found`);
+      throw new NotFoundException(
+        this.t.tr('roles.errors.role_not_found', { id }),
+      );
     }
 
     return role;

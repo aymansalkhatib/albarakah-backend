@@ -108,6 +108,42 @@ interface ReceivedassistanceErrorsNotfoundParams {
   id: string | number
 }
 
+interface RolesErrorsPermissionnotfoundParams {
+  id: string | number
+}
+
+interface RolesErrorsUsernotfoundParams {
+  userId: string | number
+}
+
+interface RolesErrorsSystemusernotfoundParams {
+  systemUserId: string | number
+}
+
+interface RolesErrorsPermissionnotassignedParams {
+  permissionId: string | number; systemUserId: string | number
+}
+
+interface RolesErrorsDuplicatepermissionidsParams {
+  duplicateIds: string | number
+}
+
+interface RolesErrorsPermissionsnotfoundParams {
+  missingIds: string | number
+}
+
+interface RolesErrorsRolenotfoundParams {
+  id: string | number
+}
+
+interface RolesErrorsRolenameexistsParams {
+  name: string | number
+}
+
+interface RolesErrorsRolenameinuseParams {
+  name: string | number
+}
+
 interface SupportersErrorsNotfoundParams {
   id: string | number
 }
@@ -228,6 +264,21 @@ const TranslationKeys = {
   'pipes.validation.positive_integer_required': 'pipes.validation.positive_integer_required',
   'received-assistance.errors.family_member_mismatch': 'received-assistance.errors.family_member_mismatch',
   'received-assistance.errors.not_found': 'received-assistance.errors.not_found',
+  'roles.errors.cannot_change_superadmin_permissions': 'roles.errors.cannot_change_superadmin_permissions',
+  'roles.errors.cannot_modify_protected_users': 'roles.errors.cannot_modify_protected_users',
+  'roles.errors.duplicate_permission_ids': 'roles.errors.duplicate_permission_ids',
+  'roles.errors.permission_ids_not_exist': 'roles.errors.permission_ids_not_exist',
+  'roles.errors.permission_not_assigned': 'roles.errors.permission_not_assigned',
+  'roles.errors.permission_not_found': 'roles.errors.permission_not_found',
+  'roles.errors.permissions_not_found': 'roles.errors.permissions_not_found',
+  'roles.errors.role_has_users': 'roles.errors.role_has_users',
+  'roles.errors.role_name_exists': 'roles.errors.role_name_exists',
+  'roles.errors.role_name_in_use': 'roles.errors.role_name_in_use',
+  'roles.errors.role_not_found': 'roles.errors.role_not_found',
+  'roles.errors.role_protected': 'roles.errors.role_protected',
+  'roles.errors.superadmin_role_protected': 'roles.errors.superadmin_role_protected',
+  'roles.errors.system_user_not_found': 'roles.errors.system_user_not_found',
+  'roles.errors.user_not_found': 'roles.errors.user_not_found',
   'supporters.errors.already_supporter': 'supporters.errors.already_supporter',
   'supporters.errors.not_found': 'supporters.errors.not_found',
   'system-users.errors.employee_has_system_account': 'system-users.errors.employee_has_system_account',
@@ -333,6 +384,21 @@ export interface TranslationInterpolations {
   'pipes.validation.positive_integer_required': NoParams;
   'received-assistance.errors.family_member_mismatch': NoParams;
   'received-assistance.errors.not_found': ReceivedassistanceErrorsNotfoundParams;
+  'roles.errors.cannot_change_superadmin_permissions': NoParams;
+  'roles.errors.cannot_modify_protected_users': NoParams;
+  'roles.errors.duplicate_permission_ids': RolesErrorsDuplicatepermissionidsParams;
+  'roles.errors.permission_ids_not_exist': NoParams;
+  'roles.errors.permission_not_assigned': RolesErrorsPermissionnotassignedParams;
+  'roles.errors.permission_not_found': RolesErrorsPermissionnotfoundParams;
+  'roles.errors.permissions_not_found': RolesErrorsPermissionsnotfoundParams;
+  'roles.errors.role_has_users': NoParams;
+  'roles.errors.role_name_exists': RolesErrorsRolenameexistsParams;
+  'roles.errors.role_name_in_use': RolesErrorsRolenameinuseParams;
+  'roles.errors.role_not_found': RolesErrorsRolenotfoundParams;
+  'roles.errors.role_protected': NoParams;
+  'roles.errors.superadmin_role_protected': NoParams;
+  'roles.errors.system_user_not_found': RolesErrorsSystemusernotfoundParams;
+  'roles.errors.user_not_found': RolesErrorsUsernotfoundParams;
   'supporters.errors.already_supporter': NoParams;
   'supporters.errors.not_found': SupportersErrorsNotfoundParams;
   'system-users.errors.employee_has_system_account': NoParams;
