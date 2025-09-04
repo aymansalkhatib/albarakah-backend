@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import {
   IsEnum,
   IsNotEmpty,
@@ -7,12 +8,11 @@ import {
   MaxLength,
   ValidateNested,
 } from 'class-validator';
-import { Expose, Type } from 'class-transformer';
-import { FamilyRelationType } from '../../enums/family-relation-type.enum';
+import { PositiveIntegerId } from '../../../../common/decorators/positive-integer-id.decorator';
 import { StrictBoolean } from '../../../../common/decorators/strict-boolean.decorator';
 import { OnlyOneOf } from '../../../../common/decorators/validate-one-of-two-fields.validator';
-import { PositiveIntegerId } from '../../../../common/decorators/positive-integer-id.decorator';
 import { CreatePersonDto } from '../../../../modules/persons/dtos/requests/create-person.dto';
+import { FamilyRelationType } from '../../enums/family-relation-type.enum';
 
 @OnlyOneOf([
   {
@@ -32,6 +32,19 @@ export class CreateFamilyMemberDto {
   @IsOptional()
   @StrictBoolean()
   isSponsored: boolean;
+
+  @IsOptional()
+  @IsNumber()
+  @Type(() => Number)
+  memberNumber?: number;
+
+  @IsOptional()
+  @StrictBoolean()
+  isPresent?: boolean;
+
+  @IsOptional()
+  @StrictBoolean()
+  isGuardian?: boolean;
 
   @IsOptional()
   @IsString()

@@ -1,11 +1,10 @@
 import { Expose, Transform, Type } from 'class-transformer';
-import { PersonResponseDto } from '../../../../modules/persons/dtos/responses/person-response.dto';
-import { ReceivedAssistance } from '../../../../modules/received-assistance/entities/received-assistance.entity';
-import { FamilyRelationType } from '../../enums/family-relation-type.enum';
-import { PersonCourseBatchResponseDto } from '../../../../modules/training-courses/dtos/responses/person-course-batch-response.dto';
 import { FamilyResponseDto } from '../../../../modules/families/dtos/responses/family-response.dto';
-import { SupporterResponseDto } from '../../../../modules/supporters/dtos/responses/supporter-response.dto';
+import { PersonResponseDto } from '../../../../modules/persons/dtos/responses/person-response.dto';
+import { PersonCourseBatchResponseDto } from '../../../../modules/training-courses/dtos/responses/person-course-batch-response.dto';
+import { ReceivedAssistanceResponseDto } from '../../../received-assistance/dtos/responses/received-assistance-response.dto';
 import { SupporterChildSponsorshipResponseDto } from '../../../supporters/dtos/responses/supporter-child-sponsorship-response.dto';
+import { FamilyRelationType } from '../../enums/family-relation-type.enum';
 
 export class FamilyMemberResponseDto {
   @Expose()
@@ -24,7 +23,22 @@ export class FamilyMemberResponseDto {
   isSponsored: boolean;
 
   @Expose()
+  memberNumber?: number;
+
+  @Expose()
+  isPresent: boolean;
+
+  @Expose()
+  isGuardian: boolean;
+
+  @Expose()
   notes?: string;
+
+  @Expose()
+  hasJoinedBarakaCenterCourses?: boolean;
+
+  @Expose()
+  joinedBarakaCoursesCount?: number;
 
   @Expose()
   createdAt: Date;
@@ -44,10 +58,9 @@ export class FamilyMemberResponseDto {
   @Type(() => PersonCourseBatchResponseDto)
   courseBatches: PersonCourseBatchResponseDto[];
 
-  //TODO change to dto
   @Expose()
-  @Type(() => ReceivedAssistance)
-  receivedAssistance: ReceivedAssistance[];
+  @Type(() => ReceivedAssistanceResponseDto)
+  receivedAssistance: ReceivedAssistanceResponseDto[];
 
   @Expose()
   @Transform(

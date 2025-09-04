@@ -36,6 +36,15 @@ export class FamilyMember {
   @Column({ name: 'is_sponsored', default: false })
   isSponsored: boolean;
 
+  @Column({ name: 'member_number', type: 'int', nullable: true })
+  memberNumber?: number;
+
+  @Column({ name: 'is_present', type: 'boolean', default: true })
+  isPresent: boolean;
+
+  @Column({ name: 'is_guardian', type: 'boolean', default: false })
+  isGuardian: boolean;
+
   @Column({ type: 'text', nullable: true })
   notes?: string;
 
@@ -48,7 +57,10 @@ export class FamilyMember {
 
   // === RELATIONSHIPS ===
 
-  @OneToMany(() => SupporterChildSponsorship, (sponsorship) => sponsorship.familyMember)
+  @OneToMany(
+    () => SupporterChildSponsorship,
+    (sponsorship) => sponsorship.familyMember,
+  )
   childSponsorships: SupporterChildSponsorship[];
 
   @ManyToOne(() => Person, { onDelete: 'CASCADE' })
@@ -70,11 +82,15 @@ export class FamilyMember {
   // === COMPUTED PROPERTIES ===
 
   get isParent(): boolean {
-    return [FamilyRelationType.MOTHER, FamilyRelationType.FATHER].includes(this.relationType);
+    return [FamilyRelationType.MOTHER, FamilyRelationType.FATHER].includes(
+      this.relationType,
+    );
   }
 
   get isChild(): boolean {
-    return [FamilyRelationType.SON, FamilyRelationType.DAUGHTER].includes(this.relationType);
+    return [FamilyRelationType.SON, FamilyRelationType.DAUGHTER].includes(
+      this.relationType,
+    );
   }
 
   get isMother(): boolean {

@@ -26,11 +26,15 @@ export class VisitsService {
     return this.visitRepository.save(visit);
   }
 
-  async findAll(filter: FilterVisitDto): Promise<PaginationResponseDto<VisitResponseDto>> {
+  async findAll(
+    filter: FilterVisitDto,
+  ): Promise<PaginationResponseDto<VisitResponseDto>> {
     const queryBuilder = this.visitRepository.createQueryBuilder('visit');
 
     if (filter.familyId) {
-      queryBuilder.andWhere('visit.familyId = :familyId', { familyId: filter.familyId });
+      queryBuilder.andWhere('visit.familyId = :familyId', {
+        familyId: filter.familyId,
+      });
     }
 
     if (filter.visitDateFrom) {
@@ -40,13 +44,18 @@ export class VisitsService {
     }
 
     if (filter.visitDateTo) {
-      queryBuilder.andWhere('visit.visitDate <= :visitDateTo', { visitDateTo: filter.visitDateTo });
+      queryBuilder.andWhere('visit.visitDate <= :visitDateTo', {
+        visitDateTo: filter.visitDateTo,
+      });
     }
 
     if (filter.visitDispatchDateFrom) {
-      queryBuilder.andWhere('visit.visitDispatchDate >= :visitDispatchDateFrom', {
-        visitDispatchDateFrom: filter.visitDispatchDateFrom,
-      });
+      queryBuilder.andWhere(
+        'visit.visitDispatchDate >= :visitDispatchDateFrom',
+        {
+          visitDispatchDateFrom: filter.visitDispatchDateFrom,
+        },
+      );
     }
 
     if (filter.visitDispatchDateTo) {
@@ -62,39 +71,57 @@ export class VisitsService {
     }
 
     if (filter.minFamilyMembersCount !== undefined) {
-      queryBuilder.andWhere('visit.familyMembersCount >= :minFamilyMembersCount', {
-        minFamilyMembersCount: filter.minFamilyMembersCount,
-      });
+      queryBuilder.andWhere(
+        'visit.familyMembersCount >= :minFamilyMembersCount',
+        {
+          minFamilyMembersCount: filter.minFamilyMembersCount,
+        },
+      );
     }
 
     if (filter.maxFamilyMembersCount !== undefined) {
-      queryBuilder.andWhere('visit.familyMembersCount <= :maxFamilyMembersCount', {
-        maxFamilyMembersCount: filter.maxFamilyMembersCount,
-      });
+      queryBuilder.andWhere(
+        'visit.familyMembersCount <= :maxFamilyMembersCount',
+        {
+          maxFamilyMembersCount: filter.maxFamilyMembersCount,
+        },
+      );
     }
 
     if (filter.minHouseResidentsCount !== undefined) {
-      queryBuilder.andWhere('visit.houseResidentsCount >= :minHouseResidentsCount', {
-        minHouseResidentsCount: filter.minHouseResidentsCount,
-      });
+      queryBuilder.andWhere(
+        'visit.houseResidentsCount >= :minHouseResidentsCount',
+        {
+          minHouseResidentsCount: filter.minHouseResidentsCount,
+        },
+      );
     }
 
     if (filter.maxHouseResidentsCount !== undefined) {
-      queryBuilder.andWhere('visit.houseResidentsCount <= :maxHouseResidentsCount', {
-        maxHouseResidentsCount: filter.maxHouseResidentsCount,
-      });
+      queryBuilder.andWhere(
+        'visit.houseResidentsCount <= :maxHouseResidentsCount',
+        {
+          maxHouseResidentsCount: filter.maxHouseResidentsCount,
+        },
+      );
     }
 
     if (filter.familyHealthConditions) {
-      queryBuilder.andWhere('visit.familyHealthConditions ILIKE :familyHealthConditions', {
-        familyHealthConditions: `%${filter.familyHealthConditions}%`,
-      });
+      queryBuilder.andWhere(
+        'visit.familyHealthConditions ILIKE :familyHealthConditions',
+        {
+          familyHealthConditions: `%${filter.familyHealthConditions}%`,
+        },
+      );
     }
 
     if (filter.visitCommitteeEvaluation) {
-      queryBuilder.andWhere('visit.visitCommitteeEvaluation ILIKE :visitCommitteeEvaluation', {
-        visitCommitteeEvaluation: `%${filter.visitCommitteeEvaluation}%`,
-      });
+      queryBuilder.andWhere(
+        'visit.visitCommitteeEvaluation ILIKE :visitCommitteeEvaluation',
+        {
+          visitCommitteeEvaluation: `%${filter.visitCommitteeEvaluation}%`,
+        },
+      );
     }
 
     if (filter.finalEvaluation) {
@@ -106,7 +133,10 @@ export class VisitsService {
     return paginate(queryBuilder, filter, VisitResponseDto);
   }
 
-  async findOne(id: number, options: FindOneOptions<Visit> = {}): Promise<Visit> {
+  async findOne(
+    id: number,
+    options: FindOneOptions<Visit> = {},
+  ): Promise<Visit> {
     const visit = await this.visitRepository.findOne({
       where: { id },
       ...options,
@@ -121,7 +151,7 @@ export class VisitsService {
   async update(id: number, updateVisitDto: UpdateVisitDto): Promise<Visit> {
     const visit = await this.visitRepository.findOne({
       where: { id },
-      relations: ['house', 'family'],
+      relations: ['family'],
     });
 
     if (!visit) {
@@ -135,7 +165,7 @@ export class VisitsService {
   async delete(id: number): Promise<void> {
     await this.visitRepository.findOne({
       where: { id },
-      relations: ['house', 'family'],
+      relations: ['family'],
     });
 
     await this.visitRepository.delete(id);

@@ -9,18 +9,17 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  Put,
   Query,
 } from '@nestjs/common';
+import { Protected } from '../../../common/decorators/protected.decorator';
+import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
+import { Permission } from '../../../modules/roles/enums/permission.enum';
+import { FamilyMemberFilterDto } from '../dtos/queries/family-member-filter.dto';
+import { CreateFamilyMemberDto } from '../dtos/requests/create-family-member.dto';
+import { UpdateFamilyMemberDto } from '../dtos/requests/update-family-member.dto';
 import { FamilyMemberResponseDto } from '../dtos/responses/family-member-response.dto';
 import { FamilyMembersService } from '../services/family-members.service';
-import { CreateFamilyMemberDto } from '../dtos/requests/create-family-member.dto';
-import { FamilyMemberFilterDto } from '../dtos/queries/family-member-filter.dto';
-import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
-import { Protected } from '../../../common/decorators/protected.decorator';
-import { Permission } from '../../../modules/roles/enums/permission.enum';
-import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
-import { UpdateFamilyMemberDto } from '../dtos/requests/update-family-member.dto';
 
 @Controller('family-members')
 export class FamilyMembersController {

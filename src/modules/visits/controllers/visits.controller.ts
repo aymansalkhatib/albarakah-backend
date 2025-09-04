@@ -28,22 +28,28 @@ export class VisitsController {
   @Post()
   @Protected(Permission.CREATE_VISIT)
   @SerializeResponse(VisitResponseDto)
-  async create(@Body() createVisitDto: CreateVisitDto): Promise<VisitResponseDto> {
+  async create(
+    @Body() createVisitDto: CreateVisitDto,
+  ): Promise<VisitResponseDto> {
     return await this.visitsService.create(createVisitDto);
   }
 
   @Get()
   @Protected(Permission.READ_VISIT)
-  async findAll(@Query() filter: FilterVisitDto): Promise<PaginationResponseDto<VisitResponseDto>> {
+  async findAll(
+    @Query() filter: FilterVisitDto,
+  ): Promise<PaginationResponseDto<VisitResponseDto>> {
     return await this.visitsService.findAll(filter);
   }
 
   @Get(':id')
   @Protected(Permission.READ_VISIT)
   @SerializeResponse(VisitResponseDto)
-  async findOne(@Param('id', ParseIntPipe) id: number): Promise<VisitResponseDto> {
+  async findOne(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<VisitResponseDto> {
     return await this.visitsService.findOne(id, {
-      relations: ['house', 'family'],
+      relations: ['family'],
     });
   }
 

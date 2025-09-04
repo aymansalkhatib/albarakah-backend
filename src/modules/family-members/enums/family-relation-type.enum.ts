@@ -3,13 +3,5 @@ export enum FamilyRelationType {
   FATHER = 'Father',
   DAUGHTER = 'Daughter',
   SON = 'Son',
-  PATERNAL_UNCLE = 'Paternal Uncle',
-  PATERNAL_AUNT = 'Paternal Aunt',
-  MATERNAL_UNCLE = 'Maternal Uncle',
-  MATERNAL_AUNT = 'Maternal Aunt',
-  PATERNAL_GRANDFATHER = 'Paternal Grandfather',
-  MATERNAL_GRANDFATHER = 'Maternal Grandfather',
-  MATERNAL_GRANDMOTHER = 'Maternal Grandmother',
-  PATERNAL_GRANDMOTHER = 'Paternal Grandmother',
   OTHER = 'Other',
 }
