@@ -149,6 +149,8 @@ interface TrainingcoursesPersoncoursebatchesErrorsAlreadyenrolledParams {
 }
 
 const TranslationKeys = {
+  'app.hello_world': 'app.hello_world',
+  'auth.errors.invalid_credentials': 'auth.errors.invalid_credentials',
   'dropdowns.errors.cannot_create_subcategory': 'dropdowns.errors.cannot_create_subcategory',
   'dropdowns.errors.cannot_delete_core_category': 'dropdowns.errors.cannot_delete_core_category',
   'dropdowns.errors.category_has_children': 'dropdowns.errors.category_has_children',
@@ -195,6 +197,7 @@ const TranslationKeys = {
   'family-members.errors.not_found_with_id': 'family-members.errors.not_found_with_id',
   'family-members.errors.only_children_can_be_sponsored': 'family-members.errors.only_children_can_be_sponsored',
   'family-members.errors.person_already_family_member': 'family-members.errors.person_already_family_member',
+  'family-needs.errors.not_found': 'family-needs.errors.not_found',
   'guards.errors.access_denied': 'guards.errors.access_denied',
   'guards.errors.access_token_required': 'guards.errors.access_token_required',
   'guards.errors.token_issued_before_login': 'guards.errors.token_issued_before_login',
@@ -223,6 +226,7 @@ const TranslationKeys = {
   'pipes.validation.must_not_equal': 'pipes.validation.must_not_equal',
   'pipes.validation.only_one_of_fields': 'pipes.validation.only_one_of_fields',
   'pipes.validation.positive_integer_required': 'pipes.validation.positive_integer_required',
+  'received-assistance.errors.family_member_mismatch': 'received-assistance.errors.family_member_mismatch',
   'received-assistance.errors.not_found': 'received-assistance.errors.not_found',
   'supporters.errors.already_supporter': 'supporters.errors.already_supporter',
   'supporters.errors.not_found': 'supporters.errors.not_found',
@@ -250,6 +254,8 @@ type NoParams = undefined;
 
 // Placeholder type for type-safe interpolation
 export interface TranslationInterpolations {
+  'app.hello_world': NoParams;
+  'auth.errors.invalid_credentials': NoParams;
   'dropdowns.errors.cannot_create_subcategory': NoParams;
   'dropdowns.errors.cannot_delete_core_category': NoParams;
   'dropdowns.errors.category_has_children': NoParams;
@@ -296,6 +302,7 @@ export interface TranslationInterpolations {
   'family-members.errors.not_found_with_id': FamilymembersErrorsNotfoundwithidParams;
   'family-members.errors.only_children_can_be_sponsored': NoParams;
   'family-members.errors.person_already_family_member': NoParams;
+  'family-needs.errors.not_found': NoParams;
   'guards.errors.access_denied': GuardsErrorsAccessdeniedParams;
   'guards.errors.access_token_required': NoParams;
   'guards.errors.token_issued_before_login': NoParams;
@@ -324,6 +331,7 @@ export interface TranslationInterpolations {
   'pipes.validation.must_not_equal': PipesValidationMustnotequalParams;
   'pipes.validation.only_one_of_fields': PipesValidationOnlyoneoffieldsParams;
   'pipes.validation.positive_integer_required': NoParams;
+  'received-assistance.errors.family_member_mismatch': NoParams;
   'received-assistance.errors.not_found': ReceivedassistanceErrorsNotfoundParams;
   'supporters.errors.already_supporter': NoParams;
   'supporters.errors.not_found': SupportersErrorsNotfoundParams;

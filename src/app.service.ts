@@ -6,6 +6,6 @@ export class AppService {
   constructor(private readonly t: TranslateHelper) {}
 
   async getHello() {
-    return 'Hello World';
+    return this.t.tr('app.hello_world');
   }
 }

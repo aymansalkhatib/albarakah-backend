@@ -1,16 +1,20 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOneOptions, Repository } from 'typeorm';
-import { TranslateHelper } from '../../.././shared/modules/app-i18n/translate.helper';
+import { PaginationResponseDto } from '../../.././common/pagination/dto/pagination-response.dto';
+import { paginate } from '../../.././common/pagination/paginate.service';
 import { FamiliesService } from '../../.././modules/families/services/families.service';
 import { FamilyMembersService } from '../../.././modules/family-members/services/family-members.service';
-import { paginate } from '../../.././common/pagination/paginate.service';
-import { PaginationResponseDto } from '../../.././common/pagination/dto/pagination-response.dto';
-import { ReceivedAssistance } from '../entities/received-assistance.entity';
+import { TranslateHelper } from '../../.././shared/modules/app-i18n/translate.helper';
+import { FilterReceivedAssistanceDto } from '../dtos/queries/filter-received-assistance.dto';
 import { CreateReceivedAssistanceDto } from '../dtos/requests/create-received-assistance.dto';
 import { UpdateReceivedAssistanceDto } from '../dtos/requests/update-received-assistance.dto';
-import { FilterReceivedAssistanceDto } from '../dtos/queries/filter-received-assistance.dto';
 import { ReceivedAssistanceResponseDto } from '../dtos/responses/received-assistance-response.dto';
+import { ReceivedAssistance } from '../entities/received-assistance.entity';
 
 @Injectable()
 export class ReceivedAssistanceService {
@@ -22,16 +26,25 @@ export class ReceivedAssistanceService {
     private readonly translateHelper: TranslateHelper,
   ) {}
 
-  async create(createDto: CreateReceivedAssistanceDto): Promise<ReceivedAssistance> {
+  async create(
+    createDto: CreateReceivedAssistanceDto,
+  ): Promise<ReceivedAssistance> {
     const family = await this.familiesService.findOne(createDto.familyId);
 
     let familyMember = undefined;
     if (createDto.familyMemberId) {
-      familyMember = await this.familyMembersService.findOne(createDto.familyMemberId, {
-        relations: ['person'],
-      });
+      familyMember = await this.familyMembersService.findOne(
+        createDto.familyMemberId,
+        {
+          relations: ['person'],
+        },
+      );
       if (familyMember.familyId !== createDto.familyId) {
-        throw new ConflictException('familyMemberId must belong to the same family');
+        throw new ConflictException(
+          this.translateHelper.tr(
+            'received-assistance.errors.family_member_mismatch',
+          ),
+        );
       }
     }
 
@@ -41,7 +54,10 @@ export class ReceivedAssistanceService {
     return { ...saved, family, familyMember };
   }
 
-  async update(id: number, updateDto: UpdateReceivedAssistanceDto): Promise<ReceivedAssistance> {
+  async update(
+    id: number,
+    updateDto: UpdateReceivedAssistanceDto,
+  ): Promise<ReceivedAssistance> {
     const entity = await this.findOne(id, {
       relations: ['family', 'familyMember', 'familyMember.person'],
     });
@@ -86,7 +102,9 @@ export class ReceivedAssistanceService {
       .leftJoinAndSelect('receivedAssistance.familyMember', 'familyMember');
 
     if (filterDto.familyId) {
-      qb.andWhere('receivedAssistance.familyId = :familyId', { familyId: filterDto.familyId });
+      qb.andWhere('receivedAssistance.familyId = :familyId', {
+        familyId: filterDto.familyId,
+      });
     }
     if (filterDto.familyMemberId) {
       qb.andWhere('receivedAssistance.familyMemberId = :familyMemberId', {
@@ -100,21 +118,31 @@ export class ReceivedAssistanceService {
     }
 
     if (filterDto.amountFrom && filterDto.amountTo) {
-      qb.andWhere('receivedAssistance.amount BETWEEN :amountFrom AND :amountTo', {
+      qb.andWhere(
+        'receivedAssistance.amount BETWEEN :amountFrom AND :amountTo',
+        {
+          amountFrom: filterDto.amountFrom,
+          amountTo: filterDto.amountTo,
+        },
+      );
+    } else if (filterDto.amountFrom) {
+      qb.andWhere('receivedAssistance.amount >= :amountFrom', {
         amountFrom: filterDto.amountFrom,
+      });
+    } else if (filterDto.amountTo) {
+      qb.andWhere('receivedAssistance.amount <= :amountTo', {
         amountTo: filterDto.amountTo,
       });
-    } else if (filterDto.amountFrom) {
-      qb.andWhere('receivedAssistance.amount >= :amountFrom', { amountFrom: filterDto.amountFrom });
-    } else if (filterDto.amountTo) {
-      qb.andWhere('receivedAssistance.amount <= :amountTo', { amountTo: filterDto.amountTo });
     }
 
     if (filterDto.deliveryDateFrom && filterDto.deliveryDateTo) {
-      qb.andWhere('receivedAssistance.deliveryDate BETWEEN :deliveryDateFrom AND :deliveryDateTo', {
-        deliveryDateFrom: filterDto.deliveryDateFrom,
-        deliveryDateTo: filterDto.deliveryDateTo,
-      });
+      qb.andWhere(
+        'receivedAssistance.deliveryDate BETWEEN :deliveryDateFrom AND :deliveryDateTo',
+        {
+          deliveryDateFrom: filterDto.deliveryDateFrom,
+          deliveryDateTo: filterDto.deliveryDateTo,
+        },
+      );
     } else if (filterDto.deliveryDateFrom) {
       qb.andWhere('receivedAssistance.deliveryDate >= :deliveryDateFrom', {
         deliveryDateFrom: filterDto.deliveryDateFrom,
@@ -126,7 +154,9 @@ export class ReceivedAssistanceService {
     }
 
     if (filterDto.notes) {
-      qb.andWhere('receivedAssistance.notes ILIKE :notes', { notes: `%${filterDto.notes}%` });
+      qb.andWhere('receivedAssistance.notes ILIKE :notes', {
+        notes: `%${filterDto.notes}%`,
+      });
     }
 
     return paginate(qb, filterDto, ReceivedAssistanceResponseDto);

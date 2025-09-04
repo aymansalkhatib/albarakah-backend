@@ -7,11 +7,6 @@ export class AppController {
 
   @Get()
   async getHello() {
-    try {
-    } catch (e) {
-      return e.toString();
-    }
-
     return this.appService.getHello();
   }
 }
