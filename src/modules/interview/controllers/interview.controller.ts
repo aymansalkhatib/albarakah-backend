@@ -1,5 +1,8 @@
 import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Protected } from '../../../common/decorators/protected.decorator';
+import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
+import { Permission } from '../../roles/enums/permission.enum';
 import { CreateInterviewDto } from '../dtos/requests/create-interview.dto';
 import { GetInterviewsQueryDto } from '../dtos/requests/get-interviews-query.dto';
 import { UpdateInterviewDto } from '../dtos/requests/update-interview.dto';
@@ -11,6 +14,8 @@ export class InterviewController {
   constructor(private readonly interviewService: InterviewService) {}
 
   @Post()
+  @Protected(Permission.CREATE_INTERVIEW)
+  @SerializeResponse(InterviewResponseDto)
   async create(
     @Body() createInterviewDto: CreateInterviewDto,
   ): Promise<InterviewResponseDto> {
@@ -18,6 +23,7 @@ export class InterviewController {
   }
 
   @Get()
+  @Protected(Permission.READ_INTERVIEW)
   async findAll(
     @Query() query: GetInterviewsQueryDto,
   ): Promise<PaginationResponseDto<InterviewResponseDto>> {
@@ -25,11 +31,15 @@ export class InterviewController {
   }
 
   @Get(':id')
+  @Protected(Permission.READ_INTERVIEW)
+  @SerializeResponse(InterviewResponseDto)
   async findOne(@Param('id') id: string): Promise<InterviewResponseDto> {
     return this.interviewService.findOne(+id);
   }
 
   @Put(':id')
+  @Protected(Permission.UPDATE_INTERVIEW)
+  @SerializeResponse(InterviewResponseDto)
   async update(
     @Param('id') id: string,
     @Body() updateInterviewDto: UpdateInterviewDto,
