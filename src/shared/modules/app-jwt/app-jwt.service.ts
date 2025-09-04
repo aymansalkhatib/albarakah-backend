@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as jwt from 'jsonwebtoken';
 import { EnvironmentConfig } from '../app-config/env.schema';
+import { TranslateHelper } from '../app-i18n/translate.helper';
 import { AccessTokenPayload, DecodedAccessTokenPayload } from './interfaces';
 
 /**
@@ -12,9 +13,14 @@ export class AppJwtService {
   private readonly accessSecret: string;
   private readonly accessExpiresIn: number;
 
-  constructor(private readonly configService: ConfigService<EnvironmentConfig>) {
+  constructor(
+    private readonly configService: ConfigService<EnvironmentConfig>,
+    private readonly translateHelper: TranslateHelper,
+  ) {
     this.accessSecret = this.configService.getOrThrow('JWT_ACCESS_SECRET');
-    this.accessExpiresIn = this.configService.getOrThrow<number>('JWT_ACCESS_EXPIRES_IN_MS');
+    this.accessExpiresIn = this.configService.getOrThrow<number>(
+      'JWT_ACCESS_EXPIRES_IN_MS',
+    );
   }
 
   /**
@@ -23,7 +29,9 @@ export class AppJwtService {
    * @returns Signed JWT access token
    */
   createAccessToken(payload: AccessTokenPayload): string {
-    return jwt.sign(payload, this.accessSecret, { expiresIn: this.accessExpiresIn });
+    return jwt.sign(payload, this.accessSecret, {
+      expiresIn: this.accessExpiresIn,
+    });
   }
 
   /**
@@ -33,7 +41,10 @@ export class AppJwtService {
    * @returns Decoded token payload if valid
    * @throws UnauthorizedException if token is invalid
    */
-  verifyAccessToken(token: string, ignoreExpiration = false): DecodedAccessTokenPayload {
+  verifyAccessToken(
+    token: string,
+    ignoreExpiration = false,
+  ): DecodedAccessTokenPayload {
     try {
       return jwt.verify(token, this.accessSecret, {
         ignoreExpiration,
@@ -45,7 +56,9 @@ export class AppJwtService {
           return decoded as DecodedAccessTokenPayload;
         }
       }
-      throw new UnauthorizedException('Invalid or expired access token');
+      throw new UnauthorizedException(
+        this.translateHelper.tr('auth.errors.invalid_or_expired_access_token'),
+      );
     }
   }
 }

@@ -204,6 +204,8 @@ interface TrainingcoursesPersoncoursebatchesErrorsAlreadyenrolledParams {
 const TranslationKeys = {
   'app.hello_world': 'app.hello_world',
   'auth.errors.invalid_credentials': 'auth.errors.invalid_credentials',
+  'auth.errors.invalid_or_expired_access_token':
+    'auth.errors.invalid_or_expired_access_token',
   'dropdowns.errors.cannot_create_subcategory':
     'dropdowns.errors.cannot_create_subcategory',
   'dropdowns.errors.cannot_delete_core_category':
@@ -397,6 +399,7 @@ type NoParams = undefined;
 export interface TranslationInterpolations {
   'app.hello_world': NoParams;
   'auth.errors.invalid_credentials': NoParams;
+  'auth.errors.invalid_or_expired_access_token': NoParams;
   'dropdowns.errors.cannot_create_subcategory': NoParams;
   'dropdowns.errors.cannot_delete_core_category': NoParams;
   'dropdowns.errors.category_has_children': NoParams;
