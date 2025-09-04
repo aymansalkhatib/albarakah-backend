@@ -2,10 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
+import { paginate } from '../../../common/pagination/paginate.service';
 import { Family } from '../../families/entities/families.entity';
 import { FamiliesService } from '../../families/services/families.service';
 import { FamilyMember } from '../../family-members/entities/family-members.entity';
 import { FamilyMembersService } from '../../family-members/services/family-members.service';
+import { applyFamilyMemberFilters } from '../../family-members/utils';
 import { CreateInterviewDto } from '../dtos/requests/create-interview.dto';
 import { GetInterviewsQueryDto } from '../dtos/requests/get-interviews-query.dto';
 import { UpdateInterviewDto } from '../dtos/requests/update-interview.dto';
@@ -59,53 +61,38 @@ export class InterviewService {
   async findAll(
     query: GetInterviewsQueryDto,
   ): Promise<PaginationResponseDto<InterviewResponseDto>> {
-    const { page = 1, limit = 10, search, familyId, guardianId } = query;
-    const skip = (page - 1) * limit;
-
     // Build query for families with guardians
     const queryBuilder = this.familyRepository
       .createQueryBuilder('family')
-      .leftJoinAndSelect('family.familyMembers', 'familyMembers')
-      .where('familyMembers.isGuardian = :isGuardian', { isGuardian: true });
+      .leftJoinAndSelect('family.familyMembers', 'familyMembers');
 
-    if (search) {
-      queryBuilder.andWhere(
-        '(family.name ILIKE :search OR familyMembers.firstName ILIKE :search OR familyMembers.lastName ILIKE :search)',
-        { search: `%${search}%` },
+    // Apply isVisited filter if provided
+    if (query.isVisited === true) {
+      queryBuilder.innerJoin('family.visits', 'visits');
+    }
+
+    if (query.familyMember) {
+      applyFamilyMemberFilters(
+        queryBuilder,
+        'familyMembers',
+        query.familyMember,
       );
     }
 
-    if (familyId) {
-      queryBuilder.andWhere('family.id = :familyId', { familyId });
-    }
+    const value = await paginate(
+      queryBuilder,
+      query,
+      InterviewResponseDto,
+      (family: Family) => ({
+        family,
+        guardian: family.familyMembers.find((member) => member.isGuardian),
+        familyMembers: family.familyMembers.filter(
+          (member) => !member.isGuardian,
+        ),
+      }),
+    );
 
-    if (guardianId) {
-      queryBuilder.andWhere('familyMembers.id = :guardianId', { guardianId });
-    }
-
-    const [families, total] = await queryBuilder
-      .skip(skip)
-      .take(limit)
-      .getManyAndCount();
-
-    const interviews: InterviewResponseDto[] = [];
-
-    for (const family of families) {
-      const guardian = family.familyMembers.find((member) => member.isGuardian);
-      if (guardian) {
-        const familyMembers = await this.familyMemberRepository.find({
-          where: { familyId: family.id },
-          relations: ['person'],
-        });
-        interviews.push({
-          family,
-          guardian,
-          familyMembers,
-        });
-      }
-    }
-
-    return new PaginationResponseDto(interviews, total, page, limit);
+    return value;
   }
 
   async findOne(id: number): Promise<InterviewResponseDto> {
@@ -163,9 +150,5 @@ export class InterviewService {
         return this.findOne(id);
       },
     );
-  }
-
-  async delete(id: number): Promise<void> {
-    await this.familiesService.delete(id);
   }
 }

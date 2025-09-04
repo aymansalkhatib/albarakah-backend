@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-  Query,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { CreateInterviewDto } from '../dtos/requests/create-interview.dto';
 import { GetInterviewsQueryDto } from '../dtos/requests/get-interviews-query.dto';
@@ -44,10 +35,5 @@ export class InterviewController {
     @Body() updateInterviewDto: UpdateInterviewDto,
   ): Promise<InterviewResponseDto> {
     return this.interviewService.update(+id, updateInterviewDto);
-  }
-
-  @Delete(':id')
-  async remove(@Param('id') id: string): Promise<void> {
-    return this.interviewService.delete(+id);
   }
 }

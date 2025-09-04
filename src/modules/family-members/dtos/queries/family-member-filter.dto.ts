@@ -5,9 +5,6 @@ import { PaginationDto } from '../../../../common/pagination/dto/pagination.dto'
 import { FilterPersonDto } from '../../../../modules/persons/dtos/queries/filter-person.dto';
 import { FamilyRelationType } from '../../enums/family-relation-type.enum';
 
-/**
- * فلاتر متقدمة للبحث عن أعضاء العائلة، تشمل خصائص العضو وخصائص الشخص المرتبط
- */
 export class FamilyMemberFilterDto extends PaginationDto {
   @IsOptional()
   @IsNumber()
