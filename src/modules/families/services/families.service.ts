@@ -170,12 +170,63 @@ export class FamiliesService {
   }
 
   async delete(id: number): Promise<void> {
-    const result = await this.familyRepository.delete(id);
-    if (!result.affected) {
-      throw new NotFoundException(
-        this.translateHelper.tr('families.not_found'),
-      );
-    }
+    // First, find the family to ensure it exists and load all relations
+    const family = await this.findOne(id, {
+      relations: [
+        'familyMembers',
+        'familyMembers.person',
+        'needs',
+        'receivedAssistance',
+        'emergencyAidRequests',
+        'visits',
+      ],
+    });
+
+    // Use a transaction to ensure all deletions are atomic
+    await this.familyRepository.manager.transaction(async (entityManager) => {
+      // Delete family members and their associated persons
+      if (family.familyMembers && family.familyMembers.length > 0) {
+        for (const member of family.familyMembers) {
+          // Delete the family member
+          await entityManager.delete('family_members', member.id);
+          // Delete the associated person if it's only used by this family member
+          if (member.person) {
+            await entityManager.delete('person', member.person.id);
+          }
+        }
+      }
+
+      // Delete family needs
+      if (family.needs && family.needs.length > 0) {
+        await entityManager.delete('family_needs', { familyId: id });
+      }
+
+      // Delete received assistance records
+      if (family.receivedAssistance && family.receivedAssistance.length > 0) {
+        await entityManager.delete('received_assistance', { familyId: id });
+      }
+
+      // Delete emergency aid requests
+      if (
+        family.emergencyAidRequests &&
+        family.emergencyAidRequests.length > 0
+      ) {
+        await entityManager.delete('emergency_aid_requests', { familyId: id });
+      }
+
+      // Delete visits
+      if (family.visits && family.visits.length > 0) {
+        await entityManager.delete('visits', { familyId: id });
+      }
+
+      // Finally, delete the family itself
+      const result = await entityManager.delete('families', id);
+      if (!result.affected) {
+        throw new NotFoundException(
+          this.translateHelper.tr('families.not_found'),
+        );
+      }
+    });
   }
 
   // private methods
