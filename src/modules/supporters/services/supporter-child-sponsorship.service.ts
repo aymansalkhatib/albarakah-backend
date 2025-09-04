@@ -1,9 +1,14 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOneOptions, Not, Repository } from 'typeorm';
 import { FamilyRelationType } from '../../../modules/family-members/enums/family-relation-type.enum';
 import { FamilyMembersService } from '../../../modules/family-members/services/family-members.service';
 import { applyPersonFilters } from '../../../modules/persons/utils/person-filter.util';
+import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
 import { FilterSupporterChildSponsorshipDto } from '../dtos/queries/filter-supporter-child-sponsorship.dto';
 import { CreateSupporterChildSponsorshipDto } from '../dtos/requests/create-supporter-child-sponsorship.dto';
 import { UpdateSupporterChildSponsorshipDto } from '../dtos/requests/update-supporter-child-sponsorship.dto';
@@ -17,30 +22,45 @@ export class SupporterChildSponsorshipService {
     @InjectRepository(SupporterChildSponsorship)
     private readonly supporterChildSponsorshipRepository: Repository<SupporterChildSponsorship>,
     private readonly familyMembersService: FamilyMembersService,
+    private readonly translateHelper: TranslateHelper,
   ) {}
 
-  async create(createDto: CreateSupporterChildSponsorshipDto): Promise<SupporterChildSponsorship> {
-    const familyMember = await this.familyMembersService.findOne(createDto.familyMemberId);
+  async create(
+    createDto: CreateSupporterChildSponsorshipDto,
+  ): Promise<SupporterChildSponsorship> {
+    const familyMember = await this.familyMembersService.findOne(
+      createDto.familyMemberId,
+    );
 
     if (
       familyMember.relationType != FamilyRelationType.DAUGHTER &&
       familyMember.relationType != FamilyRelationType.SON
     ) {
-      throw new ConflictException('Only children (son or daughter) can be sponsored');
+      throw new ConflictException(
+        this.translateHelper.tr(
+          'supporters.errors.child_sponsorship.only_children_can_be_sponsored',
+        ),
+      );
     }
 
-    const existingActiveSponsorship = await this.supporterChildSponsorshipRepository.findOne({
-      where: {
-        familyMemberId: createDto.familyMemberId,
-        sponsorshipStatus: SponsorshipStatus.ACTIVE,
-      },
-    });
+    const existingActiveSponsorship =
+      await this.supporterChildSponsorshipRepository.findOne({
+        where: {
+          familyMemberId: createDto.familyMemberId,
+          sponsorshipStatus: SponsorshipStatus.ACTIVE,
+        },
+      });
 
     if (existingActiveSponsorship) {
-      throw new ConflictException('This child already has an active sponsorship');
+      throw new ConflictException(
+        this.translateHelper.tr(
+          'supporters.errors.child_sponsorship.child_already_sponsored',
+        ),
+      );
     }
 
-    const sponsorship = this.supporterChildSponsorshipRepository.create(createDto);
+    const sponsorship =
+      this.supporterChildSponsorshipRepository.create(createDto);
     return await this.supporterChildSponsorshipRepository.save(sponsorship);
   }
 
@@ -54,7 +74,11 @@ export class SupporterChildSponsorshipService {
       .leftJoinAndSelect('familyMember.person', 'person');
 
     // Apply supporter child sponsorship filters
-    applySupporterChildSponsorshipFilters(queryBuilder, 'sponsorship', filterDto);
+    applySupporterChildSponsorshipFilters(
+      queryBuilder,
+      'sponsorship',
+      filterDto,
+    );
 
     // Filter by person fields if provided
     if (filterDto?.person) {
@@ -74,7 +98,12 @@ export class SupporterChildSponsorshipService {
     });
 
     if (!sponsorship) {
-      throw new NotFoundException(`Supporter child sponsorship with ID ${id} not found`);
+      throw new NotFoundException(
+        this.translateHelper.tr(
+          'supporters.errors.child_sponsorship.not_found',
+          { id },
+        ),
+      );
     }
 
     return sponsorship;
@@ -87,16 +116,21 @@ export class SupporterChildSponsorshipService {
     const sponsorship = await this.findOne(id);
 
     if (updateDto.sponsorshipStatus === SponsorshipStatus.ACTIVE) {
-      const existingActiveSponsorship = await this.supporterChildSponsorshipRepository.findOne({
-        where: {
-          familyMemberId: sponsorship.familyMemberId,
-          sponsorshipStatus: SponsorshipStatus.ACTIVE,
-          id: Not(id), // Exclude current sponsorship
-        },
-      });
+      const existingActiveSponsorship =
+        await this.supporterChildSponsorshipRepository.findOne({
+          where: {
+            familyMemberId: sponsorship.familyMemberId,
+            sponsorshipStatus: SponsorshipStatus.ACTIVE,
+            id: Not(id), // Exclude current sponsorship
+          },
+        });
 
       if (existingActiveSponsorship) {
-        throw new ConflictException('The selected child already has an active sponsorship.');
+        throw new ConflictException(
+          this.translateHelper.tr(
+            'supporters.errors.child_sponsorship.child_already_has_active_sponsorship',
+          ),
+        );
       }
     }
 
@@ -108,7 +142,12 @@ export class SupporterChildSponsorshipService {
     const result = await this.supporterChildSponsorshipRepository.delete(id);
 
     if (result.affected === 0) {
-      throw new NotFoundException(`Supporter child sponsorship with ID ${id} not found`);
+      throw new NotFoundException(
+        this.translateHelper.tr(
+          'supporters.errors.child_sponsorship.not_found',
+          { id },
+        ),
+      );
     }
   }
 }
