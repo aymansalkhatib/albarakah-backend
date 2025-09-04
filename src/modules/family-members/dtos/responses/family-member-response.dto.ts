@@ -35,12 +35,6 @@ export class FamilyMemberResponseDto {
   notes?: string;
 
   @Expose()
-  hasJoinedBarakaCenterCourses?: boolean;
-
-  @Expose()
-  joinedBarakaCoursesCount?: number;
-
-  @Expose()
   createdAt: Date;
 
   @Expose()
@@ -61,6 +55,36 @@ export class FamilyMemberResponseDto {
   @Expose()
   @Type(() => ReceivedAssistanceResponseDto)
   receivedAssistance: ReceivedAssistanceResponseDto[];
+
+  @Expose()
+  @Transform(
+    ({ obj }) => {
+      const courseBatches = obj.courseBatches;
+      if (Array.isArray(courseBatches)) {
+        return courseBatches.length > 0;
+      }
+      return false;
+    },
+    {
+      toClassOnly: true,
+    },
+  )
+  hasJoinedBarakaCenterCourses?: boolean;
+
+  @Expose()
+  @Transform(
+    ({ obj }) => {
+      const courseBatches = obj.courseBatches;
+      if (Array.isArray(courseBatches)) {
+        return courseBatches.length;
+      }
+      return 0;
+    },
+    {
+      toClassOnly: true,
+    },
+  )
+  barakaCenterCoursesCount?: number;
 
   @Expose()
   @Transform(

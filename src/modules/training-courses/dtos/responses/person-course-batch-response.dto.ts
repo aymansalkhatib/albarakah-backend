@@ -1,7 +1,7 @@
 import { Exclude, Expose, Type } from 'class-transformer';
+import { FamilyMemberResponseDto } from '../../../../modules/family-members/dtos/responses/family-member-response.dto';
 import { AttendanceStatus } from '../../enums/attendance-status.enum';
 import { CourseBatchResponseDto } from './course-batch-response.dto';
-import { FamilyMemberResponseDto } from '../../../../modules/family-members/dtos/responses/family-member-response.dto';
 
 @Exclude()
 export class PersonCourseBatchResponseDto {

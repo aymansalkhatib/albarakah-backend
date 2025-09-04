@@ -117,6 +117,7 @@ export class FamilyMembersService {
       .createQueryBuilder('family_member')
       .leftJoinAndSelect('family_member.person', 'person')
       .leftJoinAndSelect('family_member.family', 'family')
+      .leftJoinAndSelect('family_member.courseBatches', 'courseBatches')
       // join active sponsorships and map its supporter as currentSponsor on the root entity
       .leftJoinAndSelect(
         'family_member.childSponsorships',
@@ -157,6 +158,7 @@ export class FamilyMembersService {
       .createQueryBuilder('family_member')
       .leftJoinAndSelect('family_member.person', 'person')
       .leftJoinAndSelect('family_member.family', 'family')
+      .leftJoinAndSelect('family_member.courseBatches', 'courseBatches')
       .leftJoinAndSelect(
         'family_member.childSponsorships',
         'childSponsorships',
