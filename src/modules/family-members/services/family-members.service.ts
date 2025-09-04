@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityManager, FindOneOptions, Repository } from 'typeorm';
+import { EntityManager, FindOneOptions, Not, Repository } from 'typeorm';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { paginate } from '../../../common/pagination/paginate.service';
 import { FamiliesService } from '../../../modules/families/services/families.service';
@@ -54,6 +54,16 @@ export class FamilyMembersService {
     em: EntityManager,
   ): Promise<FamilyMember> {
     await this.familiesService.findOne(createFamilyMemberDto.familyId, {}, em);
+
+    if (createFamilyMemberDto.isGuardian) {
+      const hasGuardian = await this.hasGuardian(
+        createFamilyMemberDto.familyId,
+        em,
+      );
+      if (hasGuardian) {
+        throw new ConflictException('The family already has a guardian');
+      }
+    }
 
     let person: Person;
 
@@ -180,77 +190,77 @@ export class FamilyMembersService {
     id: number,
     updateData: UpdateFamilyMemberDto,
   ): Promise<FamilyMember> {
-    return await this.familyMemberRepository.manager.transaction(
-      async (entityManager) => {
-        const familyMember = await this.findOneDetailed(id);
+    return await this.familyMemberRepository.manager.transaction(async (em) => {
+      const familyMember = await this.findOneDetailed(id);
 
+      if (updateData.isGuardian) {
+        const hasGuardian = await this.hasGuardian(
+          familyMember.familyId,
+          em,
+          familyMember.id,
+        );
+        if (hasGuardian) {
+          throw new ConflictException('The family already has a guardian');
+        }
+      }
+
+      if (
+        updateData.relationType &&
+        updateData.relationType !== familyMember.relationType &&
+        familyMember?.childSponsorships?.length > 0
+      ) {
+        throw new ConflictException(
+          'Cannot change relation type because the member has existing child sponsorships.',
+        );
+      }
+
+      // new relationType is Father => check if have already father
+      if (
+        updateData.relationType === FamilyRelationType.FATHER &&
+        familyMember.relationType != updateData.relationType
+      ) {
+        const existingFather = await em.getRepository(FamilyMember).exists({
+          where: {
+            familyId: familyMember.familyId,
+            relationType: FamilyRelationType.FATHER,
+          },
+        });
+        if (existingFather) {
+          throw new ConflictException('The family already has a father');
+        }
+      }
+
+      // check if relationType match gender
+      const relationType = updateData.relationType ?? familyMember.relationType;
+      const gender = updateData?.person?.gender ?? familyMember?.person?.gender;
+      const isSponsored = updateData?.isSponsored ?? familyMember?.isSponsored;
+
+      await this.validateGenderRelationType(gender, relationType);
+
+      //
+      if (isSponsored) {
+        const relation = updateData.relationType;
         if (
-          updateData.relationType &&
-          updateData.relationType !== familyMember.relationType &&
-          familyMember?.childSponsorships?.length > 0
+          relation !== FamilyRelationType.DAUGHTER &&
+          relation !== FamilyRelationType.SON
         ) {
           throw new ConflictException(
-            'Cannot change relation type because the member has existing child sponsorships.',
+            'Only daughters and sons can be sponsored',
           );
         }
+      }
 
-        // new relationType is Father => check if have already father
-        if (
-          updateData.relationType === FamilyRelationType.FATHER &&
-          familyMember.relationType != updateData.relationType
-        ) {
-          const existingFather = await entityManager
-            .getRepository(FamilyMember)
-            .exists({
-              where: {
-                familyId: familyMember.familyId,
-                relationType: FamilyRelationType.FATHER,
-              },
-            });
-          if (existingFather) {
-            throw new ConflictException('The family already has a father');
-          }
-        }
+      if (updateData.person) {
+        familyMember.person = await this.personsService.update(
+          familyMember.person.id,
+          updateData.person,
+        );
+        delete updateData.person;
+      }
 
-        // check if relationType match gender
-        const relationType =
-          updateData.relationType ?? familyMember.relationType;
-        const gender =
-          updateData?.person?.gender ?? familyMember?.person?.gender;
-        const isSponsored =
-          updateData?.isSponsored ?? familyMember?.isSponsored;
-
-        await this.validateGenderRelationType(gender, relationType);
-
-        //
-        if (isSponsored) {
-          const relation = updateData.relationType;
-          if (
-            relation !== FamilyRelationType.DAUGHTER &&
-            relation !== FamilyRelationType.SON
-          ) {
-            throw new ConflictException(
-              'Only daughters and sons can be sponsored',
-            );
-          }
-        }
-
-        if (updateData.person) {
-          familyMember.person = await this.personsService.update(
-            familyMember.person.id,
-            updateData.person,
-          );
-          delete updateData.person;
-        }
-
-        entityManager
-          .getRepository(FamilyMember)
-          .merge(familyMember, updateData);
-        return await entityManager
-          .getRepository(FamilyMember)
-          .save(familyMember);
-      },
-    );
+      em.getRepository(FamilyMember).merge(familyMember, updateData);
+      return await em.getRepository(FamilyMember).save(familyMember);
+    });
   }
 
   async delete(id: number): Promise<void> {
@@ -286,5 +296,24 @@ export class FamilyMembersService {
         'Person gender does not match the selected family relation type',
       );
     }
+  }
+
+  /**
+   * Checks if the given family already has a guardian (وصي).
+   * Returns true if a guardian exists, otherwise false.
+   */
+  async hasGuardian(
+    familyId: number,
+    entityManager: EntityManager,
+    excludeId?: number,
+  ): Promise<boolean> {
+    const count = await entityManager?.getRepository(FamilyMember).count({
+      where: {
+        familyId,
+        isGuardian: true,
+        ...(excludeId && { id: Not(excludeId) }),
+      },
+    });
+    return count > 0;
   }
 }
