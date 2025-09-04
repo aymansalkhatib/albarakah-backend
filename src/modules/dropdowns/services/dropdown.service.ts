@@ -29,7 +29,10 @@ export class DropdownService {
       if (upsertDto.id) await this.findOne(upsertDto.id);
 
       // Check for duplicate dropdown name
-      await this.checkDuplicateDropdownName(upsertDto.dropdownName, upsertDto.id);
+      await this.checkDuplicateDropdownName(
+        upsertDto.dropdownName,
+        upsertDto.id,
+      );
 
       // Create or update dropdown
       let dropdown = this.dropdownRepository.create({
@@ -62,7 +65,9 @@ export class DropdownService {
 
       if (!dropdown) {
         throw new NotFoundException(
-          this.translateHelper.tr('dropdowns.errors.dropdown_not_found', { id }),
+          this.translateHelper.tr('dropdowns.errors.dropdown_not_found', {
+            id,
+          }),
         );
       }
 
@@ -74,7 +79,12 @@ export class DropdownService {
           } catch (err: any) {
             if (err?.code === '23503') {
               throw new BadRequestException(
-                `Cannot delete dropdown option '${option.name}': This option is referenced by other data.`,
+                this.translateHelper.tr(
+                  'dropdowns.errors.cannot_delete_option_referenced',
+                  {
+                    optionName: option.name,
+                  },
+                ),
               );
             }
             throw err;
@@ -88,7 +98,12 @@ export class DropdownService {
       } catch (err: any) {
         if (err?.code === '23503') {
           throw new BadRequestException(
-            `Cannot delete dropdown '${dropdown.dropdownName}': This dropdown is referenced by other data.`,
+            this.translateHelper.tr(
+              'dropdowns.errors.cannot_delete_dropdown_referenced',
+              {
+                dropdownName: dropdown.dropdownName,
+              },
+            ),
           );
         }
         throw err;
@@ -96,7 +111,10 @@ export class DropdownService {
     });
   }
 
-  async findOne(id: number, options: FindOneOptions<Dropdown> = {}): Promise<Dropdown> {
+  async findOne(
+    id: number,
+    options: FindOneOptions<Dropdown> = {},
+  ): Promise<Dropdown> {
     const dropdown = await this.dropdownRepository.findOne({
       where: { id },
       ...options,
@@ -149,14 +167,19 @@ export class DropdownService {
       );
     }
 
-    const hasOption = dropdown.options?.some((option) => option.id === optionId);
+    const hasOption = dropdown.options?.some(
+      (option) => option.id === optionId,
+    );
 
     if (!hasOption) {
       throw new NotFoundException(
-        this.translateHelper.tr('dropdowns.errors.option_not_found_in_dropdown', {
-          optionId,
-          dropdownName,
-        }),
+        this.translateHelper.tr(
+          'dropdowns.errors.option_not_found_in_dropdown',
+          {
+            optionId,
+            dropdownName,
+          },
+        ),
       );
     }
 
@@ -212,7 +235,12 @@ export class DropdownService {
 
     if (duplicates.length > 0) {
       throw new BadRequestException(
-        `Duplicate option names found in request: ${duplicates.join(', ')}`,
+        this.translateHelper.tr(
+          'dropdowns.errors.duplicate_option_names_in_request',
+          {
+            duplicates: duplicates.join(', '),
+          },
+        ),
       );
     }
   }
@@ -223,12 +251,18 @@ export class DropdownService {
   ): void {
     for (const optionDto of optionsDto) {
       const duplicateInDb = existingOptions.find(
-        (existing) => existing.name === optionDto.name && existing.id !== optionDto.id,
+        (existing) =>
+          existing.name === optionDto.name && existing.id !== optionDto.id,
       );
 
       if (duplicateInDb) {
         throw new BadRequestException(
-          `Option name '${optionDto.name}' already exists in this dropdown`,
+          this.translateHelper.tr(
+            'dropdowns.errors.option_name_already_exists',
+            {
+              optionName: optionDto.name,
+            },
+          ),
         );
       }
     }
@@ -239,7 +273,9 @@ export class DropdownService {
     existingOptions: DropdownOption[],
     manager: any,
   ): Promise<void> {
-    const optionIdsInRequest = optionsDto.filter((opt) => opt.id).map((opt) => opt.id);
+    const optionIdsInRequest = optionsDto
+      .filter((opt) => opt.id)
+      .map((opt) => opt.id);
 
     const optionsToDelete = existingOptions.filter(
       (existing) => !optionIdsInRequest.includes(existing.id),
@@ -252,7 +288,12 @@ export class DropdownService {
         } catch (err: any) {
           if (err?.code === '23503') {
             throw new BadRequestException(
-              `Cannot delete dropdown option '${option.name}': This option is referenced by other data.`,
+              this.translateHelper.tr(
+                'dropdowns.errors.cannot_delete_option_referenced',
+                {
+                  optionName: option.name,
+                },
+              ),
             );
           }
           throw err;
@@ -263,19 +304,20 @@ export class DropdownService {
 
   private async checkDuplicateDropdownName(
     dropdownName: string,
-    dropdownCategoryId: number,
     excludeId?: number,
   ): Promise<void> {
     const existingDropdown = await this.dropdownRepository.findOne({
       where: {
-        id: Not(excludeId),
+        ...(excludeId ? { id: Not(excludeId) } : {}),
         dropdownName,
       },
     });
 
     if (existingDropdown) {
       throw new ConflictException(
-        `Dropdown with name '${dropdownName}' already exists in this category`,
+        this.translateHelper.tr('dropdowns.errors.dropdown_name_exists', {
+          name: dropdownName,
+        }),
       );
     }
   }
@@ -284,11 +326,15 @@ export class DropdownService {
     optionsDto: UpsertDropdownOptionDto[],
     existingOptions: DropdownOption[],
   ): void {
-    const optionIdsToUpdate = optionsDto.filter((opt) => opt.id).map((opt) => opt.id);
+    const optionIdsToUpdate = optionsDto
+      .filter((opt) => opt.id)
+      .map((opt) => opt.id);
 
     if (optionIdsToUpdate.length > 0) {
       const foundOptionIds = existingOptions.map((opt) => opt.id);
-      const missingOptionIds = optionIdsToUpdate.filter((id) => !foundOptionIds.includes(id));
+      const missingOptionIds = optionIdsToUpdate.filter(
+        (id) => !foundOptionIds.includes(id),
+      );
 
       if (missingOptionIds.length > 0) {
         const missingOptionNames = optionsDto
@@ -296,7 +342,12 @@ export class DropdownService {
           .map((opt) => opt.name);
 
         throw new BadRequestException(
-          `Cannot update dropdown options: The following options were not found: ${missingOptionNames.join(', ')}`,
+          this.translateHelper.tr(
+            'dropdowns.errors.cannot_update_options_not_found',
+            {
+              missingOptions: missingOptionNames.join(', '),
+            },
+          ),
         );
       }
     }

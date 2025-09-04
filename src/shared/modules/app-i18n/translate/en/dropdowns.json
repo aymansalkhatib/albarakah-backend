@@ -22,6 +22,11 @@
     "cannot_create_subcategory": "Cannot create subcategory for this category.",
     "option_not_found_in_dropdown": "Option with ID {optionId} not found in dropdown '{dropdownName}'",
     "dropdown_not_found_in_category": "Dropdown '{dropdownName}' in category '{categoryName}' not found",
-    "cannot_delete_core_category": "Cannot delete core category."
+    "cannot_delete_core_category": "Cannot delete core category.",
+    "cannot_delete_option_referenced": "Cannot delete dropdown option '{optionName}': This option is referenced by other data.",
+    "cannot_delete_dropdown_referenced": "Cannot delete dropdown '{dropdownName}': This dropdown is referenced by other data.",
+    "duplicate_option_names_in_request": "Duplicate option names found in request: {duplicates}",
+    "option_name_already_exists": "Option name '{optionName}' already exists in this dropdown",
+    "cannot_update_options_not_found": "Cannot update dropdown options: The following options were not found: {missingOptions}"
   }
 }
