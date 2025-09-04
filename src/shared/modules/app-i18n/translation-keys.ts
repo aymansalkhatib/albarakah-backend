@@ -208,6 +208,10 @@ interface TrainingcoursesPersoncoursebatchesErrorsAlreadyenrolledParams {
   familyMemberId: string | number; courseBatchId: string | number
 }
 
+interface UploadsErrorsNotfoundParams {
+  id: string | number
+}
+
 const TranslationKeys = {
   'app.hello_world': 'app.hello_world',
   'auth.errors.invalid_credentials': 'auth.errors.invalid_credentials',
@@ -329,7 +333,10 @@ const TranslationKeys = {
   'training-courses.person-course-batches.success.deleted': 'training-courses.person-course-batches.success.deleted',
   'training-courses.training-courses.errors.name_exists': 'training-courses.training-courses.errors.name_exists',
   'training-courses.training-courses.errors.not_found': 'training-courses.training-courses.errors.not_found',
-  'training-courses.training-courses.success.deleted': 'training-courses.training-courses.success.deleted'
+  'training-courses.training-courses.success.deleted': 'training-courses.training-courses.success.deleted',
+  'uploads.errors.delete_failed': 'uploads.errors.delete_failed',
+  'uploads.errors.not_found': 'uploads.errors.not_found',
+  'uploads.errors.upload_failed': 'uploads.errors.upload_failed'
 } as const;
 
 export type TranslationKey = keyof typeof TranslationKeys;
@@ -460,4 +467,7 @@ export interface TranslationInterpolations {
   'training-courses.training-courses.errors.name_exists': NoParams;
   'training-courses.training-courses.errors.not_found': TrainingcoursesTrainingcoursesErrorsNotfoundParams;
   'training-courses.training-courses.success.deleted': TrainingcoursesTrainingcoursesSuccessDeletedParams;
+  'uploads.errors.delete_failed': NoParams;
+  'uploads.errors.not_found': UploadsErrorsNotfoundParams;
+  'uploads.errors.upload_failed': NoParams;
 }

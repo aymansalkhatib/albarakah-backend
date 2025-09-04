@@ -99,4 +99,9 @@ export enum Permission {
   READ_DROPDOWN = 'read_dropdown',
   UPDATE_DROPDOWN = 'update_dropdown',
   DELETE_DROPDOWN = 'delete_dropdown',
+
+  // Upload Management
+  CREATE_UPLOAD = 'create_upload',
+  READ_UPLOAD = 'read_upload',
+  DELETE_UPLOAD = 'delete_upload',
 }
