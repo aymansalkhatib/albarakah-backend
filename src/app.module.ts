@@ -15,6 +15,7 @@ import { EmployeesModule } from './modules/employees/employee.module';
 import { FamiliesModule } from './modules/families/families.module';
 import { FamilyMembersModule } from './modules/family-members/family-members.module';
 import { FamilyNeedsModule } from './modules/family-needs/family-needs.module';
+import { InterviewModule } from './modules/interview/interview.module';
 import { ReceivedAssistanceModule } from './modules/received-assistance/received-assistance.module';
 import { RolesModule } from './modules/roles/roles.module';
 import { SupportersModule } from './modules/supporters/supporters.module';
@@ -51,6 +52,7 @@ import { AppTypeOrmModule } from './shared/modules/app-type-orm/app-type-orm.mod
     FamilyMembersModule,
     EmergencyAidRequestModule,
     FamilyNeedsModule,
+    InterviewModule,
     ReceivedAssistanceModule,
     VisitsModule,
     SupportersModule,

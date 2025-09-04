@@ -104,8 +104,15 @@ export class FamiliesService {
     return family;
   }
 
-  async update(id: number, updateFamilyDto: UpdateFamilyDto): Promise<Family> {
-    const family = await this.familyRepository.findOneById(id);
+  async update(
+    id: number,
+    updateFamilyDto: UpdateFamilyDto,
+    entityManager?: EntityManager,
+  ): Promise<Family> {
+    const familyRepository =
+      entityManager?.getRepository(Family) ?? this.familyRepository;
+
+    const family = await familyRepository.findOneBy({ id });
 
     if (!family) {
       throw new NotFoundException(
@@ -116,12 +123,15 @@ export class FamiliesService {
     if (updateFamilyDto.contactedByEmployeeId) {
       await this.employeesService.findOne(
         updateFamilyDto.contactedByEmployeeId,
+        {},
+        entityManager,
       );
     }
 
     if (updateFamilyDto.familyBookNumber) {
       const existingFamily = await this.findOneByFamilyBookNumber(
         updateFamilyDto.familyBookNumber,
+        entityManager,
       );
 
       if (existingFamily && existingFamily.id !== id) {
@@ -134,6 +144,7 @@ export class FamiliesService {
     if (updateFamilyDto.requestNumber) {
       const existingFamily = await this.findOneByRequestNumber(
         updateFamilyDto.requestNumber,
+        entityManager,
       );
       if (existingFamily && existingFamily.id !== id) {
         throw new ConflictException(
@@ -145,6 +156,7 @@ export class FamiliesService {
     if (updateFamilyDto.formNumber) {
       const existingFamily = await this.findOneByFormNumber(
         updateFamilyDto.formNumber,
+        entityManager,
       );
       if (existingFamily && existingFamily.id !== id) {
         throw new ConflictException(
@@ -153,8 +165,8 @@ export class FamiliesService {
       }
     }
 
-    const updatedFamily = this.familyRepository.merge(family, updateFamilyDto);
-    return this.familyRepository.save(updatedFamily);
+    const updatedFamily = familyRepository.merge(family, updateFamilyDto);
+    return familyRepository.save(updatedFamily);
   }
 
   async delete(id: number): Promise<void> {
@@ -169,17 +181,31 @@ export class FamiliesService {
   // private methods
   private findOneByFamilyBookNumber(
     familyBookNumber: string,
+    entityManager?: EntityManager,
   ): Promise<Family | undefined> {
-    return this.familyRepository.findOneBy({ familyBookNumber });
+    const familyRepository =
+      entityManager?.getRepository(Family) ?? this.familyRepository;
+
+    return familyRepository.findOneBy({ familyBookNumber });
   }
 
   private findOneByRequestNumber(
     requestNumber: string,
+    entityManager?: EntityManager,
   ): Promise<Family | undefined> {
-    return this.familyRepository.findOneBy({ requestNumber });
+    const familyRepository =
+      entityManager?.getRepository(Family) ?? this.familyRepository;
+
+    return familyRepository.findOneBy({ requestNumber });
   }
 
-  private findOneByFormNumber(formNumber: string): Promise<Family | undefined> {
-    return this.familyRepository.findOneBy({ formNumber });
+  private findOneByFormNumber(
+    formNumber: string,
+    entityManager?: EntityManager,
+  ): Promise<Family | undefined> {
+    const familyRepository =
+      entityManager?.getRepository(Family) ?? this.familyRepository;
+
+    return familyRepository.findOneBy({ formNumber });
   }
 }
