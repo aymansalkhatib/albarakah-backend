@@ -1,12 +1,4 @@
-import {
-  ClassSerializerInterceptor,
-  MiddlewareConsumer,
-  Module,
-  NestModule,
-} from '@nestjs/common';
-import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ParseQueryMiddleware } from './common/middlewares/parse-query.middleware';
 import { AuthModule } from './modules/auth/auth.module';
 import { DropdownsModule } from './modules/dropdowns/dropdowns.module';
@@ -17,16 +9,15 @@ import { FamilyMembersModule } from './modules/family-members/family-members.mod
 import { FamilyNeedsModule } from './modules/family-needs/family-needs.module';
 import { ReceivedAssistanceModule } from './modules/received-assistance/received-assistance.module';
 import { RolesModule } from './modules/roles/roles.module';
+import { SupportersModule } from './modules/supporters/supporters.module';
 import { SystemUsersModule } from './modules/system-users/system-users.module';
 import { TrainingCoursesModule } from './modules/training-courses/training-courses.module';
 import { VisitsModule } from './modules/visits/visits.module';
-import { ErrorHandlerFactory } from './shared/exceptions-filter/error-handler.factory';
-import { GlobalExceptionFilter } from './shared/exceptions-filter/global-exception.filter';
 import { AppConfigModel } from './shared/modules/app-config/app_config.module';
 import { AppI18nModule } from './shared/modules/app-i18n/i18n.module';
 import { AppJwtModule } from './shared/modules/app-jwt/app-jwt.module';
+import { AppStorageModule } from './shared/modules/app-storage/app-storage.module';
 import { AppTypeOrmModule } from './shared/modules/app-type-orm/app-type-orm.module';
-import { SupportersModule } from './modules/supporters/supporters.module';
 
 @Module({
   imports: [
@@ -34,6 +25,9 @@ import { SupportersModule } from './modules/supporters/supporters.module';
     AppI18nModule,
     AppTypeOrmModule,
     AppJwtModule,
+    AppStorageModule.register({
+      provider: 'local',
+    }),
     //
     AuthModule,
     DropdownsModule,
@@ -51,19 +45,19 @@ import { SupportersModule } from './modules/supporters/supporters.module';
     SupportersModule,
   ],
 
-  controllers: [AppController],
+  // controllers: [AppController],
 
   providers: [
-    AppService,
-    ErrorHandlerFactory,
-    {
-      provide: APP_FILTER,
-      useClass: GlobalExceptionFilter,
-    },
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: ClassSerializerInterceptor,
-    },
+    // AppService,
+    // ErrorHandlerFactory,
+    // {
+    //   provide: APP_FILTER,
+    //   useClass: GlobalExceptionFilter,
+    // },
+    // {
+    //   provide: APP_INTERCEPTOR,
+    //   useClass: ClassSerializerInterceptor,
+    // },
   ],
 })
 export class AppModule implements NestModule {
