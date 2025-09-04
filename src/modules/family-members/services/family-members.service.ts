@@ -12,6 +12,7 @@ import { Person } from '../../../modules/persons/entities/person.entity';
 import { GenderType } from '../../../modules/persons/enums/gender-type.enum';
 import { PersonRelation } from '../../../modules/persons/enums/person-relation.enum';
 import { PersonsService } from '../../../modules/persons/services/persons.service';
+import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
 import { applyPersonFilters } from '../../persons/utils/person-filter.util';
 import { FamilyMemberFilterDto } from '../dtos/queries/family-member-filter.dto';
 import { CreateFamilyMemberDto } from '../dtos/requests/create-family-member.dto';
@@ -28,6 +29,7 @@ export class FamilyMembersService {
     private readonly familyMemberRepository: Repository<FamilyMember>,
     private readonly familiesService: FamiliesService,
     private readonly personsService: PersonsService,
+    private readonly translateHelper: TranslateHelper,
   ) {}
 
   async create(
@@ -61,7 +63,11 @@ export class FamilyMembersService {
         em,
       );
       if (hasGuardian) {
-        throw new ConflictException('The family already has a guardian');
+        throw new ConflictException(
+          this.translateHelper.tr(
+            'family-members.errors.family_already_has_guardian',
+          ),
+        );
       }
     }
 
@@ -75,7 +81,11 @@ export class FamilyMembersService {
       );
 
       if (foundPerson.familyMember) {
-        throw new ConflictException('Person is already a member of a family');
+        throw new ConflictException(
+          this.translateHelper.tr(
+            'family-members.errors.person_already_family_member',
+          ),
+        );
       }
       person = foundPerson;
     } else {
@@ -93,7 +103,11 @@ export class FamilyMembersService {
         },
       });
       if (member) {
-        throw new ConflictException('The family already has a father');
+        throw new ConflictException(
+          this.translateHelper.tr(
+            'family-members.errors.family_already_has_father',
+          ),
+        );
       }
     }
 
@@ -108,7 +122,11 @@ export class FamilyMembersService {
         relation !== FamilyRelationType.DAUGHTER &&
         relation !== FamilyRelationType.SON
       ) {
-        throw new ConflictException('Only daughters and sons can be sponsored');
+        throw new ConflictException(
+          this.translateHelper.tr(
+            'family-members.errors.only_children_can_be_sponsored',
+          ),
+        );
       }
     }
 
@@ -157,7 +175,9 @@ export class FamilyMembersService {
       ...options,
     });
     if (!familyMember) {
-      throw new NotFoundException('Family member not found');
+      throw new NotFoundException(
+        this.translateHelper.tr('family-members.errors.not_found'),
+      );
     }
     return familyMember;
   }
@@ -181,7 +201,11 @@ export class FamilyMembersService {
       .getOne();
 
     if (!familyMember) {
-      throw new NotFoundException(`Family member with ID ${id} not found`);
+      throw new NotFoundException(
+        this.translateHelper.tr('family-members.errors.not_found_with_id', {
+          id,
+        }),
+      );
     }
     return familyMember;
   }
@@ -200,7 +224,11 @@ export class FamilyMembersService {
           familyMember.id,
         );
         if (hasGuardian) {
-          throw new ConflictException('The family already has a guardian');
+          throw new ConflictException(
+            this.translateHelper.tr(
+              'family-members.errors.family_already_has_guardian',
+            ),
+          );
         }
       }
 
@@ -210,7 +238,9 @@ export class FamilyMembersService {
         familyMember?.childSponsorships?.length > 0
       ) {
         throw new ConflictException(
-          'Cannot change relation type because the member has existing child sponsorships.',
+          this.translateHelper.tr(
+            'family-members.errors.cannot_change_relation_with_sponsorships',
+          ),
         );
       }
 
@@ -226,7 +256,11 @@ export class FamilyMembersService {
           },
         });
         if (existingFather) {
-          throw new ConflictException('The family already has a father');
+          throw new ConflictException(
+            this.translateHelper.tr(
+              'family-members.errors.family_already_has_father',
+            ),
+          );
         }
       }
 
@@ -245,7 +279,9 @@ export class FamilyMembersService {
           relation !== FamilyRelationType.SON
         ) {
           throw new ConflictException(
-            'Only daughters and sons can be sponsored',
+            this.translateHelper.tr(
+              'family-members.errors.only_children_can_be_sponsored',
+            ),
           );
         }
       }
@@ -293,7 +329,9 @@ export class FamilyMembersService {
 
     if (expectedGender && expectedGender !== gender) {
       throw new ConflictException(
-        'Person gender does not match the selected family relation type',
+        this.translateHelper.tr(
+          'family-members.errors.gender_relation_mismatch',
+        ),
       );
     }
   }

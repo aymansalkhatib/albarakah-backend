@@ -56,6 +56,10 @@ interface EmployeesErrorsNotfoundParams {
   id: string | number
 }
 
+interface FamilymembersErrorsNotfoundwithidParams {
+  id: string | number
+}
+
 interface GuardsErrorsAccessdeniedParams {
   permissions: string | number
 }
@@ -183,6 +187,14 @@ const TranslationKeys = {
   'families.not_found': 'families.not_found',
   'families.request_number_exists': 'families.request_number_exists',
   'families.request_number_exists_another': 'families.request_number_exists_another',
+  'family-members.errors.cannot_change_relation_with_sponsorships': 'family-members.errors.cannot_change_relation_with_sponsorships',
+  'family-members.errors.family_already_has_father': 'family-members.errors.family_already_has_father',
+  'family-members.errors.family_already_has_guardian': 'family-members.errors.family_already_has_guardian',
+  'family-members.errors.gender_relation_mismatch': 'family-members.errors.gender_relation_mismatch',
+  'family-members.errors.not_found': 'family-members.errors.not_found',
+  'family-members.errors.not_found_with_id': 'family-members.errors.not_found_with_id',
+  'family-members.errors.only_children_can_be_sponsored': 'family-members.errors.only_children_can_be_sponsored',
+  'family-members.errors.person_already_family_member': 'family-members.errors.person_already_family_member',
   'guards.errors.access_denied': 'guards.errors.access_denied',
   'guards.errors.access_token_required': 'guards.errors.access_token_required',
   'guards.errors.token_issued_before_login': 'guards.errors.token_issued_before_login',
@@ -275,6 +287,14 @@ export interface TranslationInterpolations {
   'families.not_found': NoParams;
   'families.request_number_exists': NoParams;
   'families.request_number_exists_another': NoParams;
+  'family-members.errors.cannot_change_relation_with_sponsorships': NoParams;
+  'family-members.errors.family_already_has_father': NoParams;
+  'family-members.errors.family_already_has_guardian': NoParams;
+  'family-members.errors.gender_relation_mismatch': NoParams;
+  'family-members.errors.not_found': NoParams;
+  'family-members.errors.not_found_with_id': FamilymembersErrorsNotfoundwithidParams;
+  'family-members.errors.only_children_can_be_sponsored': NoParams;
+  'family-members.errors.person_already_family_member': NoParams;
   'guards.errors.access_denied': GuardsErrorsAccessdeniedParams;
   'guards.errors.access_token_required': NoParams;
   'guards.errors.token_issued_before_login': NoParams;
