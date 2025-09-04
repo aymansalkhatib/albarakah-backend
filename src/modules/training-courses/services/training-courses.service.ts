@@ -1,6 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOneOptions, Repository } from 'typeorm';
+import { FindOneOptions, Not, Repository } from 'typeorm';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { paginate } from '../../../common/pagination/paginate.service';
 import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
@@ -18,8 +22,14 @@ export class TrainingCoursesService {
     private readonly translateHelper: TranslateHelper,
   ) {}
 
-  async create(createTrainingCourseDto: CreateTrainingCourseDto): Promise<TrainingCourse> {
-    const trainingCourse = this.trainingCourseRepository.create(createTrainingCourseDto);
+  async create(
+    createTrainingCourseDto: CreateTrainingCourseDto,
+  ): Promise<TrainingCourse> {
+    await this.isNameExists(createTrainingCourseDto.name);
+
+    const trainingCourse = this.trainingCourseRepository.create(
+      createTrainingCourseDto,
+    );
     return await this.trainingCourseRepository.save(trainingCourse);
   }
 
@@ -28,6 +38,8 @@ export class TrainingCoursesService {
     updateTrainingCourseDto: UpdateTrainingCourseDto,
   ): Promise<TrainingCourse> {
     const trainingCourse = await this.findOne(id);
+
+    await this.isNameExists(updateTrainingCourseDto.name, id);
 
     const mergedTrainingCourse = this.trainingCourseRepository.merge(
       trainingCourse,
@@ -42,12 +54,18 @@ export class TrainingCoursesService {
 
     if (result.affected === 0) {
       throw new NotFoundException(
-        this.translateHelper.tr('training-courses.training-courses.errors.not_found', { id }),
+        this.translateHelper.tr(
+          'training-courses.training-courses.errors.not_found',
+          { id },
+        ),
       );
     }
   }
 
-  async findOne(id: number, options: FindOneOptions<TrainingCourse> = {}): Promise<TrainingCourse> {
+  async findOne(
+    id: number,
+    options: FindOneOptions<TrainingCourse> = {},
+  ): Promise<TrainingCourse> {
     const trainingCourse = await this.trainingCourseRepository.findOne({
       where: { id },
       ...options,
@@ -55,7 +73,10 @@ export class TrainingCoursesService {
 
     if (!trainingCourse) {
       throw new NotFoundException(
-        this.translateHelper.tr('training-courses.training-courses.errors.not_found', { id }),
+        this.translateHelper.tr(
+          'training-courses.training-courses.errors.not_found',
+          { id },
+        ),
       );
     }
 
@@ -65,7 +86,8 @@ export class TrainingCoursesService {
   async findAll(
     filterDto: FilterTrainingCourseDto,
   ): Promise<PaginationResponseDto<TrainingCourseResponseDto>> {
-    const queryBuilder = this.trainingCourseRepository.createQueryBuilder('trainingCourse');
+    const queryBuilder =
+      this.trainingCourseRepository.createQueryBuilder('trainingCourse');
 
     // Apply filters based on FilterTrainingCourseDto
     if (filterDto.name) {
@@ -87,5 +109,23 @@ export class TrainingCoursesService {
     }
 
     return paginate(queryBuilder, filterDto, TrainingCourseResponseDto);
+  }
+
+  async isNameExists(name: string, excludeId?: number) {
+    const where: any = { name };
+    if (excludeId !== undefined) {
+      where.id = Not(excludeId);
+    }
+    const existingCourse = await this.trainingCourseRepository.findOne({
+      where,
+    });
+
+    if (existingCourse) {
+      throw new BadRequestException(
+        this.translateHelper.tr(
+          'training-courses.training-courses.errors.name_exists',
+        ),
+      );
+    }
   }
 }

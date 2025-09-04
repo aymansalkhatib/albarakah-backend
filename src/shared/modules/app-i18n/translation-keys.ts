@@ -238,6 +238,7 @@ const TranslationKeys = {
   'training-courses.person-course-batches.errors.drop_out_date_before_join_date': 'training-courses.person-course-batches.errors.drop_out_date_before_join_date',
   'training-courses.person-course-batches.errors.not_found': 'training-courses.person-course-batches.errors.not_found',
   'training-courses.person-course-batches.success.deleted': 'training-courses.person-course-batches.success.deleted',
+  'training-courses.training-courses.errors.name_exists': 'training-courses.training-courses.errors.name_exists',
   'training-courses.training-courses.errors.not_found': 'training-courses.training-courses.errors.not_found',
   'training-courses.training-courses.success.deleted': 'training-courses.training-courses.success.deleted'
 } as const;
@@ -338,6 +339,7 @@ export interface TranslationInterpolations {
   'training-courses.person-course-batches.errors.drop_out_date_before_join_date': NoParams;
   'training-courses.person-course-batches.errors.not_found': TrainingcoursesPersoncoursebatchesErrorsNotfoundParams;
   'training-courses.person-course-batches.success.deleted': NoParams;
+  'training-courses.training-courses.errors.name_exists': NoParams;
   'training-courses.training-courses.errors.not_found': TrainingcoursesTrainingcoursesErrorsNotfoundParams;
   'training-courses.training-courses.success.deleted': TrainingcoursesTrainingcoursesSuccessDeletedParams;
 }

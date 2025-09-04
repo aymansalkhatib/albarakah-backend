@@ -4,10 +4,12 @@ import {
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
+  Unique,
   UpdateDateColumn,
 } from 'typeorm';
 import { CourseBatch } from './course-batch.entity';
 
+@Unique('UQ_training_course_name', ['name'])
 @Entity('training_courses')
 export class TrainingCourse {
   @PrimaryGeneratedColumn()

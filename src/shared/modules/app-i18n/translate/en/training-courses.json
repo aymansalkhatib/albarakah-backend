@@ -1,7 +1,8 @@
 {
   "training-courses": {
     "errors": {
-      "not_found": "Training course with ID {id} not found"
+      "not_found": "Training course with ID {id} not found",
+      "name_exists": "Training course with this name already exists"
     },
     "success": {
       "deleted": "Training course \"{name}\" has been successfully deleted"
