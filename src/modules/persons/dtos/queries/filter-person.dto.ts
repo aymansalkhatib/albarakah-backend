@@ -54,7 +54,6 @@ export class FilterPersonDto extends PaginationDto {
   // nationalId exact 11 chars (optional)
   @IsOptional()
   @IsString()
-  @Length(11, 11, { message: 'National ID must be exactly 11 characters long' })
   nationalId?: string;
 
   @IsOptional()

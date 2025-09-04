@@ -11,12 +11,7 @@ import { SupportType } from '../../enums/support-type';
   },
 ])
 export class CreateSupporterDto {
-  @IsDate()
-  supportStartDate: Date;
 
-  @IsDate()
-  @IsOptional()
-  supportEndDate?: Date;
 
   @IsEnum(SupportType)
   @IsOptional()

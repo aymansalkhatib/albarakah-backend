@@ -13,32 +13,10 @@ export function applySupporterFilters(
     });
   }
 
-  if (filter.supportStartDateFrom) {
-    qb.andWhere(`${alias}.supportStartDate >= :from`, {
-      from: filter.supportStartDateFrom,
+  if (filter.notes) {
+    qb.andWhere(`${alias}.notes ILIKE :notes`, {
+      notes: `%${filter.notes}%`,
     });
-  }
-
-  if (filter.supportStartDateTo) {
-    qb.andWhere(`${alias}.supportStartDate <= :to`, {
-      to: filter.supportStartDateTo,
-    });
-  }
-
-  if (filter.supportEndDateFrom) {
-    qb.andWhere(`${alias}.supportEndDate >= :from`, {
-      from: filter.supportEndDateFrom,
-    });
-  }
-
-  if (filter.supportEndDateTo) {
-    qb.andWhere(`${alias}.supportEndDate <= :to`, {
-      to: filter.supportEndDateTo,
-    });
-  }
-
-  if (filter.search) {
-    qb.andWhere(`${alias}.notes ILIKE :search`, { search: `%${filter.search}%` });
   }
 
   return qb;

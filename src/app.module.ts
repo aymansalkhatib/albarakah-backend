@@ -26,6 +26,7 @@ import { AppConfigModel } from './shared/modules/app-config/app_config.module';
 import { AppI18nModule } from './shared/modules/app-i18n/i18n.module';
 import { AppJwtModule } from './shared/modules/app-jwt/app-jwt.module';
 import { AppTypeOrmModule } from './shared/modules/app-type-orm/app-type-orm.module';
+import { SupportersModule } from './modules/supporters/supporters.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { AppTypeOrmModule } from './shared/modules/app-type-orm/app-type-orm.mod
     FamilyNeedsModule,
     ReceivedAssistanceModule,
     VisitsModule,
+    SupportersModule,
   ],
 
   controllers: [AppController],

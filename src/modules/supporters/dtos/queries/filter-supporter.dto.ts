@@ -1,15 +1,7 @@
-import {
-  IsDateString,
-  IsEnum,
-  IsOptional,
-  IsString,
-  MaxLength,
-  ValidateNested,
-} from 'class-validator';
 import { Type } from 'class-transformer';
-import { FilterPersonDto } from '../../../../modules/persons/dtos/queries/filter-person.dto';
+import { IsEnum, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { PaginationDto } from '../../../../common/pagination/dto/pagination.dto';
-import { IsLessThanOrEqual } from '../../../../common/decorators/is-less-than-or-equal.decorator';
+import { FilterPersonDto } from '../../../../modules/persons/dtos/queries/filter-person.dto';
 import { SupportType } from '../../enums/support-type';
 
 export class FilterSupporterDto extends PaginationDto {
@@ -18,27 +10,8 @@ export class FilterSupporterDto extends PaginationDto {
   supportType?: SupportType;
 
   @IsOptional()
-  @IsDateString()
-  @IsLessThanOrEqual('supportStartDateTo')
-  supportStartDateFrom?: Date;
-
-  @IsOptional()
-  @IsDateString()
-  supportStartDateTo?: string;
-
-  @IsOptional()
-  @IsDateString()
-  @IsLessThanOrEqual('supportEndDateTo')
-  supportEndDateFrom?: Date;
-
-  @IsOptional()
-  @IsDateString()
-  supportEndDateTo?: string;
-
-  @IsOptional()
   @IsString()
-  @MaxLength(100)
-  search?: string;
+  notes?: string;
 
   @IsOptional()
   @ValidateNested()

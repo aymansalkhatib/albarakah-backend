@@ -1,4 +1,8 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, FindOneOptions, Repository } from 'typeorm';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
@@ -25,35 +29,40 @@ export class SupportersService {
   ) {}
 
   async create(createSupporterDto: CreateSupporterDto): Promise<Supporter> {
-    return await this.supporterRepository.manager.transaction(async (manager) => {
-      //
-      const supporterRepository = manager.getRepository(Supporter);
+    return await this.supporterRepository.manager.transaction(
+      async (manager) => {
+        //
+        const supporterRepository = manager.getRepository(Supporter);
 
-      let person: Person;
+        let person: Person;
 
-      if (createSupporterDto.personId) {
-        person = await this.personsService.findOne(
-          createSupporterDto.personId,
-          { relations: ['supporter'] },
-          manager,
-        );
+        if (createSupporterDto.personId) {
+          person = await this.personsService.findOne(
+            createSupporterDto.personId,
+            { relations: ['supporter'] },
+            manager,
+          );
 
-        if (person.supporter) {
-          throw new ConflictException(
-            this.translateHelper.tr('supporters.errors.already_supporter'),
+          if (person.supporter) {
+            throw new ConflictException(
+              this.translateHelper.tr('supporters.errors.already_supporter'),
+            );
+          }
+        } else {
+          person = await this.personsService.create(
+            createSupporterDto.person,
+            manager,
           );
         }
-      } else {
-        person = await this.personsService.create(createSupporterDto.person, manager);
-      }
 
-      const supporter = supporterRepository.create({
-        ...createSupporterDto,
-        person,
-      });
-      //
-      return await supporterRepository.save(supporter);
-    });
+        const supporter = supporterRepository.create({
+          ...createSupporterDto,
+          person,
+        });
+        //
+        return await supporterRepository.save(supporter);
+      },
+    );
   }
 
   async findAll(
@@ -64,13 +73,13 @@ export class SupportersService {
       .createQueryBuilder('supporter')
       .leftJoinAndSelect('supporter.person', 'person');
 
-    // Apply supporter filters
-    applySupporterFilters(queryBuilder, 'supporter', filterDto);
-
     // Apply person filters
     if (filterDto.person) {
       applyPersonFilters(queryBuilder, 'person', filterDto.person);
     }
+
+    // Apply supporter filters
+    applySupporterFilters(queryBuilder, 'supporter', filterDto);
 
     return paginate(queryBuilder, filterDto, SupporterResponseDto);
   }
@@ -93,35 +102,49 @@ export class SupportersService {
     });
 
     if (!supporter) {
-      throw new NotFoundException(this.translateHelper.tr('supporters.errors.not_found', { id }));
+      throw new NotFoundException(
+        this.translateHelper.tr('supporters.errors.not_found', { id }),
+      );
     }
 
     return supporter;
   }
 
-  async update(id: number, updateSupporterDto: UpdateSupporterDto): Promise<Supporter> {
-    return await this.supporterRepository.manager.transaction(async (manager) => {
-      const supporterRepository = manager.getRepository(Supporter);
+  async update(
+    id: number,
+    updateSupporterDto: UpdateSupporterDto,
+  ): Promise<Supporter> {
+    return await this.supporterRepository.manager.transaction(
+      async (manager) => {
+        const supporterRepository = manager.getRepository(Supporter);
 
-      const supporter = await this.findOne(id, { relations: ['person'] }, manager);
-
-      if (updateSupporterDto.person) {
-        supporter.person = await this.personsService.update(
-          supporter.person.id,
-          updateSupporterDto.person,
+        const supporter = await this.findOne(
+          id,
+          { relations: ['person'] },
           manager,
         );
-        delete updateSupporterDto.person;
-      }
 
-      supporterRepository.merge(supporter, updateSupporterDto);
-      return await supporterRepository.save(supporter);
-    });
+        if (updateSupporterDto.person) {
+          supporter.person = await this.personsService.update(
+            supporter.person.id,
+            updateSupporterDto.person,
+            manager,
+          );
+          delete updateSupporterDto.person;
+        }
+
+        supporterRepository.merge(supporter, updateSupporterDto);
+        return await supporterRepository.save(supporter);
+      },
+    );
   }
 
   async delete(id: number): Promise<void> {
     const supporter = await this.findOne(id);
     await this.supporterRepository.delete(id);
-    await this.personsService.deleteIf(supporter.personId, PersonRelation.SUPPORTER);
+    await this.personsService.deleteIf(
+      supporter.personId,
+      PersonRelation.SUPPORTER,
+    );
   }
 }

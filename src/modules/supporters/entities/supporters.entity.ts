@@ -20,12 +20,6 @@ export class Supporter {
   @Column({ name: 'person_id', nullable: false })
   personId: number;
 
-  @Column({ name: 'support_start_date', type: 'timestamp', nullable: false })
-  supportStartDate: Date;
-
-  @Column({ name: 'support_end_date', type: 'timestamp', nullable: true })
-  supportEndDate?: Date;
-
   @Column({
     name: 'support_type',
     type: 'enum',
@@ -33,6 +27,9 @@ export class Supporter {
     nullable: true,
   })
   supportType?: SupportType;
+
+  @Column({ name: 'notes', type: 'text', nullable: true })
+  notes?: string;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
