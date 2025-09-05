@@ -1,11 +1,10 @@
-import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
+import { NestFactory } from '@nestjs/core';
 import { DataSource } from 'typeorm';
 import { AppModule } from '../../app.module';
-import { seedDropdowns } from './seed-dropdown';
+import { EnvironmentConfig } from '../../shared/modules/app-config/env.schema';
 import { seedRolesAndPermissions } from './seed-roles-permissions';
 import { seedSystemUsers } from './seed-system-users';
-import { EnvironmentConfig } from '../../shared/modules/app-config/env.schema';
 
 async function bootstrap() {
   const args = process.argv.slice(2);
@@ -23,10 +22,6 @@ async function bootstrap() {
     await queryRunner.connect();
     await queryRunner.startTransaction();
 
-    if (runDropdown) {
-      await seedDropdowns(queryRunner);
-      console.log('✅ Dropdowns seeded');
-    }
     if (runPermission) {
       await seedRolesAndPermissions(queryRunner);
       console.log('✅ Roles & Permissions seeded');
@@ -36,7 +31,6 @@ async function bootstrap() {
       console.log('✅ System Users seeded');
     }
     if (runAll) {
-      await seedDropdowns(queryRunner);
       await seedRolesAndPermissions(queryRunner);
       await seedSystemUsers(queryRunner, configService);
       console.log('✅ All seeders ran');
