@@ -9,7 +9,6 @@ import { PaginationResponseDto } from '../../../common/pagination/dto/pagination
 import { paginate } from '../../../common/pagination/paginate.service';
 import { FamiliesService } from '../../../modules/families/services/families.service';
 import { Person } from '../../../modules/persons/entities/person.entity';
-import { GenderType } from '../../../modules/persons/enums/gender-type.enum';
 import { PersonRelation } from '../../../modules/persons/enums/person-relation.enum';
 import { PersonsService } from '../../../modules/persons/services/persons.service';
 import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
@@ -110,11 +109,6 @@ export class FamilyMembersService {
         );
       }
     }
-
-    await this.validateGenderRelationType(
-      person.gender,
-      createFamilyMemberDto.relationType,
-    );
 
     if (createFamilyMemberDto.isSponsored) {
       const relation = createFamilyMemberDto.relationType;
@@ -269,8 +263,6 @@ export class FamilyMembersService {
       const gender = updateData?.person?.gender ?? familyMember?.person?.gender;
       const isSponsored = updateData?.isSponsored ?? familyMember?.isSponsored;
 
-      await this.validateGenderRelationType(gender, relationType);
-
       //
       if (isSponsored) {
         const relation = updateData.relationType;
@@ -309,32 +301,6 @@ export class FamilyMembersService {
   }
 
   // private methods
-
-  private async validateGenderRelationType(
-    gender: GenderType,
-    relationType: FamilyRelationType,
-  ): Promise<void> {
-    const expectedGenderByRelation: Record<
-      FamilyRelationType,
-      GenderType | undefined
-    > = {
-      [FamilyRelationType.FATHER]: GenderType.MALE,
-      [FamilyRelationType.MOTHER]: GenderType.FEMALE,
-      [FamilyRelationType.SON]: GenderType.MALE,
-      [FamilyRelationType.DAUGHTER]: GenderType.FEMALE,
-      [FamilyRelationType.OTHER]: undefined,
-    };
-
-    const expectedGender = expectedGenderByRelation[relationType];
-
-    if (expectedGender && expectedGender !== gender) {
-      throw new ConflictException(
-        this.translateHelper.tr(
-          'family-members.errors.gender_relation_mismatch',
-        ),
-      );
-    }
-  }
 
   /**
    * Checks if the given family already has a guardian (وصي).
