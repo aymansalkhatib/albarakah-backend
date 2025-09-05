@@ -14,6 +14,7 @@ import { OnlyOneOf } from '../../../../common/decorators/validate-one-of-two-fie
 import { CreatePersonDto } from '../../../../modules/persons/dtos/requests/create-person.dto';
 import { FamilyRelationType } from '../../enums/family-relation-type.enum';
 import { IsPresent } from '../../enums/is-present.enum';
+import { IsSponsored } from '../../enums/is-sponsored.enum';
 
 @OnlyOneOf([
   {
@@ -31,8 +32,8 @@ export class CreateFamilyMemberDto {
   relationType: FamilyRelationType;
 
   @IsOptional()
-  @StrictBoolean()
-  isSponsored: boolean;
+  @IsEnum(IsSponsored)
+  isSponsored?: IsSponsored;
 
   @IsOptional()
   @IsNumber()

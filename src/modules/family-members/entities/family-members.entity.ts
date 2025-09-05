@@ -16,6 +16,7 @@ import { SupporterChildSponsorship } from '../../supporters/entities/supporters-
 import { PersonCourseBatch } from '../../training-courses/entities/person-course-batch.entity';
 import { FamilyRelationType } from '../enums/family-relation-type.enum';
 import { IsPresent } from '../enums/is-present.enum';
+import { IsSponsored } from '../enums/is-sponsored.enum';
 
 @Entity('family_members')
 @Index(['familyId', 'personId'], { unique: true })
@@ -34,8 +35,13 @@ export class FamilyMember {
   @Column({ name: 'relation_type', type: 'enum', enum: FamilyRelationType })
   relationType: FamilyRelationType;
 
-  @Column({ name: 'is_sponsored', default: false })
-  isSponsored: boolean;
+  @Column({
+    name: 'is_sponsored',
+    type: 'enum',
+    enum: IsSponsored,
+    default: IsSponsored.NO,
+  })
+  isSponsored: IsSponsored;
 
   @Column({ name: 'member_number', type: 'int', nullable: true })
   memberNumber?: number;

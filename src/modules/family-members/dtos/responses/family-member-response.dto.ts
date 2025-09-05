@@ -6,6 +6,7 @@ import { ReceivedAssistanceResponseDto } from '../../../received-assistance/dtos
 import { SupporterChildSponsorshipResponseDto } from '../../../supporters/dtos/responses/supporter-child-sponsorship-response.dto';
 import { FamilyRelationType } from '../../enums/family-relation-type.enum';
 import { IsPresent } from '../../enums/is-present.enum';
+import { IsSponsored } from '../../enums/is-sponsored.enum';
 
 export class FamilyMemberResponseDto {
   @Expose()
@@ -21,7 +22,7 @@ export class FamilyMemberResponseDto {
   relationType: FamilyRelationType;
 
   @Expose()
-  isSponsored: boolean;
+  isSponsored: IsSponsored;
 
   @Expose()
   memberNumber?: number;

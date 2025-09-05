@@ -19,6 +19,7 @@ import { UpdateFamilyMemberDto } from '../dtos/requests/update-family-member.dto
 import { FamilyMemberResponseDto } from '../dtos/responses/family-member-response.dto';
 import { FamilyMember } from '../entities/family-members.entity';
 import { FamilyRelationType } from '../enums/family-relation-type.enum';
+import { IsSponsored } from '../enums/is-sponsored.enum';
 import { applyFamilyMemberFilters } from '../utils';
 
 @Injectable()
@@ -110,7 +111,7 @@ export class FamilyMembersService {
       }
     }
 
-    if (createFamilyMemberDto.isSponsored) {
+    if (createFamilyMemberDto.isSponsored === IsSponsored.YES) {
       const relation = createFamilyMemberDto.relationType;
       if (
         relation !== FamilyRelationType.DAUGHTER &&
@@ -259,12 +260,10 @@ export class FamilyMembersService {
       }
 
       // check if relationType match gender
-      const relationType = updateData.relationType ?? familyMember.relationType;
-      const gender = updateData?.person?.gender ?? familyMember?.person?.gender;
       const isSponsored = updateData?.isSponsored ?? familyMember?.isSponsored;
 
       //
-      if (isSponsored) {
+      if (isSponsored === IsSponsored.YES) {
         const relation = updateData.relationType;
         if (
           relation !== FamilyRelationType.DAUGHTER &&

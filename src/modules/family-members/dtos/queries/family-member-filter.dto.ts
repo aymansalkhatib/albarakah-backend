@@ -5,6 +5,7 @@ import { PaginationDto } from '../../../../common/pagination/dto/pagination.dto'
 import { FilterPersonDto } from '../../../../modules/persons/dtos/queries/filter-person.dto';
 import { FamilyRelationType } from '../../enums/family-relation-type.enum';
 import { IsPresent } from '../../enums/is-present.enum';
+import { IsSponsored } from '../../enums/is-sponsored.enum';
 
 export class FamilyMemberFilterDto extends PaginationDto {
   @IsOptional()
@@ -22,8 +23,8 @@ export class FamilyMemberFilterDto extends PaginationDto {
   relationType?: FamilyRelationType;
 
   @IsOptional()
-  @StrictBoolean()
-  isSponsored?: boolean;
+  @IsEnum(IsSponsored)
+  isSponsored?: IsSponsored;
 
   @IsOptional()
   @IsNumber()
