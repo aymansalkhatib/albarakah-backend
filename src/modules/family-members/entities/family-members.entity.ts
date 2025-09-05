@@ -32,7 +32,12 @@ export class FamilyMember {
   familyId: number;
 
   // Member Details
-  @Column({ name: 'relation_type', type: 'enum', enum: FamilyRelationType })
+  @Column({
+    name: 'relation_type',
+    type: 'enum',
+    enum: FamilyRelationType,
+    default: FamilyRelationType.MOTHER,
+  })
   relationType: FamilyRelationType;
 
   @Column({
@@ -87,24 +92,4 @@ export class FamilyMember {
   receivedAssistance: ReceivedAssistance[];
 
   // === COMPUTED PROPERTIES ===
-
-  get isParent(): boolean {
-    return [FamilyRelationType.MOTHER, FamilyRelationType.FATHER].includes(
-      this.relationType,
-    );
-  }
-
-  get isChild(): boolean {
-    return [FamilyRelationType.SON, FamilyRelationType.DAUGHTER].includes(
-      this.relationType,
-    );
-  }
-
-  get isMother(): boolean {
-    return this.relationType === FamilyRelationType.MOTHER;
-  }
-
-  get isFather(): boolean {
-    return this.relationType === FamilyRelationType.FATHER;
-  }
 }
