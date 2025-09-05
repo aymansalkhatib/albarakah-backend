@@ -2,6 +2,8 @@ import { SelectQueryBuilder } from 'typeorm';
 import { FilterPersonDto } from '../dtos/queries/filter-person.dto';
 import { Person } from '../entities/person.entity';
 
+// Database search using prefix matching
+
 export function applyPersonFilters(
   qb: SelectQueryBuilder<any>,
   alias: string,
@@ -154,18 +156,10 @@ export function applyPersonFilters(
     });
   }
 
-  if (filter.birthDateFrom && filter.birthDateTo) {
-    qb.andWhere(`${alias}.birthDate BETWEEN :birthDateFrom AND :birthDateTo`, {
-      birthDateFrom: filter.birthDateFrom,
-      birthDateTo: filter.birthDateTo,
-    });
-  } else if (filter.birthDateFrom) {
-    qb.andWhere(`${alias}.birthDate >= :birthDateFrom`, {
-      birthDateFrom: filter.birthDateFrom,
-    });
-  } else if (filter.birthDateTo) {
-    qb.andWhere(`${alias}.birthDate <= :birthDateTo`, {
-      birthDateTo: filter.birthDateTo,
+  // Handle birthDate filtering with partial date support
+  if (filter.birthDate) {
+    qb.andWhere(`${alias}.birth_date::text LIKE :birthDate`, {
+      birthDate: `${filter.birthDate}%`,
     });
   }
 

@@ -4,6 +4,7 @@ import { StrictBoolean } from '../../../../common/decorators/strict-boolean.deco
 import { PaginationDto } from '../../../../common/pagination/dto/pagination.dto';
 import { FilterPersonDto } from '../../../../modules/persons/dtos/queries/filter-person.dto';
 import { FamilyRelationType } from '../../enums/family-relation-type.enum';
+import { IsPresent } from '../../enums/is-present.enum';
 
 export class FamilyMemberFilterDto extends PaginationDto {
   @IsOptional()
@@ -30,8 +31,8 @@ export class FamilyMemberFilterDto extends PaginationDto {
   memberNumber?: number;
 
   @IsOptional()
-  @StrictBoolean()
-  isPresent?: boolean;
+  @IsEnum(IsPresent)
+  isPresent?: IsPresent;
 
   @IsOptional()
   @StrictBoolean()

@@ -15,6 +15,7 @@ import { ReceivedAssistance } from '../../received-assistance/entities/received-
 import { SupporterChildSponsorship } from '../../supporters/entities/supporters-children.entity';
 import { PersonCourseBatch } from '../../training-courses/entities/person-course-batch.entity';
 import { FamilyRelationType } from '../enums/family-relation-type.enum';
+import { IsPresent } from '../enums/is-present.enum';
 
 @Entity('family_members')
 @Index(['familyId', 'personId'], { unique: true })
@@ -39,8 +40,8 @@ export class FamilyMember {
   @Column({ name: 'member_number', type: 'int', nullable: true })
   memberNumber?: number;
 
-  @Column({ name: 'is_present', type: 'boolean', default: true })
-  isPresent: boolean;
+  @Column({ name: 'is_present', type: 'enum', enum: IsPresent, nullable: true })
+  isPresent?: IsPresent;
 
   @Column({ name: 'is_guardian', type: 'boolean', default: false })
   isGuardian: boolean;

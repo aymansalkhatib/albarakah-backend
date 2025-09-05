@@ -5,6 +5,7 @@ import { PersonCourseBatchResponseDto } from '../../../../modules/training-cours
 import { ReceivedAssistanceResponseDto } from '../../../received-assistance/dtos/responses/received-assistance-response.dto';
 import { SupporterChildSponsorshipResponseDto } from '../../../supporters/dtos/responses/supporter-child-sponsorship-response.dto';
 import { FamilyRelationType } from '../../enums/family-relation-type.enum';
+import { IsPresent } from '../../enums/is-present.enum';
 
 export class FamilyMemberResponseDto {
   @Expose()
@@ -26,7 +27,7 @@ export class FamilyMemberResponseDto {
   memberNumber?: number;
 
   @Expose()
-  isPresent: boolean;
+  isPresent?: IsPresent;
 
   @Expose()
   isGuardian: boolean;

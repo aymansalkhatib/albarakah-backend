@@ -1,16 +1,12 @@
 import {
-  IsDate,
   IsEnum,
   IsInt,
   IsOptional,
   IsString,
   Length,
   Max,
-  MaxDate,
   Min,
-  MinDate,
 } from 'class-validator';
-import { IsLessThanOrEqual } from '../../../../common/decorators/is-less-than-or-equal.decorator';
 import { StrictBoolean } from '../../../../common/decorators/strict-boolean.decorator';
 import { PaginationDto } from '../../../../common/pagination/dto/pagination.dto';
 import { CurrentStudyStatus } from '../../enums/current-study-status.enum';
@@ -32,19 +28,10 @@ export class FilterPersonDto extends PaginationDto {
   @Length(1, 100)
   motherName?: string;
 
-  // birth date range
   @IsOptional()
-  @IsDate()
-  @IsLessThanOrEqual('birthDateTo')
-  @MinDate(new Date('1900-01-01'))
-  @MaxDate(new Date())
-  birthDateFrom?: Date;
-
-  @IsOptional()
-  @IsDate()
-  @MinDate(new Date('1900-01-01'))
-  @MaxDate(new Date())
-  birthDateTo?: Date;
+  @IsString()
+  @Length(1, 10)
+  birthDate?: string;
 
   @IsOptional()
   @IsString()

@@ -13,6 +13,7 @@ import { StrictBoolean } from '../../../../common/decorators/strict-boolean.deco
 import { OnlyOneOf } from '../../../../common/decorators/validate-one-of-two-fields.validator';
 import { CreatePersonDto } from '../../../../modules/persons/dtos/requests/create-person.dto';
 import { FamilyRelationType } from '../../enums/family-relation-type.enum';
+import { IsPresent } from '../../enums/is-present.enum';
 
 @OnlyOneOf([
   {
@@ -39,8 +40,8 @@ export class CreateFamilyMemberDto {
   memberNumber?: number;
 
   @IsOptional()
-  @StrictBoolean()
-  isPresent?: boolean;
+  @IsEnum(IsPresent)
+  isPresent?: IsPresent;
 
   @IsOptional()
   @StrictBoolean()

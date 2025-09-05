@@ -6,7 +6,6 @@ import {
   IsString,
   Length,
   Max,
-  MaxDate,
   Min,
   MinDate,
 } from 'class-validator';
@@ -33,9 +32,6 @@ export class CreatePersonDto {
   @IsDate()
   @MinDate(new Date('1900-01-01'), {
     message: 'Birth date must be after 1900-01-01',
-  })
-  @MaxDate(new Date(), {
-    message: 'Birth date must be before today',
   })
   birthDate?: Date;
 
