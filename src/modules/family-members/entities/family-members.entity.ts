@@ -36,7 +36,6 @@ export class FamilyMember {
     name: 'relation_type',
     type: 'enum',
     enum: FamilyRelationType,
-    default: FamilyRelationType.MOTHER,
   })
   relationType: FamilyRelationType;
 
