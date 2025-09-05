@@ -64,7 +64,8 @@ export class InterviewService {
     // Build query for families with guardians
     const queryBuilder = this.familyRepository
       .createQueryBuilder('family')
-      .leftJoinAndSelect('family.familyMembers', 'familyMembers');
+      .leftJoinAndSelect('family.familyMembers', 'familyMembers')
+      .leftJoinAndSelect('familyMembers.person', 'person');
 
     // Apply isVisited filter if provided
     if (query.isVisited === true) {
@@ -83,13 +84,22 @@ export class InterviewService {
       queryBuilder,
       query,
       InterviewResponseDto,
-      (family: Family) => ({
-        family,
-        guardian: family.familyMembers.find((member) => member.isGuardian),
-        familyMembers: family.familyMembers.filter(
+      (family: Family) => {
+        const familyMembers = family.familyMembers.filter(
           (member) => !member.isGuardian,
-        ),
-      }),
+        );
+        const guardian = family.familyMembers.find(
+          (member) => member.isGuardian,
+        );
+        delete family.familyMembers;
+
+        const response = {
+          family,
+          guardian,
+          familyMembers,
+        };
+        return response;
+      },
     );
 
     return value;
@@ -97,13 +107,15 @@ export class InterviewService {
 
   async findOne(id: number): Promise<InterviewResponseDto> {
     const family = await this.familiesService.findOne(id, {
-      relations: ['familyMembers'],
+      relations: ['familyMembers', 'familyMembers.person'],
     });
 
     const guardian = family.familyMembers.find((member) => member.isGuardian);
     const familyMembers = family.familyMembers.filter(
       (member) => !member.isGuardian,
     );
+
+    delete family.familyMembers;
 
     return {
       family,
