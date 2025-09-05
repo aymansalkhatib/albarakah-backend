@@ -26,11 +26,6 @@ export class FilterFamilyDto extends PaginationDto {
   requestNumber?: string;
 
   @IsOptional()
-  @IsString()
-  @MaxLength(64)
-  familyName?: string;
-
-  @IsOptional()
   @StrictBoolean()
   isHusbandPalestinian?: boolean;
 

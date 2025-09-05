@@ -1,10 +1,13 @@
-import { NestFactory, Reflector } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { ClassSerializerInterceptor, ValidationPipe, VersioningType } from '@nestjs/common';
-import helmet from 'helmet';
-import compression from 'compression';
-import { i18nValidationErrorFactory, I18nValidationExceptionFilter } from 'nestjs-i18n';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import compression from 'compression';
+import helmet from 'helmet';
+import {
+  I18nValidationExceptionFilter,
+  i18nValidationErrorFactory,
+} from 'nestjs-i18n';
+import { AppModule } from './app.module';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 
 async function bootstrap() {

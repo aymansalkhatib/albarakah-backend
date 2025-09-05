@@ -26,11 +26,6 @@ export class CreateFamilyDto {
   @MaxLength(32)
   requestNumber?: string;
 
-  @IsString()
-  @IsNotEmpty()
-  @MaxLength(64)
-  familyName: string;
-
   @IsOptional()
   @StrictBoolean()
   isHusbandPalestinian?: boolean;

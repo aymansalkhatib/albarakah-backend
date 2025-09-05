@@ -14,12 +14,6 @@ export function applyFamilyFilters(
     });
   }
 
-  if (filter.familyName) {
-    qb.andWhere(`${alias}.familyName ILIKE :familyName`, {
-      familyName: `%${filter.familyName}%`,
-    });
-  }
-
   if (filter.familyBookNumber) {
     qb.andWhere(`${alias}.familyBookNumber ILIKE :familyBookNumber`, {
       familyBookNumber: `%${filter.familyBookNumber}%`,

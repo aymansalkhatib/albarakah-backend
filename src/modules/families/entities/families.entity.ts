@@ -32,8 +32,6 @@ export class Family {
   id: number;
 
   // === BASIC INFORMATION ===
-  @Column({ name: 'family_name', type: 'varchar', length: 64 })
-  familyName: string;
 
   @Column({ name: 'is_husband_palestinian', type: 'boolean', default: false })
   isHusbandPalestinian: boolean;

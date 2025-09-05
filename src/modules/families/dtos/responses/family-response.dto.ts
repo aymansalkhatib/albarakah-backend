@@ -17,9 +17,6 @@ export class FamilyResponseDto {
   requestNumber?: string;
 
   @Expose()
-  familyName: string;
-
-  @Expose()
   isHusbandPalestinian?: boolean;
 
   @Expose()
