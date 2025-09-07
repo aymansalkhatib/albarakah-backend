@@ -121,9 +121,8 @@ export class CreateFamilyDto {
   requestStatus?: RequestStatus;
 
   @IsOptional()
-  @IsString()
-  @MaxLength(32)
-  previousRequestStatus?: string;
+  @IsEnum(RequestStatus)
+  previousRequestStatus?: RequestStatus;
 
   @IsOptional()
   @StrictBoolean()

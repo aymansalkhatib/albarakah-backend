@@ -81,7 +81,7 @@ export class FamilyResponseDto {
   requestStatus?: RequestStatus;
 
   @Expose()
-  previousRequestStatus?: string;
+  previousRequestStatus?: RequestStatus;
 
   @Expose()
   isStatusUpdatedAtSocialAffairs?: boolean;

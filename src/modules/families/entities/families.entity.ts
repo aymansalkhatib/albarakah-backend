@@ -109,11 +109,11 @@ export class Family {
 
   @Column({
     name: 'previous_request_status',
-    type: 'varchar',
-    length: 32,
+    type: 'enum',
+    enum: RequestStatus,
     nullable: true,
   })
-  previousRequestStatus?: string;
+  previousRequestStatus?: RequestStatus;
 
   @Column({
     name: 'is_status_updated_at_social_affairs',

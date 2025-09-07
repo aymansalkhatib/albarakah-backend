@@ -134,9 +134,8 @@ export class FilterFamilyDto extends PaginationDto {
   requestStatus?: RequestStatus;
 
   @IsOptional()
-  @IsString()
-  @MaxLength(32)
-  previousRequestStatus?: string;
+  @IsEnum(RequestStatus)
+  previousRequestStatus?: RequestStatus;
 
   @IsOptional()
   @StrictBoolean()
