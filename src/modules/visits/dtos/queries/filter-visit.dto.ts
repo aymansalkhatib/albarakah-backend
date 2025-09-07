@@ -1,4 +1,3 @@
-import { Expose } from 'class-transformer';
 import {
   IsDate,
   IsEnum,
@@ -19,12 +18,10 @@ import { AlBarakaCharityIncomeAmount } from '../../enums/al-baraka-charity-incom
 export class FilterVisitDto extends PaginationDto {
   @IsOptional()
   @PositiveIntegerId()
-  @Expose()
   familyId?: number;
 
   @IsOptional()
   @IsDate()
-  @Expose()
   visitDateFrom?: Date;
 
   @IsOptional()
@@ -32,12 +29,10 @@ export class FilterVisitDto extends PaginationDto {
   @IsLessThanOrEqual('visitDateFrom', {
     message: 'visitDateTo must be greater than or equal to visitDateFrom',
   })
-  @Expose()
   visitDateTo?: Date;
 
   @IsOptional()
   @IsDate()
-  @Expose()
   paperSentDateFrom?: Date;
 
   @IsOptional()
@@ -46,19 +41,16 @@ export class FilterVisitDto extends PaginationDto {
     message:
       'paperSentDateTo must be greater than or equal to paperSentDateFrom',
   })
-  @Expose()
   paperSentDateTo?: Date;
 
   @IsOptional()
   @IsEnum(FamilyRelationType)
-  @Expose()
   guardianRelationship?: FamilyRelationType;
 
   @IsOptional()
   @IsNumber()
   @Min(1)
   @Max(50)
-  @Expose()
   numberOfFamilyMembersMin?: number;
 
   @IsOptional()
@@ -69,14 +61,12 @@ export class FilterVisitDto extends PaginationDto {
     message:
       'numberOfFamilyMembersMax must be greater than or equal to numberOfFamilyMembersMin',
   })
-  @Expose()
   numberOfFamilyMembersMax?: number;
 
   @IsOptional()
   @IsNumber()
   @Min(0)
   @Max(50)
-  @Expose()
   numberOfRemainingFamilyMembersMin?: number;
 
   @IsOptional()
@@ -87,24 +77,20 @@ export class FilterVisitDto extends PaginationDto {
     message:
       'numberOfRemainingFamilyMembersMax must be greater than or equal to numberOfRemainingFamilyMembersMin',
   })
-  @Expose()
   numberOfRemainingFamilyMembersMax?: number;
 
   @IsOptional()
   @IsEnum(HouseCondition)
-  @Expose()
   houseCondition?: HouseCondition;
 
   @IsOptional()
   @IsEnum(HouseOwnership)
-  @Expose()
   houseOwnership?: HouseOwnership;
 
   @IsOptional()
   @IsNumber()
   @Min(0)
   @Max(999999.99)
-  @Expose()
   schoolExpensesMin?: number;
 
   @IsOptional()
@@ -115,19 +101,16 @@ export class FilterVisitDto extends PaginationDto {
     message:
       'schoolExpensesMax must be greater than or equal to schoolExpensesMin',
   })
-  @Expose()
   schoolExpensesMax?: number;
 
   @IsOptional()
   @IsEnum(AlBarakaCharityIncomeAmount)
-  @Expose()
   barakaAssociationIncome?: AlBarakaCharityIncomeAmount;
 
   @IsOptional()
   @IsNumber()
   @Min(0)
   @Max(999999.99)
-  @Expose()
   availableSpendingMin?: number;
 
   @IsOptional()
@@ -138,31 +121,26 @@ export class FilterVisitDto extends PaginationDto {
     message:
       'availableSpendingMax must be greater than or equal to availableSpendingMin',
   })
-  @Expose()
   availableSpendingMax?: number;
 
   @IsOptional()
   @IsNumber()
   @Min(0)
   @Max(999999.99)
-  @Expose()
   totalIncomeMin?: number;
 
   @IsOptional()
   @IsNumber()
   @Min(0)
-  @Max(999999.99)
   @IsLessThanOrEqual('totalIncomeMin', {
     message: 'totalIncomeMax must be greater than or equal to totalIncomeMin',
   })
-  @Expose()
   totalIncomeMax?: number;
 
   @IsOptional()
   @IsNumber()
   @Min(0)
   @Max(999999.99)
-  @Expose()
   rentAmountMin?: number;
 
   @IsOptional()
@@ -172,18 +150,15 @@ export class FilterVisitDto extends PaginationDto {
   @IsLessThanOrEqual('rentAmountMin', {
     message: 'rentAmountMax must be greater than or equal to rentAmountMin',
   })
-  @Expose()
   rentAmountMax?: number;
 
   @IsOptional()
   @IsString()
   @MaxLength(200)
-  @Expose()
   committeeMemberName?: string;
 
   @IsOptional()
   @IsString()
   @MaxLength(1000)
-  @Expose()
   searchNotes?: string;
 }
