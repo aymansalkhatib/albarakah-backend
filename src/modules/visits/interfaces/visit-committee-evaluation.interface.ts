@@ -1,6 +1,8 @@
+import { VisitCommitteeEvaluationEnum } from "../enums/visit-committee-evaluation.enum";
+
 export interface VisitCommitteeEvaluation {
-  cleanlinessAndOrder?: VisitCommitteeEvaluation;
-  generalMorals?: VisitCommitteeEvaluation;
-  physicalAndMentalHealth?: VisitCommitteeEvaluation;
-  surroundingEnvironment?: VisitCommitteeEvaluation;
+  cleanlinessAndOrder?: VisitCommitteeEvaluationEnum;
+  generalMorals?: VisitCommitteeEvaluationEnum;
+  physicalAndMentalHealth?: VisitCommitteeEvaluationEnum;
+  surroundingEnvironment?: VisitCommitteeEvaluationEnum;
 }

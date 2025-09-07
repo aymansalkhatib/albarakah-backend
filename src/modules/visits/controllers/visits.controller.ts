@@ -57,7 +57,7 @@ export class VisitsController {
   @Protected(Permission.UPDATE_VISIT)
   @SerializeResponse(VisitResponseDto)
   async update(
-    @Param('id') id: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateVisitDto: UpdateVisitDto,
   ): Promise<VisitResponseDto> {
     return await this.visitsService.update(id, updateVisitDto);

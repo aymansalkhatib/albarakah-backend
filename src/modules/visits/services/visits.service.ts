@@ -9,6 +9,7 @@ import { CreateVisitDto } from '../dtos/requests/create-visit.dto';
 import { UpdateVisitDto } from '../dtos/requests/update-visit.dto';
 import { VisitResponseDto } from '../dtos/responses/visit-response.dto';
 import { Visit } from '../entities/visit.entity';
+import { applyVisitFilters } from '../utils/filter.utils';
 
 @Injectable()
 export class VisitsService {
@@ -19,17 +20,24 @@ export class VisitsService {
   ) {}
 
   async create(createVisitDto: CreateVisitDto): Promise<Visit> {
-    // await this.familiesService.findOne(createVisitDto.familyId);
-    const visit = this.visitRepository.create({
-      ...createVisitDto,
-    });
+    // Verify family exists
+    await this.familiesService.findOne(createVisitDto.familyId);
+    const visit = this.visitRepository.create(createVisitDto);
     return this.visitRepository.save(visit);
   }
 
   async findAll(
     filter: FilterVisitDto,
   ): Promise<PaginationResponseDto<VisitResponseDto>> {
-    const queryBuilder = this.visitRepository.createQueryBuilder('visit');
+    const queryBuilder = this.visitRepository
+      .createQueryBuilder('visit')
+      .leftJoinAndSelect('visit.family', 'family');
+
+    // Apply filters using utils
+    applyVisitFilters(queryBuilder, filter);
+
+    // Order by visit date descending (most recent first)
+    queryBuilder.orderBy('visit.visitDate', 'DESC');
 
     return paginate(queryBuilder, filter, VisitResponseDto);
   }
@@ -50,25 +58,15 @@ export class VisitsService {
   }
 
   async update(id: number, updateVisitDto: UpdateVisitDto): Promise<Visit> {
-    const visit = await this.visitRepository.findOne({
-      where: { id },
-      relations: ['family'],
-    });
-
-    if (!visit) {
-      throw new NotFoundException('Visit not found');
-    }
-
+    const visit = await this.findOne(id, { relations: ['family'] });
     const updatedVisit = this.visitRepository.merge(visit, updateVisitDto);
     return this.visitRepository.save(updatedVisit);
   }
 
   async delete(id: number): Promise<void> {
-    await this.visitRepository.findOne({
-      where: { id },
-      relations: ['family'],
-    });
-
-    await this.visitRepository.delete(id);
+    const result = await this.visitRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException('Visit not found');
+    }
   }
 }
