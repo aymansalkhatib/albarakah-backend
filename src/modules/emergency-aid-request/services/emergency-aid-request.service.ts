@@ -89,7 +89,16 @@ export class EmergencyAidRequestService {
   ): Promise<PaginationResponseDto<EmergencyAidRequestResponseDto>> {
     const queryBuilder = this.emergencyAidRepository
       .createQueryBuilder('emergencyAidRequest')
-      .leftJoinAndSelect('emergencyAidRequest.family', 'family');
+      .leftJoinAndSelect('emergencyAidRequest.family', 'family')
+      .leftJoin(
+        'family.familyMembers',
+        'familyMembers',
+        'familyMembers.isGuardian = :isGuardian',
+        { isGuardian: true },
+      )
+      .addSelect(['familyMembers.id', 'familyMembers.person'])
+      .leftJoin('familyMembers.person', 'person')
+      .addSelect(['person.id', 'person.fullName']);
 
     if (filterDto.family) {
       applyFamilyFilters(queryBuilder, 'family', filterDto.family);
