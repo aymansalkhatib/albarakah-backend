@@ -1,4 +1,8 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, FindOneOptions, Repository } from 'typeorm';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
@@ -33,9 +37,11 @@ export class EmployeesService {
       return await this._createWithManager(createEmployeeDto, entityManager);
     } else {
       // Otherwise, start a new transaction
-      return await this.employeeRepository.manager.transaction(async (manager) => {
-        return await this._createWithManager(createEmployeeDto, manager);
-      });
+      return await this.employeeRepository.manager.transaction(
+        async (manager) => {
+          return await this._createWithManager(createEmployeeDto, manager);
+        },
+      );
     }
   }
 
@@ -46,19 +52,28 @@ export class EmployeesService {
   ): Promise<Employee> {
     if (entityManager) {
       // If already inside a transaction, use the provided manager
-      return await this._updateWithManager(id, updateEmployeeDto, entityManager);
+      return await this._updateWithManager(
+        id,
+        updateEmployeeDto,
+        entityManager,
+      );
     } else {
       // Otherwise, start a new transaction
-      return await this.employeeRepository.manager.transaction(async (manager) => {
-        return await this._updateWithManager(id, updateEmployeeDto, manager);
-      });
+      return await this.employeeRepository.manager.transaction(
+        async (manager) => {
+          return await this._updateWithManager(id, updateEmployeeDto, manager);
+        },
+      );
     }
   }
 
   async delete(id: number): Promise<void> {
     const employee = await this.findOne(id);
     await this.employeeRepository.delete(id);
-    await this.personsService.deleteIf(employee.personId, PersonRelation.EMPLOYEE);
+    await this.personsService.deleteIf(
+      employee.personId,
+      PersonRelation.EMPLOYEE,
+    );
   }
 
   async findOne(
@@ -76,16 +91,23 @@ export class EmployeesService {
     });
 
     if (!employee) {
-      throw new NotFoundException(this.translateHelper.tr('employees.errors.not_found', { id }));
+      throw new NotFoundException(
+        this.translateHelper.tr('employees.errors.not_found', { id }),
+      );
     }
 
     return employee;
   }
 
-  async findAll(filterDto: FilterEmployeeDto): Promise<PaginationResponseDto<EmployeeResponseDto>> {
+  async findAll(
+    filterDto: FilterEmployeeDto,
+  ): Promise<PaginationResponseDto<EmployeeResponseDto>> {
+    console.log(filterDto);
+
     const queryBuilder = this.employeeRepository
       .createQueryBuilder('employee')
       .leftJoinAndSelect('employee.person', 'person');
+    // .leftJoinAndSelect('employee.systemUser', 'systemUser');
 
     // Apply employee filters
     applyEmployeeFilters(queryBuilder, 'employee', filterDto);
@@ -115,10 +137,15 @@ export class EmployeesService {
       );
 
       if (person.employee) {
-        throw new ConflictException(this.translateHelper.tr('employees.errors.already_employee'));
+        throw new ConflictException(
+          this.translateHelper.tr('employees.errors.already_employee'),
+        );
       }
     } else {
-      person = await this.personsService.create(createEmployeeDto.person, entityManager);
+      person = await this.personsService.create(
+        createEmployeeDto.person,
+        entityManager,
+      );
     }
 
     const employee = employeeRepository.create({
@@ -136,7 +163,11 @@ export class EmployeesService {
   ): Promise<Employee> {
     const employeeRepository = entityManager.getRepository(Employee);
 
-    const employee = await this.findOne(id, { relations: ['person'] }, entityManager);
+    const employee = await this.findOne(
+      id,
+      { relations: ['person'] },
+      entityManager,
+    );
 
     if (updateEmployeeDto.person) {
       employee.person = await this.personsService.update(

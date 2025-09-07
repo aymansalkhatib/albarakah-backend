@@ -1,6 +1,6 @@
 import { SelectQueryBuilder } from 'typeorm';
-import { Employee } from '../entities/employee.entity';
 import { FilterEmployeeDto } from '../dtos/queries/filter-employee.dto';
+import { Employee } from '../entities/employee.entity';
 
 export function applyEmployeeFilters(
   qb: SelectQueryBuilder<any>,
@@ -35,10 +35,13 @@ export function applyEmployeeFilters(
   }
 
   if (filter.terminationDateFrom && filter.terminationDateTo) {
-    qb.andWhere(`${alias}.terminationDate BETWEEN :terminationDateFrom AND :terminationDateTo`, {
-      terminationDateFrom: filter.terminationDateFrom,
-      terminationDateTo: filter.terminationDateTo,
-    });
+    qb.andWhere(
+      `${alias}.terminationDate BETWEEN :terminationDateFrom AND :terminationDateTo`,
+      {
+        terminationDateFrom: filter.terminationDateFrom,
+        terminationDateTo: filter.terminationDateTo,
+      },
+    );
   } else if (filter.terminationDateFrom) {
     qb.andWhere(`${alias}.terminationDate >= :terminationDateFrom`, {
       terminationDateFrom: filter.terminationDateFrom,
@@ -58,6 +61,24 @@ export function applyEmployeeFilters(
       )`,
       { search: `%${filter.search}%` },
     );
+  }
+
+  // Filter by system access
+  if (filter.hasSystemAccess != null) {
+    if (filter.hasSystemAccess) {
+      qb.andWhere(`${alias}.systemUser IS NOT NULL`);
+    } else {
+      qb.andWhere(`${alias}.systemUser IS NULL`);
+    }
+  }
+
+  // Filter by active status (based on termination date)
+  if (filter.isActive != null) {
+    if (filter.isActive) {
+      qb.andWhere(`${alias}.terminationDate IS NULL`);
+    } else {
+      qb.andWhere(`${alias}.terminationDate IS NOT NULL`);
+    }
   }
 
   return qb;
