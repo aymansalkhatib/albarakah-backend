@@ -4,7 +4,6 @@ import {
   Entity,
   Index,
   JoinColumn,
-  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -24,13 +23,13 @@ export class Employee {
   @Column({ length: 100, nullable: true })
   position?: string;
 
-  @Column({ type: 'date', nullable: true })
+  @Column({ name: 'hire_date', type: 'date', nullable: true })
   hireDate?: Date;
 
-  @Column({ type: 'date', nullable: true })
+  @Column({ name: 'termination_date', type: 'date', nullable: true })
   terminationDate?: Date;
 
-  @Column({ type: 'text', nullable: true })
+  @Column({ name: 'notes', type: 'text', nullable: true })
   notes?: string;
 
   @CreateDateColumn({ name: 'created_at' })
