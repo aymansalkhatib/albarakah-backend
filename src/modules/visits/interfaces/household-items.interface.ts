@@ -13,7 +13,7 @@ export interface HouseholdItems {
   laptops?: number;
   routers?: number;
   landlinePhones?: number;
-  mobilePhones: MobileStatus;
+  mobilePhones?: MobileStatus;
   electricOvens?: number;
   freezers?: number;
   notes?: string;

@@ -1,22 +1,16 @@
-import {
-  IsNumber,
-  IsOptional,
-  IsString,
-  Max,
-  MaxLength,
-  Min,
-} from 'class-validator';
+import { Expose } from 'class-transformer';
+import { IsNumber, IsOptional, IsString, MaxLength } from 'class-validator';
 import { Beds } from '../../interfaces';
 
 export class BedsDto implements Beds {
+  @Expose()
   @IsOptional()
   @IsNumber()
-  @Min(0)
-  @Max(100)
   bedsCount?: number;
 
+  @Expose()
   @IsOptional()
   @IsString()
-  @MaxLength(1000)
+  @MaxLength(4096)
   notes?: string;
 }

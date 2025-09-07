@@ -36,7 +36,7 @@ export class Visit {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'family_id' })
+  @Column({ name: 'family_id', type: 'int' })
   familyId: number;
 
   @Column({ name: 'visit_date', type: 'date' })
@@ -64,10 +64,13 @@ export class Visit {
   })
   guardianRelationship?: FamilyRelationType;
 
-  @Column({ name: 'number_of_family_members' })
+  @Column({ name: 'number_of_family_members', type: 'int' })
   numberOfFamilyMembers: number;
 
-  @Column({ name: 'number_of_remaining_family_members_in_the_house' })
+  @Column({
+    name: 'number_of_remaining_family_members_in_the_house',
+    type: 'int',
+  })
   numberOfRemainingFamilyMembersInTheHouse: number;
 
   @Column({ name: 'road', type: 'json', nullable: true })
@@ -152,15 +155,15 @@ export class Visit {
   @Column({
     name: 'needs_or_luxuries_not_reported_in_the_paper',
     type: 'varchar',
+    length: 1000,
     nullable: true,
   })
   needsOrLuxuriesNotReportedInThePaper?: string;
 
   @Column({
     name: 'baraka_association_income',
-    type: 'decimal',
-    precision: 10,
-    scale: 2,
+    type: 'enum',
+    enum: AlBarakaCharityIncomeAmount,
     nullable: true,
   })
   barakaAssociationIncome?: AlBarakaCharityIncomeAmount;

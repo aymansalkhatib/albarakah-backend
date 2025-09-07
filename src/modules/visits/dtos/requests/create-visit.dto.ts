@@ -46,7 +46,7 @@ export class CreateVisitDto {
 
   @IsOptional()
   @IsString()
-  @MaxLength(5000)
+  @MaxLength(65535) // TEXT field can hold up to 65,535 characters
   committeeNotesAndSuggestionsOfTheVisitCommittee?: string;
 
   @IsOptional()
@@ -80,7 +80,7 @@ export class CreateVisitDto {
 
   @IsOptional()
   @IsString()
-  @MaxLength(5000)
+  @MaxLength(65535) // TEXT field can hold up to 65,535 characters
   notes?: string;
 
   @IsOptional()
@@ -149,7 +149,7 @@ export class CreateVisitDto {
 
   @IsOptional()
   @IsString()
-  @MaxLength(1000)
+  @MaxLength(65535) // TEXT field can hold up to 65,535 characters
   wasteBasket?: string;
 
   @IsOptional()
@@ -160,22 +160,22 @@ export class CreateVisitDto {
 
   @IsOptional()
   @IsString()
-  @MaxLength(1000)
+  @MaxLength(65535) // TEXT field can hold up to 65,535 characters
   clothesCondition?: string;
 
   @IsOptional()
   @IsString()
-  @MaxLength(1000)
+  @MaxLength(65535) // TEXT field can hold up to 65,535 characters
   shoesCondition?: string;
 
   @IsOptional()
   @IsString()
-  @MaxLength(1000)
+  @MaxLength(65535) // TEXT field can hold up to 65,535 characters
   foodSuppliesCondition?: string;
 
   @IsOptional()
   @IsString()
-  @MaxLength(1000)
+  @MaxLength(1000) // VARCHAR(1000) field
   needsOrLuxuriesNotReportedInThePaper?: string;
 
   @IsOptional()

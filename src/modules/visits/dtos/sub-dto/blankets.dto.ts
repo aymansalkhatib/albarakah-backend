@@ -1,3 +1,4 @@
+import { Expose } from 'class-transformer';
 import {
   IsNumber,
   IsOptional,
@@ -9,14 +10,16 @@ import {
 import { Blankets } from '../../interfaces';
 
 export class BlanketsDto implements Blankets {
+  @Expose()
   @IsOptional()
   @IsNumber()
   @Min(0)
   @Max(100)
   blanketsCount?: number;
 
+  @Expose()
   @IsOptional()
   @IsString()
-  @MaxLength(1000)
+  @MaxLength(4096)
   notes?: string;
 }

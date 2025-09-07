@@ -1,3 +1,4 @@
+import { Expose } from 'class-transformer';
 import {
   IsNumber,
   IsOptional,
@@ -9,20 +10,23 @@ import {
 import { CoolingDevices } from '../../interfaces';
 
 export class CoolingDevicesDto implements CoolingDevices {
+  @Expose()
   @IsOptional()
   @IsNumber()
   @Min(0)
   @Max(100)
   airConditionersCount?: number;
 
+  @Expose()
   @IsOptional()
   @IsNumber()
   @Min(0)
   @Max(100)
   fansCount?: number;
 
+  @Expose()
   @IsOptional()
   @IsString()
-  @MaxLength(1000)
+  @MaxLength(4096)
   notes?: string;
 }
