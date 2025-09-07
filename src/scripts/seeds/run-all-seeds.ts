@@ -4,6 +4,7 @@ import { DataSource } from 'typeorm';
 import { AppModule } from '../../app.module';
 import { EnvironmentConfig } from '../../shared/modules/app-config/env.schema';
 import { seedEmployees } from './seed-employees';
+import { seedFamilies } from './seed-families';
 import { seedRolesAndPermissions } from './seed-roles-permissions';
 import { seedSystemUsers } from './seed-system-users';
 
@@ -12,6 +13,7 @@ async function bootstrap() {
   const runPermission = args.includes('permission');
   const runSystemUsers = args.includes('system-users');
   const runEmployees = args.includes('employees');
+  const runFamilies = args.includes('families');
   const runAll = args.includes('all');
 
   const app = await NestFactory.create(AppModule);
@@ -35,10 +37,15 @@ async function bootstrap() {
       await seedEmployees(queryRunner);
       console.log('✅ Employees seeded');
     }
+    if (runFamilies) {
+      await seedFamilies(queryRunner);
+      console.log('✅ Families seeded');
+    }
     if (runAll) {
       await seedRolesAndPermissions(queryRunner);
       await seedSystemUsers(queryRunner, configService);
       await seedEmployees(queryRunner);
+      await seedFamilies(queryRunner);
       console.log('✅ All seeders ran');
     }
 
