@@ -34,7 +34,7 @@ export async function seedSystemUsers(
         id: 1,
         fullName: 'أحمد خليل',
         phone: '0599123456',
-        nationalId: '1234567890',
+        nationalId: '12345678901',
         birthDate: new Date('1985-06-20'),
         gender: GenderType.MALE,
         nationality: 'فلسطيني',
@@ -49,7 +49,7 @@ export async function seedSystemUsers(
       systemUser: {
         id: 1,
         username: 'superadmin',
-        password: 'Admin@12345',
+        password: superAdminPassword,
         roleId: superAdminRole.id,
       },
     },
