@@ -9,18 +9,19 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  Put,
   Query,
 } from '@nestjs/common';
-import { UpdateFamilyDto } from '../dtos/requests/update-family-dto';
-import { FamilyResponseDto } from '../dtos/responses/family-response.dto';
-import { FamiliesService } from '../services/families.service';
-import { FilterFamilyDto } from '../dtos/queries/filter-family.dto';
-import { CreateFamilyDto } from '../dtos/requests/create-family-dto';
 import { Protected } from '../../../common/decorators/protected.decorator';
-import { Permission } from '../../../modules/roles/enums/permission.enum';
 import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
+import { Permission } from '../../../modules/roles/enums/permission.enum';
+import { FilterFamilyDto } from '../dtos/queries/filter-family.dto';
+import { MonthlyFamilyStatsQueryDto } from '../dtos/queries/monthly-family-stats-query.dto';
+import { CreateFamilyDto } from '../dtos/requests/create-family-dto';
+import { UpdateFamilyDto } from '../dtos/requests/update-family-dto';
+import { FamilyResponseDto } from '../dtos/responses/family-response.dto';
+import { MonthlyFamilyStatsResponseDto } from '../dtos/responses/monthly-family-stats-response.dto';
+import { FamiliesService } from '../services/families.service';
 
 @Controller('families')
 export class FamiliesController {
@@ -29,8 +30,19 @@ export class FamiliesController {
   @Post()
   @Protected(Permission.CREATE_FAMILY)
   @SerializeResponse(FamilyResponseDto)
-  async create(@Body() createFamilyDto: CreateFamilyDto): Promise<FamilyResponseDto> {
+  async create(
+    @Body() createFamilyDto: CreateFamilyDto,
+  ): Promise<FamilyResponseDto> {
     return await this.familiesService.create(createFamilyDto);
+  }
+
+  @Get('monthly-stats')
+  @Protected(Permission.READ_FAMILY)
+  @SerializeResponse(MonthlyFamilyStatsResponseDto)
+  async getMonthlyStats(
+    @Query() query: MonthlyFamilyStatsQueryDto,
+  ): Promise<MonthlyFamilyStatsResponseDto[]> {
+    return await this.familiesService.getMonthlyStats(query);
   }
 
   @Get()
@@ -44,7 +56,9 @@ export class FamiliesController {
   @Get(':id')
   @Protected(Permission.READ_FAMILY)
   @SerializeResponse(FamilyResponseDto)
-  async findOne(@Param('id', ParseIntPipe) id: number): Promise<FamilyResponseDto> {
+  async findOne(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<FamilyResponseDto> {
     return await this.familiesService.findOne(id);
   }
 

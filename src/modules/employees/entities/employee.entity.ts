@@ -39,7 +39,7 @@ export class Employee {
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 
-  @ManyToOne(() => Person, { nullable: false, onDelete: 'CASCADE' })
+  @OneToOne(() => Person, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'person_id' })
   person: Person;
 
