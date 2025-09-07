@@ -11,6 +11,7 @@ import { seedFamilyNeeds } from './seed-family-needs';
 import { seedReceivedAssistance } from './seed-received-assistance';
 import { seedRolesAndPermissions } from './seed-roles-permissions';
 import { seedSystemUsers } from './seed-system-users';
+import { seedTrainingCourses } from './seed-training-courses';
 
 async function bootstrap() {
   const args = process.argv.slice(2);
@@ -22,6 +23,7 @@ async function bootstrap() {
   const runFamilyNeeds = args.includes('family-needs');
   const runEmergencyAidRequests = args.includes('emergency-aid-requests');
   const runReceivedAssistance = args.includes('received-assistance');
+  const runTrainingCourses = args.includes('training-courses');
   const runAll = args.includes('all');
 
   const app = await NestFactory.create(AppModule);
@@ -65,6 +67,10 @@ async function bootstrap() {
       await seedReceivedAssistance(queryRunner);
       console.log('✅ Received assistance seeded');
     }
+    if (runTrainingCourses) {
+      await seedTrainingCourses(queryRunner);
+      console.log('✅ Training courses seeded');
+    }
     if (runAll) {
       await seedRolesAndPermissions(queryRunner);
       await seedSystemUsers(queryRunner, configService);
@@ -74,6 +80,7 @@ async function bootstrap() {
       await seedFamilyNeeds(queryRunner);
       await seedEmergencyAidRequests(queryRunner);
       await seedReceivedAssistance(queryRunner);
+      await seedTrainingCourses(queryRunner);
       console.log('✅ All seeders ran');
     }
 
