@@ -13,6 +13,7 @@ export async function seedEmployees(queryRunner: QueryRunner) {
     {
       id: 2,
       person: {
+        id: 2,
         fullName: 'سلمى علي حسين',
         motherName: 'هند علي',
         birthDate: new Date('1988-03-22'),
@@ -45,6 +46,7 @@ export async function seedEmployees(queryRunner: QueryRunner) {
     {
       id: 3,
       person: {
+        id: 3,
         fullName: 'علي محمود عبد الله',
         motherName: 'سعاد محمود',
         birthDate: new Date('1992-11-10'),
@@ -77,6 +79,7 @@ export async function seedEmployees(queryRunner: QueryRunner) {
     {
       id: 4,
       person: {
+        id: 4,
         fullName: 'منى سامي الحسن',
         motherName: 'ليلى سامي',
         birthDate: new Date('1991-08-05'),
@@ -109,6 +112,7 @@ export async function seedEmployees(queryRunner: QueryRunner) {
     {
       id: 5,
       person: {
+        id: 5,
         fullName: 'خالد يوسف سالم',
         motherName: 'مها يوسف',
         birthDate: new Date('1987-12-12'),
@@ -141,6 +145,7 @@ export async function seedEmployees(queryRunner: QueryRunner) {
     {
       id: 6,
       person: {
+        id: 6,
         fullName: 'ياسمين رامي العبد',
         motherName: 'هالة رامي',
         birthDate: new Date('1993-04-18'),
@@ -173,6 +178,7 @@ export async function seedEmployees(queryRunner: QueryRunner) {
     {
       id: 7,
       person: {
+        id: 7,
         fullName: 'رامي عبد الله حسن',
         motherName: 'سارة عبد الله',
         birthDate: new Date('1989-07-30'),
@@ -205,6 +211,7 @@ export async function seedEmployees(queryRunner: QueryRunner) {
     {
       id: 8,
       person: {
+        id: 8,
         fullName: 'هدى سمير علي',
         motherName: 'منى سمير',
         birthDate: new Date('1994-10-20'),
@@ -237,6 +244,7 @@ export async function seedEmployees(queryRunner: QueryRunner) {
     {
       id: 9,
       person: {
+        id: 9,
         fullName: 'سعيد فؤاد محمود',
         motherName: 'جميلة فؤاد',
         birthDate: new Date('1986-02-12'),
@@ -269,6 +277,7 @@ export async function seedEmployees(queryRunner: QueryRunner) {
     {
       id: 10,
       person: {
+        id: 10,
         fullName: 'نجلاء محمود العلي',
         motherName: 'هالة محمود',
         birthDate: new Date('1991-01-25'),
@@ -302,6 +311,7 @@ export async function seedEmployees(queryRunner: QueryRunner) {
     {
       id: 11,
       person: {
+        id: 11,
         fullName: 'أحمد سامي الخطيب',
         motherName: 'فاطمة سامي',
         birthDate: new Date('1989-03-12'),
@@ -334,6 +344,7 @@ export async function seedEmployees(queryRunner: QueryRunner) {
     {
       id: 12,
       person: {
+        id: 12,
         fullName: 'ليلى عبد الرحمن سعيد',
         motherName: 'منى عبد الرحمن',
         birthDate: new Date('1992-06-18'),
@@ -366,6 +377,7 @@ export async function seedEmployees(queryRunner: QueryRunner) {
     {
       id: 13,
       person: {
+        id: 13,
         fullName: 'رامي فوزي الزعبي',
         motherName: 'هالة فوزي',
         birthDate: new Date('1987-11-22'),
@@ -398,6 +410,7 @@ export async function seedEmployees(queryRunner: QueryRunner) {
     {
       id: 14,
       person: {
+        id: 14,
         fullName: 'نورا سامي الطيب',
         motherName: 'هند سامي',
         birthDate: new Date('1990-09-05'),
@@ -430,6 +443,7 @@ export async function seedEmployees(queryRunner: QueryRunner) {
     {
       id: 15,
       person: {
+        id: 15,
         fullName: 'عمار مصطفى عبد الله',
         motherName: 'ليلى مصطفى',
         birthDate: new Date('1988-12-12'),
@@ -462,6 +476,7 @@ export async function seedEmployees(queryRunner: QueryRunner) {
     {
       id: 16,
       person: {
+        id: 16,
         fullName: 'سارة يوسف الحداد',
         motherName: 'مها يوسف',
         birthDate: new Date('1993-05-23'),
@@ -494,6 +509,7 @@ export async function seedEmployees(queryRunner: QueryRunner) {
     {
       id: 17,
       person: {
+        id: 17,
         fullName: 'خالد سامي العطار',
         motherName: 'هالة سامي',
         birthDate: new Date('1986-09-10'),
@@ -526,6 +542,7 @@ export async function seedEmployees(queryRunner: QueryRunner) {
     {
       id: 18,
       person: {
+        id: 18,
         fullName: 'نورا عبد الله سعيد',
         motherName: 'سارة عبد الله',
         birthDate: new Date('1991-11-20'),
@@ -558,6 +575,7 @@ export async function seedEmployees(queryRunner: QueryRunner) {
     {
       id: 19,
       person: {
+        id: 19,
         fullName: 'حسام تحسين',
         motherName: 'جميلة فؤاد',
         birthDate: new Date('1986-02-12'),
@@ -590,6 +608,7 @@ export async function seedEmployees(queryRunner: QueryRunner) {
     {
       id: 20,
       person: {
+        id: 20,
         fullName: 'نجلاء محمود عبد الرحمن',
         motherName: 'هالة محمود',
         birthDate: new Date('1991-01-25'),
@@ -622,6 +641,7 @@ export async function seedEmployees(queryRunner: QueryRunner) {
     {
       id: 21,
       person: {
+        id: 21,
         fullName: 'محمد أحمد العلي',
         motherName: 'فاطمة محمد',
         birthDate: new Date('1990-05-15'),

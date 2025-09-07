@@ -31,6 +31,7 @@ export async function seedSystemUsers(
   const usersData = [
     {
       person: {
+        id: 1,
         fullName: 'أحمد خليل',
         phone: '0599123456',
         nationalId: '1234567890',
@@ -39,12 +40,14 @@ export async function seedSystemUsers(
         nationality: 'فلسطيني',
       },
       employee: {
+        id: 1,
         position: 'مدير النظام',
         hireDate: new Date('2010-03-01'),
         terminationDate: null,
         notes: 'مسؤول عن إدارة النظام بالكامل',
       },
       systemUser: {
+        id: 1,
         username: 'superadmin',
         password: 'Admin@12345',
         roleId: superAdminRole.id,
@@ -70,15 +73,15 @@ export async function seedSystemUsers(
     const savedPerson = await personRepo.save(
       personRepo.create(userData.person),
     );
+    console.log('savedPerson', savedPerson);
     const savedEmployee = await employeeRepo.save(
       employeeRepo.create({ ...userData.employee, personId: savedPerson.id }),
     );
+    console.log('savedEmployee', savedEmployee);
     await systemUserRepo.save(
       systemUserRepo.create({
-        username: userData.systemUser.username,
-        password: userData.systemUser.password,
+        ...userData.systemUser,
         employeeId: savedEmployee.id,
-        roleId: userData.systemUser.roleId,
       }),
     );
   }
