@@ -88,10 +88,7 @@ export class FamilyResponseDto {
 
   // === COUNTS & VALUES ===
   @Expose()
-  beneficiaryFamilyMembersCount?: number;
-
-  @Expose()
-  guardianFamilyMembersCount?: number;
+  familyMembersWithGuardianCount?: number;
 
   @Expose()
   sharedMealMembersCount?: number;

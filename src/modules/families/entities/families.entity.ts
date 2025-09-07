@@ -176,14 +176,15 @@ export class Family {
   sponsorshipStatus?: SponsorshipStatus;
 
   // === COUNTS & VALUES ===
-  @Column({ name: 'beneficiary_family_members_count', type: 'int', default: 0 })
-  beneficiaryFamilyMembersCount: number;
+  @Column({
+    name: 'family_members_with_guardian_count',
+    type: 'int',
+    nullable: true,
+  })
+  familyMembersWithGuardianCount?: number;
 
-  @Column({ name: 'guardian_family_members_count', type: 'int', default: 0 })
-  guardianFamilyMembersCount: number;
-
-  @Column({ name: 'shared_meal_members_count', type: 'int', default: 0 })
-  sharedMealMembersCount: number;
+  @Column({ name: 'shared_meal_members_count', type: 'int', nullable: true })
+  sharedMealMembersCount?: number;
 
   @Column({
     name: 'voucher_value',

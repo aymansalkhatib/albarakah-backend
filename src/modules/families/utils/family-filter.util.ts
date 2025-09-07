@@ -224,60 +224,34 @@ export function applyFamilyFilters(
   }
 
   // Count range filters
-  if (
-    filter.beneficiaryFamilyMembersCountMin !== undefined &&
-    filter.beneficiaryFamilyMembersCountMax !== undefined
-  ) {
-    qb.andWhere(
-      `${alias}.beneficiaryFamilyMembersCount BETWEEN :beneficiaryFamilyMembersCountMin AND :beneficiaryFamilyMembersCountMax`,
-      {
-        beneficiaryFamilyMembersCountMin:
-          filter.beneficiaryFamilyMembersCountMin,
-        beneficiaryFamilyMembersCountMax:
-          filter.beneficiaryFamilyMembersCountMax,
-      },
-    );
-  } else if (filter.beneficiaryFamilyMembersCountMin !== undefined) {
-    qb.andWhere(
-      `${alias}.beneficiaryFamilyMembersCount >= :beneficiaryFamilyMembersCountMin`,
-      {
-        beneficiaryFamilyMembersCountMin:
-          filter.beneficiaryFamilyMembersCountMin,
-      },
-    );
-  } else if (filter.beneficiaryFamilyMembersCountMax !== undefined) {
-    qb.andWhere(
-      `${alias}.beneficiaryFamilyMembersCount <= :beneficiaryFamilyMembersCountMax`,
-      {
-        beneficiaryFamilyMembersCountMax:
-          filter.beneficiaryFamilyMembersCountMax,
-      },
-    );
-  }
 
   if (
-    filter.guardianFamilyMembersCountMin !== undefined &&
-    filter.guardianFamilyMembersCountMax !== undefined
+    filter.familyMembersWithGuardianCountMin !== undefined &&
+    filter.familyMembersWithGuardianCountMax !== undefined
   ) {
     qb.andWhere(
-      `${alias}.guardianFamilyMembersCount BETWEEN :guardianFamilyMembersCountMin AND :guardianFamilyMembersCountMax`,
+      `${alias}.familyMembersWithGuardianCount BETWEEN :familyMembersWithGuardianCountMin AND :familyMembersWithGuardianCountMax`,
       {
-        guardianFamilyMembersCountMin: filter.guardianFamilyMembersCountMin,
-        guardianFamilyMembersCountMax: filter.guardianFamilyMembersCountMax,
+        familyMembersWithGuardianCountMin:
+          filter.familyMembersWithGuardianCountMin,
+        familyMembersWithGuardianCountMax:
+          filter.familyMembersWithGuardianCountMax,
       },
     );
-  } else if (filter.guardianFamilyMembersCountMin !== undefined) {
+  } else if (filter.familyMembersWithGuardianCountMin !== undefined) {
     qb.andWhere(
-      `${alias}.guardianFamilyMembersCount >= :guardianFamilyMembersCountMin`,
+      `${alias}.familyMembersWithGuardianCount >= :familyMembersWithGuardianCountMin`,
       {
-        guardianFamilyMembersCountMin: filter.guardianFamilyMembersCountMin,
+        familyMembersWithGuardianCountMin:
+          filter.familyMembersWithGuardianCountMin,
       },
     );
-  } else if (filter.guardianFamilyMembersCountMax !== undefined) {
+  } else if (filter.familyMembersWithGuardianCountMax !== undefined) {
     qb.andWhere(
-      `${alias}.guardianFamilyMembersCount <= :guardianFamilyMembersCountMax`,
+      `${alias}.familyMembersWithGuardianCount <= :familyMembersWithGuardianCountMax`,
       {
-        guardianFamilyMembersCountMax: filter.guardianFamilyMembersCountMax,
+        familyMembersWithGuardianCountMax:
+          filter.familyMembersWithGuardianCountMax,
       },
     );
   }

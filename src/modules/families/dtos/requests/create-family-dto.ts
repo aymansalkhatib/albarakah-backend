@@ -131,11 +131,7 @@ export class CreateFamilyDto {
   // === COUNTS & VALUES ===
   @IsOptional()
   @IsNumber()
-  beneficiaryFamilyMembersCount?: number;
-
-  @IsOptional()
-  @IsNumber()
-  guardianFamilyMembersCount?: number;
+  familyMembersWithGuardianCount?: number;
 
   @IsOptional()
   @IsNumber()

@@ -144,19 +144,11 @@ export class FilterFamilyDto extends PaginationDto {
   // === COUNTS & VALUES ===
   @IsOptional()
   @IsNumber()
-  beneficiaryFamilyMembersCountMin?: number;
+  familyMembersWithGuardianCountMin?: number;
 
   @IsOptional()
   @IsNumber()
-  beneficiaryFamilyMembersCountMax?: number;
-
-  @IsOptional()
-  @IsNumber()
-  guardianFamilyMembersCountMin?: number;
-
-  @IsOptional()
-  @IsNumber()
-  guardianFamilyMembersCountMax?: number;
+  familyMembersWithGuardianCountMax?: number;
 
   @IsOptional()
   @IsNumber()
