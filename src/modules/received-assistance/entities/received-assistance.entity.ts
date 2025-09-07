@@ -7,7 +7,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { FamilyMember } from '../../.././modules/family-members/entities/family-members.entity';
 import { Family } from '../../families/entities/families.entity';
 import { AssistanceType } from '../enums/assistance-type.enum';
 
@@ -52,15 +51,4 @@ export class ReceivedAssistance {
   })
   @JoinColumn({ name: 'family_id' })
   family: Family;
-
-  @ManyToOne(
-    () => FamilyMember,
-    (familyMember) => familyMember.receivedAssistance,
-    {
-      onDelete: 'CASCADE',
-      nullable: true,
-    },
-  )
-  @JoinColumn({ name: 'family_member_id' })
-  familyMember?: FamilyMember;
 }
