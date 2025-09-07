@@ -5,6 +5,7 @@ import { AppModule } from '../../app.module';
 import { EnvironmentConfig } from '../../shared/modules/app-config/env.schema';
 import { seedEmployees } from './seed-employees';
 import { seedFamilies } from './seed-families';
+import { seedFamilyMembers } from './seed-family-members';
 import { seedRolesAndPermissions } from './seed-roles-permissions';
 import { seedSystemUsers } from './seed-system-users';
 
@@ -14,6 +15,7 @@ async function bootstrap() {
   const runSystemUsers = args.includes('system-users');
   const runEmployees = args.includes('employees');
   const runFamilies = args.includes('families');
+  const runFamilyMembers = args.includes('family-members');
   const runAll = args.includes('all');
 
   const app = await NestFactory.create(AppModule);
@@ -41,11 +43,16 @@ async function bootstrap() {
       await seedFamilies(queryRunner);
       console.log('✅ Families seeded');
     }
+    if (runFamilyMembers) {
+      await seedFamilyMembers(queryRunner);
+      console.log('✅ Family members seeded');
+    }
     if (runAll) {
       await seedRolesAndPermissions(queryRunner);
       await seedSystemUsers(queryRunner, configService);
       await seedEmployees(queryRunner);
       await seedFamilies(queryRunner);
+      await seedFamilyMembers(queryRunner);
       console.log('✅ All seeders ran');
     }
 
