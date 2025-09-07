@@ -63,9 +63,9 @@ export class FamilyMemberResponseDto {
     ({ obj }) => {
       const courseBatches = obj.courseBatches;
       if (Array.isArray(courseBatches)) {
-        return courseBatches.length > 0;
+        return courseBatches.length > 0 ? true : false;
       }
-      return false;
+      return null;
     },
     {
       toClassOnly: true,
@@ -80,7 +80,7 @@ export class FamilyMemberResponseDto {
       if (Array.isArray(courseBatches)) {
         return courseBatches.length;
       }
-      return 0;
+      return null;
     },
     {
       toClassOnly: true,

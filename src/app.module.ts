@@ -9,6 +9,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ParseQueryMiddleware } from './common/middlewares/parse-query.middleware';
 import { AuthModule } from './modules/auth/auth.module';
+import { BackupModule } from './modules/backup';
 import { DropdownsModule } from './modules/dropdowns/dropdowns.module';
 import { EmergencyAidRequestModule } from './modules/emergency-aid-request/emergency-aid-request.module';
 import { EmployeesModule } from './modules/employees/employee.module';
@@ -42,6 +43,7 @@ import { AppTypeOrmModule } from './shared/modules/app-type-orm/app-type-orm.mod
     }),
     //
     AuthModule,
+    BackupModule,
     DropdownsModule,
     FamiliesModule,
     FamilyMembersModule,
@@ -57,6 +59,7 @@ import { AppTypeOrmModule } from './shared/modules/app-type-orm/app-type-orm.mod
     VisitsModule,
     SupportersModule,
     UploadsModule,
+    BackupModule,
   ],
 
   controllers: [AppController],
