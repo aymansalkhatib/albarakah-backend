@@ -20,6 +20,8 @@ import { CreateVisitDto } from '../dtos/requests/create-visit.dto';
 import { UpdateVisitDto } from '../dtos/requests/update-visit.dto';
 import { VisitResponseDto } from '../dtos/responses/visit-response.dto';
 import { VisitsService } from '../services/visits.service';
+import { MonthlyStatsQueryDto } from '../../../common/dtos/monthly-stats-query.dto';
+import { MonthlyStatsResponseDto } from '../../../common/dtos/monthly-stats-response.dto';
 
 @Controller('visits')
 export class VisitsController {
@@ -32,6 +34,15 @@ export class VisitsController {
     @Body() createVisitDto: CreateVisitDto,
   ): Promise<VisitResponseDto> {
     return await this.visitsService.create(createVisitDto);
+  }
+
+  @Get('monthly-stats')
+  @Protected(Permission.READ_VISIT)
+  @SerializeResponse(MonthlyStatsResponseDto)
+  async getMonthlyStats(
+    @Query() query: MonthlyStatsQueryDto,
+  ): Promise<MonthlyStatsResponseDto[]> {
+    return await this.visitsService.getMonthlyStats(query);
   }
 
   @Get()
