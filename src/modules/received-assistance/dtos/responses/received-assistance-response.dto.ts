@@ -1,7 +1,7 @@
 import { Expose, Type } from 'class-transformer';
-import { AssistanceType } from '../../enums/assistance-type.enum';
 import { FamilyResponseDto } from '../../../../modules/families/dtos/responses/family-response.dto';
 import { FamilyMemberResponseDto } from '../../../../modules/family-members/dtos/responses/family-member-response.dto';
+import { AssistanceType } from '../../enums/assistance-type.enum';
 
 export class ReceivedAssistanceResponseDto {
   @Expose()
@@ -9,9 +9,6 @@ export class ReceivedAssistanceResponseDto {
 
   @Expose()
   familyId: number;
-
-  @Expose()
-  familyMemberId?: number;
 
   @Expose()
   assistanceType?: AssistanceType;

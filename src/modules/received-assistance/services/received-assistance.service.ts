@@ -1,8 +1,4 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOneOptions, Repository } from 'typeorm';
 import { PaginationResponseDto } from '../../.././common/pagination/dto/pagination-response.dto';
@@ -31,27 +27,10 @@ export class ReceivedAssistanceService {
   ): Promise<ReceivedAssistance> {
     const family = await this.familiesService.findOne(createDto.familyId);
 
-    let familyMember = undefined;
-    if (createDto.familyMemberId) {
-      familyMember = await this.familyMembersService.findOne(
-        createDto.familyMemberId,
-        {
-          relations: ['person'],
-        },
-      );
-      if (familyMember.familyId !== createDto.familyId) {
-        throw new ConflictException(
-          this.translateHelper.tr(
-            'received-assistance.errors.family_member_mismatch',
-          ),
-        );
-      }
-    }
-
     const entity = this.repository.create(createDto);
     const saved = await this.repository.save(entity);
 
-    return { ...saved, family, familyMember };
+    return { ...saved, family };
   }
 
   async update(
@@ -99,18 +78,23 @@ export class ReceivedAssistanceService {
     const qb = this.repository
       .createQueryBuilder('receivedAssistance')
       .leftJoinAndSelect('receivedAssistance.family', 'family')
-      .leftJoinAndSelect('receivedAssistance.familyMember', 'familyMember');
+
+      .leftJoin(
+        'family.familyMembers',
+        'familyMembers',
+        'familyMembers.isGuardian = :isGuardian',
+        { isGuardian: true },
+      )
+      .addSelect(['familyMembers.id', 'familyMembers.person'])
+      .leftJoin('familyMembers.person', 'person')
+      .addSelect(['person.id', 'person.fullName']);
 
     if (filterDto.familyId) {
       qb.andWhere('receivedAssistance.familyId = :familyId', {
         familyId: filterDto.familyId,
       });
     }
-    if (filterDto.familyMemberId) {
-      qb.andWhere('receivedAssistance.familyMemberId = :familyMemberId', {
-        familyMemberId: filterDto.familyMemberId,
-      });
-    }
+
     if (filterDto.assistanceType) {
       qb.andWhere('receivedAssistance.assistanceType = :assistanceType', {
         assistanceType: filterDto.assistanceType,

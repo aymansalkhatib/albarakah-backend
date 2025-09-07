@@ -19,9 +19,6 @@ export class ReceivedAssistance {
   @Column({ name: 'family_id' })
   familyId: number;
 
-  @Column({ name: 'family_member_id', nullable: true })
-  familyMemberId?: number;
-
   @Column({
     name: 'assistance_type',
     type: 'enum',

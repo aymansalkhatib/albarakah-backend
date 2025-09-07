@@ -39,13 +39,15 @@ export class FamilyNeedsService {
     const query = this.familyNeedRepository
       .createQueryBuilder('familyNeed')
       .leftJoinAndSelect('familyNeed.family', 'family')
-      .leftJoinAndSelect(
+      .leftJoin(
         'family.familyMembers',
         'familyMembers',
         'familyMembers.isGuardian = :isGuardian',
         { isGuardian: true },
       )
-      .leftJoinAndSelect('familyMembers.person', 'person');
+      .addSelect(['familyMembers.id', 'familyMembers.person'])
+      .leftJoin('familyMembers.person', 'person')
+      .addSelect(['person.id', 'person.fullName']);
 
     if (filter.familyId) {
       query.andWhere('familyNeed.familyId = :familyId', {

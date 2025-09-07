@@ -16,11 +16,7 @@ export class CreateReceivedAssistanceDto {
   @Type(() => Number)
   familyId: number;
 
-  @IsOptional()
-  @IsNumber()
-  @IsPositive()
-  @Type(() => Number)
-  familyMemberId?: number;
+ 
 
   @IsOptional()
   @IsEnum(AssistanceType)
