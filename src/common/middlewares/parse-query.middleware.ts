@@ -1,11 +1,9 @@
-import { Injectable, Logger, NestMiddleware } from '@nestjs/common';
+import { Injectable, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
 import qs from 'qs';
 
 @Injectable()
 export class ParseQueryMiddleware implements NestMiddleware {
-  private readonly logger = new Logger(ParseQueryMiddleware.name);
-
   use(req: Request, _: Response, next: NextFunction): void {
     try {
       const url = req.originalUrl || req.url;
@@ -58,7 +56,6 @@ export class ParseQueryMiddleware implements NestMiddleware {
 
             return decoded;
           } catch (error) {
-            this.logger.warn(`Failed to decode query parameter: ${str}`, error);
             return str;
           }
         },
@@ -74,16 +71,10 @@ export class ParseQueryMiddleware implements NestMiddleware {
           configurable: true,
           enumerable: true,
         });
-
-        this.logger.debug(`Parsed query parameters:`, parsedQuery);
       }
 
       next();
     } catch (error: any) {
-      this.logger.error(
-        `Failed to parse query string: ${error.message}`,
-        error.stack,
-      );
       Object.defineProperty(req, 'query', {
         value: {},
         writable: false,

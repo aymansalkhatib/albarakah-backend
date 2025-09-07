@@ -26,22 +26,27 @@ export async function seedSystemUsers(
   }
 
   const superAdminPassword =
-    configService?.get<string>('SUPER_ADMIN_PASSWORD') || 'defaultPassword';
+    configService?.get<string>('SUPER_ADMIN_PASSWORD') || 'Admin@12345';
 
   const usersData = [
     {
       person: {
-        fullName: 'Super Admin',
-        phone: '0959123456',
-        nationalId: '123456789',
-        birthDate: new Date('1990-01-15'),
+        fullName: 'أحمد خليل',
+        phone: '0599123456',
+        nationalId: '1234567890',
+        birthDate: new Date('1985-06-20'),
         gender: GenderType.MALE,
-        nationality: 'Palestinian',
+        nationality: 'فلسطيني',
       },
-      employee: { position: 'System Administrator' },
+      employee: {
+        position: 'مدير النظام',
+        hireDate: new Date('2010-03-01'),
+        terminationDate: null,
+        notes: 'مسؤول عن إدارة النظام بالكامل',
+      },
       systemUser: {
-        username: 'Superadmin',
-        password: superAdminPassword,
+        username: 'superadmin',
+        password: 'Admin@12345',
         roleId: superAdminRole.id,
       },
     },
@@ -55,7 +60,12 @@ export async function seedSystemUsers(
       where: { nationalId: userData.person.nationalId },
     });
 
-    if (existingUser || existingPerson) continue;
+    if (existingUser || existingPerson) {
+      console.log(
+        `❌ User ${userData.systemUser.username} or Person ${userData.person.nationalId} already exists`,
+      );
+      continue;
+    }
 
     const savedPerson = await personRepo.save(
       personRepo.create(userData.person),

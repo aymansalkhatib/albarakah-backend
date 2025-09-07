@@ -8,6 +8,7 @@ import { FamiliesService } from '../../families/services/families.service';
 import { FamilyMember } from '../../family-members/entities/family-members.entity';
 import { FamilyMembersService } from '../../family-members/services/family-members.service';
 import { applyFamilyMemberFilters } from '../../family-members/utils';
+import { applyPersonFilters } from '../../persons/utils/person-filter.util';
 import { CreateInterviewDto } from '../dtos/requests/create-interview.dto';
 import { GetInterviewsQueryDto } from '../dtos/requests/get-interviews-query.dto';
 import { UpdateInterviewDto } from '../dtos/requests/update-interview.dto';
@@ -78,6 +79,10 @@ export class InterviewService {
         'familyMembers',
         query.familyMember,
       );
+    }
+
+    if (query.familyMember && query.familyMember.person) {
+      applyPersonFilters(queryBuilder, 'person', query.familyMember.person);
     }
 
     const value = await paginate(

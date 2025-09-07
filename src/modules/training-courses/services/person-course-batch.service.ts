@@ -113,6 +113,7 @@ export class PersonCourseBatchService {
     const queryBuilder = this.personCourseBatchRepository
       .createQueryBuilder('personCourseBatch')
       .leftJoinAndSelect('personCourseBatch.courseBatch', 'courseBatch')
+      .leftJoinAndSelect('courseBatch.trainingCourse', 'trainingCourse')
       .leftJoinAndSelect('personCourseBatch.familyMember', 'familyMember')
       .leftJoinAndSelect('familyMember.person', 'person');
 

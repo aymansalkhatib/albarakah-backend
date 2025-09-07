@@ -128,8 +128,9 @@ export class CourseBatchService {
   async findAll(
     filterDto: FilterCourseBatchDto,
   ): Promise<PaginationResponseDto<CourseBatchResponseDto>> {
-    const queryBuilder =
-      this.courseBatchRepository.createQueryBuilder('courseBatch');
+    const queryBuilder = this.courseBatchRepository
+      .createQueryBuilder('courseBatch')
+      .leftJoinAndSelect('courseBatch.trainingCourse', 'trainingCourse');
 
     // Apply filters based on FilterCourseBatchDto
     if (filterDto.trainingCourseId) {
