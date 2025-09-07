@@ -7,10 +7,10 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Family } from '../../families/entities/families.entity';
-import { PriorityLevel } from '../enums/priority-level.enum';
-import { FamilyNeedStatus } from '../enums/family-need-status.enum';
 import { FamilyMember } from '../../../modules/family-members/entities/family-members.entity';
+import { Family } from '../../families/entities/families.entity';
+import { FamilyNeedStatus } from '../enums/family-need-status.enum';
+import { PriorityLevel } from '../enums/priority-level.enum';
 
 @Entity('family_needs')
 export class FamilyNeed {
@@ -19,9 +19,6 @@ export class FamilyNeed {
 
   @Column({ name: 'family_id' })
   familyId: number;
-
-  @Column({ name: 'family_member_id', nullable: true })
-  familyMemberId?: number;
 
   @Column({ name: 'need_type', length: 100 })
   needType: string;

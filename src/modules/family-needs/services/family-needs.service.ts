@@ -4,7 +4,6 @@ import { FindOneOptions, Repository } from 'typeorm';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { paginate } from '../../../common/pagination/paginate.service';
 import { FamiliesService } from '../../../modules/families/services/families.service';
-import { FamilyMember } from '../../../modules/family-members/entities/family-members.entity';
 import { FamilyMembersService } from '../../../modules/family-members/services/family-members.service';
 import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
 import { FamilyNeedResponseDto } from '../dtos';
@@ -28,20 +27,10 @@ export class FamilyNeedsService {
       createFamilyNeedDto.familyId,
     );
 
-    let familyMember: FamilyMember | undefined;
-    if (createFamilyNeedDto.familyMemberId) {
-      familyMember = await this.familyMembersService.findOne(
-        createFamilyNeedDto.familyMemberId,
-        {
-          relations: ['person'],
-        },
-      );
-    }
-
     const newFamilyNeed = this.familyNeedRepository.create(createFamilyNeedDto);
     const savedFamilyNeed = await this.familyNeedRepository.save(newFamilyNeed);
 
-    return { ...savedFamilyNeed, family, familyMember };
+    return { ...savedFamilyNeed, family };
   }
 
   async findAll(
@@ -50,18 +39,17 @@ export class FamilyNeedsService {
     const query = this.familyNeedRepository
       .createQueryBuilder('familyNeed')
       .leftJoinAndSelect('familyNeed.family', 'family')
-      .leftJoinAndSelect('familyNeed.familyMember', 'familyMember')
-      .leftJoinAndSelect('familyMember.person', 'person');
+      .leftJoinAndSelect(
+        'family.familyMembers',
+        'familyMembers',
+        'familyMembers.isGuardian = :isGuardian',
+        { isGuardian: true },
+      )
+      .leftJoinAndSelect('familyMembers.person', 'person');
 
     if (filter.familyId) {
       query.andWhere('familyNeed.familyId = :familyId', {
         familyId: filter.familyId,
-      });
-    }
-
-    if (filter.familyMemberId) {
-      query.andWhere('familyNeed.familyMemberId = :familyMemberId', {
-        familyMemberId: filter.familyMemberId,
       });
     }
 

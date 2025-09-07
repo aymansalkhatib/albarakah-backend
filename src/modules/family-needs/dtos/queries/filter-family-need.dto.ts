@@ -1,19 +1,23 @@
-import { IsEnum, IsNumber, IsOptional, IsString, Max, MaxLength, Min } from 'class-validator';
-import { PriorityLevel } from '../../enums/priority-level.enum';
-import { FamilyNeedStatus } from '../../enums/family-need-status.enum';
+import {
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Max,
+  MaxLength,
+  Min,
+} from 'class-validator';
 import { PositiveIntegerId } from '../../../../common/decorators/positive-integer-id.decorator';
 import { ValidateMinMaxPairs } from '../../../../common/decorators/validate-min-max-pairs-constraint';
 import { PaginationDto } from '../../../../common/pagination/dto/pagination.dto';
+import { FamilyNeedStatus } from '../../enums/family-need-status.enum';
+import { PriorityLevel } from '../../enums/priority-level.enum';
 
 @ValidateMinMaxPairs()
 export class FilterFamilyNeedDto extends PaginationDto {
   @IsOptional()
   @PositiveIntegerId()
   familyId?: number;
-
-  @IsOptional()
-  @PositiveIntegerId()
-  familyMemberId?: number;
 
   @IsOptional()
   @IsString()

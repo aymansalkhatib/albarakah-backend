@@ -8,17 +8,13 @@ import {
   MaxLength,
   Min,
 } from 'class-validator';
-import { PriorityLevel } from '../../enums/priority-level.enum';
-import { FamilyNeedStatus } from '../../enums/family-need-status.enum';
 import { PositiveIntegerId } from '../../../../common/decorators/positive-integer-id.decorator';
+import { FamilyNeedStatus } from '../../enums/family-need-status.enum';
+import { PriorityLevel } from '../../enums/priority-level.enum';
 
 export class CreateFamilyNeedDto {
   @PositiveIntegerId()
   familyId: number;
-
-  @IsOptional()
-  @PositiveIntegerId()
-  familyMemberId?: number;
 
   @IsString()
   @IsNotEmpty()
