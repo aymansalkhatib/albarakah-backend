@@ -10,7 +10,6 @@ import { EnvironmentConfig } from '../../../shared/modules/app-config/env.schema
 @Injectable()
 export class BackupService {
   private baseDir = path.resolve('./backup');
-  private uploadDir = path.resolve('./upload'); // المجلد الثابت
 
   constructor(private readonly config: ConfigService<EnvironmentConfig>) {}
 

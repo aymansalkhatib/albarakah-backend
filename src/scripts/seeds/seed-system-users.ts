@@ -11,38 +11,23 @@ export async function seedSystemUsers(
   queryRunner: QueryRunner,
   configService?: ConfigService<EnvironmentConfig>,
 ) {
-  console.log('👤 Starting system users seeding...');
-
   const personRepo = queryRunner.manager.getRepository(Person);
   const employeeRepo = queryRunner.manager.getRepository(Employee);
   const systemUserRepo = queryRunner.manager.getRepository(SystemUser);
   const roleRepo = queryRunner.manager.getRepository(Role);
 
-  // Get existing roles (should be created by seed-roles-permissions.ts first)
-  console.log('🔍 Looking for existing roles...');
   const superAdminRole = await roleRepo.findOne({
-    where: { name: 'superadmin' },
+    where: { name: 'Superadmin' },
   });
-
   if (!superAdminRole) {
-    console.log('❌ Required roles not found!');
     throw new Error(
       'Roles must be seeded before creating system users. Run permission seed first.',
     );
   }
-  console.log('✅ Found required roles: admin and superadmin');
 
-  // Get super admin password from environment
-  console.log('🔐 Getting super admin password from environment...');
-  const superAdminPassword = configService?.get<string>('SUPER_ADMIN_PASSWORD');
-  if (superAdminPassword) {
-    console.log('✅ Super admin password loaded from environment');
-  } else {
-    console.log('⚠️ Super admin password not found in environment');
-  }
+  const superAdminPassword =
+    configService?.get<string>('SUPER_ADMIN_PASSWORD') || 'defaultPassword';
 
-  // Define sample users data
-  console.log('📋 Preparing user data...');
   const usersData = [
     {
       person: {
@@ -53,83 +38,40 @@ export async function seedSystemUsers(
         gender: GenderType.MALE,
         nationality: 'Palestinian',
       },
-      employee: {
-        position: 'System Administrator',
-      },
+      employee: { position: 'System Administrator' },
       systemUser: {
-        username: 'superadmin',
+        username: 'Superadmin',
         password: superAdminPassword,
-        role: superAdminRole,
+        roleId: superAdminRole.id,
       },
     },
   ];
-  console.log(`📊 Prepared ${usersData.length} user(s) for creation`);
-
-  // Create users
-  console.log('🚀 Starting user creation process...');
-  let createdUsers = 0;
-  let skippedUsers = 0;
 
   for (const userData of usersData) {
-    console.log(`👀 Processing user: ${userData.systemUser.username}`);
-
-    // Check if user already exists
     const existingUser = await systemUserRepo.findOne({
       where: { username: userData.systemUser.username },
     });
-
-    if (existingUser) {
-      console.log(
-        `⏭️ User ${userData.systemUser.username} already exists, skipping...`,
-      );
-      skippedUsers++;
-      continue;
-    }
-
-    // Check if person with same national ID exists
     const existingPerson = await personRepo.findOne({
       where: { nationalId: userData.person.nationalId },
     });
 
-    if (existingPerson) {
-      console.log(
-        `⏭️ Person with national ID ${userData.person.nationalId} already exists, skipping...`,
-      );
-      skippedUsers++;
-      continue;
-    }
+    if (existingUser || existingPerson) continue;
 
-    // Create Person
-    console.log(`👥 Creating person: ${userData.person.fullName}`);
-    const person = personRepo.create(userData.person);
-    const savedPerson = await personRepo.save(person);
-    console.log(`✅ Person created with ID: ${savedPerson.id}`);
-
-    // Create Employee
-    console.log(`💼 Creating employee: ${userData.employee.position}`);
-    const employee = employeeRepo.create({
-      ...userData.employee,
-      personId: savedPerson.id,
-    });
-    const savedEmployee = await employeeRepo.save(employee);
-    console.log(`✅ Employee created with ID: ${savedEmployee.id}`);
-
-    // Hash password and create SystemUser
-    console.log(`🔐 Creating system user: ${userData.systemUser.username}`);
-    const systemUser = systemUserRepo.create({
-      username: userData.systemUser.username,
-      password: userData.systemUser.password,
-      employeeId: savedEmployee.id,
-      roleId: userData.systemUser.role.id,
-    });
-    await systemUserRepo.save(systemUser);
-
-    console.log(`✅ Created system user: ${userData.systemUser.username}`);
-    createdUsers++;
+    const savedPerson = await personRepo.save(
+      personRepo.create(userData.person),
+    );
+    const savedEmployee = await employeeRepo.save(
+      employeeRepo.create({ ...userData.employee, personId: savedPerson.id }),
+    );
+    await systemUserRepo.save(
+      systemUserRepo.create({
+        username: userData.systemUser.username,
+        password: userData.systemUser.password,
+        employeeId: savedEmployee.id,
+        roleId: userData.systemUser.roleId,
+      }),
+    );
   }
 
-  console.log('📊 System users seeding summary:');
-  console.log(`   ✅ Created users: ${createdUsers}`);
-  console.log(`   ⏭️ Skipped users: ${skippedUsers}`);
-  console.log('🎉 System users seeding completed!');
+  console.log('🎉 System users seeding completed successfully!');
 }

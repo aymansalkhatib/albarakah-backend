@@ -94,15 +94,15 @@ export async function seedRolesAndPermissions(queryRunner: QueryRunner) {
     );
   };
 
-  await assign(roles.superadmin, permissionEntities); // all permissions
+  await assign(roles.Superadmin, permissionEntities); // all permissions
   await assign(
-    roles.admin,
+    roles.Admin,
     permissionEntities.filter(
       (p) => !restrictedForAdmin.includes(p.name as Permission),
     ),
   );
   await assign(
-    roles.viewer,
+    roles.Viewer,
     permissionEntities.filter((p) => readOnlyPermissions.includes(p.name)),
   );
 
