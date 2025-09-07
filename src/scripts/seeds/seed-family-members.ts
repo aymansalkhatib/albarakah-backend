@@ -54,6 +54,7 @@ export async function seedFamilyMembers(queryRunner: QueryRunner) {
 }
 
 const familyMembersData = [
+  // 1
   {
     person: {
       id: 22,
@@ -149,7 +150,7 @@ const familyMembersData = [
   {
     person: {
       id: 24,
-      fullName: 'محمد أحمد العلي',
+      fullName: 'محمد أحمد علي',
       motherName: 'ليلى محمود العلي',
       birthDate: new Date('2005-03-10'),
       birthPlace: 'دمشق',
@@ -377,6 +378,8 @@ const familyMembersData = [
       updatedAt: new Date('2024-07-05'),
     },
   },
+  // 2
+
   {
     person: {
       id: 29,
@@ -411,14 +414,14 @@ const familyMembersData = [
     },
     familyMember: {
       id: 29,
-      familyId: 1,
+      familyId: 2,
       personId: 29,
-      relationType: FamilyRelationType.DAUGHTER,
+      relationType: FamilyRelationType.FATHER,
       isSponsored: IsSponsored.YES,
       memberNumber: 8,
       isPresent: IsPresent.PRESENT,
       notes: 'ابنة الأب',
-      isGuardian: false,
+      isGuardian: true,
       createdAt: new Date('2024-08-01'),
       updatedAt: new Date('2024-08-01'),
     },
@@ -457,7 +460,7 @@ const familyMembersData = [
     },
     familyMember: {
       id: 30,
-      familyId: 1,
+      familyId: 2,
       personId: 30,
       relationType: FamilyRelationType.SON,
       isSponsored: IsSponsored.YES,
@@ -503,7 +506,7 @@ const familyMembersData = [
     },
     familyMember: {
       id: 31,
-      familyId: 1,
+      familyId: 2,
       personId: 31,
       relationType: FamilyRelationType.DAUGHTER,
       isSponsored: IsSponsored.YES,
@@ -549,7 +552,7 @@ const familyMembersData = [
     },
     familyMember: {
       id: 32,
-      familyId: 1,
+      familyId: 2,
       personId: 32,
       relationType: FamilyRelationType.SON,
       isSponsored: IsSponsored.YES,
@@ -595,7 +598,7 @@ const familyMembersData = [
     },
     familyMember: {
       id: 33,
-      familyId: 1,
+      familyId: 2,
       personId: 33,
       relationType: FamilyRelationType.DAUGHTER,
       isSponsored: IsSponsored.YES,
@@ -607,6 +610,7 @@ const familyMembersData = [
       updatedAt: new Date('2024-12-01'),
     },
   },
+  //3
   {
     person: {
       id: 34,
@@ -641,7 +645,7 @@ const familyMembersData = [
     },
     familyMember: {
       id: 34,
-      familyId: 1,
+      familyId: 3,
       personId: 34,
       relationType: FamilyRelationType.SON,
       isSponsored: IsSponsored.YES,
@@ -687,7 +691,7 @@ const familyMembersData = [
     },
     familyMember: {
       id: 35,
-      familyId: 1,
+      familyId: 3,
       personId: 35,
       relationType: FamilyRelationType.DAUGHTER,
       isSponsored: IsSponsored.YES,
@@ -733,7 +737,7 @@ const familyMembersData = [
     },
     familyMember: {
       id: 36,
-      familyId: 1,
+      familyId: 3,
       personId: 36,
       relationType: FamilyRelationType.SON,
       isSponsored: IsSponsored.YES,
@@ -779,7 +783,7 @@ const familyMembersData = [
     },
     familyMember: {
       id: 37,
-      familyId: 1,
+      familyId: 3,
       personId: 37,
       relationType: FamilyRelationType.DAUGHTER,
       isSponsored: IsSponsored.YES,
@@ -825,7 +829,7 @@ const familyMembersData = [
     },
     familyMember: {
       id: 38,
-      familyId: 1,
+      familyId: 3,
       personId: 38,
       relationType: FamilyRelationType.DAUGHTER,
       isSponsored: IsSponsored.YES,
@@ -871,18 +875,20 @@ const familyMembersData = [
     },
     familyMember: {
       id: 39,
-      familyId: 1,
+      familyId: 3,
       personId: 39,
       relationType: FamilyRelationType.DAUGHTER,
       isSponsored: IsSponsored.YES,
       memberNumber: 18,
       isPresent: IsPresent.PRESENT,
       notes: 'ابنة الأب',
-      isGuardian: false,
+      isGuardian: true,
       createdAt: new Date('2025-06-05'),
       updatedAt: new Date('2025-06-05'),
     },
   },
+  //4
+
   {
     person: {
       id: 40,
@@ -917,7 +923,7 @@ const familyMembersData = [
     },
     familyMember: {
       id: 40,
-      familyId: 1,
+      familyId: 4,
       personId: 40,
       relationType: FamilyRelationType.SON,
       isSponsored: IsSponsored.YES,
@@ -963,7 +969,7 @@ const familyMembersData = [
     },
     familyMember: {
       id: 41,
-      familyId: 1,
+      familyId: 4,
       personId: 41,
       relationType: FamilyRelationType.DAUGHTER,
       isSponsored: IsSponsored.YES,
@@ -1009,7 +1015,7 @@ const familyMembersData = [
     },
     familyMember: {
       id: 42,
-      familyId: 2,
+      familyId: 4,
       personId: 42,
       relationType: FamilyRelationType.DAUGHTER,
       isSponsored: IsSponsored.YES,
@@ -1055,7 +1061,7 @@ const familyMembersData = [
     },
     familyMember: {
       id: 43,
-      familyId: 2,
+      familyId: 4,
       personId: 43,
       relationType: FamilyRelationType.SON,
       isSponsored: IsSponsored.YES,
@@ -1101,7 +1107,7 @@ const familyMembersData = [
     },
     familyMember: {
       id: 44,
-      familyId: 2,
+      familyId: 4,
       personId: 44,
       relationType: FamilyRelationType.FATHER,
       isSponsored: IsSponsored.YES,
@@ -1147,7 +1153,7 @@ const familyMembersData = [
     },
     familyMember: {
       id: 45,
-      familyId: 2,
+      familyId: 4,
       personId: 45,
       relationType: FamilyRelationType.MOTHER,
       isSponsored: IsSponsored.YES,
@@ -1193,7 +1199,7 @@ const familyMembersData = [
     },
     familyMember: {
       id: 46,
-      familyId: 2,
+      familyId: 4,
       personId: 46,
       relationType: FamilyRelationType.DAUGHTER,
       isSponsored: IsSponsored.YES,
@@ -1205,6 +1211,8 @@ const familyMembersData = [
       updatedAt: new Date('2024-04-22'),
     },
   },
+
+  // 5
 
   {
     person: {
@@ -1240,7 +1248,7 @@ const familyMembersData = [
     },
     familyMember: {
       id: 47,
-      familyId: 3,
+      familyId: 5,
       personId: 47,
       relationType: FamilyRelationType.FATHER,
       isSponsored: IsSponsored.YES,
@@ -1286,7 +1294,7 @@ const familyMembersData = [
     },
     familyMember: {
       id: 48,
-      familyId: 3,
+      familyId: 5,
       personId: 48,
       relationType: FamilyRelationType.MOTHER,
       isSponsored: IsSponsored.YES,
@@ -1332,7 +1340,7 @@ const familyMembersData = [
     },
     familyMember: {
       id: 49,
-      familyId: 3,
+      familyId: 5,
       personId: 49,
       relationType: FamilyRelationType.SON,
       isSponsored: IsSponsored.YES,
@@ -1378,7 +1386,7 @@ const familyMembersData = [
     },
     familyMember: {
       id: 50,
-      familyId: 3,
+      familyId: 5,
       personId: 50,
       relationType: FamilyRelationType.DAUGHTER,
       isSponsored: IsSponsored.YES,
@@ -1424,7 +1432,7 @@ const familyMembersData = [
     },
     familyMember: {
       id: 51,
-      familyId: 3,
+      familyId: 5,
       personId: 51,
       relationType: FamilyRelationType.SON,
       isSponsored: IsSponsored.YES,
@@ -1470,7 +1478,7 @@ const familyMembersData = [
     },
     familyMember: {
       id: 52,
-      familyId: 3,
+      familyId: 5,
       personId: 52,
       relationType: FamilyRelationType.DAUGHTER,
       isSponsored: IsSponsored.YES,
@@ -1482,6 +1490,7 @@ const familyMembersData = [
       updatedAt: new Date('2024-03-30'),
     },
   },
+  //6
   {
     person: {
       id: 53,
@@ -1515,7 +1524,7 @@ const familyMembersData = [
     },
     familyMember: {
       id: 53,
-      familyId: 3,
+      familyId: 6,
       personId: 53,
       relationType: FamilyRelationType.SON,
       isSponsored: IsSponsored.YES,
@@ -1561,7 +1570,7 @@ const familyMembersData = [
     },
     familyMember: {
       id: 54,
-      familyId: 4,
+      familyId: 6,
       personId: 54,
       relationType: FamilyRelationType.SON,
       isSponsored: IsSponsored.YES,
@@ -1606,7 +1615,7 @@ const familyMembersData = [
     },
     familyMember: {
       id: 55,
-      familyId: 4,
+      familyId: 6,
       personId: 55,
       relationType: FamilyRelationType.DAUGHTER,
       isSponsored: IsSponsored.YES,
@@ -1651,7 +1660,7 @@ const familyMembersData = [
     },
     familyMember: {
       id: 56,
-      familyId: 4,
+      familyId: 6,
       personId: 56,
       relationType: FamilyRelationType.SON,
       isSponsored: IsSponsored.YES,
@@ -1696,14 +1705,14 @@ const familyMembersData = [
     },
     familyMember: {
       id: 57,
-      familyId: 5,
+      familyId: 6,
       personId: 57,
       relationType: FamilyRelationType.SON,
       isSponsored: IsSponsored.YES,
       memberNumber: 1,
       isPresent: IsPresent.PRESENT,
       notes: 'ابن الأب والأم',
-      isGuardian: true,
+      isGuardian: false,
       createdAt: new Date('2023-10-11'),
       updatedAt: new Date('2023-10-11'),
     },
@@ -1741,7 +1750,7 @@ const familyMembersData = [
     },
     familyMember: {
       id: 58,
-      familyId: 5,
+      familyId: 6,
       personId: 58,
       relationType: FamilyRelationType.DAUGHTER,
       isSponsored: IsSponsored.YES,
@@ -1793,7 +1802,7 @@ const familyMembersData = [
       memberNumber: 1,
       isPresent: IsPresent.PRESENT,
       notes: 'ابن الأب والأم',
-      isGuardian: true,
+      isGuardian: false,
       createdAt: new Date('2024-02-18'),
       updatedAt: new Date('2024-02-18'),
     },
