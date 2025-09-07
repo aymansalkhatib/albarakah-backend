@@ -23,6 +23,8 @@ export async function seedFamilyNeeds(queryRunner: QueryRunner) {
       await familyNeedRepo.save(familyNeedRepo.create(generateFamilyNeed(i)));
     }
   }
+    console.log('✅ Family needs seeded successfully.');
+
 }
 
 function getRandomEnumValue<T>(enumObj: T): T[keyof T] {
