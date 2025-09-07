@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 
-export class MonthlyFamilyStatsResponseDto {
+export class MonthlyStatsResponseDto {
   @Expose()
   from: Date;
   @Expose()

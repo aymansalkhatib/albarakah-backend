@@ -13,14 +13,14 @@ import {
 } from '@nestjs/common';
 import { Protected } from '../../../common/decorators/protected.decorator';
 import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
+import { MonthlyStatsQueryDto } from '../../../common/dtos/monthly-stats-query.dto';
+import { MonthlyStatsResponseDto } from '../../../common/dtos/monthly-stats-response.dto';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { Permission } from '../../../modules/roles/enums/permission.enum';
 import { FilterFamilyDto } from '../dtos/queries/filter-family.dto';
-import { MonthlyFamilyStatsQueryDto } from '../dtos/queries/monthly-family-stats-query.dto';
 import { CreateFamilyDto } from '../dtos/requests/create-family-dto';
 import { UpdateFamilyDto } from '../dtos/requests/update-family-dto';
 import { FamilyResponseDto } from '../dtos/responses/family-response.dto';
-import { MonthlyFamilyStatsResponseDto } from '../dtos/responses/monthly-family-stats-response.dto';
 import { FamiliesService } from '../services/families.service';
 
 @Controller('families')
@@ -38,10 +38,10 @@ export class FamiliesController {
 
   @Get('monthly-stats')
   @Protected(Permission.READ_FAMILY)
-  @SerializeResponse(MonthlyFamilyStatsResponseDto)
+  @SerializeResponse(MonthlyStatsResponseDto)
   async getMonthlyStats(
-    @Query() query: MonthlyFamilyStatsQueryDto,
-  ): Promise<MonthlyFamilyStatsResponseDto[]> {
+    @Query() query: MonthlyStatsQueryDto,
+  ): Promise<MonthlyStatsResponseDto[]> {
     return await this.familiesService.getMonthlyStats(query);
   }
 

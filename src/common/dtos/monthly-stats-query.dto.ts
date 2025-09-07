@@ -1,7 +1,7 @@
 import { IsDate, IsNotEmpty } from 'class-validator';
-import { IsLessThanOrEqual } from '../../../../common/decorators/is-less-than-or-equal.decorator';
+import { IsLessThanOrEqual } from '../decorators/is-less-than-or-equal.decorator';
 
-export class MonthlyFamilyStatsQueryDto {
+export class MonthlyStatsQueryDto {
   @IsNotEmpty()
   @IsDate()
   @IsLessThanOrEqual('endDate')

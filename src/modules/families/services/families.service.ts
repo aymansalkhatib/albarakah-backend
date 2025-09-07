@@ -6,12 +6,12 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { EntityManager, FindOneOptions, Repository } from 'typeorm';
+import { MonthlyStatsQueryDto } from '../../../common/dtos/monthly-stats-query.dto';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { paginate } from '../../../common/pagination/paginate.service';
 import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
 import { EmployeesService } from '../../employees/services/employee.service';
 import { FilterFamilyDto } from '../dtos/queries/filter-family.dto';
-import { MonthlyFamilyStatsQueryDto } from '../dtos/queries/monthly-family-stats-query.dto';
 import { CreateFamilyDto } from '../dtos/requests/create-family-dto';
 import { UpdateFamilyDto } from '../dtos/requests/update-family-dto';
 import { FamilyResponseDto } from '../dtos/responses/family-response.dto';
@@ -105,7 +105,7 @@ export class FamiliesService {
     return family;
   }
 
-  async getMonthlyStats(query: MonthlyFamilyStatsQueryDto) {
+  async getMonthlyStats(query: MonthlyStatsQueryDto) {
     const { startDate: start, endDate: end } = query;
 
     const rawData = await this.familyRepository

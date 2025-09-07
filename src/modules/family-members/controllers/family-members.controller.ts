@@ -13,6 +13,8 @@ import {
 } from '@nestjs/common';
 import { Protected } from '../../../common/decorators/protected.decorator';
 import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
+import { MonthlyStatsQueryDto } from '../../../common/dtos/monthly-stats-query.dto';
+import { MonthlyStatsResponseDto } from '../../../common/dtos/monthly-stats-response.dto';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { Permission } from '../../../modules/roles/enums/permission.enum';
 import { FamilyMemberFilterDto } from '../dtos/queries/family-member-filter.dto';
@@ -24,6 +26,15 @@ import { FamilyMembersService } from '../services/family-members.service';
 @Controller('family-members')
 export class FamilyMembersController {
   constructor(private readonly familyMembersService: FamilyMembersService) {}
+
+  @Get('monthly-stats')
+  @Protected(Permission.READ_FAMILY_MEMBER)
+  @SerializeResponse(MonthlyStatsResponseDto)
+  async getMonthlyStats(
+    @Query() query: MonthlyStatsQueryDto,
+  ): Promise<MonthlyStatsResponseDto[]> {
+    return await this.familyMembersService.getMonthlyStats(query);
+  }
 
   @Get()
   @Protected(Permission.READ_FAMILY_MEMBER)
