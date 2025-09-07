@@ -8,9 +8,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Supporter } from './supporters.entity';
-import { SponsorshipStatus } from '../enums/sponsorship-status.enum';
 import { FamilyMember } from '../../../modules/family-members/entities/family-members.entity';
+import { SponsorshipStatus } from '../enums/sponsorship-status.enum';
+import { Supporter } from './supporters.entity';
 
 @Entity('supporter_child_sponsorships')
 @Index(['supporterId', 'familyMemberId'], {
@@ -48,13 +48,19 @@ export class SupporterChildSponsorship {
   updatedAt: Date;
 
   // Relationships
-  @ManyToOne(() => Supporter, (supporter) => supporter.childSponsorships, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Supporter, (supporter) => supporter.childSponsorships, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'supporter_id' })
   supporter: Supporter;
 
-  @ManyToOne(() => FamilyMember, (familyMember) => familyMember.childSponsorships, {
-    onDelete: 'CASCADE',
-  })
+  @ManyToOne(
+    () => FamilyMember,
+    (familyMember) => familyMember.childSponsorships,
+    {
+      onDelete: 'CASCADE',
+    },
+  )
   @JoinColumn({ name: 'family_member_id' })
   familyMember: FamilyMember;
 }

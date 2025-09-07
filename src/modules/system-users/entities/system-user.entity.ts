@@ -1,6 +1,3 @@
-import { Employee } from '../../employees/entities/employee.entity';
-import { Role } from '../../roles/entities/roles.entity';
-import { UserPermission } from '../../roles/entities/user-permission.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -15,6 +12,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Employee } from '../../employees/entities/employee.entity';
+import { Role } from '../../roles/entities/roles.entity';
+import { UserPermission } from '../../roles/entities/user-permission.entity';
 
 import * as bcrypt from 'bcrypt';
 
@@ -55,7 +55,10 @@ export class SystemUser {
 
   // Relationships
 
-  @OneToMany(() => UserPermission, (userPermission) => userPermission.systemUser)
+  @OneToMany(
+    () => UserPermission,
+    (userPermission) => userPermission.systemUser,
+  )
   userPermissions: UserPermission[];
 
   @OneToOne(() => Employee, (employee) => employee.systemUser, {

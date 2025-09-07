@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Unique } from 'typeorm';
-import { PermissionEntity } from './permissions.entity';
 import { SystemUser } from '../../system-users/entities/system-user.entity';
+import { PermissionEntity } from './permissions.entity';
 
 @Entity('user_permissions')
 @Unique(['systemUserId', 'permissionId'])
@@ -25,9 +25,13 @@ export class UserPermission {
   @JoinColumn({ name: 'system_user_id' })
   systemUser: SystemUser;
 
-  @ManyToOne(() => PermissionEntity, (permission) => permission.userPermissions, {
-    onDelete: 'CASCADE',
-  })
+  @ManyToOne(
+    () => PermissionEntity,
+    (permission) => permission.userPermissions,
+    {
+      onDelete: 'CASCADE',
+    },
+  )
   @JoinColumn({ name: 'permission_id' })
   permission: PermissionEntity;
 }

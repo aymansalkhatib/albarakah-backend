@@ -7,8 +7,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { RolePermission } from './role-permission.entity';
 import { SystemUser } from '../../system-users/entities/system-user.entity';
+import { RolePermission } from './role-permission.entity';
 
 @Entity('roles')
 @Index('idx_roles_name', ['name'], { unique: true })
@@ -30,7 +30,9 @@ export class Role {
 
   // Relationships
 
-  @OneToMany(() => RolePermission, (rolePermission) => rolePermission.role, { cascade: true })
+  @OneToMany(() => RolePermission, (rolePermission) => rolePermission.role, {
+    cascade: true,
+  })
   rolePermissions: RolePermission[];
 
   @OneToMany(() => SystemUser, (systemUser) => systemUser.role)

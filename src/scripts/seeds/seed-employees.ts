@@ -674,6 +674,7 @@ export async function seedEmployees(queryRunner: QueryRunner) {
     // إنشاء الموظف
     await employeeRepo.save(
       employeeRepo.create({
+        id: employeeData.id,
         ...employeeData.employee,
         personId: savedPerson.id,
       }),

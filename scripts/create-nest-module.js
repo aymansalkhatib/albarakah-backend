@@ -56,7 +56,10 @@ class NestJSModuleGenerator {
     }
 
     // Standard pluralization rules
-    if (lowerWord.endsWith('y') && !'aeiou'.includes(lowerWord[lowerWord.length - 2])) {
+    if (
+      lowerWord.endsWith('y') &&
+      !'aeiou'.includes(lowerWord[lowerWord.length - 2])
+    ) {
       return word.slice(0, -1) + 'ies';
     }
     if (
@@ -74,7 +77,10 @@ class NestJSModuleGenerator {
     if (lowerWord.endsWith('fe')) {
       return word.slice(0, -2) + 'ves';
     }
-    if (lowerWord.endsWith('o') && !'aeiou'.includes(lowerWord[lowerWord.length - 2])) {
+    if (
+      lowerWord.endsWith('o') &&
+      !'aeiou'.includes(lowerWord[lowerWord.length - 2])
+    ) {
       return word + 'es';
     }
 
@@ -123,7 +129,10 @@ class NestJSModuleGenerator {
     ) {
       return word.slice(0, -2);
     }
-    if (lowerWord.endsWith('oes') && !'aeiou'.includes(lowerWord[lowerWord.length - 4])) {
+    if (
+      lowerWord.endsWith('oes') &&
+      !'aeiou'.includes(lowerWord[lowerWord.length - 4])
+    ) {
       return word.slice(0, -2);
     }
     if (lowerWord.endsWith('s') && !lowerWord.endsWith('ss')) {
@@ -147,7 +156,10 @@ class NestJSModuleGenerator {
       'geese',
     ];
 
-    if (alwaysPlural.includes(lowerWord) || irregularPlurals.includes(lowerWord)) {
+    if (
+      alwaysPlural.includes(lowerWord) ||
+      irregularPlurals.includes(lowerWord)
+    ) {
       return true;
     }
 
@@ -167,7 +179,9 @@ class NestJSModuleGenerator {
   // Prompt user for input
   async promptUser(question, defaultValue = '') {
     return new Promise((resolve) => {
-      const prompt = defaultValue ? `${question} (${defaultValue}): ` : `${question}: `;
+      const prompt = defaultValue
+        ? `${question} (${defaultValue}): `
+        : `${question}: `;
       this.rl.question(prompt, (answer) => {
         resolve(answer.trim() || defaultValue);
       });
@@ -350,7 +364,7 @@ export class \${FeatureName}Service {
     const queryBuilder = this.\${entityNameCamel}Repository.createQueryBuilder('\${entityNameCamel}');
 
     if (filter\${EntityName}Dto.search) {
-      queryBuilder.andWhere('\${entityNameCamel}.name LIKE :name', { 
+      queryBuilder.andWhere('\${entityNameCamel}.name LIKE :name', {
         name: \`%\${filter\${EntityName}Dto.search}%\`
       });
     }
@@ -370,11 +384,11 @@ export class \${FeatureName}Service {
 
   async update(id: number, update\${EntityName}Dto: Update\${EntityName}Dto): Promise<\${EntityName}Entity> {
     const \${entityNameCamel} = await this.\${entityNameCamel}Repository.findOne({ where: { id } });
-    
+
     if (!\${entityNameCamel}) {
       throw new NotFoundException('\${EntityName} not found');
     }
-    
+
     const updated\${EntityName} = this.\${entityNameCamel}Repository.merge(\${entityNameCamel}, update\${EntityName}Dto);
     const saved\${EntityName} = await this.\${entityNameCamel}Repository.save(updated\${EntityName});
     return saved\${EntityName};
@@ -432,7 +446,8 @@ export class \${FeatureName}Module {}`,
 
       // Process names
       const featureNameNormalized = this.toKebabCase(featureName.toLowerCase());
-      const singularName = singularInput || this.singularize(featureNameNormalized);
+      const singularName =
+        singularInput || this.singularize(featureNameNormalized);
       const fileName = this.toKebabCase(singularName);
 
       // Generate all name variations
@@ -494,11 +509,20 @@ export class \${FeatureName}Module {}`,
           template: templates.ResponseDto,
         },
         {
-          path: path.join(modulePath, 'dtos', 'query', `${names.fileName}-filter.dto.ts`),
+          path: path.join(
+            modulePath,
+            'dtos',
+            'query',
+            `${names.fileName}-filter.dto.ts`,
+          ),
           template: templates.FilterDto,
         },
         {
-          path: path.join(modulePath, 'entities', `${names.fileName}.entity.ts`),
+          path: path.join(
+            modulePath,
+            'entities',
+            `${names.fileName}.entity.ts`,
+          ),
           template: templates.Entity,
         },
         {
@@ -510,7 +534,11 @@ export class \${FeatureName}Module {}`,
           template: templates.Controller,
         },
         {
-          path: path.join(modulePath, 'services', `${names.featureName}.service.ts`),
+          path: path.join(
+            modulePath,
+            'services',
+            `${names.featureName}.service.ts`,
+          ),
           template: templates.Service,
         },
         {
@@ -550,7 +578,9 @@ export * from './query/${names.fileName}-filter.dto';`;
       console.log(`   1. Add the module to your app.module.ts imports`);
       console.log(`   2. Configure your database connection for the entity`);
       console.log(`   3. Update the DTO validation rules as needed`);
-      console.log(`   4. Implement any additional business logic in the service`);
+      console.log(
+        `   4. Implement any additional business logic in the service`,
+      );
       console.log(`\n💡 Import Example:`);
       console.log(
         `   import { ${names.FeatureName}Module } from './modules/${names.featureName}/${names.featureName}.module';`,

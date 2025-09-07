@@ -9,8 +9,8 @@ import {
   Unique,
   UpdateDateColumn,
 } from 'typeorm';
-import { TrainingCourse } from './training-course.entity';
 import { PersonCourseBatch } from './person-course-batch.entity';
+import { TrainingCourse } from './training-course.entity';
 
 @Entity('course_batches')
 @Unique(['batchNumber', 'trainingCourseId'])

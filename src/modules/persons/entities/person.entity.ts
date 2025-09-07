@@ -1,10 +1,4 @@
-import {
-  Column,
-  Entity,
-  Index,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, Index, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { FamilyMember } from '../../../modules/family-members/entities/family-members.entity';
 import { Employee } from '../../employees/entities/employee.entity';
 import { Supporter } from '../../supporters/entities/supporters.entity';

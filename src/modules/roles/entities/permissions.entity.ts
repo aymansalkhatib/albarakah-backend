@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Permission } from '../enums/permission.enum';
 import { RolePermission } from './role-permission.entity';
 import { UserPermission } from './user-permission.entity';
-import { Permission } from '../enums/permission.enum';
 
 @Entity('permissions')
 export class PermissionEntity {
@@ -16,9 +16,15 @@ export class PermissionEntity {
 
   // Relationships
 
-  @OneToMany(() => RolePermission, (rolePermission) => rolePermission.permission)
+  @OneToMany(
+    () => RolePermission,
+    (rolePermission) => rolePermission.permission,
+  )
   rolePermissions: RolePermission[];
 
-  @OneToMany(() => UserPermission, (userPermission) => userPermission.permission)
+  @OneToMany(
+    () => UserPermission,
+    (userPermission) => userPermission.permission,
+  )
   userPermissions: UserPermission[];
 }
