@@ -107,7 +107,6 @@ export class EmployeesService {
     const queryBuilder = this.employeeRepository
       .createQueryBuilder('employee')
       .leftJoinAndSelect('employee.person', 'person');
-    // .leftJoinAndSelect('employee.systemUser', 'systemUser');
 
     // Apply employee filters
     applyEmployeeFilters(queryBuilder, 'employee', filterDto);
@@ -117,8 +116,18 @@ export class EmployeesService {
       applyPersonFilters(queryBuilder, 'person', filterDto.person);
     }
 
+    if (filterDto.hasSystemAccess != null) {
+      if (filterDto.hasSystemAccess) {
+        queryBuilder.innerJoin('employee.systemUser', 'systemUser');
+      } else {
+        queryBuilder.leftJoin('employee.systemUser', 'systemUser')
+          .andWhere('systemUser.id IS NULL');
+      }
+    }
+
     return paginate(queryBuilder, filterDto, EmployeeResponseDto);
   }
+
   //
 
   private async _createWithManager(

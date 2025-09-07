@@ -42,7 +42,10 @@ export class ParseQueryMiddleware implements NestMiddleware {
 
       next();
     } catch (error: any) {
-      this.logger.error(`Failed to parse query string: ${error.message}`, error.stack);
+      this.logger.error(
+        `Failed to parse query string: ${error.message}`,
+        error.stack,
+      );
       next();
     }
   }

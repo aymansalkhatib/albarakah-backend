@@ -63,15 +63,6 @@ export function applyEmployeeFilters(
     );
   }
 
-  // Filter by system access
-  if (filter.hasSystemAccess != null) {
-    if (filter.hasSystemAccess) {
-      qb.andWhere(`${alias}.systemUser IS NOT NULL`);
-    } else {
-      qb.andWhere(`${alias}.systemUser IS NULL`);
-    }
-  }
-
   // Filter by active status (based on termination date)
   if (filter.isActive != null) {
     if (filter.isActive) {

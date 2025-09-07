@@ -1,8 +1,8 @@
 // File: strict-boolean.decorator.ts
-import { TranslateHelper } from '../../shared/modules/app-i18n/translate.helper';
 import { applyDecorators, BadRequestException } from '@nestjs/common';
 import { Transform } from 'class-transformer';
 import { IsBoolean, ValidationOptions } from 'class-validator';
+import { TranslateHelper } from '../../shared/modules/app-i18n/translate.helper';
 
 interface StrictBooleanOptions {
   default?: boolean;
@@ -22,7 +22,7 @@ export function StrictBoolean(options?: StrictBooleanOptions) {
       if (value === 1 || value === '1' || value === 'true') return true;
       if (value === 0 || value === '0' || value === 'false') return false;
 
-      throw new BadRequestException(
+      return new BadRequestException(
         options?.message ||
           TranslateHelper.trValMsg('pipes.validation.invalid_boolean_value', {
             key,
