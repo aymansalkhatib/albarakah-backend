@@ -33,5 +33,5 @@ export class CreateCourseBatchDto {
   @IsOptional()
   @IsString()
   @Length(1, 4000)
-  note?: string;
+  notes?: string;
 }

@@ -2,21 +2,16 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  Index,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { FamilyMember } from '../../.././modules/family-members/entities/family-members.entity';
 import { Family } from '../../families/entities/families.entity';
 import { AssistanceType } from '../enums/assistance-type.enum';
-import { FamilyMember } from '../../.././modules/family-members/entities/family-members.entity';
 
 @Entity('received_assistance')
-@Index(['familyMemberId'])
-@Index(['familyId'])
-@Index(['assistanceType'])
-@Index(['deliveryDate'])
 export class ReceivedAssistance {
   @PrimaryGeneratedColumn()
   id: number;
@@ -61,10 +56,14 @@ export class ReceivedAssistance {
   @JoinColumn({ name: 'family_id' })
   family: Family;
 
-  @ManyToOne(() => FamilyMember, (familyMember) => familyMember.receivedAssistance, {
-    onDelete: 'CASCADE',
-    nullable: true,
-  })
+  @ManyToOne(
+    () => FamilyMember,
+    (familyMember) => familyMember.receivedAssistance,
+    {
+      onDelete: 'CASCADE',
+      nullable: true,
+    },
+  )
   @JoinColumn({ name: 'family_member_id' })
   familyMember?: FamilyMember;
 }

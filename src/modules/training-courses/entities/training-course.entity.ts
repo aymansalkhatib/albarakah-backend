@@ -22,7 +22,7 @@ export class TrainingCourse {
   description?: string;
 
   @Column({ type: 'text', nullable: true })
-  note?: string;
+  notes?: string;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

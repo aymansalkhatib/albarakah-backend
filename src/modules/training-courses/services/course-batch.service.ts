@@ -1,15 +1,19 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOneOptions, Repository } from 'typeorm';
-import { CourseBatch } from '../entities/course-batch.entity';
+import { normalizeDate } from '../../../common/helpers/date.helper';
+import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
+import { paginate } from '../../../common/pagination/paginate.service';
+import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
+import { FilterCourseBatchDto } from '../dtos/queries/filter-course-batch.dto';
 import { CreateCourseBatchDto } from '../dtos/requests/create-course-batch.dto';
 import { UpdateCourseBatchDto } from '../dtos/requests/update-course-batch.dto';
-import { FilterCourseBatchDto } from '../dtos/queries/filter-course-batch.dto';
-import { paginate } from '../../../common/pagination/paginate.service';
-import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { CourseBatchResponseDto } from '../dtos/responses/course-batch-response.dto';
-import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
-import { normalizeDate } from '../../../common/helpers/date.helper';
+import { CourseBatch } from '../entities/course-batch.entity';
 import { TrainingCoursesService } from './training-courses.service';
 
 @Injectable()
@@ -21,7 +25,9 @@ export class CourseBatchService {
     private readonly trainingCourseService: TrainingCoursesService,
   ) {}
 
-  async create(createCourseBatchDto: CreateCourseBatchDto): Promise<CourseBatch> {
+  async create(
+    createCourseBatchDto: CreateCourseBatchDto,
+  ): Promise<CourseBatch> {
     // If batchNumber is not provided, auto-generate it
     if (!createCourseBatchDto.batchNumber) {
       createCourseBatchDto.batchNumber = await this.getNextBatchNumber(
@@ -38,27 +44,40 @@ export class CourseBatchService {
 
       if (existingBatch) {
         throw new BadRequestException(
-          this.translateHelper.tr('training-courses.course-batches.errors.batch_number_exists', {
-            batchNumber: createCourseBatchDto.batchNumber,
-            courseId: createCourseBatchDto.trainingCourseId,
-          }),
+          this.translateHelper.tr(
+            'training-courses.course-batches.errors.batch_number_exists',
+            {
+              batchNumber: createCourseBatchDto.batchNumber,
+              courseId: createCourseBatchDto.trainingCourseId,
+            },
+          ),
         );
       }
     }
 
-    await this.trainingCourseService.findOne(createCourseBatchDto.trainingCourseId);
+    await this.trainingCourseService.findOne(
+      createCourseBatchDto.trainingCourseId,
+    );
 
     const courseBatch = this.courseBatchRepository.create(createCourseBatchDto);
     return await this.courseBatchRepository.save(courseBatch);
   }
 
-  async update(id: number, updateCourseBatchDto: UpdateCourseBatchDto): Promise<CourseBatch> {
+  async update(
+    id: number,
+    updateCourseBatchDto: UpdateCourseBatchDto,
+  ): Promise<CourseBatch> {
     const courseBatch = await this.findOne(id);
     // Validate chronological order regardless of which field is provided
-    const newStartDate = updateCourseBatchDto.startDate ?? courseBatch.startDate;
+    const newStartDate =
+      updateCourseBatchDto.startDate ?? courseBatch.startDate;
     const newEndDate = updateCourseBatchDto.endDate ?? courseBatch.endDate;
 
-    if (newStartDate && newEndDate && normalizeDate(newEndDate) < normalizeDate(newStartDate)) {
+    if (
+      newStartDate &&
+      newEndDate &&
+      normalizeDate(newEndDate) < normalizeDate(newStartDate)
+    ) {
       throw new BadRequestException(
         this.translateHelper.tr(
           'training-courses.course-batches.errors.end_date_before_start_date',
@@ -66,7 +85,10 @@ export class CourseBatchService {
       );
     }
 
-    const mergedCourseBatch = this.courseBatchRepository.merge(courseBatch, updateCourseBatchDto);
+    const mergedCourseBatch = this.courseBatchRepository.merge(
+      courseBatch,
+      updateCourseBatchDto,
+    );
     return await this.courseBatchRepository.save(mergedCourseBatch);
   }
 
@@ -74,12 +96,18 @@ export class CourseBatchService {
     const result = await this.courseBatchRepository.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException(
-        this.translateHelper.tr('training-courses.course-batches.errors.not_found', { id }),
+        this.translateHelper.tr(
+          'training-courses.course-batches.errors.not_found',
+          { id },
+        ),
       );
     }
   }
 
-  async findOne(id: number, options: FindOneOptions<CourseBatch> = {}): Promise<CourseBatch> {
+  async findOne(
+    id: number,
+    options: FindOneOptions<CourseBatch> = {},
+  ): Promise<CourseBatch> {
     const courseBatch = await this.courseBatchRepository.findOne({
       where: { id },
       ...options,
@@ -87,7 +115,10 @@ export class CourseBatchService {
 
     if (!courseBatch) {
       throw new NotFoundException(
-        this.translateHelper.tr('training-courses.course-batches.errors.not_found', { id }),
+        this.translateHelper.tr(
+          'training-courses.course-batches.errors.not_found',
+          { id },
+        ),
       );
     }
 
@@ -97,13 +128,17 @@ export class CourseBatchService {
   async findAll(
     filterDto: FilterCourseBatchDto,
   ): Promise<PaginationResponseDto<CourseBatchResponseDto>> {
-    const queryBuilder = this.courseBatchRepository.createQueryBuilder('courseBatch');
+    const queryBuilder =
+      this.courseBatchRepository.createQueryBuilder('courseBatch');
 
     // Apply filters based on FilterCourseBatchDto
     if (filterDto.trainingCourseId) {
-      queryBuilder.andWhere('courseBatch.trainingCourseId = :trainingCourseId', {
-        trainingCourseId: filterDto.trainingCourseId,
-      });
+      queryBuilder.andWhere(
+        'courseBatch.trainingCourseId = :trainingCourseId',
+        {
+          trainingCourseId: filterDto.trainingCourseId,
+        },
+      );
     }
 
     if (filterDto.batchNumber) {
@@ -130,9 +165,9 @@ export class CourseBatchService {
       });
     }
 
-    if (filterDto.note) {
-      queryBuilder.andWhere('courseBatch.note ILIKE :note', {
-        note: `%${filterDto.note}%`,
+    if (filterDto.notes) {
+      queryBuilder.andWhere('courseBatch.notes ILIKE :notes', {
+        notes: `%${filterDto.notes}%`,
       });
     }
 

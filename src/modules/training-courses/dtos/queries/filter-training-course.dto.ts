@@ -15,5 +15,5 @@ export class FilterTrainingCourseDto extends PaginationDto {
   @IsOptional()
   @IsString()
   @Length(1, 1000)
-  note?: string;
+  notes?: string;
 }

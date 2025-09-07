@@ -102,9 +102,9 @@ export class TrainingCoursesService {
       });
     }
 
-    if (filterDto.note) {
-      queryBuilder.andWhere('trainingCourse.note ILIKE :note', {
-        note: `%${filterDto.note}%`,
+    if (filterDto.notes) {
+      queryBuilder.andWhere('trainingCourse.notes ILIKE :notes', {
+        notes: `%${filterDto.notes}%`,
       });
     }
 

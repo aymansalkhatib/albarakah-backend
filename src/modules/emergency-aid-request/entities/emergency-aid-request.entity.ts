@@ -21,6 +21,7 @@ export class EmergencyAidRequest {
   familyId: number;
 
   @Column({
+    name: 'request_status',
     type: 'enum',
     enum: EmergencyAidRequestStatus,
     default: EmergencyAidRequestStatus.PENDING,

@@ -13,5 +13,5 @@ export class CreateTrainingCourseDto {
   @IsOptional()
   @IsString()
   @Length(1, 4000)
-  note?: string;
+  notes?: string;
 }

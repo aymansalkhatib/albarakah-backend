@@ -11,7 +11,7 @@ export class TrainingCourseResponseDto {
   description?: string;
 
   @Expose()
-  note?: string;
+  notes?: string;
 
   @Expose()
   createdAt: Date;

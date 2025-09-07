@@ -21,7 +21,7 @@ export class CourseBatchResponseDto {
   location?: string;
 
   @Expose()
-  note?: string;
+  notes?: string;
 
   @Expose()
   createdAt: Date;

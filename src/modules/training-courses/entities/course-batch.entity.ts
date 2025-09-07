@@ -34,7 +34,7 @@ export class CourseBatch {
   location?: string;
 
   @Column({ type: 'text', nullable: true })
-  note?: string;
+  notes?: string;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
