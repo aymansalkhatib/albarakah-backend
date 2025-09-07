@@ -1,4 +1,4 @@
-import { DisabilityStatus } from "../enums/disability-status.enum";
+import { DisabilityStatus } from '../enums/disability-status.enum';
 
 export interface DisabilityOrIllness {
   status?: DisabilityStatus;

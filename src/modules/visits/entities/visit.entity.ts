@@ -9,8 +9,8 @@ import {
 } from 'typeorm';
 import { Family } from '../../families/entities/families.entity';
 import { FamilyRelationType } from '../../family-members/enums/family-relation-type.enum';
-import { HouseCondition, HouseOwnership } from './enums';
-import { AlBarakaCharityIncomeAmount } from './enums/al-baraka-charity-income-amount.enum';
+import { HouseCondition, HouseOwnership } from '../enums';
+import { AlBarakaCharityIncomeAmount } from '../enums/al-baraka-charity-income-amount.enum';
 import {
   Beds,
   Blankets,
@@ -29,7 +29,7 @@ import {
   Wardrobes,
   WashingMachine,
   WorkingIndividual,
-} from './interfaces';
+} from '../interfaces';
 
 @Entity('visits')
 export class Visit {
