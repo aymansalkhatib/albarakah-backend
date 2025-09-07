@@ -8,7 +8,6 @@ import { seedSystemUsers } from './seed-system-users';
 
 async function bootstrap() {
   const args = process.argv.slice(2);
-  const runDropdown = args.includes('dropdown'); 
   const runPermission = args.includes('permission');
   const runSystemUsers = args.includes('system-users');
   const runAll = args.includes('all');
