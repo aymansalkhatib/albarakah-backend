@@ -7,6 +7,7 @@ import {
   I18nValidationExceptionFilter,
   i18nValidationErrorFactory,
 } from 'nestjs-i18n';
+import { join } from 'path';
 import { AppModule } from './app.module';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 
@@ -51,6 +52,11 @@ async function bootstrap() {
   });
 
   app.setGlobalPrefix('api');
+
+  // Serve static files from uploads directory
+  app.useStaticAssets(join(__dirname, '..', 'uploads'), {
+    prefix: '/uploads/',
+  });
 
   // Start the server
   const port = process.env.PORT || 3000;
