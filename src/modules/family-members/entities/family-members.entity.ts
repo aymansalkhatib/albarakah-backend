@@ -11,7 +11,6 @@ import {
 } from 'typeorm';
 import { Family } from '../../../modules/families/entities/families.entity';
 import { Person } from '../../persons/entities/person.entity';
-import { ReceivedAssistance } from '../../received-assistance/entities/received-assistance.entity';
 import { SupporterChildSponsorship } from '../../supporters/entities/supporters-children.entity';
 import { PersonCourseBatch } from '../../training-courses/entities/person-course-batch.entity';
 import { FamilyRelationType } from '../enums/family-relation-type.enum';
@@ -86,9 +85,6 @@ export class FamilyMember {
 
   @OneToMany(() => PersonCourseBatch, (courseBatch) => courseBatch.familyMember)
   courseBatches: PersonCourseBatch[];
-
-  @OneToMany(() => ReceivedAssistance, (assistance) => assistance.familyMember)
-  receivedAssistance: ReceivedAssistance[];
 
   // === COMPUTED PROPERTIES ===
 }

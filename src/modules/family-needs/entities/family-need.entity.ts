@@ -7,7 +7,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { FamilyMember } from '../../../modules/family-members/entities/family-members.entity';
 import { Family } from '../../families/entities/families.entity';
 import { FamilyNeedStatus } from '../enums/family-need-status.enum';
 import { PriorityLevel } from '../enums/priority-level.enum';
@@ -57,8 +56,4 @@ export class FamilyNeed {
   })
   @JoinColumn({ name: 'family_id' })
   family: Family;
-
-  @ManyToOne(() => FamilyMember, { onDelete: 'CASCADE', nullable: true })
-  @JoinColumn({ name: 'family_member_id' })
-  familyMember?: FamilyMember;
 }

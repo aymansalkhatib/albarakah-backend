@@ -2,7 +2,6 @@ import { Expose, Transform, Type } from 'class-transformer';
 import { FamilyResponseDto } from '../../../../modules/families/dtos/responses/family-response.dto';
 import { PersonResponseDto } from '../../../../modules/persons/dtos/responses/person-response.dto';
 import { PersonCourseBatchResponseDto } from '../../../../modules/training-courses/dtos/responses/person-course-batch-response.dto';
-import { ReceivedAssistanceResponseDto } from '../../../received-assistance/dtos/responses/received-assistance-response.dto';
 import { SupporterChildSponsorshipResponseDto } from '../../../supporters/dtos/responses/supporter-child-sponsorship-response.dto';
 import { FamilyRelationType } from '../../enums/family-relation-type.enum';
 import { IsPresent } from '../../enums/is-present.enum';
@@ -53,10 +52,6 @@ export class FamilyMemberResponseDto {
   @Expose()
   @Type(() => PersonCourseBatchResponseDto)
   courseBatches: PersonCourseBatchResponseDto[];
-
-  @Expose()
-  @Type(() => ReceivedAssistanceResponseDto)
-  receivedAssistance: ReceivedAssistanceResponseDto[];
 
   @Expose()
   @Transform(

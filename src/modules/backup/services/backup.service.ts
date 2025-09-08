@@ -67,6 +67,7 @@ export class BackupService {
     await run(createCmd);
     await run(restoreCmd);
     await this.extractZipToFolder(folderName);
+    console.log('✅ Database restored');
   }
 
   private async compressFolderToZip(folderPath: string): Promise<string> {

@@ -1,0 +1,656 @@
+import { QueryRunner } from 'typeorm';
+import { FamilyMember } from '../../modules/family-members/entities/family-members.entity';
+import { FamilyRelationType } from '../../modules/family-members/enums/family-relation-type.enum';
+import { Person } from '../../modules/persons/entities/person.entity';
+import { EducationLevel } from '../../modules/persons/enums/education-level.enum';
+import { GenderType } from '../../modules/persons/enums/gender-type.enum';
+import { MaritalStatus } from '../../modules/persons/enums/marital-status.enum';
+import { SupporterChildSponsorship } from '../../modules/supporters/entities/supporters-children.entity';
+import { Supporter } from '../../modules/supporters/entities/supporters.entity';
+import { SponsorshipStatus } from '../../modules/supporters/enums/sponsorship-status.enum';
+import { SupportType } from '../../modules/supporters/enums/support-type';
+
+export async function seedSupporters(queryRunner: QueryRunner) {
+  const personRepo = queryRunner.manager.getRepository(Person);
+
+  const supporterRepo = queryRunner.manager.getRepository(Supporter);
+
+  const sponsorshipRepo = queryRunner.manager.getRepository(
+    SupporterChildSponsorship,
+  );
+
+  const familyMemberRepo = queryRunner.manager.getRepository(FamilyMember);
+
+  // Get existing family members for child sponsorships
+  const familyMembers = await familyMemberRepo
+    .createQueryBuilder('familyMember')
+    .where('familyMember.relationType IN (:...types)', {
+      types: [FamilyRelationType.DAUGHTER, FamilyRelationType.SON],
+    })
+    .getMany();
+
+  for (const supporterData of supportersData) {
+    // Check if person already exists by national ID
+    const existingPerson = await personRepo.findOne({
+      where: { nationalId: supporterData.person.nationalId },
+    });
+
+    if (existingPerson) {
+      console.log(
+        `❌ Person with national ID ${supporterData.person.nationalId} already exists`,
+      );
+      continue;
+    }
+
+    // Create the person
+    const savedPerson = await personRepo.save(
+      personRepo.create(supporterData.person),
+    );
+
+    // Create the supporter
+    const savedSupporter = await supporterRepo.save(
+      supporterRepo.create({
+        ...supporterData.supporter,
+        personId: savedPerson.id,
+      }),
+    );
+
+    // Create child sponsorships if this supporter has child sponsorship type
+    if (supporterData.supporter.supportType === SupportType.CHILD_SPONSORSHIP) {
+      const numberOfSponsorships = Math.floor(Math.random() * 3) + 1; // 1-3 sponsorships
+      const shuffledMembers = familyMembers.sort(() => 0.5 - Math.random());
+
+      for (
+        let i = 0;
+        i < numberOfSponsorships && i < shuffledMembers.length;
+        i++
+      ) {
+        const familyMember = shuffledMembers[i];
+
+        // Check if this child is already sponsored
+        const existingSponsorship = await sponsorshipRepo.findOne({
+          where: {
+            familyMemberId: familyMember.id,
+            sponsorshipStatus: SponsorshipStatus.ACTIVE,
+          },
+        });
+
+        if (!existingSponsorship) {
+          const sponsorshipStartDate = new Date();
+          sponsorshipStartDate.setMonth(
+            sponsorshipStartDate.getMonth() - Math.floor(Math.random() * 12),
+          ); // Random start date within last year
+
+          await sponsorshipRepo.save(
+            sponsorshipRepo.create({
+              supporterId: savedSupporter.id,
+              familyMemberId: familyMember.id,
+              sponsorshipStartDate,
+              sponsorshipStatus: SponsorshipStatus.ACTIVE,
+            }),
+          );
+        }
+      }
+    }
+
+    console.log(
+      `✅ Supporter ${supporterData.person.fullName} created successfully`,
+    );
+  }
+
+  console.log('🎉 Supporters seeding completed successfully!');
+}
+
+const supportersData = [
+  {
+    person: {
+      fullName: 'أحمد محمد العلي',
+      motherName: 'فاطمة محمد',
+      birthDate: new Date('1985-03-15'),
+      birthPlace: 'دمشق',
+      nationalId: '1234567890',
+      nationality: 'سوري',
+      motherNationality: 'سورية',
+      gender: GenderType.MALE,
+      shoeSize: 42,
+      maritalStatus: MaritalStatus.Married,
+      isWorking: true,
+      currentJob: 'مهندس برمجيات',
+      jobDetails: 'يعمل في شركة تقنية متخصصة في تطوير التطبيقات',
+      isSmoker: false,
+      healthStatus: 'ممتاز',
+      isHealthInsuranceUsed: true,
+      educationLevel: EducationLevel.University,
+      universityMajor: 'هندسة البرمجيات',
+      mobilePhone: '0998765432',
+      whatsappNumber: '0998765432',
+      notes: 'داعم نشط للجمعية منذ عام 2020',
+    },
+    supporter: {
+      supportType: SupportType.CHILD_SPONSORSHIP,
+      notes: 'يركز على دعم الأطفال الأيتام والمحتاجين',
+    },
+  },
+  {
+    person: {
+      fullName: 'سارة عبد الرحمن',
+      motherName: 'هند عبد الرحمن',
+      birthDate: new Date('1990-07-22'),
+      birthPlace: 'حلب',
+      nationalId: '1234567891',
+      nationality: 'سورية',
+      motherNationality: 'سورية',
+      gender: GenderType.FEMALE,
+      shoeSize: 38,
+      maritalStatus: MaritalStatus.Single,
+      isWorking: true,
+      currentJob: 'طبيبة',
+      jobDetails: 'تعمل في مستشفى حكومي متخصصة في طب الأطفال',
+      isSmoker: false,
+      healthStatus: 'ممتاز',
+      isHealthInsuranceUsed: true,
+      educationLevel: EducationLevel.University,
+      universityMajor: 'طب',
+      mobilePhone: '0998765433',
+      whatsappNumber: '0998765433',
+      notes: 'تقدم الدعم الطبي المجاني للمستفيدين',
+    },
+    supporter: {
+      supportType: SupportType.OCCASIONAL,
+      notes: 'تقدم مساعدات طبية ومالية حسب الحاجة',
+    },
+  },
+  {
+    person: {
+      fullName: 'محمد خالد الحسن',
+      motherName: 'منى خالد',
+      birthDate: new Date('1978-11-08'),
+      birthPlace: 'اللاذقية',
+      nationalId: '1234567892',
+      nationality: 'سوري',
+      motherNationality: 'سورية',
+      gender: GenderType.MALE,
+      shoeSize: 44,
+      maritalStatus: MaritalStatus.Married,
+      isWorking: true,
+      currentJob: 'رجل أعمال',
+      jobDetails: 'يملك شركة استيراد وتصدير',
+      isSmoker: false,
+      healthStatus: 'جيد',
+      isHealthInsuranceUsed: true,
+      educationLevel: EducationLevel.University,
+      universityMajor: 'إدارة أعمال',
+      mobilePhone: '0998765434',
+      whatsappNumber: '0998765434',
+      notes: 'داعم كبير للجمعية منذ تأسيسها',
+    },
+    supporter: {
+      supportType: SupportType.ONE_TIME,
+      notes: 'قدم تبرع كبير لبناء مدرسة جديدة',
+    },
+  },
+  {
+    person: {
+      fullName: 'فاطمة علي السعيد',
+      motherName: 'سعاد علي',
+      birthDate: new Date('1982-05-12'),
+      birthPlace: 'حمص',
+      nationalId: '1234567893',
+      nationality: 'سورية',
+      motherNationality: 'سورية',
+      gender: GenderType.FEMALE,
+      shoeSize: 37,
+      maritalStatus: MaritalStatus.Married,
+      isWorking: false,
+      currentJob: '',
+      jobDetails: '',
+      isSmoker: false,
+      healthStatus: 'جيد',
+      isHealthInsuranceUsed: true,
+      educationLevel: EducationLevel.Secondary,
+      universityMajor: '',
+      mobilePhone: '0998765435',
+      whatsappNumber: '0998765435',
+      notes: 'ربة منزل تشارك في الأنشطة التطوعية',
+    },
+    supporter: {
+      supportType: SupportType.CHILD_SPONSORSHIP,
+      notes: 'تركز على دعم الأطفال في التعليم',
+    },
+  },
+  {
+    person: {
+      fullName: 'عبد الله يوسف',
+      motherName: 'مها يوسف',
+      birthDate: new Date('1987-09-25'),
+      birthPlace: 'درعا',
+      nationalId: '1234567894',
+      nationality: 'سوري',
+      motherNationality: 'سورية',
+      gender: GenderType.MALE,
+      shoeSize: 43,
+      maritalStatus: MaritalStatus.Single,
+      isWorking: true,
+      currentJob: 'محاسب',
+      jobDetails: 'يعمل في شركة محاسبة متخصصة',
+      isSmoker: false,
+      healthStatus: 'ممتاز',
+      isHealthInsuranceUsed: true,
+      educationLevel: EducationLevel.University,
+      universityMajor: 'محاسبة',
+      mobilePhone: '0998765436',
+      whatsappNumber: '0998765436',
+      notes: 'يساعد في إدارة الحسابات المالية للجمعية',
+    },
+    supporter: {
+      supportType: SupportType.OCCASIONAL,
+      notes: 'يقدم الدعم المالي والمحاسبي',
+    },
+  },
+  {
+    person: {
+      fullName: 'سامي الطيب',
+      motherName: 'هند سامي',
+      birthDate: new Date('1993-12-03'),
+      birthPlace: 'دمشق',
+      nationalId: '1234567895',
+      nationality: 'سورية',
+      motherNationality: 'سورية',
+      gender: GenderType.FEMALE,
+      shoeSize: 39,
+      maritalStatus: MaritalStatus.Single,
+      isWorking: true,
+      currentJob: 'معلمة',
+      jobDetails: 'تعمل في مدرسة خاصة متخصصة في تعليم الأطفال',
+      isSmoker: false,
+      healthStatus: 'ممتاز',
+      isHealthInsuranceUsed: true,
+      educationLevel: EducationLevel.University,
+      universityMajor: 'تربية',
+      mobilePhone: '0998765437',
+      whatsappNumber: '0998765437',
+      notes: 'تقدم دروس مجانية للأطفال المحتاجين',
+    },
+    supporter: {
+      supportType: SupportType.CHILD_SPONSORSHIP,
+      notes: 'تركز على دعم التعليم والأنشطة التعليمية',
+    },
+  },
+  {
+    person: {
+      fullName: 'خالد محمود العلي',
+      motherName: 'ليلى محمود',
+      birthDate: new Date('1975-04-18'),
+      birthPlace: 'حلب',
+      nationalId: '1234567896',
+      nationality: 'سوري',
+      motherNationality: 'سورية',
+      gender: GenderType.MALE,
+      shoeSize: 45,
+      maritalStatus: MaritalStatus.Married,
+      isWorking: true,
+      currentJob: 'مهندس مدني',
+      jobDetails: 'يعمل في شركة مقاولات كبيرة',
+      isSmoker: false,
+      healthStatus: 'جيد',
+      isHealthInsuranceUsed: true,
+      educationLevel: EducationLevel.University,
+      universityMajor: 'هندسة مدنية',
+      mobilePhone: '0998765438',
+      whatsappNumber: '0998765438',
+      notes: 'يساعد في بناء وتطوير مرافق الجمعية',
+    },
+    supporter: {
+      supportType: SupportType.ONE_TIME,
+      notes: 'ساهم في بناء مركز تعليمي جديد',
+    },
+  },
+  {
+    person: {
+      fullName: 'هالة أحمد النور',
+      motherName: 'سارة أحمد',
+      birthDate: new Date('1988-08-14'),
+      birthPlace: 'اللاذقية',
+      nationalId: '1234567897',
+      nationality: 'سورية',
+      motherNationality: 'سورية',
+      gender: GenderType.FEMALE,
+      shoeSize: 38,
+      maritalStatus: MaritalStatus.Married,
+      isWorking: true,
+      currentJob: 'أخصائية تغذية',
+      jobDetails: 'تعمل في عيادة خاصة متخصصة في التغذية العلاجية',
+      isSmoker: false,
+      healthStatus: 'ممتاز',
+      isHealthInsuranceUsed: true,
+      educationLevel: EducationLevel.University,
+      universityMajor: 'تغذية',
+      mobilePhone: '0998765439',
+      whatsappNumber: '0998765439',
+      notes: 'تقدم استشارات غذائية مجانية للمستفيدين',
+    },
+    supporter: {
+      supportType: SupportType.OCCASIONAL,
+      notes: 'تقدم مساعدات غذائية واستشارات صحية',
+    },
+  },
+  {
+    person: {
+      fullName: 'رامي فؤاد الخطيب',
+      motherName: 'منى فؤاد',
+      birthDate: new Date('1984-01-30'),
+      birthPlace: 'حمص',
+      nationalId: '1234567898',
+      nationality: 'سوري',
+      motherNationality: 'سورية',
+      gender: GenderType.MALE,
+      shoeSize: 42,
+      maritalStatus: MaritalStatus.Single,
+      isWorking: true,
+      currentJob: 'محامي',
+      jobDetails: 'يعمل في مكتب محاماة متخصص في القضايا الاجتماعية',
+      isSmoker: false,
+      healthStatus: 'ممتاز',
+      isHealthInsuranceUsed: true,
+      educationLevel: EducationLevel.University,
+      universityMajor: 'قانون',
+      mobilePhone: '0998765440',
+      whatsappNumber: '0998765440',
+      notes: 'يقدم الاستشارات القانونية المجانية',
+    },
+    supporter: {
+      supportType: SupportType.CHILD_SPONSORSHIP,
+      notes: 'يركز على دعم الأطفال في التعليم القانوني',
+    },
+  },
+  {
+    person: {
+      fullName: 'ياسمين عبد الله',
+      motherName: 'هالة عبد الله',
+      birthDate: new Date('1991-06-20'),
+      birthPlace: 'درعا',
+      nationalId: '1234567899',
+      nationality: 'سورية',
+      motherNationality: 'سورية',
+      gender: GenderType.FEMALE,
+      shoeSize: 37,
+      maritalStatus: MaritalStatus.Single,
+      isWorking: true,
+      currentJob: 'مصممة جرافيك',
+      jobDetails: 'تعمل في وكالة إعلانية متخصصة في التصميم',
+      isSmoker: false,
+      healthStatus: 'ممتاز',
+      isHealthInsuranceUsed: true,
+      educationLevel: EducationLevel.University,
+      universityMajor: 'تصميم جرافيك',
+      mobilePhone: '0998765441',
+      whatsappNumber: '0998765441',
+      notes: 'تصمم المواد الإعلانية للجمعية مجاناً',
+    },
+    supporter: {
+      supportType: SupportType.OCCASIONAL,
+      notes: 'تقدم خدمات التصميم والإعلان',
+    },
+  },
+  {
+    person: {
+      fullName: 'عمر سعد الدين',
+      motherName: 'فاطمة سعد',
+      birthDate: new Date('1979-10-05'),
+      birthPlace: 'دمشق',
+      nationalId: '1234567900',
+      nationality: 'سوري',
+      motherNationality: 'سورية',
+      gender: GenderType.MALE,
+      shoeSize: 44,
+      maritalStatus: MaritalStatus.Married,
+      isWorking: true,
+      currentJob: 'صيدلي',
+      jobDetails: 'يملك صيدلية خاصة في وسط المدينة',
+      isSmoker: false,
+      healthStatus: 'جيد',
+      isHealthInsuranceUsed: true,
+      educationLevel: EducationLevel.University,
+      universityMajor: 'صيدلة',
+      mobilePhone: '0998765442',
+      whatsappNumber: '0998765442',
+      notes: 'يقدم الأدوية المجانية للمستفيدين',
+    },
+    supporter: {
+      supportType: SupportType.ONE_TIME,
+      notes: 'تبرع بمبلغ كبير لشراء معدات طبية',
+    },
+  },
+  {
+    person: {
+      fullName: 'مريم حسن العلي',
+      motherName: 'سعاد حسن',
+      birthDate: new Date('1986-02-28'),
+      birthPlace: 'حلب',
+      nationalId: '1234567901',
+      nationality: 'سورية',
+      motherNationality: 'سورية',
+      gender: GenderType.FEMALE,
+      shoeSize: 38,
+      maritalStatus: MaritalStatus.Married,
+      isWorking: false,
+      currentJob: '',
+      jobDetails: '',
+      isSmoker: false,
+      healthStatus: 'جيد',
+      isHealthInsuranceUsed: true,
+      educationLevel: EducationLevel.Secondary,
+      universityMajor: '',
+      mobilePhone: '0998765443',
+      whatsappNumber: '0998765443',
+      notes: 'ربة منزل تشارك في الأنشطة الخيرية',
+    },
+    supporter: {
+      supportType: SupportType.CHILD_SPONSORSHIP,
+      notes: 'تركز على دعم الأطفال في الأنشطة الثقافية',
+    },
+  },
+  {
+    person: {
+      fullName: 'بسام محمد النور',
+      motherName: 'هند محمد',
+      birthDate: new Date('1983-07-15'),
+      birthPlace: 'اللاذقية',
+      nationalId: '1234567902',
+      nationality: 'سوري',
+      motherNationality: 'سورية',
+      gender: GenderType.MALE,
+      shoeSize: 43,
+      maritalStatus: MaritalStatus.Single,
+      isWorking: true,
+      currentJob: 'مهندس كهرباء',
+      jobDetails: 'يعمل في شركة كهرباء حكومية',
+      isSmoker: false,
+      healthStatus: 'ممتاز',
+      isHealthInsuranceUsed: true,
+      educationLevel: EducationLevel.University,
+      universityMajor: 'هندسة كهربائية',
+      mobilePhone: '0998765444',
+      whatsappNumber: '0998765444',
+      notes: 'يساعد في الصيانة الكهربائية للمرافق',
+    },
+    supporter: {
+      supportType: SupportType.OCCASIONAL,
+      notes: 'يقدم الدعم التقني والصيانة',
+    },
+  },
+  {
+    person: {
+      fullName: 'رانيا خالد الطيب',
+      motherName: 'منى خالد',
+      birthDate: new Date('1992-11-12'),
+      birthPlace: 'حمص',
+      nationalId: '1234567903',
+      nationality: 'سورية',
+      motherNationality: 'سورية',
+      gender: GenderType.FEMALE,
+      shoeSize: 37,
+      maritalStatus: MaritalStatus.Single,
+      isWorking: true,
+      currentJob: 'ممرضة',
+      jobDetails: 'تعمل في مستشفى عام متخصصة في العناية المركزة',
+      isSmoker: false,
+      healthStatus: 'ممتاز',
+      isHealthInsuranceUsed: true,
+      educationLevel: EducationLevel.University,
+      universityMajor: 'تمريض',
+      mobilePhone: '0998765445',
+      whatsappNumber: '0998765445',
+      notes: 'تقدم الرعاية التمريضية المجانية',
+    },
+    supporter: {
+      supportType: SupportType.CHILD_SPONSORSHIP,
+      notes: 'تركز على دعم الأطفال في الرعاية الصحية',
+    },
+  },
+  {
+    person: {
+      fullName: 'نادر علي الحسن',
+      motherName: 'سارة علي',
+      birthDate: new Date('1977-04-22'),
+      birthPlace: 'درعا',
+      nationalId: '1234567904',
+      nationality: 'سوري',
+      motherNationality: 'سورية',
+      gender: GenderType.MALE,
+      shoeSize: 45,
+      maritalStatus: MaritalStatus.Married,
+      isWorking: true,
+      currentJob: 'تاجر',
+      jobDetails: 'يملك متجراً للأدوات المنزلية',
+      isSmoker: false,
+      healthStatus: 'جيد',
+      isHealthInsuranceUsed: true,
+      educationLevel: EducationLevel.Secondary,
+      universityMajor: '',
+      mobilePhone: '0998765446',
+      whatsappNumber: '0998765446',
+      notes: 'يقدم الأدوات المنزلية للمستفيدين',
+    },
+    supporter: {
+      supportType: SupportType.ONE_TIME,
+      notes: 'تبرع بمبلغ كبير لشراء أثاث للمركز',
+    },
+  },
+  {
+    person: {
+      fullName: 'لينا سامي العبد',
+      motherName: 'هالة سامي',
+      birthDate: new Date('1989-09-08'),
+      birthPlace: 'دمشق',
+      nationalId: '1234567905',
+      nationality: 'سورية',
+      motherNationality: 'سورية',
+      gender: GenderType.FEMALE,
+      shoeSize: 39,
+      maritalStatus: MaritalStatus.Single,
+      isWorking: true,
+      currentJob: 'محاسبة',
+      jobDetails: 'تعمل في شركة استشارات مالية',
+      isSmoker: false,
+      healthStatus: 'ممتاز',
+      isHealthInsuranceUsed: true,
+      educationLevel: EducationLevel.University,
+      universityMajor: 'محاسبة',
+      mobilePhone: '0998765447',
+      whatsappNumber: '0998765447',
+      notes: 'تساعد في إدارة الحسابات المالية',
+    },
+    supporter: {
+      supportType: SupportType.OCCASIONAL,
+      notes: 'تقدم الدعم المالي والمحاسبي',
+    },
+  },
+  {
+    person: {
+      fullName: 'محمود يوسف الخطيب',
+      motherName: 'فاطمة يوسف',
+      birthDate: new Date('1981-12-18'),
+      birthPlace: 'حلب',
+      nationalId: '1234567906',
+      nationality: 'سوري',
+      motherNationality: 'سورية',
+      gender: GenderType.MALE,
+      shoeSize: 42,
+      maritalStatus: MaritalStatus.Married,
+      isWorking: true,
+      currentJob: 'معلم',
+      jobDetails: 'يعمل في مدرسة ثانوية متخصص في الرياضيات',
+      isSmoker: false,
+      healthStatus: 'ممتاز',
+      isHealthInsuranceUsed: true,
+      educationLevel: EducationLevel.University,
+      universityMajor: 'رياضيات',
+      mobilePhone: '0998765448',
+      whatsappNumber: '0998765448',
+      notes: 'يقدم دروس مجانية في الرياضيات',
+    },
+    supporter: {
+      supportType: SupportType.CHILD_SPONSORSHIP,
+      notes: 'يركز على دعم التعليم الرياضي',
+    },
+  },
+  {
+    person: {
+      fullName: 'هند عبد الرحمن النور',
+      motherName: 'سعاد عبد الرحمن',
+      birthDate: new Date('1985-05-25'),
+      birthPlace: 'اللاذقية',
+      nationalId: '1234567907',
+      nationality: 'سورية',
+      motherNationality: 'سورية',
+      gender: GenderType.FEMALE,
+      shoeSize: 38,
+      maritalStatus: MaritalStatus.Married,
+      isWorking: true,
+      currentJob: 'أخصائية اجتماعية',
+      jobDetails: 'تعمل في مركز رعاية اجتماعية',
+      isSmoker: false,
+      healthStatus: 'ممتاز',
+      isHealthInsuranceUsed: true,
+      educationLevel: EducationLevel.University,
+      universityMajor: 'خدمة اجتماعية',
+      mobilePhone: '0998765449',
+      whatsappNumber: '0998765449',
+      notes: 'تقدم الاستشارات الاجتماعية المجانية',
+    },
+    supporter: {
+      supportType: SupportType.OCCASIONAL,
+      notes: 'تقدم الدعم الاجتماعي والنفسي',
+    },
+  },
+  {
+    person: {
+      fullName: 'سعد الدين محمود',
+      motherName: 'منى محمود',
+      birthDate: new Date('1976-08-14'),
+      birthPlace: 'حمص',
+      nationalId: '1234567908',
+      nationality: 'سوري',
+      motherNationality: 'سورية',
+      gender: GenderType.MALE,
+      shoeSize: 44,
+      maritalStatus: MaritalStatus.Married,
+      isWorking: true,
+      currentJob: 'مهندس ميكانيك',
+      jobDetails: 'يعمل في شركة صناعية كبيرة',
+      isSmoker: false,
+      healthStatus: 'جيد',
+      isHealthInsuranceUsed: true,
+      educationLevel: EducationLevel.University,
+      universityMajor: 'هندسة ميكانيكية',
+      mobilePhone: '0998765450',
+      whatsappNumber: '0998765450',
+      notes: 'يساعد في صيانة المعدات والمكائن',
+    },
+    supporter: {
+      supportType: SupportType.ONE_TIME,
+      notes: 'تبرع بمعدات صناعية للمركز المهني',
+    },
+  },
+];
