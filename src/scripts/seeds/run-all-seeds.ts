@@ -15,6 +15,7 @@ import { seedRolesAndPermissions } from './seed-roles-permissions';
 import { seedSupporters } from './seed-supporters';
 import { seedSystemUsers } from './seed-system-users';
 import { seedTrainingCourses } from './seed-training-courses';
+import { seedVisits } from './seed-visits';
 
 async function bootstrap() {
   const args = process.argv.slice(2);
@@ -30,6 +31,7 @@ async function bootstrap() {
   const runCourseBatches = args.includes('course-batches');
   const runPersonCourseBatches = args.includes('person-course-batches');
   const runSupporters = args.includes('supporters');
+  const runVisits = args.includes('visits');
   const runAll = args.includes('all');
 
   const app = await NestFactory.create(AppModule);
@@ -89,6 +91,10 @@ async function bootstrap() {
       await seedSupporters(queryRunner);
       console.log('✅ Supporters seeded');
     }
+    if (runVisits) {
+      await seedVisits(queryRunner);
+      console.log('✅ Visits seeded');
+    }
     if (runAll) {
       await seedRolesAndPermissions(queryRunner);
       await seedSystemUsers(queryRunner, configService);
@@ -102,6 +108,7 @@ async function bootstrap() {
       await seedCourseBatches(queryRunner);
       await seedPersonCourseBatches(queryRunner);
       await seedSupporters(queryRunner);
+      await seedVisits(queryRunner);
       console.log('✅ All seeders ran');
     }
 
