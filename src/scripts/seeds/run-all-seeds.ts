@@ -9,11 +9,12 @@ import { seedEmployees } from './seed-employees';
 import { seedFamilies } from './seed-families';
 import { seedFamilyMembers } from './seed-family-members';
 import { seedFamilyNeeds } from './seed-family-needs';
+import { seedPersonCourseBatches } from './seed-person-course-batches';
 import { seedReceivedAssistance } from './seed-received-assistance';
 import { seedRolesAndPermissions } from './seed-roles-permissions';
+import { seedSupporters } from './seed-supporters';
 import { seedSystemUsers } from './seed-system-users';
 import { seedTrainingCourses } from './seed-training-courses';
-import { seedPersonCourseBatches } from './seed-person-course-batches';
 
 async function bootstrap() {
   const args = process.argv.slice(2);
@@ -28,6 +29,7 @@ async function bootstrap() {
   const runTrainingCourses = args.includes('training-courses');
   const runCourseBatches = args.includes('course-batches');
   const runPersonCourseBatches = args.includes('person-course-batches');
+  const runSupporters = args.includes('supporters');
   const runAll = args.includes('all');
 
   const app = await NestFactory.create(AppModule);
@@ -83,6 +85,10 @@ async function bootstrap() {
       await seedPersonCourseBatches(queryRunner);
       console.log('✅ Person course batches seeded');
     }
+    if (runSupporters) {
+      await seedSupporters(queryRunner);
+      console.log('✅ Supporters seeded');
+    }
     if (runAll) {
       await seedRolesAndPermissions(queryRunner);
       await seedSystemUsers(queryRunner, configService);
@@ -95,6 +101,7 @@ async function bootstrap() {
       await seedTrainingCourses(queryRunner);
       await seedCourseBatches(queryRunner);
       await seedPersonCourseBatches(queryRunner);
+      await seedSupporters(queryRunner);
       console.log('✅ All seeders ran');
     }
 
