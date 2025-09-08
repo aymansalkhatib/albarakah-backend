@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { DataSource } from 'typeorm';
 import { AppModule } from '../../app.module';
 import { EnvironmentConfig } from '../../shared/modules/app-config/env.schema';
+import { seedCourseBatches } from './seed-course-batches';
 import { seedEmergencyAidRequests } from './seed-emergency-aid-requests';
 import { seedEmployees } from './seed-employees';
 import { seedFamilies } from './seed-families';
@@ -24,6 +25,7 @@ async function bootstrap() {
   const runEmergencyAidRequests = args.includes('emergency-aid-requests');
   const runReceivedAssistance = args.includes('received-assistance');
   const runTrainingCourses = args.includes('training-courses');
+  const runCourseBatches = args.includes('course-batches');
   const runAll = args.includes('all');
 
   const app = await NestFactory.create(AppModule);
@@ -71,6 +73,10 @@ async function bootstrap() {
       await seedTrainingCourses(queryRunner);
       console.log('✅ Training courses seeded');
     }
+    if (runCourseBatches) {
+      await seedCourseBatches(queryRunner);
+      console.log('✅ Course batches seeded');
+    }
     if (runAll) {
       await seedRolesAndPermissions(queryRunner);
       await seedSystemUsers(queryRunner, configService);
@@ -81,6 +87,7 @@ async function bootstrap() {
       await seedEmergencyAidRequests(queryRunner);
       await seedReceivedAssistance(queryRunner);
       await seedTrainingCourses(queryRunner);
+      await seedCourseBatches(queryRunner);
       console.log('✅ All seeders ran');
     }
 
