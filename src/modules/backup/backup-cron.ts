@@ -6,9 +6,9 @@ import { BackupService } from './services/backup.service';
 export class BackupCron {
   constructor(private backupService: BackupService) {}
 
-  @Cron('*/5 * * * * *')
-  async handleBackup() {
-    // await this.backupService.backupDatabase();
-    // await this.backupService.restoreDatabase('2025-09-07T19-11-05-011Z');
-  }
+//   @Cron('*/5 * * * * *')
+//   async handleBackup() {
+//     // await this.backupService.backupDatabase();
+//     await this.backupService.restoreDatabase('2025-09-08T01-51-10-005Z');
+//   }
 }
