@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common';
 import { Protected } from '../../../common/decorators/protected.decorator';
 import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
@@ -33,7 +33,7 @@ export class InterviewController {
   @Get(':id')
   @Protected(Permission.READ_INTERVIEW)
   @SerializeResponse(InterviewResponseDto)
-  async findOne(@Param('id') id: string): Promise<InterviewResponseDto> {
+  async findOne(@Param('id', ParseIntPipe) id: string): Promise<InterviewResponseDto> {
     return this.interviewService.findOne(+id);
   }
 
