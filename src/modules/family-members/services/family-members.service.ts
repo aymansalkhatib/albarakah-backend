@@ -58,20 +58,6 @@ export class FamilyMembersService {
   ): Promise<FamilyMember> {
     await this.familiesService.findOne(createFamilyMemberDto.familyId, {}, em);
 
-    if (createFamilyMemberDto.isGuardian) {
-      const hasGuardian = await this.hasGuardian(
-        createFamilyMemberDto.familyId,
-        em,
-      );
-      if (hasGuardian) {
-        throw new ConflictException(
-          this.translateHelper.tr(
-            'family-members.errors.family_already_has_guardian',
-          ),
-        );
-      }
-    }
-
     let person: Person;
 
     if (createFamilyMemberDto.personId) {
@@ -129,6 +115,7 @@ export class FamilyMembersService {
     const entity = this.familyMemberRepository.create({
       ...createFamilyMemberDto,
       person: person,
+      isGuardian: false,
     });
 
     return await em.save(FamilyMember, entity);
@@ -212,21 +199,6 @@ export class FamilyMembersService {
   ): Promise<FamilyMember> {
     return await this.familyMemberRepository.manager.transaction(async (em) => {
       const familyMember = await this.findOneDetailed(id);
-
-      if (updateData.isGuardian) {
-        const hasGuardian = await this.hasGuardian(
-          familyMember.familyId,
-          em,
-          familyMember.id,
-        );
-        if (hasGuardian) {
-          throw new ConflictException(
-            this.translateHelper.tr(
-              'family-members.errors.family_already_has_guardian',
-            ),
-          );
-        }
-      }
 
       if (
         updateData.relationType &&

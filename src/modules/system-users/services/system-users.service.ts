@@ -1,4 +1,8 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, FindOneOptions, Not, Repository } from 'typeorm';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
@@ -29,8 +33,8 @@ export class SystemUsersService {
   async create(createUserAccountDto: CreateSystemUserDto): Promise<SystemUser> {
     let employee: Employee;
 
-    const saved: SystemUser = await this.systemUserRepository.manager.transaction(
-      async (manager) => {
+    const saved: SystemUser =
+      await this.systemUserRepository.manager.transaction(async (manager) => {
         const systemUserRepo = manager.getRepository(SystemUser);
 
         const existingUser = await systemUserRepo.exists({
@@ -45,7 +49,11 @@ export class SystemUsersService {
 
         // Check if role exists
 
-        await this.rolesService.findOne(createUserAccountDto.roleId, {}, manager);
+        await this.rolesService.findOne(
+          createUserAccountDto.roleId,
+          {},
+          manager,
+        );
 
         if (createUserAccountDto.employeeId) {
           employee = await this.employeesService.findOne(
@@ -58,11 +66,16 @@ export class SystemUsersService {
 
           if (employee.systemUser) {
             throw new ConflictException(
-              this.translateHelper.tr('system-users.errors.employee_has_system_account'),
+              this.translateHelper.tr(
+                'system-users.errors.employee_has_system_account',
+              ),
             );
           }
         } else {
-          employee = await this.employeesService.create(createUserAccountDto.employee, manager);
+          employee = await this.employeesService.create(
+            createUserAccountDto.employee,
+            manager,
+          );
         }
 
         const systemUser = systemUserRepo.create({
@@ -71,72 +84,76 @@ export class SystemUsersService {
         });
 
         return await systemUserRepo.save(systemUser);
-      },
-    );
+      });
 
     return this.findOne(saved.id, {
       relations: ['employee', 'role', 'employee.person'],
     });
   }
 
-  async update(id: number, updateSystemUserDto: UpdateSystemUserDto): Promise<SystemUser> {
-    return await this.systemUserRepository.manager.transaction(async (manager) => {
-      const systemUserRepo = manager.getRepository(SystemUser);
+  async update(
+    id: number,
+    updateSystemUserDto: UpdateSystemUserDto,
+  ): Promise<SystemUser> {
+    return await this.systemUserRepository.manager.transaction(
+      async (manager) => {
+        const systemUserRepo = manager.getRepository(SystemUser);
 
-      const systemUser = await this.findOne(
-        id,
-        {
-          relations: ['employee', 'role'],
-        },
-        manager,
-      );
-
-      if (!systemUser) {
-        throw new NotFoundException(
-          this.translateHelper.tr('system-users.errors.not_found', { id }),
-        );
-      }
-
-      if (updateSystemUserDto.username) {
-        const existingUser = await systemUserRepo.findOne({
-          where: {
-            id: Not(id),
-            username: updateSystemUserDto.username,
+        const systemUser = await this.findOne(
+          id,
+          {
+            relations: ['employee'],
           },
-        });
-        if (existingUser) {
-          throw new ConflictException(
-            this.translateHelper.tr('system-users.errors.username_taken'),
-          );
-        }
-      }
-
-      if (updateSystemUserDto.employee) {
-        // Use the employeesService with the transaction manager
-        systemUser.employee = await this.employeesService.update(
-          systemUser.employeeId,
-          updateSystemUserDto.employee,
           manager,
         );
-        delete updateSystemUserDto.employee;
-      }
 
-      systemUserRepo.merge(systemUser, updateSystemUserDto);
-      const saved = await systemUserRepo.save(systemUser);
+        if (updateSystemUserDto.username) {
+          const existingUser = await systemUserRepo.findOne({
+            where: {
+              id: Not(id),
+              username: updateSystemUserDto.username,
+            },
+          });
+          if (existingUser) {
+            throw new ConflictException(
+              this.translateHelper.tr('system-users.errors.username_taken'),
+            );
+          }
+        }
 
-      // Optionally reload with relations
+        if (updateSystemUserDto.employee) {
+          // Use the employeesService with the transaction manager
+          systemUser.employee = await this.employeesService.update(
+            systemUser.employeeId,
+            updateSystemUserDto.employee,
+            manager,
+          );
+          delete updateSystemUserDto.employee;
+        }
 
-      return this.findOne(saved.id, {
-        relations: ['employee', 'role', 'employee.person'],
-      });
-    });
+        systemUserRepo.merge(systemUser, updateSystemUserDto);
+        const saved = await systemUserRepo.save(systemUser);
+
+        // Optionally reload with relations
+
+        return this.findOne(
+          saved.id,
+          {
+            relations: ['employee', 'role', 'employee.person'],
+          },
+          manager,
+        );
+      },
+    );
   }
 
   async delete(id: number): Promise<void> {
     const result = await this.systemUserRepository.delete(id);
 
     if (result.affected === 0) {
-      throw new NotFoundException(this.translateHelper.tr('system-users.errors.not_found', { id }));
+      throw new NotFoundException(
+        this.translateHelper.tr('system-users.errors.not_found', { id }),
+      );
     }
   }
 
@@ -155,7 +172,9 @@ export class SystemUsersService {
     });
 
     if (!systemUser) {
-      throw new NotFoundException(this.translateHelper.tr('system-users.errors.not_found', { id }));
+      throw new NotFoundException(
+        this.translateHelper.tr('system-users.errors.not_found', { id }),
+      );
     }
 
     return systemUser;

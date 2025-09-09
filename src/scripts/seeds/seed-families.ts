@@ -14,7 +14,7 @@ export async function seedFamilies(queryRunner: QueryRunner) {
   // Empty array for now - data will be added later
 
   const familiesData: Partial<Family>[] = Array.from(
-    { length: 100 },
+    { length: 6 },
     (_, i) => {
       const id = i + 1;
       return generateFamily(id);

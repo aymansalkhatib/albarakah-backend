@@ -11,19 +11,21 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { Protected } from '../../../common/decorators/protected.decorator';
 import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
-import { Protected } from '../../../common/decorators/protected.decorator';
-import { Permission } from '../../../modules/roles/enums/permission.enum';
-import { ReceivedAssistanceService } from '../services/received-assistance.service';
+import { FilterReceivedAssistanceDto } from '../../../modules/received-assistance/dtos/queries/filter-received-assistance.dto';
 import { CreateReceivedAssistanceDto } from '../../../modules/received-assistance/dtos/requests/create-received-assistance.dto';
 import { UpdateReceivedAssistanceDto } from '../../../modules/received-assistance/dtos/requests/update-received-assistance.dto';
-import { FilterReceivedAssistanceDto } from '../../../modules/received-assistance/dtos/queries/filter-received-assistance.dto';
 import { ReceivedAssistanceResponseDto } from '../../../modules/received-assistance/dtos/responses/received-assistance-response.dto';
+import { Permission } from '../../../modules/roles/enums/permission.enum';
+import { ReceivedAssistanceService } from '../services/received-assistance.service';
 
 @Controller('received-assistance')
 export class ReceivedAssistanceController {
-  constructor(private readonly receivedAssistanceService: ReceivedAssistanceService) {}
+  constructor(
+    private readonly receivedAssistanceService: ReceivedAssistanceService,
+  ) {}
 
   @Post()
   @Protected(Permission.CREATE_RECEIVED_ASSISTANCE)
@@ -37,9 +39,11 @@ export class ReceivedAssistanceController {
   @Get(':id')
   @Protected(Permission.READ_RECEIVED_ASSISTANCE)
   @SerializeResponse(ReceivedAssistanceResponseDto)
-  async findOne(@Param('id', ParseIntPipe) id: number): Promise<ReceivedAssistanceResponseDto> {
+  async findOne(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<ReceivedAssistanceResponseDto> {
     return await this.receivedAssistanceService.findOne(id, {
-      relations: ['family', 'familyMember', 'familyMember.person'],
+      relations: ['family'],
     });
   }
 

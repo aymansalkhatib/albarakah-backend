@@ -44,9 +44,9 @@ export class CreateFamilyMemberDto {
   @IsEnum(IsPresent)
   isPresent?: IsPresent;
 
-  @IsOptional()
-  @StrictBoolean()
-  isGuardian?: boolean;
+  // @IsOptional()
+  // @StrictBoolean()
+  // isGuardian?: boolean;
 
   @IsOptional()
   @IsString()

@@ -8,7 +8,6 @@ import {
   Param,
   ParseIntPipe,
   Patch,
-  Post,
   Query,
 } from '@nestjs/common';
 import { Protected } from '../../../common/decorators/protected.decorator';
@@ -18,7 +17,6 @@ import { MonthlyStatsResponseDto } from '../../../common/dtos/monthly-stats-resp
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { Permission } from '../../../modules/roles/enums/permission.enum';
 import { FilterFamilyDto } from '../dtos/queries/filter-family.dto';
-import { CreateFamilyDto } from '../dtos/requests/create-family-dto';
 import { UpdateFamilyDto } from '../dtos/requests/update-family-dto';
 import { FamilyResponseDto } from '../dtos/responses/family-response.dto';
 import { FamiliesService } from '../services/families.service';
@@ -27,14 +25,14 @@ import { FamiliesService } from '../services/families.service';
 export class FamiliesController {
   constructor(private readonly familiesService: FamiliesService) {}
 
-  @Post()
-  @Protected(Permission.CREATE_FAMILY)
-  @SerializeResponse(FamilyResponseDto)
-  async create(
-    @Body() createFamilyDto: CreateFamilyDto,
-  ): Promise<FamilyResponseDto> {
-    return await this.familiesService.create(createFamilyDto);
-  }
+  // @Post()
+  // @Protected(Permission.CREATE_FAMILY)
+  // @SerializeResponse(FamilyResponseDto)
+  // async create(
+  //   @Body() createFamilyDto: CreateFamilyDto,
+  // ): Promise<FamilyResponseDto> {
+  //   return await this.familiesService.create(createFamilyDto);
+  // }
 
   @Get('monthly-stats')
   @Protected(Permission.READ_FAMILY)

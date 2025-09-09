@@ -116,7 +116,7 @@ export class FamilyNeedsService {
     updateFamilyNeedDto: UpdateFamilyNeedDto,
   ): Promise<FamilyNeed> {
     const familyNeed = await this.findOne(id, {
-      relations: ['family', 'familyMember', 'familyMember.person'],
+      relations: ['family'],
     });
     this.familyNeedRepository.merge(familyNeed, updateFamilyNeedDto);
     return await this.familyNeedRepository.save(familyNeed);

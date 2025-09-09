@@ -38,7 +38,7 @@ export class ReceivedAssistanceService {
     updateDto: UpdateReceivedAssistanceDto,
   ): Promise<ReceivedAssistance> {
     const entity = await this.findOne(id, {
-      relations: ['family', 'familyMember', 'familyMember.person'],
+      relations: ['family'],
     });
 
     this.repository.merge(entity, updateDto);

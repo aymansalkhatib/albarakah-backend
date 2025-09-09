@@ -8,7 +8,9 @@ export async function seedEmergencyAidRequests(queryRunner: QueryRunner) {
     queryRunner.manager.getRepository(EmergencyAidRequest);
   const familyRepo = queryRunner.manager.getRepository(Family);
 
-  for (let i = 1; i <= 100; i++) {
+  const familyCount = await familyRepo.count();
+
+  for (let i = 1; i <= familyCount; i++) {
     const existingFamily = await familyRepo.findOne({
       where: { id: i },
     });

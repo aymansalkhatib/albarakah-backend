@@ -11,15 +11,15 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { FamilyNeedsService } from '../services/family-needs.service';
-import { CreateFamilyNeedDto } from '../dtos/requests/create-family-need.dto';
-import { UpdateFamilyNeedDto } from '../dtos/requests/update-family-need.dto';
-import { FilterFamilyNeedDto } from '../dtos/queries/filter-family-need.dto';
-import { FamilyNeedResponseDto } from '../dtos/responses/family-need-response.dto';
 import { Protected } from '../../../common/decorators/protected.decorator';
-import { Permission } from '../../../modules/roles/enums/permission.enum';
 import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
+import { Permission } from '../../../modules/roles/enums/permission.enum';
+import { FilterFamilyNeedDto } from '../dtos/queries/filter-family-need.dto';
+import { CreateFamilyNeedDto } from '../dtos/requests/create-family-need.dto';
+import { UpdateFamilyNeedDto } from '../dtos/requests/update-family-need.dto';
+import { FamilyNeedResponseDto } from '../dtos/responses/family-need-response.dto';
+import { FamilyNeedsService } from '../services/family-needs.service';
 
 @Controller('family-needs')
 export class FamilyNeedsController {
@@ -28,7 +28,9 @@ export class FamilyNeedsController {
   @Post()
   @Protected(Permission.CREATE_FAMILY_NEED)
   @SerializeResponse(FamilyNeedResponseDto)
-  async create(@Body() createFamilyNeedDto: CreateFamilyNeedDto): Promise<FamilyNeedResponseDto> {
+  async create(
+    @Body() createFamilyNeedDto: CreateFamilyNeedDto,
+  ): Promise<FamilyNeedResponseDto> {
     return await this.familyNeedsService.create(createFamilyNeedDto);
   }
 
@@ -43,9 +45,11 @@ export class FamilyNeedsController {
   @Get(':id')
   @Protected(Permission.READ_FAMILY_NEED)
   @SerializeResponse(FamilyNeedResponseDto)
-  async findOne(@Param('id', ParseIntPipe) id: number): Promise<FamilyNeedResponseDto> {
+  async findOne(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<FamilyNeedResponseDto> {
     return await this.familyNeedsService.findOne(id, {
-      relations: ['family', 'familyMember', 'familyMember.person'],
+      relations: ['family'],
     });
   }
 
