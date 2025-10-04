@@ -7,8 +7,9 @@ import { GenderType } from '../../modules/persons/enums/gender-type.enum';
 import { MaritalStatus } from '../../modules/persons/enums/marital-status.enum';
 import { SupporterChildSponsorship } from '../../modules/supporters/entities/supporters-children.entity';
 import { Supporter } from '../../modules/supporters/entities/supporters.entity';
+import { PaymentCycle } from '../../modules/supporters/enums/payment-cycle.enum';
 import { SponsorshipStatus } from '../../modules/supporters/enums/sponsorship-status.enum';
-import { SupportType } from '../../modules/supporters/enums/support-type';
+import { SponsorshipType } from '../../modules/supporters/enums/sponsorship-type.enum';
 
 export async function seedSupporters(queryRunner: QueryRunner) {
   const personRepo = queryRunner.manager.getRepository(Person);
@@ -56,7 +57,9 @@ export async function seedSupporters(queryRunner: QueryRunner) {
     );
 
     // Create child sponsorships if this supporter has child sponsorship type
-    if (supporterData.supporter.supportType === SupportType.CHILD_SPONSORSHIP) {
+    if (
+      supporterData.supporter.sponsorshipType === SponsorshipType.ORPHAN_FUND
+    ) {
       const numberOfSponsorships = Math.floor(Math.random() * 3) + 1; // 1-3 sponsorships
       const shuffledMembers = familyMembers.sort(() => 0.5 - Math.random());
 
@@ -127,7 +130,12 @@ const supportersData = [
       notes: 'داعم نشط للجمعية منذ عام 2020',
     },
     supporter: {
-      supportType: SupportType.CHILD_SPONSORSHIP,
+      address: 'دمشق - المالكي - شارع الجامعة',
+      sponsorshipType: SponsorshipType.ORPHAN_FUND,
+      paymentCycle: PaymentCycle.MONTHLY,
+      sponsorshipAmount: 50000,
+      authorizedPersonName: 'أحمد محمد العلي',
+      authorizedPersonPhone: '0998765432',
       notes: 'يركز على دعم الأطفال الأيتام والمحتاجين',
     },
   },
@@ -156,7 +164,12 @@ const supportersData = [
       notes: 'تقدم الدعم الطبي المجاني للمستفيدين',
     },
     supporter: {
-      supportType: SupportType.OCCASIONAL,
+      address: 'حلب - الشهباء - شارع الجمهورية',
+      sponsorshipType: SponsorshipType.COMPREHENSIVE,
+      paymentCycle: PaymentCycle.QUARTERLY,
+      sponsorshipAmount: 100000,
+      authorizedPersonName: 'سارة عبد الرحمن',
+      authorizedPersonPhone: '0998765433',
       notes: 'تقدم مساعدات طبية ومالية حسب الحاجة',
     },
   },
@@ -185,7 +198,12 @@ const supportersData = [
       notes: 'داعم كبير للجمعية منذ تأسيسها',
     },
     supporter: {
-      supportType: SupportType.ONE_TIME,
+      address: 'اللاذقية - الكورنيش - شارع البحر',
+      sponsorshipType: SponsorshipType.COMPREHENSIVE,
+      paymentCycle: PaymentCycle.ANNUAL,
+      sponsorshipAmount: 500000,
+      authorizedPersonName: 'محمد خالد الحسن',
+      authorizedPersonPhone: '0998765434',
       notes: 'قدم تبرع كبير لبناء مدرسة جديدة',
     },
   },
@@ -214,7 +232,12 @@ const supportersData = [
       notes: 'ربة منزل تشارك في الأنشطة التطوعية',
     },
     supporter: {
-      supportType: SupportType.CHILD_SPONSORSHIP,
+      address: 'حمص - باب هود - شارع النهضة',
+      sponsorshipType: SponsorshipType.ORPHAN_FUND,
+      paymentCycle: PaymentCycle.MONTHLY,
+      sponsorshipAmount: 30000,
+      authorizedPersonName: 'فاطمة علي السعيد',
+      authorizedPersonPhone: '0998765435',
       notes: 'تركز على دعم الأطفال في التعليم',
     },
   },
@@ -243,7 +266,12 @@ const supportersData = [
       notes: 'يساعد في إدارة الحسابات المالية للجمعية',
     },
     supporter: {
-      supportType: SupportType.OCCASIONAL,
+      address: 'درعا - المدينة - شارع الثورة',
+      sponsorshipType: SponsorshipType.COMPREHENSIVE,
+      paymentCycle: PaymentCycle.SEMI_ANNUAL,
+      sponsorshipAmount: 150000,
+      authorizedPersonName: 'عبد الله يوسف',
+      authorizedPersonPhone: '0998765436',
       notes: 'يقدم الدعم المالي والمحاسبي',
     },
   },
@@ -272,7 +300,12 @@ const supportersData = [
       notes: 'تقدم دروس مجانية للأطفال المحتاجين',
     },
     supporter: {
-      supportType: SupportType.CHILD_SPONSORSHIP,
+      address: 'دمشق - المزة - شارع الجامعة',
+      sponsorshipType: SponsorshipType.ORPHAN_FUND,
+      paymentCycle: PaymentCycle.MONTHLY,
+      sponsorshipAmount: 40000,
+      authorizedPersonName: 'سامي الطيب',
+      authorizedPersonPhone: '0998765437',
       notes: 'تركز على دعم التعليم والأنشطة التعليمية',
     },
   },
@@ -301,7 +334,12 @@ const supportersData = [
       notes: 'يساعد في بناء وتطوير مرافق الجمعية',
     },
     supporter: {
-      supportType: SupportType.ONE_TIME,
+      address: 'حلب - العزيزية - شارع الملك فيصل',
+      sponsorshipType: SponsorshipType.COMPREHENSIVE,
+      paymentCycle: PaymentCycle.ANNUAL,
+      sponsorshipAmount: 750000,
+      authorizedPersonName: 'خالد محمود العلي',
+      authorizedPersonPhone: '0998765438',
       notes: 'ساهم في بناء مركز تعليمي جديد',
     },
   },
@@ -330,7 +368,12 @@ const supportersData = [
       notes: 'تقدم استشارات غذائية مجانية للمستفيدين',
     },
     supporter: {
-      supportType: SupportType.OCCASIONAL,
+      address: 'اللاذقية - الصليبة - شارع الكورنيش',
+      sponsorshipType: SponsorshipType.COMPREHENSIVE,
+      paymentCycle: PaymentCycle.QUARTERLY,
+      sponsorshipAmount: 80000,
+      authorizedPersonName: 'هالة أحمد النور',
+      authorizedPersonPhone: '0998765439',
       notes: 'تقدم مساعدات غذائية واستشارات صحية',
     },
   },
@@ -359,7 +402,12 @@ const supportersData = [
       notes: 'يقدم الاستشارات القانونية المجانية',
     },
     supporter: {
-      supportType: SupportType.CHILD_SPONSORSHIP,
+      address: 'حمص - باب السباع - شارع الحميدية',
+      sponsorshipType: SponsorshipType.ORPHAN_FUND,
+      paymentCycle: PaymentCycle.MONTHLY,
+      sponsorshipAmount: 60000,
+      authorizedPersonName: 'رامي فؤاد الخطيب',
+      authorizedPersonPhone: '0998765440',
       notes: 'يركز على دعم الأطفال في التعليم القانوني',
     },
   },
@@ -388,7 +436,12 @@ const supportersData = [
       notes: 'تصمم المواد الإعلانية للجمعية مجاناً',
     },
     supporter: {
-      supportType: SupportType.OCCASIONAL,
+      address: 'درعا - المدينة - شارع الثورة',
+      sponsorshipType: SponsorshipType.COMPREHENSIVE,
+      paymentCycle: PaymentCycle.SEMI_ANNUAL,
+      sponsorshipAmount: 120000,
+      authorizedPersonName: 'ياسمين عبد الله',
+      authorizedPersonPhone: '0998765441',
       notes: 'تقدم خدمات التصميم والإعلان',
     },
   },
@@ -417,7 +470,12 @@ const supportersData = [
       notes: 'يقدم الأدوية المجانية للمستفيدين',
     },
     supporter: {
-      supportType: SupportType.ONE_TIME,
+      address: 'دمشق - الشاغور - شارع النصر',
+      sponsorshipType: SponsorshipType.COMPREHENSIVE,
+      paymentCycle: PaymentCycle.ANNUAL,
+      sponsorshipAmount: 300000,
+      authorizedPersonName: 'عمر سعد الدين',
+      authorizedPersonPhone: '0998765442',
       notes: 'تبرع بمبلغ كبير لشراء معدات طبية',
     },
   },
@@ -446,7 +504,12 @@ const supportersData = [
       notes: 'ربة منزل تشارك في الأنشطة الخيرية',
     },
     supporter: {
-      supportType: SupportType.CHILD_SPONSORSHIP,
+      address: 'حلب - العزيزية - شارع الملك فيصل',
+      sponsorshipType: SponsorshipType.ORPHAN_FUND,
+      paymentCycle: PaymentCycle.MONTHLY,
+      sponsorshipAmount: 35000,
+      authorizedPersonName: 'مريم حسن العلي',
+      authorizedPersonPhone: '0998765443',
       notes: 'تركز على دعم الأطفال في الأنشطة الثقافية',
     },
   },
@@ -475,7 +538,12 @@ const supportersData = [
       notes: 'يساعد في الصيانة الكهربائية للمرافق',
     },
     supporter: {
-      supportType: SupportType.OCCASIONAL,
+      address: 'اللاذقية - الصليبة - شارع الكورنيش',
+      sponsorshipType: SponsorshipType.COMPREHENSIVE,
+      paymentCycle: PaymentCycle.QUARTERLY,
+      sponsorshipAmount: 90000,
+      authorizedPersonName: 'بسام محمد النور',
+      authorizedPersonPhone: '0998765444',
       notes: 'يقدم الدعم التقني والصيانة',
     },
   },
@@ -504,7 +572,12 @@ const supportersData = [
       notes: 'تقدم الرعاية التمريضية المجانية',
     },
     supporter: {
-      supportType: SupportType.CHILD_SPONSORSHIP,
+      address: 'حمص - باب هود - شارع النهضة',
+      sponsorshipType: SponsorshipType.ORPHAN_FUND,
+      paymentCycle: PaymentCycle.MONTHLY,
+      sponsorshipAmount: 45000,
+      authorizedPersonName: 'رانيا خالد الطيب',
+      authorizedPersonPhone: '0998765445',
       notes: 'تركز على دعم الأطفال في الرعاية الصحية',
     },
   },
@@ -533,7 +606,12 @@ const supportersData = [
       notes: 'يقدم الأدوات المنزلية للمستفيدين',
     },
     supporter: {
-      supportType: SupportType.ONE_TIME,
+      address: 'درعا - المدينة - شارع الثورة',
+      sponsorshipType: SponsorshipType.COMPREHENSIVE,
+      paymentCycle: PaymentCycle.ANNUAL,
+      sponsorshipAmount: 200000,
+      authorizedPersonName: 'نادر علي الحسن',
+      authorizedPersonPhone: '0998765446',
       notes: 'تبرع بمبلغ كبير لشراء أثاث للمركز',
     },
   },
@@ -562,7 +640,12 @@ const supportersData = [
       notes: 'تساعد في إدارة الحسابات المالية',
     },
     supporter: {
-      supportType: SupportType.OCCASIONAL,
+      address: 'دمشق - المالكي - شارع الجامعة',
+      sponsorshipType: SponsorshipType.COMPREHENSIVE,
+      paymentCycle: PaymentCycle.SEMI_ANNUAL,
+      sponsorshipAmount: 180000,
+      authorizedPersonName: 'لينا سامي العبد',
+      authorizedPersonPhone: '0998765447',
       notes: 'تقدم الدعم المالي والمحاسبي',
     },
   },
@@ -591,7 +674,12 @@ const supportersData = [
       notes: 'يقدم دروس مجانية في الرياضيات',
     },
     supporter: {
-      supportType: SupportType.CHILD_SPONSORSHIP,
+      address: 'حلب - الشهباء - شارع الجمهورية',
+      sponsorshipType: SponsorshipType.ORPHAN_FUND,
+      paymentCycle: PaymentCycle.MONTHLY,
+      sponsorshipAmount: 55000,
+      authorizedPersonName: 'محمود يوسف الخطيب',
+      authorizedPersonPhone: '0998765448',
       notes: 'يركز على دعم التعليم الرياضي',
     },
   },
@@ -620,7 +708,12 @@ const supportersData = [
       notes: 'تقدم الاستشارات الاجتماعية المجانية',
     },
     supporter: {
-      supportType: SupportType.OCCASIONAL,
+      address: 'اللاذقية - الكورنيش - شارع البحر',
+      sponsorshipType: SponsorshipType.COMPREHENSIVE,
+      paymentCycle: PaymentCycle.QUARTERLY,
+      sponsorshipAmount: 110000,
+      authorizedPersonName: 'هند عبد الرحمن النور',
+      authorizedPersonPhone: '0998765449',
       notes: 'تقدم الدعم الاجتماعي والنفسي',
     },
   },
@@ -649,7 +742,12 @@ const supportersData = [
       notes: 'يساعد في صيانة المعدات والمكائن',
     },
     supporter: {
-      supportType: SupportType.ONE_TIME,
+      address: 'حمص - باب السباع - شارع الحميدية',
+      sponsorshipType: SponsorshipType.COMPREHENSIVE,
+      paymentCycle: PaymentCycle.ANNUAL,
+      sponsorshipAmount: 400000,
+      authorizedPersonName: 'سعد الدين محمود',
+      authorizedPersonPhone: '0998765450',
       notes: 'تبرع بمعدات صناعية للمركز المهني',
     },
   },

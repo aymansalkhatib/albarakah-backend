@@ -1,6 +1,7 @@
 import { Expose, Type } from 'class-transformer';
 import { PersonResponseDto } from '../../../../modules/persons/dtos/responses/person-response.dto';
-import { SupportType } from '../../enums/support-type';
+import { PaymentCycle } from '../../enums/payment-cycle.enum';
+import { SponsorshipType } from '../../enums/sponsorship-type.enum';
 
 export class SupporterResponseDto {
   @Expose()
@@ -10,7 +11,22 @@ export class SupporterResponseDto {
   personId: number;
 
   @Expose()
-  supportType?: SupportType;
+  address?: string;
+
+  @Expose()
+  sponsorshipType?: SponsorshipType;
+
+  @Expose()
+  paymentCycle?: PaymentCycle;
+
+  @Expose()
+  sponsorshipAmount?: number;
+
+  @Expose()
+  authorizedPersonName?: string;
+
+  @Expose()
+  authorizedPersonPhone?: string;
 
   @Expose()
   notes?: string;

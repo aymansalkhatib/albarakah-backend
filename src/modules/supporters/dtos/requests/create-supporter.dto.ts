@@ -1,8 +1,15 @@
-import { IsDate, IsEnum, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
+import {
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 import { OnlyOneOf } from '../../../../common/decorators/validate-one-of-two-fields.validator';
 import { CreatePersonDto } from '../../../../modules/persons/dtos/requests/create-person.dto';
-import { SupportType } from '../../enums/support-type';
+import { PaymentCycle } from '../../enums/payment-cycle.enum';
+import { SponsorshipType } from '../../enums/sponsorship-type.enum';
 
 @OnlyOneOf([
   {
@@ -11,11 +18,29 @@ import { SupportType } from '../../enums/support-type';
   },
 ])
 export class CreateSupporterDto {
-
-
-  @IsEnum(SupportType)
+  @IsString()
   @IsOptional()
-  supportType?: SupportType;
+  address?: string;
+
+  @IsEnum(SponsorshipType)
+  @IsOptional()
+  sponsorshipType?: SponsorshipType;
+
+  @IsEnum(PaymentCycle)
+  @IsOptional()
+  paymentCycle?: PaymentCycle;
+
+  @IsNumber()
+  @IsOptional()
+  sponsorshipAmount?: number;
+
+  @IsString()
+  @IsOptional()
+  authorizedPersonName?: string;
+
+  @IsString()
+  @IsOptional()
+  authorizedPersonPhone?: string;
 
   @IsString()
   @IsOptional()

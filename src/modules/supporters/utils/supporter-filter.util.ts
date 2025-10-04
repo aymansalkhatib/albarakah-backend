@@ -7,9 +7,39 @@ export function applySupporterFilters(
   alias: string,
   filter: FilterSupporterDto,
 ): SelectQueryBuilder<Supporter> {
-  if (filter.supportType) {
-    qb.andWhere(`${alias}.supportType = :supportType`, {
-      supportType: filter.supportType,
+  if (filter.address) {
+    qb.andWhere(`${alias}.address ILIKE :address`, {
+      address: `%${filter.address}%`,
+    });
+  }
+
+  if (filter.sponsorshipType) {
+    qb.andWhere(`${alias}.sponsorshipType = :sponsorshipType`, {
+      sponsorshipType: filter.sponsorshipType,
+    });
+  }
+
+  if (filter.paymentCycle) {
+    qb.andWhere(`${alias}.paymentCycle = :paymentCycle`, {
+      paymentCycle: filter.paymentCycle,
+    });
+  }
+
+  if (filter.sponsorshipAmount) {
+    qb.andWhere(`${alias}.sponsorshipAmount = :sponsorshipAmount`, {
+      sponsorshipAmount: filter.sponsorshipAmount,
+    });
+  }
+
+  if (filter.authorizedPersonName) {
+    qb.andWhere(`${alias}.authorizedPersonName ILIKE :authorizedPersonName`, {
+      authorizedPersonName: `%${filter.authorizedPersonName}%`,
+    });
+  }
+
+  if (filter.authorizedPersonPhone) {
+    qb.andWhere(`${alias}.authorizedPersonPhone ILIKE :authorizedPersonPhone`, {
+      authorizedPersonPhone: `%${filter.authorizedPersonPhone}%`,
     });
   }
 

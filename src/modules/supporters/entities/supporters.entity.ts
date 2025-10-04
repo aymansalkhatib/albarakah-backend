@@ -9,7 +9,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Person } from '../../persons/entities/person.entity';
-import { SupportType } from '../enums/support-type';
+import { PaymentCycle } from '../enums/payment-cycle.enum';
+import { SponsorshipType } from '../enums/sponsorship-type.enum';
 import { SupporterChildSponsorship } from './supporters-children.entity';
 
 @Entity('supporters')
@@ -20,13 +21,39 @@ export class Supporter {
   @Column({ name: 'person_id', nullable: false })
   personId: number;
 
+  @Column({ length: 500, nullable: true })
+  address: string;
+
   @Column({
-    name: 'support_type',
+    name: 'sponsorship_type',
     type: 'enum',
-    enum: SupportType,
+    enum: SponsorshipType,
+    default: SponsorshipType.COMPREHENSIVE,
+  })
+  sponsorshipType: SponsorshipType;
+
+  @Column({
+    name: 'payment_cycle',
+    type: 'enum',
+    enum: PaymentCycle,
     nullable: true,
   })
-  supportType?: SupportType;
+  paymentCycle?: PaymentCycle;
+
+  @Column({
+    name: 'sponsorship_amount',
+    type: 'decimal',
+    precision: 10,
+    scale: 2,
+    nullable: true,
+  })
+  sponsorshipAmount?: number;
+
+  @Column({ name: 'authorized_person_name', length: 300, nullable: true })
+  authorizedPersonName?: string;
+
+  @Column({ name: 'authorized_person_phone', length: 15, nullable: true })
+  authorizedPersonPhone?: string;
 
   @Column({ name: 'notes', type: 'text', nullable: true })
   notes?: string;
