@@ -6,6 +6,8 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, FindOneOptions, Not, Repository } from 'typeorm';
 import { MonthlyStatsQueryDto } from '../../../common/dtos/monthly-stats-query.dto';
+import { MonthlyStatsResponseDto } from '../../../common/dtos/monthly-stats-response.dto';
+import { transformToMonthlyStats } from '../../../common/helpers/monthly-stats.helper';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { paginate } from '../../../common/pagination/paginate.service';
 import { FamiliesService } from '../../../modules/families/services/families.service';
@@ -293,7 +295,9 @@ export class FamilyMembersService {
     return count > 0;
   }
 
-  async getMonthlyStats(query: MonthlyStatsQueryDto) {
+  async getMonthlyStats(
+    query: MonthlyStatsQueryDto,
+  ): Promise<MonthlyStatsResponseDto[]> {
     const { startDate: start, endDate: end } = query;
 
     const rawData = await this.familyMemberRepository
@@ -308,50 +312,6 @@ export class FamilyMembersService {
       .orderBy("DATE_TRUNC('month', family_member.created_at)")
       .getRawMany();
 
-    const dataMap = new Map(
-      rawData.map((row) => [
-        new Date(row.month).toISOString().substring(0, 7),
-        row.count,
-      ]),
-    );
-
-    const result = [];
-    let current = new Date(start.getFullYear(), start.getMonth(), 1);
-    const last = new Date(end.getFullYear(), end.getMonth(), 1);
-
-    while (current <= last) {
-      const monthKey = current.toISOString().substring(0, 7);
-
-      const from =
-        current.getTime() ===
-        new Date(start.getFullYear(), start.getMonth(), 1).getTime()
-          ? start
-          : new Date(current);
-
-      const to =
-        current.getTime() === last.getTime()
-          ? end
-          : new Date(
-              Date.UTC(
-                current.getFullYear(),
-                current.getMonth() + 1,
-                0,
-                23,
-                59,
-                59,
-                999,
-              ),
-            );
-
-      result.push({
-        from,
-        to,
-        count: dataMap.get(monthKey) || 0,
-      });
-
-      current.setMonth(current.getMonth() + 1);
-    }
-
-    return result;
+    return transformToMonthlyStats(rawData, start, end);
   }
 }

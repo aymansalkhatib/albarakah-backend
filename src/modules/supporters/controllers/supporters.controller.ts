@@ -11,15 +11,17 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { SupportersService } from '../services/supporters.service';
-import { UpdateSupporterDto } from '../dtos/requests/update-supporter.dto';
-import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
 import { Protected } from '../../../common/decorators/protected.decorator';
-import { Permission } from '../../../modules/roles/enums/permission.enum';
+import { SerializeResponse } from '../../../common/decorators/serialize-response.decorator';
+import { MonthlyStatsQueryDto } from '../../../common/dtos/monthly-stats-query.dto';
+import { MonthlyStatsResponseDto } from '../../../common/dtos/monthly-stats-response.dto';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
+import { Permission } from '../../../modules/roles/enums/permission.enum';
 import { FilterSupporterDto } from '../dtos/queries/filter-supporter.dto';
 import { CreateSupporterDto } from '../dtos/requests/create-supporter.dto';
+import { UpdateSupporterDto } from '../dtos/requests/update-supporter.dto';
 import { SupporterResponseDto } from '../dtos/responses/supporter-response.dto';
+import { SupportersService } from '../services/supporters.service';
 
 @Controller('supporters')
 export class SupportersController {
@@ -28,7 +30,9 @@ export class SupportersController {
   @Post()
   @Protected(Permission.CREATE_SUPPORTER)
   @SerializeResponse(SupporterResponseDto)
-  create(@Body() createSupporterDto: CreateSupporterDto): Promise<SupporterResponseDto> {
+  create(
+    @Body() createSupporterDto: CreateSupporterDto,
+  ): Promise<SupporterResponseDto> {
     return this.supportersService.create(createSupporterDto);
   }
 
@@ -40,10 +44,22 @@ export class SupportersController {
     return this.supportersService.findAll(filterDto);
   }
 
+  @Get('monthly-stats')
+  @Protected(Permission.READ_SUPPORTER)
+  @SerializeResponse(MonthlyStatsResponseDto)
+  async getMonthlyStats(
+    @Query() query: MonthlyStatsQueryDto,
+  ): Promise<MonthlyStatsResponseDto[]> {
+    return await this.supportersService.getMonthlyStats(query);
+  }
+  
+
   @Get(':id')
   @Protected(Permission.READ_SUPPORTER)
   @SerializeResponse(SupporterResponseDto)
-  findOne(@Param('id', ParseIntPipe) id: number): Promise<SupporterResponseDto> {
+  findOne(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<SupporterResponseDto> {
     return this.supportersService.findOne(id, { relations: ['person'] });
   }
 

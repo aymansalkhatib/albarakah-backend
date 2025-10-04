@@ -5,6 +5,9 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, FindOneOptions, Repository } from 'typeorm';
+import { MonthlyStatsQueryDto } from '../../../common/dtos/monthly-stats-query.dto';
+import { MonthlyStatsResponseDto } from '../../../common/dtos/monthly-stats-response.dto';
+import { transformToMonthlyStats } from '../../../common/helpers/monthly-stats.helper';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { paginate } from '../../../common/pagination/paginate.service';
 import { Person } from '../../../modules/persons/entities/person.entity';
@@ -146,5 +149,24 @@ export class SupportersService {
       supporter.personId,
       PersonRelation.SUPPORTER,
     );
+  }
+
+  async getMonthlyStats(
+    query: MonthlyStatsQueryDto,
+  ): Promise<MonthlyStatsResponseDto[]> {
+    const { startDate: start, endDate: end } = query;
+
+    const rawData = await this.supporterRepository
+      .createQueryBuilder('supporter')
+      .select([
+        "DATE_TRUNC('month', supporter.created_at) as month",
+        'COUNT(*)::int as count',
+      ])
+      .where('supporter.created_at BETWEEN :start AND :end', { start, end })
+      .groupBy("DATE_TRUNC('month', supporter.created_at)")
+      .orderBy("DATE_TRUNC('month', supporter.created_at)")
+      .getRawMany();
+
+    return transformToMonthlyStats(rawData, start, end);
   }
 }
