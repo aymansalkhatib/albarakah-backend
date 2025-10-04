@@ -126,7 +126,7 @@ export class Family {
   @Column({
     name: 'landline_phone',
     type: 'varchar',
-    length: 10,
+    length: 15,
     nullable: true,
   })
   landlinePhone?: string;

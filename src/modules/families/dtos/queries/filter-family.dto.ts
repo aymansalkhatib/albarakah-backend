@@ -91,7 +91,7 @@ export class FilterFamilyDto extends PaginationDto {
 
   @IsOptional()
   @IsString()
-  @MaxLength(10)
+  @MaxLength(15)
   @IsNotEmpty()
   landlinePhone?: string;
 

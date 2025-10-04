@@ -5,7 +5,6 @@ import {
   IsNumber,
   IsOptional,
   IsString,
-  Matches,
   MaxLength,
 } from 'class-validator';
 
@@ -83,11 +82,7 @@ export class CreateFamilyDto {
 
   @IsOptional()
   @IsString()
-  @MaxLength(10)
-  @Matches(/^0\d{2}\d{6,7}$/, {
-    message:
-      'The Syrian landline number must start with 0, followed by a 2-digit area code and then 6 or 7 digits.',
-  })
+  @MaxLength(15)
   landlinePhone?: string;
 
   @IsOptional()
