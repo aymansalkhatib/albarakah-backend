@@ -5,7 +5,10 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOneOptions, Repository } from 'typeorm';
+import { CourseMonthlyStatsQueryDto } from '../../../common/dtos/course-monthly-stats-query.dto';
+import { MonthlyStatsResponseDto } from '../../../common/dtos/monthly-stats-response.dto';
 import { normalizeDate } from '../../../common/helpers/date.helper';
+import { transformToMonthlyStats } from '../../../common/helpers/monthly-stats.helper';
 import { PaginationResponseDto } from '../../../common/pagination/dto/pagination-response.dto';
 import { paginate } from '../../../common/pagination/paginate.service';
 import { TranslateHelper } from '../../../shared/modules/app-i18n/translate.helper';
@@ -173,6 +176,35 @@ export class CourseBatchService {
     }
 
     return paginate(queryBuilder, filterDto, CourseBatchResponseDto);
+  }
+
+  async getCourseBatchMonthlyStats(
+    query: CourseMonthlyStatsQueryDto,
+  ): Promise<MonthlyStatsResponseDto[]> {
+    const { startDate: start, endDate: end, trainingCourseId } = query;
+
+    // Build query for course batches
+    const queryBuilder = this.courseBatchRepository
+      .createQueryBuilder('batch')
+      .select([
+        "DATE_TRUNC('month', batch.created_at) as month",
+        'COUNT(*)::int as count',
+      ])
+      .where('batch.created_at BETWEEN :start AND :end', { start, end });
+
+    // Add course filter if trainingCourseId is provided
+    if (trainingCourseId) {
+      queryBuilder.andWhere('batch.trainingCourseId = :trainingCourseId', {
+        trainingCourseId,
+      });
+    }
+
+    const rawData = await queryBuilder
+      .groupBy("DATE_TRUNC('month', batch.created_at)")
+      .orderBy("DATE_TRUNC('month', batch.created_at)")
+      .getRawMany();
+
+    return transformToMonthlyStats(rawData, start, end);
   }
 
   private async getNextBatchNumber(trainingCourseId: number): Promise<number> {
