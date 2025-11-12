@@ -1,0 +1,4523 @@
+{
+	"info": {
+		"_postman_id": "be3ef8cb-70f5-42e8-9c78-0192c46052ff",
+		"name": "Al Barakah Charity Association",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45449823",
+		"_collection_link": "https://orange-spaceship-766901.postman.co/workspace/Team-Workspace~0eb8db9b-8f6f-4f8c-87ed-8f68369c52bb/collection/45449823-be3ef8cb-70f5-42e8-9c78-0192c46052ff?action=share&source=collection_link&creator=45449823"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"if (response.data.accessToken) {\r",
+									"  pm.environment.set(\"accessToken\", response.data.accessToken);\r",
+									"  console.log(\"✅ Access token saved to environment:\", response.data.accessToken);\r",
+									"} else {\r",
+									"  console.warn(\"⚠️ No accessToken found in response.\");\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"superadmin\",\r\n    \"password\": \"SuperAdmin123!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/auth/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Mangment Acccount",
+			"item": [
+				{
+					"name": "Create Account",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"ayman1111\",\r\n    \"password\": \"1234561\",\r\n    \"roleId\": 2,\r\n    \"employee\": {\r\n        \"person\": {\r\n            \"fullName\": \"a7na112111\"\r\n        }\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/system-users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"system-users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Account",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"roleId\": 3\r\n    // \"username\":\"1212\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/system-users/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"system-users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Account",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/system-users/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"system-users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Account By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/system-users/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"system-users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Current Account",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/system-users/me",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"system-users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Account",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/system-users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"system-users"
+							],
+							"query": [
+								{
+									"key": "employee[hireDateFrom]",
+									"value": "2019-03-24",
+									"disabled": true
+								},
+								{
+									"key": "employee[hireDateTo]",
+									"value": "2019-03-27",
+									"disabled": true
+								},
+								{
+									"key": "username",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "roleId",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "employee.username",
+									"value": "12121",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "employee[position]",
+									"value": "System Administrator",
+									"disabled": true
+								},
+								{
+									"key": "employee.person.firstName",
+									"value": "Super",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Person",
+			"item": [
+				{
+					"name": "Create Person",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/Ayman_Alkhatib/Desktop/1.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/persons",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"persons"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Persons",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/persons?birthDate=qw",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"persons"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "Items per page",
+									"disabled": true
+								},
+								{
+									"key": "fullName",
+									"value": "Ahmed",
+									"description": "Filter by full name (partial match)",
+									"disabled": true
+								},
+								{
+									"key": "motherName",
+									"value": "Fatima",
+									"description": "Filter by mother name (partial match)",
+									"disabled": true
+								},
+								{
+									"key": "birthDate",
+									"value": "qw",
+									"description": "Birth date from (YYYY-MM-DD)"
+								},
+								{
+									"key": "birthDateTo",
+									"value": "2000-12-31",
+									"description": "Birth date to (YYYY-MM-DD)",
+									"disabled": true
+								},
+								{
+									"key": "birthPlace",
+									"value": "Damascus",
+									"description": "Filter by birth place (partial match)",
+									"disabled": true
+								},
+								{
+									"key": "nationalId",
+									"value": "12345678901",
+									"description": "Filter by national ID (partial match)",
+									"disabled": true
+								},
+								{
+									"key": "nationality",
+									"value": "Syrian",
+									"description": "Filter by nationality (partial match)",
+									"disabled": true
+								},
+								{
+									"key": "motherNationality",
+									"value": "Syrian",
+									"description": "Filter by mother nationality (partial match)",
+									"disabled": true
+								},
+								{
+									"key": "isPalestinian",
+									"value": "false",
+									"description": "Filter by Palestinian status",
+									"disabled": true
+								},
+								{
+									"key": "gender",
+									"value": "Male",
+									"description": "Filter by gender (Male/Female)",
+									"disabled": true
+								},
+								{
+									"key": "shoeSize",
+									"value": "42",
+									"description": "Filter by shoe size",
+									"disabled": true
+								},
+								{
+									"key": "maritalStatus",
+									"value": "single",
+									"description": "Filter by marital status",
+									"disabled": true
+								},
+								{
+									"key": "isWorking",
+									"value": "true",
+									"description": "Filter by working status",
+									"disabled": true
+								},
+								{
+									"key": "currentJob",
+									"value": "Engineer",
+									"description": "Filter by current job (partial match)",
+									"disabled": true
+								},
+								{
+									"key": "jobDetails",
+									"value": "development",
+									"description": "Filter by job details (partial match)",
+									"disabled": true
+								},
+								{
+									"key": "isSmoker",
+									"value": "false",
+									"description": "Filter by smoking status",
+									"disabled": true
+								},
+								{
+									"key": "healthStatus",
+									"value": "Healthy",
+									"description": "Filter by health status (partial match)",
+									"disabled": true
+								},
+								{
+									"key": "isHealthInsuranceUsed",
+									"value": "false",
+									"description": "Filter by health insurance usage",
+									"disabled": true
+								},
+								{
+									"key": "isSuccessCertificateSubmitted",
+									"value": "no",
+									"description": "Filter by success certificate submission",
+									"disabled": true
+								},
+								{
+									"key": "educationLevel",
+									"value": "university",
+									"description": "Filter by education level",
+									"disabled": true
+								},
+								{
+									"key": "universityMajor",
+									"value": "Computer",
+									"description": "Filter by university major (partial match)",
+									"disabled": true
+								},
+								{
+									"key": "currentStudyStatus",
+									"value": "university",
+									"description": "Filter by current study status",
+									"disabled": true
+								},
+								{
+									"key": "schoolType",
+									"value": "public",
+									"description": "Filter by school type",
+									"disabled": true
+								},
+								{
+									"key": "schoolName",
+									"value": "University",
+									"description": "Filter by school name (partial match)",
+									"disabled": true
+								},
+								{
+									"key": "mobilePhone",
+									"value": "912345678",
+									"description": "Filter by mobile phone (partial match)",
+									"disabled": true
+								},
+								{
+									"key": "landlinePhone",
+									"value": "112345678",
+									"description": "Filter by landline phone (partial match)",
+									"disabled": true
+								},
+								{
+									"key": "whatsappNumber",
+									"value": "912345678",
+									"description": "Filter by WhatsApp number (partial match)",
+									"disabled": true
+								},
+								{
+									"key": "notes",
+									"value": "test",
+									"description": "Filter by notes (partial match)",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Person by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/persons/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"persons",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Person",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fullName\": \"Ahmed Ali Hassan Updated\",\n  \"currentJob\": \"Senior Software Engineer\",\n  \"isWorking\": true,\n  \"notes\": \"Updated person information\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/persons/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"persons",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Person",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/persons/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"persons",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Employees",
+			"item": [
+				{
+					"name": "Create Employee",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"person\": {\r\n        \"fullName\": \"4a7na111\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/employees",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"employees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Employee",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"position\": \"Software1 Engineer\",\r\n  \"hireDate\": \"2023-06-01\",\r\n  \"terminationDate\": \"2024-07-01\",\r\n  \"notes\": \"Senior full-stack developer\",\r\n  \"person\": {\r\n    \"firstName\":\"Ayman\"\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/employees/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"employees",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Employee By ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/employees/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"employees",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "7"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Employee By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/employees/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"employees",
+								":id"
+							],
+							"query": [
+								{
+									"key": "qwe",
+									"value": "qwe",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Employees",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/employees?position=System Admini",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"employees"
+							],
+							"query": [
+								{
+									"key": "position",
+									"value": "Software",
+									"disabled": true
+								},
+								{
+									"key": "hireDateFrom",
+									"value": "2023-03-20",
+									"disabled": true
+								},
+								{
+									"key": "hireDateTo",
+									"value": "2024-03-20",
+									"disabled": true
+								},
+								{
+									"key": "search",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "person[lastName]",
+									"value": "Do",
+									"disabled": true
+								},
+								{
+									"key": "person[isPalestinian]",
+									"value": "false",
+									"disabled": true
+								},
+								{
+									"key": "person[gender]",
+									"value": "male",
+									"disabled": true
+								},
+								{
+									"key": "person[nationality]",
+									"value": "Sy",
+									"disabled": true
+								},
+								{
+									"key": "person[phone]",
+									"value": "0599999999",
+									"disabled": true
+								},
+								{
+									"key": "person[email]",
+									"value": "alaa.salem@example.com",
+									"disabled": true
+								},
+								{
+									"key": "person[birthDate]",
+									"value": "1990-01-01",
+									"disabled": true
+								},
+								{
+									"key": "person[birthDateTo]",
+									"value": "1990-12-31",
+									"disabled": true
+								},
+								{
+									"key": "position",
+									"value": "System Admini"
+								},
+								{
+									"key": "person.fullName",
+									"value": "Ayman AAA",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "isActive",
+									"value": "true",
+									"disabled": true
+								},
+								{
+									"key": "hasSystemAccess",
+									"value": "false",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Families",
+			"item": [
+				{
+					"name": "Create Family",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"formNumber\": \"FORM006\", // string, required, max:64\n  \"requestNumber\": \"REQ006\", // string, max:32, optional\n  \"familyBookNumber\": \"FB123456776\", // string, required, max:12\n  \"isHusbandPalestinian\": false, // boolean, optional\n  \"identityDocuments\": \"Passport, ID Card\", // string, optional\n  \"emailArrivalDate\": \"2024-02-15\", // string (date), optional\n  \"contactedByEmployeeId\": 1, // number (positive integer), optional\n  \"isRegisteredInOtherOrphanAssociation\": false, // boolean, optional\n  \"otherOrphanAssociationName\": \"Other Association\", // string, max:128, optional\n  \"formOrganizationStatus\": \"done\", // enum: done, done_outside_sponsorship_conditions, submitted_to_other_association, registered_in_other_association, outside_sponsorship_conditions, did_not_attend_no_apology, no_contact, request_remains_in_relief, no, optional\n  \"interviewDate\": \"2024-01-20T10:00:00Z\", // string (date), optional\n  \"managementDecision\": \"sponsorship\", // enum: decision_after_visit_opinion, sponsorship, no_sponsorship, optional\n  \"formOrganizerNotes\": \"Family needs immediate assistance\", // string, optional\n  \"archiveLocation\": \"direct_acceptance_interview_forms\", // enum: direct_non_acceptance_interview_forms, acceptance_interview_and_visit_forms_after_visit, non_acceptance_interview_and_visit_forms_after_visit, barzeh_residences, under_visit, archived_in_folder_administration_archive, no_paper_form_created, direct_acceptance_interview_forms, optional\n  \"landlinePhone\": \"0112345678\", // string, max:10, format: 0XX-XXXXXXX, optional\n  \"mobilePhone\": \"+963991234567\", // string, Syria phone format, optional\n  \"isRefugee\": true, // boolean, optional\n  \"isExtremelyPoor\": true, // boolean, optional\n  \"sponsorshipStatus\": \"yes\", // enum: yes, no, under_visit, optional\n  \"requestAcceptanceDate\": \"2024-01-25\", // string (date), optional\n  \"requestSuspensionDate\": \"2024-02-01\", // string (date), optional\n  \"requestStatus\": \"orphans_75000\", // enum: suspend_request, social_sponsorship, orphans_75000, orphans_150000, orphans_225000, optional\n  \"previousRequestStatus\": \"suspend_request\", // string, max:32, optional\n  \"isStatusUpdatedAtSocialAffairs\": false, // boolean, optional\n  \"beneficiaryFamilyMembersCount\": 5, // number, optional\n  \"guardianFamilyMembersCount\": 2, // number, optional\n  \"sharedMealMembersCount\": 7, // number, optional\n  \"voucherValue\": \"300000\", // enum: unspecified, 300000, 350000, 400000, optional\n  \"houseType\": \"rent\", // enum: rent, rent_paid_by_philanthropists, hospitality, hospitality_with_family, hospitality_with_resident_inheritance_share, hospitality_with_rent, hospitality_with_rent_paid_by_philanthropists, hospitality_with_husband_family, hospitality_with_resident, hospitality_with_father_family, owned, optional\n  \"currentResidenceAddress\": \"123 Main Street, Damascus\", // string, max:255, optional\n  \"currentResidenceArea\": \"Damascus City\" // string, max:255, optional\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/families",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"families"
+							]
+						},
+						"description": "Creates a new family record. Requires CREATE_FAMILY permission. All required fields must be provided. Family book number, request number, and form number must be unique across the system."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Families",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/families",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"families"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number for pagination",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "Number of items per page",
+									"disabled": true
+								},
+								{
+									"key": "requestNumber",
+									"value": "REQ001",
+									"description": "Filter by request number (max:32)",
+									"disabled": true
+								},
+								{
+									"key": "familyName",
+									"value": "Al-Khatib",
+									"description": "Filter by family name (max:64)",
+									"disabled": true
+								},
+								{
+									"key": "isHusbandPalestinian",
+									"value": "false",
+									"description": "Filter by husband Palestinian status",
+									"disabled": true
+								},
+								{
+									"key": "identityDocuments",
+									"value": "Passport",
+									"description": "Filter by identity documents",
+									"disabled": true
+								},
+								{
+									"key": "emailArrivalDateFrom",
+									"value": "2024-01-01",
+									"description": "Email arrival date from (Date)",
+									"disabled": true
+								},
+								{
+									"key": "emailArrivalDateTo",
+									"value": "2024-12-31",
+									"description": "Email arrival date to (Date)",
+									"disabled": true
+								},
+								{
+									"key": "contactedByEmployeeId",
+									"value": "1",
+									"description": "Filter by contacted employee ID",
+									"disabled": true
+								},
+								{
+									"key": "isRegisteredInOtherOrphanAssociation",
+									"value": "false",
+									"description": "Filter by registration in other association",
+									"disabled": true
+								},
+								{
+									"key": "otherOrphanAssociationName",
+									"value": "Association",
+									"description": "Filter by other association name (max:128)",
+									"disabled": true
+								},
+								{
+									"key": "formOrganizationStatus",
+									"value": "done",
+									"description": "Filter by form organization status",
+									"disabled": true
+								},
+								{
+									"key": "formNumber",
+									"value": "FORM001",
+									"description": "Filter by form number (max:64)",
+									"disabled": true
+								},
+								{
+									"key": "interviewDateFrom",
+									"value": "2024-01-01",
+									"description": "Interview date from (Date)",
+									"disabled": true
+								},
+								{
+									"key": "interviewDateTo",
+									"value": "2024-12-31",
+									"description": "Interview date to (Date)",
+									"disabled": true
+								},
+								{
+									"key": "managementDecision",
+									"value": "sponsorship",
+									"description": "Filter by management decision",
+									"disabled": true
+								},
+								{
+									"key": "formOrganizerNotes",
+									"value": "Family",
+									"description": "Filter by form organizer notes",
+									"disabled": true
+								},
+								{
+									"key": "archiveLocation",
+									"value": "direct_acceptance_interview_forms",
+									"description": "Filter by archive location",
+									"disabled": true
+								},
+								{
+									"key": "familyBookNumber",
+									"value": "FB123456789",
+									"description": "Filter by family book number (max:12)",
+									"disabled": true
+								},
+								{
+									"key": "landlinePhone",
+									"value": "0112345678",
+									"description": "Filter by landline phone (max:10)",
+									"disabled": true
+								},
+								{
+									"key": "mobilePhone",
+									"value": "0991234567",
+									"description": "Filter by mobile phone",
+									"disabled": true
+								},
+								{
+									"key": "isRefugee",
+									"value": "true",
+									"description": "Filter by refugee status",
+									"disabled": true
+								},
+								{
+									"key": "isExtremelyPoor",
+									"value": "true",
+									"description": "Filter by extremely poor status",
+									"disabled": true
+								},
+								{
+									"key": "sponsorshipStatus",
+									"value": "yes",
+									"description": "Filter by sponsorship status",
+									"disabled": true
+								},
+								{
+									"key": "requestAcceptanceDateFrom",
+									"value": "2024-01-01",
+									"description": "Request acceptance date from (Date)",
+									"disabled": true
+								},
+								{
+									"key": "requestAcceptanceDateTo",
+									"value": "2024-12-31",
+									"description": "Request acceptance date to (Date)",
+									"disabled": true
+								},
+								{
+									"key": "requestSuspensionDateFrom",
+									"value": "2024-01-01",
+									"description": "Request suspension date from (Date)",
+									"disabled": true
+								},
+								{
+									"key": "requestSuspensionDateTo",
+									"value": "2024-12-31",
+									"description": "Request suspension date to (Date)",
+									"disabled": true
+								},
+								{
+									"key": "requestStatus",
+									"value": "orphans_75000",
+									"description": "Filter by request status",
+									"disabled": true
+								},
+								{
+									"key": "previousRequestStatus",
+									"value": "pending",
+									"description": "Filter by previous request status (max:32)",
+									"disabled": true
+								},
+								{
+									"key": "isStatusUpdatedAtSocialAffairs",
+									"value": "false",
+									"description": "Filter by status updated at social affairs",
+									"disabled": true
+								},
+								{
+									"key": "beneficiaryFamilyMembersCountMin",
+									"value": "1",
+									"description": "Minimum beneficiary family members count",
+									"disabled": true
+								},
+								{
+									"key": "beneficiaryFamilyMembersCountMax",
+									"value": "10",
+									"description": "Maximum beneficiary family members count",
+									"disabled": true
+								},
+								{
+									"key": "guardianFamilyMembersCountMin",
+									"value": "1",
+									"description": "Minimum guardian family members count",
+									"disabled": true
+								},
+								{
+									"key": "guardianFamilyMembersCountMax",
+									"value": "5",
+									"description": "Maximum guardian family members count",
+									"disabled": true
+								},
+								{
+									"key": "sharedMealMembersCountMin",
+									"value": "1",
+									"description": "Minimum shared meal members count",
+									"disabled": true
+								},
+								{
+									"key": "sharedMealMembersCountMax",
+									"value": "10",
+									"description": "Maximum shared meal members count",
+									"disabled": true
+								},
+								{
+									"key": "voucherValue",
+									"value": "300000",
+									"description": "Filter by voucher value",
+									"disabled": true
+								},
+								{
+									"key": "houseType",
+									"value": "rent",
+									"description": "Filter by house type",
+									"disabled": true
+								},
+								{
+									"key": "currentResidenceAddress",
+									"value": "Damascus",
+									"description": "Filter by current residence address (max:255)",
+									"disabled": true
+								},
+								{
+									"key": "currentResidenceArea",
+									"value": "City",
+									"description": "Filter by current residence area (max:255)",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Retrieves all families with pagination and filtering capabilities. Requires READ_FAMILY permission. Supports extensive filtering by all family properties including date ranges, counts, and enum values. Uses query parameters for all filters (gateAll pattern)."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Family by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/families/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"families",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "12",
+									"description": "Family ID (integer)"
+								}
+							]
+						},
+						"description": "Retrieves a specific family by its ID. Requires READ_FAMILY permission. Returns detailed family information including related family members and contacted employee data."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Monthly Stats",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/families/monthly-stats?startDate=2025-04-20&endDate=2025-11-11",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"families",
+								"monthly-stats"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "2025-04-20"
+								},
+								{
+									"key": "endDate",
+									"value": "2025-11-11"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Family",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"requestNumber\": \"REQ001\", // string, max:32, optional\n  \"familyName\": \"Al-Khatib Family\", // string, required, max:64\n  \"isHusbandPalestinian\": false, // boolean, optional\n  \"identityDocuments\": \"Passport, ID Card\", // string, optional\n  \"emailArrivalDate\": \"2024-01-15\", // string (date), optional\n  \"contactedByEmployeeId\": 1, // number (positive integer), optional\n  \"isRegisteredInOtherOrphanAssociation\": false, // boolean, optional\n  \"otherOrphanAssociationName\": \"Other Association\", // string, max:128, optional\n  \"formOrganizationStatus\": \"done\", // enum: done, done_outside_sponsorship_conditions, submitted_to_other_association, registered_in_other_association, outside_sponsorship_conditions, did_not_attend_no_apology, no_contact, request_remains_in_relief, no, optional\n  \"formNumber\": \"FORM001\", // string, required, max:64\n  \"interviewDate\": \"2024-01-20T10:00:00Z\", // string (date), optional\n  \"managementDecision\": \"sponsorship\", // enum: decision_after_visit_opinion, sponsorship, no_sponsorship, optional\n  \"formOrganizerNotes\": \"Family needs immediate assistance\", // string, optional\n  \"archiveLocation\": \"direct_acceptance_interview_forms\", // enum: direct_non_acceptance_interview_forms, acceptance_interview_and_visit_forms_after_visit, non_acceptance_interview_and_visit_forms_after_visit, barzeh_residences, under_visit, archived_in_folder_administration_archive, no_paper_form_created, direct_acceptance_interview_forms, optional\n  \"familyBookNumber\": \"FB123456789\", // string, required, max:12\n  \"landlinePhone\": \"0112345678\", // string, max:10, format: 0XX-XXXXXXX, optional\n  \"mobilePhone\": \"+963991234567\", // string, Syria phone format, optional\n  \"isRefugee\": true, // boolean, optional\n  \"isExtremelyPoor\": true, // boolean, optional\n  \"sponsorshipStatus\": \"yes\", // enum: yes, no, under_visit, optional\n  \"requestAcceptanceDate\": \"2024-01-25\", // string (date), optional\n  \"requestSuspensionDate\": \"2024-02-01\", // string (date), optional\n  \"requestStatus\": \"orphans_75000\", // enum: suspend_request, social_sponsorship, orphans_75000, orphans_150000, orphans_225000, optional\n  \"previousRequestStatus\": \"pending\", // string, max:32, optional\n  \"isStatusUpdatedAtSocialAffairs\": false, // boolean, optional\n  \"beneficiaryFamilyMembersCount\": 5, // number, optional\n  \"guardianFamilyMembersCount\": 2, // number, optional\n  \"sharedMealMembersCount\": 7, // number, optional\n  \"voucherValue\": \"300000\", // enum: unspecified, 300000, 350000, 400000, optional\n  \"houseType\": \"rent\", // enum: rent, rent_paid_by_philanthropists, hospitality, hospitality_with_family, hospitality_with_resident_inheritance_share, hospitality_with_rent, hospitality_with_rent_paid_by_philanthropists, hospitality_with_husband_family, hospitality_with_resident, hospitality_with_father_family, owned, optional\n  \"currentResidenceAddress\": \"123 Main Street, Damascus\", // string, max:255, optional\n  \"currentResidenceArea\": \"Damascus City\" // string, max:255, optional\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/families/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"families",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "12",
+									"description": "Family ID (integer)"
+								}
+							]
+						},
+						"description": "Updates an existing family record by ID. Requires UPDATE_FAMILY permission. Only provided fields will be updated. Validates unique constraints for family book number, request number, and form number against other families."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Family",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/families/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"families",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "21",
+									"description": "Family ID (integer)"
+								}
+							]
+						},
+						"description": "Deletes a family record by ID. Requires DELETE_FAMILY permission. Returns HTTP 204 No Content on successful deletion. Permanently removes the family and all associated data."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "FamilyMembers",
+			"item": [
+				{
+					"name": "Get All Family Members",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/family-members",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"family-members"
+							],
+							"query": [
+								{
+									"key": "familyId",
+									"value": "1",
+									"description": "number - Filter by family ID",
+									"disabled": true
+								},
+								{
+									"key": "personId",
+									"value": "1",
+									"description": "number - Filter by person ID",
+									"disabled": true
+								},
+								{
+									"key": "relationType",
+									"value": "Father",
+									"description": "enum - Filter by relation type (Mother, Father, Daughter, Son, Other)",
+									"disabled": true
+								},
+								{
+									"key": "isSponsored",
+									"value": "true",
+									"description": "boolean - Filter by sponsorship status",
+									"disabled": true
+								},
+								{
+									"key": "memberNumber",
+									"value": "1",
+									"description": "number - Filter by member number",
+									"disabled": true
+								},
+								{
+									"key": "isPresent",
+									"value": "true",
+									"description": "boolean - Filter by presence status",
+									"disabled": true
+								},
+								{
+									"key": "isGuardian",
+									"value": "false",
+									"description": "boolean - Filter by guardian status",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"description": "number - Page number for pagination",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "number - Number of items per page",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Retrieve all family members with optional filtering and pagination. Supports filtering by family ID, person ID, relation type, sponsorship status, member number, presence status, and guardian status. Returns paginated results with family member details including person information, family details, course batches, and sponsorship information."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Family Member by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/family-members/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"family-members",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "number - Family member ID"
+								}
+							]
+						},
+						"description": "Retrieve a specific family member by ID. Returns detailed information including person details, family information, course batches, received assistance, and active sponsorship details. Requires READ_FAMILY_MEMBER permission."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Monthly Stats",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/family-members/monthly-stats?startDate=2024-04-20&endDate=2025-11-11",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"family-members",
+								"monthly-stats"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "2024-04-20"
+								},
+								{
+									"key": "endDate",
+									"value": "2025-11-11"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Family Member",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"familyId\": 13, // number, required - ID of the family\n    \"relationType\": \"son\", // enum, required - Family relation type (Mother, Father, Daughter, Son, Other)\n    \"isSponsored\": \"no\", // boolean, optional - Whether the member is sponsored\n    \"memberNumber\": 1, // number, optional - Member number\n    \"isGuardian\": true, // isPresent, optional - Whether the member is a guardian\n    \"notes\": \"Sample notes\", // string, optional, max:4096 - Additional notes\n    //   \"personId\": 1, // number, optional - ID of existing person (mutually exclusive with person object)\n    \"person\": {\n        \"fullName\": \"Ahmad Ali44\", // string, required, min:3, max:300 - Full name\n        \"motherName\": \"Fatima\", // string, optional, min:3, max:100 - Mother's name\n        \"birthDate\": \"1990-01-01\", // date, optional, min:1900-01-01, max:today - Birth date\n        \"birthPlace\": \"Damascus\", // string, optional, min:3, max:200 - Birth place\n        \"nationalId\": \"12345678448\", // string, optional, length:11 - National ID\n        \"nationality\": \"Syrian\", // string, optional, min:3, max:100 - Nationality\n        \"motherNationality\": \"Syrian\", // string, optional, min:3, max:100 - Mother's nationality\n        \"gender\": \"male\", // enum, optional - Gender (Male, Female)\n        \"shoeSize\": 42, // number, optional, min:16, max:48 - Shoe size\n        \"maritalStatus\": \"married\", // enum, optional - Marital status\n        \"isWorking\": true, // boolean, optional - Whether currently working\n        \"currentJob\": \"Engineer\", // string, optional, min:3, max:200 - Current job\n        \"jobDetails\": \"Software engineer\", // string, optional, min:1, max:500 - Job details\n        \"isSmoker\": false, // boolean, optional - Whether smoker\n        \"healthStatus\": \"Healthy\", // string, optional, min:1, max:200 - Health status\n        \"isHealthInsuranceUsed\": false, // boolean, optional - Whether using health insurance\n        \"isSuccessCertificateSubmitted\": \"submitted_passed\", // enum, optional - Success certificate status\n        \"educationLevel\": \"primary\", // enum, optional - Education level\n        \"universityMajor\": \"Computer Science\", // string, optional, min:3, max:150 - University major\n        \"currentStudyStatus\": \"completed_all_stages\", // enum, optional - Current study status\n        \"schoolType\": \"private_institute\", // enum, optional - School type\n        \"schoolName\": \"Damascus University\", // string, optional, min:3, max:200 - School name\n        \"mobilePhone\": \"+963991234567\", // string, optional - Mobile phone (Syria format)\n        \"whatsappNumber\": \"+963991234567\", // string, optional, min:3, max:15 - WhatsApp number\n        \"notes\": \"Additional person notes\" // string, optional, min:1, max:2000 - Person notes\n    }\n}"
+						},
+						"url": {
+							"raw": "{{url}}/family-members",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"family-members"
+							]
+						},
+						"description": "Create a new family member. Either provide personId for an existing person or include a complete person object to create a new person. Validates gender compatibility with relation type. Only daughters and sons can be sponsored. Requires CREATE_FAMILY_MEMBER permission."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Family Member",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"familyId\": 13, // number, required - ID of the family\n    \"relationType\": \"Son\", // enum, required - Family relation type (Mother, Father, Daughter, Son, Other)\n    \"isSponsored\": true, // boolean, optional - Whether the member is sponsored\n    \"memberNumber\": 1, // number, optional - Member number\n    \"isPresent\": true, // boolean, optional - Whether the member is present\n    \"isGuardian\": true, // boolean, optional - Whether the member is a guardian\n    \"notes\": \"Sample notes\", // string, optional, max:4096 - Additional notes\n    //   \"personId\": 1, // number, optional - ID of existing person (mutually exclusive with person object)\n    \"person\": {\n        \"fullName\": \"Ahmad Ali3\", // string, required, min:3, max:300 - Full name\n        \"motherName\": \"Fatima\", // string, optional, min:3, max:100 - Mother's name\n        \"birthDate\": \"1990-01-01\", // date, optional, min:1900-01-01, max:today - Birth date\n        \"birthPlace\": \"Damascus\", // string, optional, min:3, max:200 - Birth place\n        \"nationalId\": \"12345678904\", // string, optional, length:11 - National ID\n        \"nationality\": \"Syrian\", // string, optional, min:3, max:100 - Nationality\n        \"motherNationality\": \"Syrian\", // string, optional, min:3, max:100 - Mother's nationality\n        \"gender\": \"Male\", // enum, optional - Gender (Male, Female)\n        \"shoeSize\": 42, // number, optional, min:16, max:48 - Shoe size\n        \"maritalStatus\": \"married\", // enum, optional - Marital status\n        \"isWorking\": true, // boolean, optional - Whether currently working\n        \"currentJob\": \"Engineer\", // string, optional, min:3, max:200 - Current job\n        \"jobDetails\": \"Software engineer\", // string, optional, min:1, max:500 - Job details\n        \"isSmoker\": false, // boolean, optional - Whether smoker\n        \"healthStatus\": \"Healthy\", // string, optional, min:1, max:200 - Health status\n        \"isHealthInsuranceUsed\": false, // boolean, optional - Whether using health insurance\n        \"isSuccessCertificateSubmitted\": \"submitted_passed\", // enum, optional - Success certificate status\n        \"educationLevel\": \"primary\", // enum, optional - Education level\n        \"universityMajor\": \"Computer Science\", // string, optional, min:3, max:150 - University major\n        \"currentStudyStatus\": \"completed_all_stages\", // enum, optional - Current study status\n        \"schoolType\": \"private_institute\", // enum, optional - School type\n        \"schoolName\": \"Damascus University\", // string, optional, min:3, max:200 - School name\n        \"mobilePhone\": \"+963991234567\", // string, optional - Mobile phone (Syria format)\n        \"whatsappNumber\": \"+963991234567\", // string, optional, min:3, max:15 - WhatsApp number\n        \"notes\": \"Additional person notes\" // string, optional, min:1, max:2000 - Person notes\n    }\n}"
+						},
+						"url": {
+							"raw": "{{url}}/family-members/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"family-members",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5",
+									"description": "number - Family member ID"
+								}
+							]
+						},
+						"description": "Update an existing family member. Can update member details and/or person information. Cannot change relation type if member has existing child sponsorships. Validates gender compatibility with relation type. Only daughters and sons can be sponsored. Requires UPDATE_FAMILY_MEMBER permission."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Family Member",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/family-members/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"family-members",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "11",
+									"description": "number - Family member ID"
+								}
+							]
+						},
+						"description": "Delete a family member by ID. Also deletes the associated person if they are not related to other entities. Returns 204 No Content on successful deletion. Requires DELETE_FAMILY_MEMBER permission."
+					},
+					"response": []
+				}
+			],
+			"description": "Family Members Management API endpoints"
+		},
+		{
+			"name": "Dropdowns Section",
+			"item": [
+				{
+					"name": "Dropdowns",
+					"item": [
+						{
+							"name": "Upsert Dropdown",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"dropdownCategoryId\": 14,\r\n    \"id\": 36,\r\n    \"dropdownName\": \"Country List\",\r\n    \"selectionType\": \"single\",\r\n    \"options\": [\r\n        {\r\n            \"id\": 331,\r\n            \"name\": \"4001\",\r\n            \"isActive\": true\r\n        },\r\n        {\r\n            \"id\": 333,\r\n            \"name\": \"4105\",\r\n            \"isActive\": true\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/dropdowns",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"dropdowns"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Dropdown",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/dropdowns/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"dropdowns",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "52"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Dropdowns For Category",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/dropdowns/category/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"dropdowns",
+										"category",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "14"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Dropdown By ID",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"almadina@gmail.com\",\r\n    \"password\": \"100200300\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/dropdowns/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"dropdowns",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "36"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Roles & Permissions",
+			"item": [
+				{
+					"name": "Roles",
+					"item": [
+						{
+							"name": "Create  Role",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Test Role -1\",\r\n    \"permissionIds\":[1,2,3,4,5]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/roles",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"roles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Roles",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"5\",\r\n    \"permissionIds\":[1]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/roles/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"roles",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "5"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All Roles",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/roles",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"roles"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "superadmin",
+											"disabled": true
+										},
+										{
+											"key": "description",
+											"value": "Admin",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Role By ID",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"test1223121\",\r\n    \"permissionIds\":[1,2,3]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/roles/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"roles",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Role",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/roles/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"roles",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Permissions",
+					"item": [
+						{
+							"name": "Get All Permissions",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/permissions?name=delete_permission&description=delete_permission",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"permissions"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "name",
+											"value": "delete_permission"
+										},
+										{
+											"key": "description",
+											"value": "delete_permission"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Permissions By ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/permissions/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"permissions",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Permissions For Role",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/permissions/:id/role",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"permissions",
+										":id",
+										"role"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Permissions For User",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/permissions/user/:userId/allowed",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"permissions",
+										"user",
+										":userId",
+										"allowed"
+									],
+									"variable": [
+										{
+											"key": "userId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Custom Permissions For User",
+					"item": [
+						{
+							"name": "Assign Permission To User",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"systemUserId\": 27,\r\n    \"permissionId\": 64,\r\n    \"isAllowed\": true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/user-permissions",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"user-permissions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Assign Bulk Permissions To User",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"systemUserId\": 27,\r\n    \"permissions\": [\r\n        {\r\n            \"permissionId\": 64,\r\n            \"isAllowed\": true\r\n        },\r\n        {\r\n            \"permissionId\": 2,\r\n            \"isAllowed\": false\r\n        },\r\n        {\r\n            \"permissionId\": 3,\r\n            \"isAllowed\": false\r\n        },\r\n        {\r\n            \"permissionId\": 4,\r\n            \"isAllowed\": false\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/user-permissions/bulk",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"user-permissions",
+										"bulk"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Custom Permissions Form User",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"systemUserId\": 8,\r\n    \"permissions\": [\r\n        {\r\n            \"permissionId\": 1,\r\n            \"isAllowed\": false\r\n        },\r\n        {\r\n            \"permissionId\": 5,\r\n            \"isAllowed\": false\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/user-permissions/user/:userId/permission/:permissionId",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"user-permissions",
+										"user",
+										":userId",
+										"permission",
+										":permissionId"
+									],
+									"variable": [
+										{
+											"key": "userId",
+											"value": "3"
+										},
+										{
+											"key": "permissionId",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete All Costom Permissions Form User",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"systemUserId\": 8,\r\n    \"permissions\": [\r\n        {\r\n            \"permissionId\": 1,\r\n            \"isAllowed\": false\r\n        },\r\n        {\r\n            \"permissionId\": 5,\r\n            \"isAllowed\": false\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/user-permissions/user/:userId/all",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"user-permissions",
+										"user",
+										":userId",
+										"all"
+									],
+									"variable": [
+										{
+											"key": "userId",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Allowed For User",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/permissions/user/:userId/allowed",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"permissions",
+										"user",
+										":userId",
+										"allowed"
+									],
+									"variable": [
+										{
+											"key": "userId",
+											"value": "27"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Custom Permissions For User",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/user-permissions/user/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"user-permissions",
+										"user",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "27"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Courses",
+			"item": [
+				{
+					"name": "Training Courses",
+					"item": [
+						{
+							"name": "Create Training Course",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Web Development Fundamentals1\",\n    \"description\": \"A comprehensive course covering HTML, CSS, JavaScript, and basic web development concepts. Students will learn to build responsive websites and understand modern web development practices.\",\n    \"notes\": \"Prerequisites: Basic computer literacy. Course duration: 8 weeks. Certificate provided upon completion.\"\n}"
+								},
+								"url": {
+									"raw": "{{url}}/training-courses",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"training-courses"
+									]
+								},
+								"description": "Creates a new training course. Requires CREATE_TRAINING_COURSE permission."
+							},
+							"response": []
+						},
+						{
+							"name": "Update Training Course",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"11\",\n    \"description\": \"111\",\n    \"note\": null\n}"
+								},
+								"url": {
+									"raw": "{{url}}/training-courses/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"training-courses",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "5"
+										}
+									]
+								},
+								"description": "Updates an existing training course. All fields are optional. Requires UPDATE_TRAINING_COURSE permission."
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Training Course",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/training-courses/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"training-courses",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								},
+								"description": "Deletes a training course by its ID. Requires DELETE_TRAINING_COURSE permission."
+							},
+							"response": []
+						},
+						{
+							"name": "Get All Training Courses",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/training-courses",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"training-courses"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1",
+											"description": "Page number (default: 1)",
+											"disabled": true
+										},
+										{
+											"key": "limit",
+											"value": "10",
+											"description": "Items per page (default: 10, max: 100)",
+											"disabled": true
+										},
+										{
+											"key": "name",
+											"value": "Web",
+											"description": "Filter by course name (partial match)",
+											"disabled": true
+										},
+										{
+											"key": "description",
+											"value": "development",
+											"description": "Filter by description (partial match)",
+											"disabled": true
+										},
+										{
+											"key": "note",
+											"value": "Prerequisites",
+											"description": "Filter by note (partial match)",
+											"disabled": true
+										}
+									]
+								},
+								"description": "Retrieves paginated list of training courses with optional filters. Requires READ_TRAINING_COURSE permission."
+							},
+							"response": []
+						},
+						{
+							"name": "Get Training Course by ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/training-courses/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"training-courses",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "4"
+										}
+									]
+								},
+								"description": "Retrieves a specific training course by its ID. Requires READ_TRAINING_COURSE permission."
+							},
+							"response": [
+								{
+									"name": "Success Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/training-courses/1",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"training-courses",
+												"1"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [],
+									"cookie": [],
+									"body": "{\n  \"id\": 1,\n  \"name\": \"Web Development Fundamentals\",\n  \"description\": \"A comprehensive course covering HTML, CSS, JavaScript, and basic web development concepts. Students will learn to build responsive websites and understand modern web development practices.\",\n  \"note\": \"Prerequisites: Basic computer literacy. Course duration: 8 weeks. Certificate provided upon completion.\",\n  \"createdAt\": \"2024-01-15T10:30:00.000Z\",\n  \"updatedAt\": \"2024-01-15T10:30:00.000Z\"\n}"
+								},
+								{
+									"name": "Not Found Response",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/training-courses/999",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"training-courses",
+												"999"
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [],
+									"cookie": [],
+									"body": "{\n  \"statusCode\": 404,\n  \"message\": \"Training course with ID 999 not found\",\n  \"error\": \"Not Found\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Course Batch",
+					"item": [
+						{
+							"name": "Create Course Batch",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}",
+										"description": "JWT token for authentication"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"trainingCourseId\": 7,\n  \"batchNumber\": 2,\n  \"startDate\": \"2023-02-02T09:00:00.00Z\",\n  \"endDate\": \"2024-02-03T09:00:00.00Z\",\n  \"location\": \"Al-Barakah Training Center - Room A1\",\n  \"notes\": \"Morning batch for working professionals. Classes held on weekends (Friday and Saturday) from 9 AM to 5 PM. Maximum capacity: 25 students.\"\n}"
+								},
+								"url": {
+									"raw": "{{url}}/course-batches",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"course-batches"
+									]
+								},
+								"description": "Creates a new course batch for a specific training course. Requires CREATE_TRAINING_COURSE permission."
+							},
+							"response": []
+						},
+						{
+							"name": "Update Course Batch",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}",
+										"description": "JWT token for authentication"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"startDate\": \"2024-02-05T09:00:00.000Z\",\n  \"endDate\": \"2028-04-05T17:00:00.000Z\",\n  \"location\": \"Al-Barakah Training Center - Room A2 (Upgraded)\",\n  \"note\": \"Morning batch for working professionals. Updated schedule: Classes held on weekends (Friday and Saturday) from 9 AM to 5 PM. Maximum capacity increased to 30 students. New multimedia equipment available.\"\n}"
+								},
+								"url": {
+									"raw": "{{url}}/course-batches/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"course-batches",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "6"
+										}
+									]
+								},
+								"description": "Updates an existing course batch. All fields are optional. Requires UPDATE_TRAINING_COURSE permission."
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Course Batch",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}",
+										"description": "JWT token for authentication"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/course-batches/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"course-batches",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								},
+								"description": "Deletes a course batch by its ID. Requires DELETE_TRAINING_COURSE permission."
+							},
+							"response": []
+						},
+						{
+							"name": "Get All Course Batches",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}",
+										"description": "JWT token for authentication"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/course-batches",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"course-batches"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1",
+											"description": "Page number (default: 1)",
+											"disabled": true
+										},
+										{
+											"key": "limit",
+											"value": "1",
+											"description": "Items per page (default: 10, max: 100)",
+											"disabled": true
+										},
+										{
+											"key": "trainingCourseId",
+											"value": "4",
+											"description": "Filter by specific training course",
+											"disabled": true
+										},
+										{
+											"key": "batchNumber",
+											"value": "10",
+											"description": "Filter by batch number",
+											"disabled": true
+										},
+										{
+											"key": "startDate",
+											"value": "2022-02-01",
+											"description": "Filter by start date (YYYY-MM-DD)",
+											"disabled": true
+										},
+										{
+											"key": "endDate",
+											"value": "2025-12-31",
+											"description": "Filter by end date (YYYY-MM-DD)",
+											"disabled": true
+										},
+										{
+											"key": "location",
+											"value": "Room A1",
+											"description": "Filter by location (partial match)",
+											"disabled": true
+										},
+										{
+											"key": "note",
+											"value": "Friday and Saturday",
+											"description": "Filter by note text (partial match)",
+											"disabled": true
+										}
+									]
+								},
+								"description": "Retrieves paginated list of course batches with optional filters. Requires READ_TRAINING_COURSE permission."
+							},
+							"response": []
+						},
+						{
+							"name": "Get Course Batch by ID",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}",
+										"description": "JWT token for authentication"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/course-batches/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"course-batches",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "2"
+										}
+									]
+								},
+								"description": "Retrieves a specific course batch by its ID with training course information. Requires READ_TRAINING_COURSE permission."
+							},
+							"response": []
+						},
+						{
+							"name": "Get Monthly Stats",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/course-batches/monthly-stats?startDate=2025-04-20&endDate=2025-11-11&trainingCourseId=1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"course-batches",
+										"monthly-stats"
+									],
+									"query": [
+										{
+											"key": "startDate",
+											"value": "2025-04-20"
+										},
+										{
+											"key": "endDate",
+											"value": "2025-11-11"
+										},
+										{
+											"key": "trainingCourseId",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Person Course Batch",
+					"item": [
+						{
+							"name": "Enroll Person in Course Batch",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}",
+										"description": "JWT token for authentication"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"familyMemberId\": 15,\n  \"courseBatchId\": 3,\n  \"attendanceStatus\": \"excellent_commitment\",\n  \"evaluation\": \"Highly motivated student with excellent participation in class discussions. Shows strong understanding of web development concepts.\",\n  \"joinDate\": \"2024-01-20T00:00:00.000Z\",\n  \"notes\": \"Previously completed basic computer literacy course. Has personal laptop for practice.\"\n}"
+								},
+								"url": {
+									"raw": "{{url}}/person-course-batches",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"person-course-batches"
+									]
+								},
+								"description": "Enrolls a family member in a course batch. Requires CREATE_TRAINING_COURSE permission."
+							},
+							"response": []
+						},
+						{
+							"name": "Update Person Course Batch",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}",
+										"description": "JWT token for authentication"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"attendanceStatus\": \"good_commitment\",\n    \"evaluation\": \"Highly motivated student with excellent participation in class discussions. Shows strong understanding of web development concepts.\",\n    \"joinDate\": \"2024-01-20T00:00:00.000Z\",\n    \"dropOutDate\": \"2024-01-20T00:00:00.000Z\",\n    \"notes\": \"Previously completed basic computer literacy course. Has personal laptop for practice\"\n}"
+								},
+								"url": {
+									"raw": "{{url}}/person-course-batches/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"person-course-batches",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "2"
+										}
+									]
+								},
+								"description": "Updates an existing person course batch enrollment. All fields are optional. Requires UPDATE_TRAINING_COURSE permission."
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Person Course Batch",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}",
+										"description": "JWT token for authentication"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/person-course-batches/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"person-course-batches",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1"
+										}
+									]
+								},
+								"description": "Deletes a person course batch enrollment by its ID. Requires DELETE_TRAINING_COURSE permission."
+							},
+							"response": []
+						},
+						{
+							"name": "Get Person Course Batch by ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/person-course-batches/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"person-course-batches",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "3"
+										}
+									]
+								},
+								"description": "Retrieves a specific person course batch enrollment by ID with related data (course batch, training course, family member, person). Requires READ_TRAINING_COURSE permission."
+							},
+							"response": []
+						},
+						{
+							"name": "Get All Person Course Batches",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{access_token}}",
+										"description": "JWT token for authentication"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/person-course-batches",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"person-course-batches"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1",
+											"description": "Page number (default: 1)",
+											"disabled": true
+										},
+										{
+											"key": "limit",
+											"value": "10",
+											"description": "Items per page (default: 10, max: 100)",
+											"disabled": true
+										},
+										{
+											"key": "familyMemberId",
+											"value": "15",
+											"description": "Filter by specific family member",
+											"disabled": true
+										},
+										{
+											"key": "courseBatchId",
+											"value": "3",
+											"description": "Filter by specific course batch",
+											"disabled": true
+										},
+										{
+											"key": "trainingCourseId",
+											"value": "1",
+											"description": "Filter by specific training course",
+											"disabled": true
+										},
+										{
+											"key": "attendanceStatus",
+											"value": "excellent_commitment",
+											"description": "Filter by attendance status (excellent_commitment, good_commitment, moderate_commitment, poor_commitment, minimal_participation, dropped_out)",
+											"disabled": true
+										},
+										{
+											"key": "joinDateFrom",
+											"value": "2024-01-01",
+											"description": "Filter join date from (YYYY-MM-DD)",
+											"disabled": true
+										},
+										{
+											"key": "joinDateTo",
+											"value": "2024-12-31",
+											"description": "Filter join date to (YYYY-MM-DD)",
+											"disabled": true
+										},
+										{
+											"key": "dropOutDateFrom",
+											"value": "",
+											"description": "Filter dropout date from (YYYY-MM-DD)",
+											"disabled": true
+										},
+										{
+											"key": "dropOutDateTo",
+											"value": "",
+											"description": "Filter dropout date to (YYYY-MM-DD)",
+											"disabled": true
+										},
+										{
+											"key": "evaluation",
+											"value": "",
+											"description": "Filter by evaluation text",
+											"disabled": true
+										},
+										{
+											"key": "notes",
+											"value": "",
+											"description": "Filter by notes text",
+											"disabled": true
+										}
+									]
+								},
+								"description": "Retrieves paginated list of person course batch enrollments with optional filters. Requires READ_TRAINING_COURSE permission."
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{accessToken}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Supporters",
+			"item": [
+				{
+					"name": "Create Supporter",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"supportType\": \"one_time\", // enum: one_time, occasional, child_sponsorship\n    \"notes\": \"Supporter notes\", // string, optional\n    //   \"personId\": 123, // number, optional (alternative to person object)\n    \"person\": {\n        \"fullName\": \"Ahmad Al-Mahmoud\", // string, required, min:3, max:300\n        \"motherName\": \"Fatima Al-Hassan\", // string, optional, min:3, max:100\n        \"birthDate\": \"1990-05-15\", // date, optional, after 1900-01-01\n        \"birthPlace\": \"Damascus\", // string, optional, min:3, max:200\n        \"nationalId\": \"12345678905\", // string, optional, exact 11 chars\n        \"nationality\": \"Syrian\", // string, optional, min:3, max:100\n        \"motherNationality\": \"Syrian\", // string, optional, min:3, max:100\n        \"gender\": \"Male\", // enum: Male, Female\n        \"shoeSize\": 42, // number, optional, min:16, max:48\n        \"maritalStatus\": \"married\", // enum: widowed, single, married, deceased, traveling, divorced\n        \"isWorking\": true, // boolean, optional\n        \"currentJob\": \"Engineer\", // string, optional, min:3, max:200\n        \"jobDetails\": \"Software development\", // string, optional, min:1, max:500\n        \"isSmoker\": false, // boolean, optional\n        \"healthStatus\": \"Good\", // string, optional, min:1, max:200\n        \"isHealthInsuranceUsed\": false, // boolean, optional\n        \"isSuccessCertificateSubmitted\": \"no\", // enum: submitted_passed, submitted_failed, submitted_passed_repeating, submitted_passed_with_help, no, not_needed_certificate, not_needed\n        \"educationLevel\": \"university\", // enum: primary, preparatory, completed_all_stages, illiterate, vocational, secondary, university, not_enrolled, not_studying, institute, enrolled_university, enrolled_school, basic_literate\n        \"universityMajor\": \"Computer Science\", // string, optional, min:3, max:150\n        \"currentStudyStatus\": \"university\", // enum: completed_all_stages, category_3, grade_1, grade_1_cerebral_palsy, grade_2, grade_3, grade_4, grade_5, grade_6, grade_7, grade_8, grade_9, grade_10, grade_10_science, grade_10_literature, grade_10_medical_equipment, grade_10_computer_tech, grade_10_industry, grade_11, grade_11_science, grade_11_literature, grade_11_technical, grade_11_business, grade_11_medical_equipment, baccalaureate, baccalaureate_science, baccalaureate_literature, baccalaureate_free, baccalaureate_free_science, baccalaureate_free_literature, university, not_enrolled, certificate_1, certificate_2\n        \"schoolType\": \"public\", // enum: public, private, private_martyrs_children, sharia_boarding, sharia, private_institute, hearing_imp_institute\n        \"schoolName\": \"Damascus University\", // string, optional, min:3, max:200\n        \"mobilePhone\": \"0933123456\", // string, optional, Syria phone format\n        \"whatsappNumber\": \"0933123456\", // string, optional, min:3, max:15\n        \"notes\": \"Additional person notes\" // string, optional, min:1, max:2000\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/supporters",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"supporters"
+							]
+						},
+						"description": "Create a new supporter with person details. Either provide person object or personId. Uses @OnlyOneOf decorator to ensure only one is provided."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Supporters",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/supporters?page=1&limit=10&supportType=one_time&person.fullName=Ahmad&person.nationalId=1234567890&notes=Supporter notes",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"supporters"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number (min:1)"
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "Items per page (min:1, max:100)"
+								},
+								{
+									"key": "supportType",
+									"value": "one_time",
+									"description": "Support type filter (enum: one_time, occasional, child_sponsorship)"
+								},
+								{
+									"key": "person.fullName",
+									"value": "Ahmad",
+									"description": "Person full name filter (string, min:1, max:300)"
+								},
+								{
+									"key": "person.nationalId",
+									"value": "1234567890",
+									"description": "Person national ID filter (string, exact 11 chars)"
+								},
+								{
+									"key": "notes",
+									"value": "Supporter notes",
+									"description": "Search in notes (string)"
+								}
+							]
+						},
+						"description": "Get all supporters with pagination and filtering. Supports filtering by supporter fields and nested person fields. Returns paginated response with metadata."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Supporter by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/supporters/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"supporters",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2",
+									"description": "Supporter ID (number)"
+								}
+							]
+						},
+						"description": "Get a specific supporter by ID. Includes person relation data."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Supporter",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"supportType\": \"one_time\", // enum: one_time, occasional, child_sponsorship\n    \"notes\": \"Supporter notes\", // string, optional\n    //   \"personId\": 123, // number, optional (alternative to person object)\n    \"person\": {\n        \"fullName\": \"Ahmad Al-Mahmoud\", // string, required, min:3, max:300\n        \"motherName\": \"Fatima Al-Hassan\", // string, optional, min:3, max:100\n        \"birthDate\": \"1990-05-15\", // date, optional, after 1900-01-01\n        \"birthPlace\": \"Damascus\", // string, optional, min:3, max:200\n        \"nationalId\": \"12345678905\", // string, optional, exact 11 chars\n        \"nationality\": \"Syrian\", // string, optional, min:3, max:100\n        \"motherNationality\": \"Syrian\", // string, optional, min:3, max:100\n        \"gender\": \"Male\", // enum: Male, Female\n        \"shoeSize\": 42, // number, optional, min:16, max:48\n        \"maritalStatus\": \"married\", // enum: widowed, single, married, deceased, traveling, divorced\n        \"isWorking\": true, // boolean, optional\n        \"currentJob\": \"Engineer\", // string, optional, min:3, max:200\n        \"jobDetails\": \"Software development\", // string, optional, min:1, max:500\n        \"isSmoker\": false, // boolean, optional\n        \"healthStatus\": \"Good\", // string, optional, min:1, max:200\n        \"isHealthInsuranceUsed\": false, // boolean, optional\n        \"isSuccessCertificateSubmitted\": \"no\", // enum: submitted_passed, submitted_failed, submitted_passed_repeating, submitted_passed_with_help, no, not_needed_certificate, not_needed\n        \"educationLevel\": \"university\", // enum: primary, preparatory, completed_all_stages, illiterate, vocational, secondary, university, not_enrolled, not_studying, institute, enrolled_university, enrolled_school, basic_literate\n        \"universityMajor\": \"Computer Science\", // string, optional, min:3, max:150\n        \"currentStudyStatus\": \"university\", // enum: completed_all_stages, category_3, grade_1, grade_1_cerebral_palsy, grade_2, grade_3, grade_4, grade_5, grade_6, grade_7, grade_8, grade_9, grade_10, grade_10_science, grade_10_literature, grade_10_medical_equipment, grade_10_computer_tech, grade_10_industry, grade_11, grade_11_science, grade_11_literature, grade_11_technical, grade_11_business, grade_11_medical_equipment, baccalaureate, baccalaureate_science, baccalaureate_literature, baccalaureate_free, baccalaureate_free_science, baccalaureate_free_literature, university, not_enrolled, certificate_1, certificate_2\n        \"schoolType\": \"public\", // enum: public, private, private_martyrs_children, sharia_boarding, sharia, private_institute, hearing_imp_institute\n        \"schoolName\": \"Damascus University\", // string, optional, min:3, max:200\n        \"mobilePhone\": \"0933123456\", // string, optional, Syria phone format\n        \"whatsappNumber\": \"0933123456\", // string, optional, min:3, max:15\n        \"notes\": \"Additional person notes\" // string, optional, min:1, max:2000\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/supporters/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"supporters",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2",
+									"description": "Supporter ID (number)"
+								}
+							]
+						},
+						"description": "Update an existing supporter. All fields are optional. Can update supporter fields and/or person fields."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Supporter",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/supporters/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"supporters",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Supporter ID (number)"
+								}
+							]
+						},
+						"description": "Delete a supporter by ID. Returns HTTP 204 No Content on success."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Monthly Stats",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/supporters/monthly-stats?startDate=2025-04-20&endDate=2025-11-11",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"supporters",
+								"monthly-stats"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "2025-04-20"
+								},
+								{
+									"key": "endDate",
+									"value": "2025-11-11"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Supporter-Child-Sponsorship",
+			"item": [
+				{
+					"name": "Create Supporter Child Sponsorship",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"supporterId\": 2, // number, required\n  \"familyMemberId\": 6, // number, required\n  \"sponsorshipStartDate\": \"2024-01-01\", // date, required\n  \"sponsorshipEndDate\": \"2024-12-31\", // date, optional\n  \"sponsorshipStatus\": \"active\" // enum: active, ended, paused, cancelled, optional (default: active)\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/supporter-child-sponsorships",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"supporter-child-sponsorships"
+							]
+						},
+						"description": "Create a new child sponsorship relationship between a supporter and a family member. Requires unique combination of supporterId and familyMemberId when status is active."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Supporter Child Sponsorships",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/supporter-child-sponsorships",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"supporter-child-sponsorships"
+							],
+							"query": [
+								{
+									"key": "supporterId",
+									"value": "2",
+									"description": "Supporter ID filter (positive integer)",
+									"disabled": true
+								},
+								{
+									"key": "familyMemberId",
+									"value": "6",
+									"description": "Family member ID filter (positive integer)",
+									"disabled": true
+								},
+								{
+									"key": "sponsorshipStatus",
+									"value": "active",
+									"description": "Sponsorship status filter (enum: active, ended, paused, cancelled)",
+									"disabled": true
+								},
+								{
+									"key": "sponsorshipStartDate",
+									"value": "2024-01-01",
+									"description": "Sponsorship start date filter (date)",
+									"disabled": true
+								},
+								{
+									"key": "sponsorshipEndDate",
+									"value": "2024-12-31",
+									"description": "Sponsorship end date filter (date)",
+									"disabled": true
+								},
+								{
+									"key": "person.fullName",
+									"value": "Ahmad",
+									"description": "Person full name filter (string, min:1, max:300)",
+									"disabled": true
+								},
+								{
+									"key": "person.nationalId",
+									"value": "1234567890",
+									"description": "Person national ID filter (string, exact 11 chars)",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Get all supporter child sponsorships with filtering. Supports filtering by sponsorship fields and nested person fields. Returns array of sponsorships."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Supporter Child Sponsorship by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/supporter-child-sponsorships/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"supporter-child-sponsorships",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Sponsorship ID (number)"
+								}
+							]
+						},
+						"description": "Get a specific supporter child sponsorship by ID. Includes supporter, familyMember, and person relation data."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Supporter Child Sponsorship",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"sponsorshipStartDate\": \"2024-01-01\", // date, optional\n  \"sponsorshipEndDate\": \"2024-12-31\", // date, optional\n  \"sponsorshipStatus\": \"ended\" // enum: active, ended, paused, cancelled, optional\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/supporter-child-sponsorships/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"supporter-child-sponsorships",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Sponsorship ID (number)"
+								}
+							]
+						},
+						"description": "Update an existing supporter child sponsorship. Cannot update supporterId or familyMemberId. All fields are optional."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Supporter Child Sponsorship",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/supporter-child-sponsorships/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"supporter-child-sponsorships",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Sponsorship ID (number)"
+								}
+							]
+						},
+						"description": "Delete a supporter child sponsorship by ID. Returns HTTP 204 No Content on success."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Emergency Aid Request",
+			"item": [
+				{
+					"name": "Create Emergency Aid Request",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"familyId\": 13, // number, required - ID of the family\n  \"requestStatus\": \"pending\", // string, optional - Status: pending, approved, disbursed, rejected, cancelled\n  \"requestedAmount\": 5000, // number, required, positive - Amount requested\n  \"disbursedAmount\": 4500, // number, optional, positive - Amount actually disbursed\n  \"notes\": \"Emergency medical assistance needed\", // string, optional - Additional notes\n  \"requestDate\": \"2024-01-15\", // string, optional, ISO date - Date of request\n  \"disbursementDate\": \"2024-01-20\" // string, optional, ISO date - Date of disbursement\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/emergency-aid-requests",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"emergency-aid-requests"
+							]
+						},
+						"description": "Creates a new emergency aid request for a family. Requires CREATE_EMERGENCY_AID permission. The request can include status, amounts, dates, and notes for tracking the emergency assistance process."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Emergency Aid Request by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/emergency-aid-requests/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"emergency-aid-requests",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Emergency aid request ID"
+								}
+							]
+						},
+						"description": "Retrieves a specific emergency aid request by its ID. Requires READ_EMERGENCY_AID permission. Returns the request with family relations included."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Emergency Aid Requests",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/emergency-aid-requests",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"emergency-aid-requests"
+							],
+							"query": [
+								{
+									"key": "familyId",
+									"value": "13",
+									"description": "Filter by family ID",
+									"disabled": true
+								},
+								{
+									"key": "requestStatus",
+									"value": "pending",
+									"description": "Filter by status: pending, approved, disbursed, rejected, cancelled",
+									"disabled": true
+								},
+								{
+									"key": "requestedAmountFrom",
+									"value": "1000",
+									"description": "Minimum requested amount",
+									"disabled": true
+								},
+								{
+									"key": "requestedAmountTo",
+									"value": "10000",
+									"description": "Maximum requested amount",
+									"disabled": true
+								},
+								{
+									"key": "disbursedAmountFrom",
+									"value": "500",
+									"description": "Minimum disbursed amount",
+									"disabled": true
+								},
+								{
+									"key": "disbursedAmountTo",
+									"value": "5000",
+									"description": "Maximum disbursed amount",
+									"disabled": true
+								},
+								{
+									"key": "requestDateFrom",
+									"value": "2024-01-01",
+									"description": "Start date for request date range (ISO format)",
+									"disabled": true
+								},
+								{
+									"key": "requestDateTo",
+									"value": "2024-12-31",
+									"description": "End date for request date range (ISO format)",
+									"disabled": true
+								},
+								{
+									"key": "disbursementDateFrom",
+									"value": "2024-01-01",
+									"description": "Start date for disbursement date range (ISO format)",
+									"disabled": true
+								},
+								{
+									"key": "disbursementDateTo",
+									"value": "2024-12-31",
+									"description": "End date for disbursement date range (ISO format)",
+									"disabled": true
+								},
+								{
+									"key": "family.familyName",
+									"value": "Khatib",
+									"description": "Filter by family name",
+									"disabled": true
+								},
+								{
+									"key": "notes",
+									"value": "medical",
+									"description": "Filter by notes content",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number for pagination",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "Number of items per page",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Retrieves all emergency aid requests with filtering and pagination. Requires READ_EMERGENCY_AID permission. Supports filtering by family, status, amounts, dates, and notes. Uses query parameters for filtering (gateAll pattern)."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Emergency Aid Request",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"requestStatus\": \"approved\", // string, optional - Status: pending, approved, disbursed, rejected, cancelled\n  \"requestedAmount\": 6000, // number, optional, positive - Updated requested amount\n  \"disbursedAmount\": 5500, // number, optional, positive - Updated disbursed amount\n  \"notes\": \"Updated notes for the emergency request\", // string, optional - Updated notes\n  \"requestDate\": \"2024-01-16\", // string, optional, ISO date - Updated request date\n  \"disbursementDate\": \"2024-01-25\" // string, optional, ISO date - Updated disbursement date\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/emergency-aid-requests/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"emergency-aid-requests",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Emergency aid request ID"
+								}
+							]
+						},
+						"description": "Updates an existing emergency aid request. Requires UPDATE_EMERGENCY_AID permission. All fields are optional and familyId cannot be updated."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Emergency Aid Request",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/emergency-aid-requests/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"emergency-aid-requests",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Emergency aid request ID"
+								}
+							]
+						},
+						"description": "Deletes an emergency aid request by ID. Requires DELETE_EMERGENCY_AID permission. Returns 204 No Content on successful deletion."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Family Needs",
+			"item": [
+				{
+					"name": "Create Family Need",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"familyId\": 13, // number, required, positive integer - ID of the family\n    // \"familyMemberId\": 5, // number, optional, positive integer - ID of specific family member\n    \"needType\": \"Medical Supplies\", // string, required, max:100 - Type of need\n    \"notes\": \"Urgent need for diabetes medication\", // string, optional, max:4096 - Additional details\n    \"quantity\": 3, // number, optional, min:1, max:1000 - Quantity needed\n    \"priorityLevel\": \"high\", // string, optional - Priority: critical, high, medium, low, minimal\n    \"status\": \"pending\" // string, optional - Status: pending, fulfilled, partially, self_resolved\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/family-needs",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"family-needs"
+							]
+						},
+						"description": "Creates a new family need record. Requires CREATE_FAMILY_NEED permission. Can be associated with a specific family member or the entire family. Includes need type, quantity, priority level, and status tracking."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Family Needs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/family-needs",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"family-needs"
+							],
+							"query": [
+								{
+									"key": "familyId",
+									"value": "13",
+									"description": "Filter by family ID",
+									"disabled": true
+								},
+								{
+									"key": "familyMemberId",
+									"value": "5",
+									"description": "Filter by family member ID",
+									"disabled": true
+								},
+								{
+									"key": "needType",
+									"value": "Medical",
+									"description": "Filter by need type (max 100 chars)",
+									"disabled": true
+								},
+								{
+									"key": "notes",
+									"value": "urgent",
+									"description": "Filter by notes content (max 4096 chars)",
+									"disabled": true
+								},
+								{
+									"key": "minQuantity",
+									"value": "1",
+									"description": "Minimum quantity filter (min:1, max:1000000)",
+									"disabled": true
+								},
+								{
+									"key": "maxQuantity",
+									"value": "10",
+									"description": "Maximum quantity filter (min:1, max:1000000)",
+									"disabled": true
+								},
+								{
+									"key": "priorityLevel",
+									"value": "high",
+									"description": "Filter by priority: critical, high, medium, low, minimal",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "pending",
+									"description": "Filter by status: pending, fulfilled, partially, self_resolved",
+									"disabled": true
+								},
+								{
+									"key": "sortOrder",
+									"value": "DESC",
+									"description": "Sort order: ASC or DESC",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number for pagination",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "Number of items per page",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Retrieves all family needs with filtering and pagination. Requires READ_FAMILY_NEED permission. Supports filtering by family, member, need type, quantity ranges, priority, and status. Uses query parameters for filtering (gateAll pattern)."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Family Need by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/family-needs/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"family-needs",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Family need ID"
+								}
+							]
+						},
+						"description": "Retrieves a specific family need by its ID. Requires READ_FAMILY_NEED permission. Returns the need with family, family member, and person relations included."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Family Need",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"needType\": \"Updated Medical Supplies\", // string, optional, max:100 - Updated need type\n  \"notes\": \"Updated urgent need for diabetes medication\", // string, optional, max:4096 - Updated notes\n  \"quantity\": 5, // number, optional, min:1, max:1000 - Updated quantity\n  \"priorityLevel\": \"critical\", // string, optional - Updated priority: critical, high, medium, low, minimal\n  \"status\": \"partially\" // string, optional - Updated status: pending, fulfilled, partially, self_resolved\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/family-needs/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"family-needs",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Family need ID"
+								}
+							]
+						},
+						"description": "Updates an existing family need. Requires UPDATE_FAMILY_NEED permission. All fields are optional. familyId and familyMemberId cannot be updated."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Family Need",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/family-needs/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"family-needs",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "3",
+									"description": "Family need ID"
+								}
+							]
+						},
+						"description": "Deletes a family need by ID. Requires DELETE_FAMILY_NEED permission. Returns 204 No Content on successful deletion."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Received Assistance",
+			"item": [
+				{
+					"name": "Create Received Assistance",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"familyId\": 13, // number, required - ID of the family\n  \"familyMemberId\": 5, // number, optional, positive - ID of specific family member\n  \"assistanceType\": \"medicine\", // string, optional - Type: cash, food, clothes, medicine, shelter, education, hygiene, transportation, other\n  \"amount\": 2500, // number, optional, positive - Amount of assistance provided\n  \"deliveryDate\": \"2024-01-15\", // string, required, ISO date - Date when assistance was delivered\n  \"notes\": \"Monthly medicine supply delivered\" // string, optional - Additional notes about the assistance\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/received-assistance",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"received-assistance"
+							]
+						},
+						"description": "Creates a new received assistance record. Requires CREATE_RECEIVED_ASSISTANCE permission. Tracks assistance provided to families or specific family members with type, amount, delivery date, and notes."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Received Assistance by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/received-assistance/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"received-assistance",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Received assistance ID"
+								}
+							]
+						},
+						"description": "Retrieves a specific received assistance record by its ID. Requires READ_RECEIVED_ASSISTANCE permission. Returns the assistance with family, family member, and person relations included."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Received Assistance",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/received-assistance",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"received-assistance"
+							],
+							"query": [
+								{
+									"key": "familyId",
+									"value": "1",
+									"description": "Filter by family ID",
+									"disabled": true
+								},
+								{
+									"key": "familyMemberId",
+									"value": "5",
+									"description": "Filter by family member ID",
+									"disabled": true
+								},
+								{
+									"key": "assistanceType",
+									"value": "medicine",
+									"description": "Filter by assistance type: cash, food, clothes, medicine, shelter, education, hygiene, transportation, other",
+									"disabled": true
+								},
+								{
+									"key": "amountFrom",
+									"value": "1000",
+									"description": "Minimum amount filter",
+									"disabled": true
+								},
+								{
+									"key": "amountTo",
+									"value": "5000",
+									"description": "Maximum amount filter",
+									"disabled": true
+								},
+								{
+									"key": "deliveryDateFrom",
+									"value": "2024-01-01",
+									"description": "Start date for delivery date range (ISO format)",
+									"disabled": true
+								},
+								{
+									"key": "deliveryDateTo",
+									"value": "2024-12-31",
+									"description": "End date for delivery date range (ISO format)",
+									"disabled": true
+								},
+								{
+									"key": "notes",
+									"value": "medicine",
+									"description": "Filter by notes content",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number for pagination",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "Number of items per page",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Retrieves all received assistance records with filtering and pagination. Requires READ_RECEIVED_ASSISTANCE permission. Supports filtering by family, member, assistance type, amount ranges, delivery dates, and notes. Uses query parameters for filtering (gateAll pattern)."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Received Assistance",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"assistanceType\": \"cash\", // string, optional - Updated type: cash, food, clothes, medicine, shelter, education, hygiene, transportation, other\n  \"amount\": 3000, // number, optional, positive - Updated amount\n  \"deliveryDate\": \"2024-01-20\", // string, optional, ISO date - Updated delivery date\n  \"notes\": \"Updated notes about the assistance provided\" // string, optional - Updated notes\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/received-assistance/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"received-assistance",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Received assistance ID"
+								}
+							]
+						},
+						"description": "Updates an existing received assistance record. Requires UPDATE_RECEIVED_ASSISTANCE permission. All fields are optional. familyId and familyMemberId cannot be updated."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Received Assistance",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/received-assistance/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"received-assistance",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Received assistance ID"
+								}
+							]
+						},
+						"description": "Deletes a received assistance record by ID. Requires DELETE_RECEIVED_ASSISTANCE permission. Returns 204 No Content on successful deletion."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Interview",
+			"item": [
+				{
+					"name": "Create Interview",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"family\": {\n    \"requestNumber\": \"REQ-2024-006\", // string, max:32\n    \"familyName\": \"Al-Ahmad Family\", // string, required, max:64\n    \"isHusbandPalestinian\": false, // boolean\n    \"identityDocuments\": \"Passport, ID Card\", // string\n    \"emailArrivalDate\": \"2024-01-15\", // date string\n    \"contactedByEmployeeId\": 1, // number, positive integer\n    \"isRegisteredInOtherOrphanAssociation\": false, // boolean\n    \"otherOrphanAssociationName\": \"Other Association Name\", // string, max:128\n    \"formOrganizationStatus\": \"done\", // enum: done, done_outside_sponsorship_conditions, submitted_to_other_association, registered_in_other_association, outside_sponsorship_conditions, did_not_attend_no_apology, no_contact, request_remains_in_relief, no\n    \"formNumber\": \"FORM-2024-002\", // string, required, max:64\n    \"interviewDate\": \"2024-01-20\", // date string\n    \"managementDecision\": \"sponsorship\", // enum: decision_after_visit_opinion, sponsorship, no_sponsorship\n    \"formOrganizerNotes\": \"Family interview notes\", // string\n    \"archiveLocation\": \"direct_acceptance_interview_forms\", // enum: direct_non_acceptance_interview_forms, acceptance_interview_and_visit_forms_after_visit, non_acceptance_interview_and_visit_forms_after_visit, barzeh_residences, under_visit, archived_in_folder_administration_archive, no_paper_form_created, direct_acceptance_interview_forms\n    \"familyBookNumber\": \"FB123455\", // string, required, max:12\n    \"landlinePhone\": \"0211234567\", // string, Syrian landline format\n    \"mobilePhone\": \"+963991234567\", // string, Syrian phone format\n    \"isRefugee\": false, // boolean\n    \"isExtremelyPoor\": true, // boolean\n    \"sponsorshipStatus\": \"yes\", // enum: yes, no, under_visit\n    \"requestAcceptanceDate\": \"2024-01-10\", // date string\n    \"requestSuspensionDate\": null, // date string\n    \"requestStatus\": \"social_sponsorship\", // enum: suspend_request, social_sponsorship, orphans_75000, orphans_150000, orphans_225000\n    \"previousRequestStatus\": \"NEW\", // string, max:32\n    \"isStatusUpdatedAtSocialAffairs\": false, // boolean\n    \"beneficiaryFamilyMembersCount\": 5, // number\n    \"guardianFamilyMembersCount\": 2, // number\n    \"sharedMealMembersCount\": 7, // number\n    \"voucherValue\": \"300000\", // enum: unspecified, 300000, 350000, 400000\n    \"houseType\": \"rent\", // enum: rent, rent_paid_by_philanthropists, hospitality, hospitality_with_family, hospitality_with_resident_inheritance_share, hospitality_with_rent, hospitality_with_rent_paid_by_philanthropists, hospitality_with_husband_family, hospitality_with_resident, hospitality_with_father_family, owned\n    \"currentResidenceAddress\": \"Damascus, Syria\", // string, max:255\n    \"currentResidenceArea\": \"Old City\" // string, max:255\n  },\n  \"guardian\": {\n    \"familyId\": 1, // number, required (will be set automatically)\n    \"relationType\": \"Father\", // enum: Mother, Father, Daughter, Son, Other\n    \"isSponsored\": false, // boolean\n    \"memberNumber\": 1, // number\n    \"isPresent\": true, // boolean\n    \"isGuardian\": true, // boolean\n    \"notes\": \"Guardian notes\", // string, max:4096\n    \"person\": {\n      \"fullName\": \"Ahmad Al-Ahmad\", // string, required, min:3, max:300\n      \"motherName\": \"Fatima Al-Ahmad\", // string, min:3, max:100\n      \"birthDate\": \"1980-05-15\", // date, min:1900-01-01, max:today\n      \"birthPlace\": \"Damascus\", // string, min:3, max:200\n      \"nationalId\": \"12345678909\", // string, exactly 11 chars\n      \"nationality\": \"Syrian\", // string, min:3, max:100\n      \"motherNationality\": \"Syrian\", // string, min:3, max:100\n      \"gender\": \"Male\", // enum: Male, Female\n      \"shoeSize\": 42, // number, min:16, max:48\n      \"maritalStatus\": \"married\", // enum: widowed, single, married, deceased, traveling, divorced\n      \"isWorking\": true, // boolean\n      \"currentJob\": \"Teacher\", // string, min:3, max:200\n      \"jobDetails\": \"Teaching mathematics at local school\", // string, min:1, max:500\n      \"isSmoker\": false, // boolean\n      \"healthStatus\": \"Good\", // string, min:1, max:200\n      \"isHealthInsuranceUsed\": false, // boolean\n      \"isSuccessCertificateSubmitted\": \"submitted_passed\", // enum: submitted_passed, submitted_failed, submitted_passed_repeating, submitted_passed_with_help, no, not_needed_certificate, not_needed\n      \"educationLevel\": \"university\", // enum: primary, preparatory, completed_all_stages, illiterate, vocational, secondary, university, not_enrolled, not_studying, institute, enrolled_university, enrolled_school, basic_literate\n      \"universityMajor\": \"Mathematics\", // string, min:3, max:150\n      \"currentStudyStatus\": \"completed_all_stages\", // enum: completed_all_stages, category_3, grade_1, grade_1_cerebral_palsy, grade_2, grade_3, grade_4, grade_5, grade_6, grade_7, grade_8, grade_9, grade_10, grade_10_science, grade_10_literature, grade_10_medical_equipment, grade_10_computer_tech, grade_10_industry, grade_11, grade_11_science, grade_11_literature, grade_11_technical, grade_11_business, grade_11_medical_equipment, baccalaureate, baccalaureate_science, baccalaureate_literature, baccalaureate_free, baccalaureate_free_science, baccalaureate_free_literature, university, not_enrolled, certificate_1, certificate_2\n      \"schoolType\": \"public\", // enum: public, private, private_martyrs_children, sharia_boarding, sharia, private_institute, hearing_imp_institute\n      \"schoolName\": \"Damascus University\", // string, min:3, max:200\n      \"mobilePhone\": \"+963991234567\", // string, Syrian phone format\n      \"whatsappNumber\": \"+963991234567\", // string, min:3, max:15\n      \"notes\": \"Person notes\" // string, min:1, max:2000\n    }\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/interview",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"interview"
+							]
+						},
+						"description": "Creates a new interview record with family and guardian information. This endpoint creates both the family and the guardian family member in a single transaction. The guardian is automatically marked as the family guardian. Example usage: Submit a new family interview application with complete family and guardian details."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Interview by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/interview/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"interview",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "20",
+									"description": "Interview ID (family ID)"
+								}
+							]
+						},
+						"description": "Retrieves a specific interview by family ID. Returns the family information, guardian details, and all family members. The guardian is automatically identified as the family member with isGuardian=true. Example usage: Get detailed information about a specific family interview."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Interviews",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/interview",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"interview"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number for pagination",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "Number of items per page (max: 100)",
+									"disabled": true
+								},
+								{
+									"key": "isVisited",
+									"value": "true",
+									"description": "Filter families that have been visited (true/false)",
+									"disabled": true
+								},
+								{
+									"key": "familyMember.familyId",
+									"value": "1",
+									"description": "Filter by family ID (number)",
+									"disabled": true
+								},
+								{
+									"key": "familyMember.personId",
+									"value": "2",
+									"description": "Filter by person ID (number)",
+									"disabled": true
+								},
+								{
+									"key": "familyMember.relationType",
+									"value": "father",
+									"description": "Filter by relation type: Mother, Father, Daughter, Son, Other",
+									"disabled": true
+								},
+								{
+									"key": "familyMember.isSponsored",
+									"value": "true",
+									"description": "Filter by sponsorship status (true/false)",
+									"disabled": true
+								},
+								{
+									"key": "familyMember.memberNumber",
+									"value": "1",
+									"description": "Filter by member number (number)",
+									"disabled": true
+								},
+								{
+									"key": "familyMember.isPresent",
+									"value": "true",
+									"description": "Filter by presence status (true/false)",
+									"disabled": true
+								},
+								{
+									"key": "familyMember.isGuardian",
+									"value": "false",
+									"description": "Filter by guardian status (true/false)",
+									"disabled": true
+								},
+								{
+									"key": "familyMember.person.motherName",
+									"value": "Fatima",
+									"description": "Filter by mother name (string, max:100)",
+									"disabled": true
+								},
+								{
+									"key": "familyMember.person.birthDateFrom",
+									"value": "1980-01-01",
+									"description": "Filter by birth date from (date, min:1900-01-01)",
+									"disabled": true
+								},
+								{
+									"key": "familyMember.person.birthDateTo",
+									"value": "1990-12-31",
+									"description": "Filter by birth date to (date, max:today)",
+									"disabled": true
+								},
+								{
+									"key": "familyMember.person.birthPlace",
+									"value": "Damascus",
+									"description": "Filter by birth place (string, max:200)",
+									"disabled": true
+								},
+								{
+									"key": "familyMember.person.nationalId",
+									"value": "12345678901",
+									"description": "Filter by national ID (string, exactly 11 chars)",
+									"disabled": true
+								},
+								{
+									"key": "familyMember.person.nationality",
+									"value": "Syrian",
+									"description": "Filter by nationality (string, max:100)",
+									"disabled": true
+								},
+								{
+									"key": "familyMember.person.motherNationality",
+									"value": "Syrian",
+									"description": "Filter by mother nationality (string, max:100)",
+									"disabled": true
+								},
+								{
+									"key": "familyMember.person.gender",
+									"value": "Male",
+									"description": "Filter by gender: Male, Female",
+									"disabled": true
+								},
+								{
+									"key": "familyMember.person.shoeSize",
+									"value": "42",
+									"description": "Filter by shoe size (number, min:16, max:48)",
+									"disabled": true
+								},
+								{
+									"key": "familyMember.person.maritalStatus",
+									"value": "married",
+									"description": "Filter by marital status: widowed, single, married, deceased, traveling, divorced",
+									"disabled": true
+								},
+								{
+									"key": "familyMember.person.isWorking",
+									"value": "true",
+									"description": "Filter by working status (true/false)",
+									"disabled": true
+								},
+								{
+									"key": "familyMember.person.currentJob",
+									"value": "Teacher",
+									"description": "Filter by current job (string, max:200)",
+									"disabled": true
+								},
+								{
+									"key": "familyMember.person.jobDetails",
+									"value": "Teaching mathematics",
+									"description": "Filter by job details (string, max:500)",
+									"disabled": true
+								},
+								{
+									"key": "familyMember.person.isSmoker",
+									"value": "false",
+									"description": "Filter by smoking status (true/false)",
+									"disabled": true
+								},
+								{
+									"key": "familyMember.person.healthStatus",
+									"value": "Healthy",
+									"description": "Filter by health status (string, max:200)",
+									"disabled": true
+								},
+								{
+									"key": "familyMember.person.isHealthInsuranceUsed",
+									"value": "false",
+									"description": "Filter by health insurance usage (true/false)",
+									"disabled": true
+								},
+								{
+									"key": "familyMember.person.isSuccessCertificateSubmitted",
+									"value": "submitted_passed",
+									"description": "Filter by success certificate submission status: submitted_passed, submitted_failed, submitted_passed_repeating, submitted_passed_with_help, no, not_needed_certificate, not_needed",
+									"disabled": true
+								},
+								{
+									"key": "familyMember.person.educationLevel",
+									"value": "university",
+									"description": "Filter by education level: primary, preparatory, completed_all_stages, illiterate, vocational, secondary, university, not_enrolled, not_studying, institute, enrolled_university, enrolled_school, basic_literate",
+									"disabled": true
+								},
+								{
+									"key": "familyMember.person.universityMajor",
+									"value": "Mathematics",
+									"description": "Filter by university major (string, max:150)",
+									"disabled": true
+								},
+								{
+									"key": "familyMember.person.currentStudyStatus",
+									"value": "completed_all_stages",
+									"description": "Filter by current study status (enum)",
+									"disabled": true
+								},
+								{
+									"key": "familyMember.person.schoolType",
+									"value": "public",
+									"description": "Filter by school type (enum)",
+									"disabled": true
+								},
+								{
+									"key": "familyMember.person.schoolName",
+									"value": "Damascus University",
+									"description": "Filter by school name (string, max:200)",
+									"disabled": true
+								},
+								{
+									"key": "familyMember.person.mobilePhone",
+									"value": "0935123456",
+									"description": "Filter by mobile phone (string, min:3, max:15)",
+									"disabled": true
+								},
+								{
+									"key": "familyMember.person.whatsappNumber",
+									"value": "+963935123456",
+									"description": "Filter by WhatsApp number (string, min:3, max:15)",
+									"disabled": true
+								},
+								{
+									"key": "familyMember.person.notes",
+									"value": "Test notes",
+									"description": "Filter by notes (string, max:2000)",
+									"disabled": true
+								},
+								{
+									"key": "familyMember.person.fullName",
+									"value": "Ahmad",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Retrieves a paginated list of all interviews with comprehensive filtering capabilities. This endpoint supports filtering by visit status (isVisited) and all family member properties including person details. When isVisited=true, only returns families that have been visited. All filters are optional and can be combined. Query parameters are used for all filtering instead of body parameters. The endpoint supports nested filtering for person properties through the familyMember.person.* prefix."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Interview",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"family\": {\n    \"requestNumber\": \"REQ-2024-001\", // string, max:32\n    \"familyName\": \"Al-Ahmad Family\", // string, required, max:64\n    \"isHusbandPalestinian\": false, // boolean\n    \"identityDocuments\": \"Passport, ID Card\", // string\n    \"emailArrivalDate\": \"2024-01-15\", // date string\n    \"contactedByEmployeeId\": 1, // number, positive integer\n    \"isRegisteredInOtherOrphanAssociation\": false, // boolean\n    \"otherOrphanAssociationName\": \"Other Association Name\", // string, max:128\n    \"formOrganizationStatus\": \"done\", // enum: done, done_outside_sponsorship_conditions, submitted_to_other_association, registered_in_other_association, outside_sponsorship_conditions, did_not_attend_no_apology, no_contact, request_remains_in_relief, no\n    \"formNumber\": \"FORM-2024-001\", // string, required, max:64\n    \"interviewDate\": \"2024-01-20\", // date string\n    \"managementDecision\": \"sponsorship\", // enum: decision_after_visit_opinion, sponsorship, no_sponsorship\n    \"formOrganizerNotes\": \"Family interview notes\", // string\n    \"archiveLocation\": \"direct_acceptance_interview_forms\", // enum: direct_non_acceptance_interview_forms, acceptance_interview_and_visit_forms_after_visit, non_acceptance_interview_and_visit_forms_after_visit, barzeh_residences, under_visit, archived_in_folder_administration_archive, no_paper_form_created, direct_acceptance_interview_forms\n    \"familyBookNumber\": \"FB123456\", // string, required, max:12\n    \"landlinePhone\": \"0211234567\", // string, Syrian landline format\n    \"mobilePhone\": \"+963991234567\", // string, Syrian phone format\n    \"isRefugee\": false, // boolean\n    \"isExtremelyPoor\": true, // boolean\n    \"sponsorshipStatus\": \"yes\", // enum: yes, no, under_visit\n    \"requestAcceptanceDate\": \"2024-01-10\", // date string\n    \"requestSuspensionDate\": null, // date string\n    \"requestStatus\": \"social_sponsorship\", // enum: suspend_request, social_sponsorship, orphans_75000, orphans_150000, orphans_225000\n    \"previousRequestStatus\": \"NEW\", // string, max:32\n    \"isStatusUpdatedAtSocialAffairs\": false, // boolean\n    \"beneficiaryFamilyMembersCount\": 5, // number\n    \"guardianFamilyMembersCount\": 2, // number\n    \"sharedMealMembersCount\": 7, // number\n    \"voucherValue\": \"300000\", // enum: unspecified, 300000, 350000, 400000\n    \"houseType\": \"rent\", // enum: rent, rent_paid_by_philanthropists, hospitality, hospitality_with_family, hospitality_with_resident_inheritance_share, hospitality_with_rent, hospitality_with_rent_paid_by_philanthropists, hospitality_with_husband_family, hospitality_with_resident, hospitality_with_father_family, owned\n    \"currentResidenceAddress\": \"Damascus, Syria\", // string, max:255\n    \"currentResidenceArea\": \"Old City\" // string, max:255\n  },\n  \"guardian\": {\n    \"relationType\": \"Father\", // enum: Mother, Father, Daughter, Son, Other\n    \"isSponsored\": false, // boolean\n    \"memberNumber\": 1, // number\n    \"isPresent\": true, // boolean\n    \"isGuardian\": true, // boolean\n    \"notes\": \"Guardian notes\", // string, max:4096\n    \"person\": {\n      \"fullName\": \"Ahmad Al-Ahmad\", // string, required, min:3, max:300\n      \"motherName\": \"Fatima Al-Ahmad\", // string, min:3, max:100\n      \"birthDate\": \"1980-05-15\", // date, min:1900-01-01, max:today\n      \"birthPlace\": \"Damascus\", // string, min:3, max:200\n      \"nationalId\": \"12345678909\", // string, exactly 11 chars\n      \"nationality\": \"Syrian\", // string, min:3, max:100\n      \"motherNationality\": \"Syrian\", // string, min:3, max:100\n      \"gender\": \"Male\", // enum: Male, Female\n      \"shoeSize\": 42, // number, min:16, max:48\n      \"maritalStatus\": \"married\", // enum: widowed, single, married, deceased, traveling, divorced\n      \"isWorking\": true, // boolean\n      \"currentJob\": \"Teacher\", // string, min:3, max:200\n      \"jobDetails\": \"Teaching mathematics at local school\", // string, min:1, max:500\n      \"isSmoker\": false, // boolean\n      \"healthStatus\": \"Good\", // string, min:1, max:200\n      \"isHealthInsuranceUsed\": false, // boolean\n      \"isSuccessCertificateSubmitted\": \"submitted_passed\", // enum: submitted_passed, submitted_failed, submitted_passed_repeating, submitted_passed_with_help, no, not_needed_certificate, not_needed\n      \"educationLevel\": \"university\", // enum: primary, preparatory, completed_all_stages, illiterate, vocational, secondary, university, not_enrolled, not_studying, institute, enrolled_university, enrolled_school, basic_literate\n      \"universityMajor\": \"Mathematics\", // string, min:3, max:150\n      \"currentStudyStatus\": \"completed_all_stages\", // enum: completed_all_stages, category_3, grade_1, grade_1_cerebral_palsy, grade_2, grade_3, grade_4, grade_5, grade_6, grade_7, grade_8, grade_9, grade_10, grade_10_science, grade_10_literature, grade_10_medical_equipment, grade_10_computer_tech, grade_10_industry, grade_11, grade_11_science, grade_11_literature, grade_11_technical, grade_11_business, grade_11_medical_equipment, baccalaureate, baccalaureate_science, baccalaureate_literature, baccalaureate_free, baccalaureate_free_science, baccalaureate_free_literature, university, not_enrolled, certificate_1, certificate_2\n      \"schoolType\": \"public\", // enum: public, private, private_martyrs_children, sharia_boarding, sharia, private_institute, hearing_imp_institute\n      \"schoolName\": \"Damascus University\", // string, min:3, max:200\n      \"mobilePhone\": \"+963991234567\", // string, Syrian phone format\n      \"whatsappNumber\": \"+963991234567\", // string, min:3, max:15\n      \"notes\": \"Person notes\" // string, min:1, max:2000\n    }\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/interview/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"interview",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "16",
+									"description": "Interview ID (family ID) to update"
+								}
+							]
+						},
+						"description": "Updates an existing interview by family ID. Both family and guardian information can be updated. The update is performed within a transaction to ensure data consistency. Only provided fields will be updated. Example usage: Update family and guardian information for an existing interview."
+					},
+					"response": []
+				}
+			],
+			"description": "Interview module endpoints for managing family interviews with guardians"
+		},
+		{
+			"name": "Uploads",
+			"item": [
+				{
+					"name": "Upload Image",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "personId",
+									"value": "3",
+									"description": "number, positive integer - ID of the person to associate the image with",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"description": "file - Image file to upload",
+									"type": "file",
+									"src": "/C:/Users/Ayman_Alkhatib/Desktop/1.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/uploads",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"uploads"
+							]
+						},
+						"description": "Upload an image file and associate it with a person. Requires CREATE_UPLOAD permission. The endpoint accepts multipart form data with personId and image file. Returns the personId and generated image URL."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Image",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/uploads/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"uploads",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "3",
+									"description": "number, positive integer - ID of the image to delete"
+								}
+							]
+						},
+						"description": "Delete an image by its ID. Requires DELETE_UPLOAD permission. Returns HTTP 204 No Content on successful deletion."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Visits",
+			"item": [
+				{
+					"name": "Create Visit",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"familyId\": 13, // number, required, positive integer\n  \"visitDate\": \"2024-01-15\", // date, optional\n  \"committeeNotesAndSuggestionsOfTheVisitCommittee\": \"Family needs immediate assistance\", // string, optional, max:5000\n  \"paperSentDateOfTheVisit\": \"2024-01-16\", // date, optional\n  \"guardianRelationship\": \"father\", // enum, optional, values: daughter, son, mother, father, paternal_uncle, paternal_aunt, maternal_uncle, maternal_aunt, paternal_uncle_cousin, paternal_aunt_cousin, maternal_uncle_cousin, maternal_aunt_cousin, paternal_grandfather, maternal_grandfather, paternal_grandmother, maternal_grandmother, paternal_uncle_wife, other\n  \"numberOfFamilyMembers\": 5, // number, required, min:1, max:50\n  \"numberOfRemainingFamilyMembersInTheHouse\": 3, // number, required, min:0, max:50\n  \"road\": {\n    \"isExtreme\": true, // boolean, optional\n    \"isPaved\": false, // boolean, optional\n    \"isDirt\": true, // boolean, optional\n    \"isClose\": false, // boolean, optional\n    \"notes\": \"Road is difficult to access\" // string, optional, max:1000\n  },\n  \"houseCondition\": \"floor\", // enum, optional, values: floor, arabic, shared, arabic_european, building_basement, ground_floor\n  \"notes\": \"House is in poor condition\", // string, optional, max:5000\n  \"houseOwnership\": \"rent\", // enum, optional, values: owner, state_owned, installment, rent, guest_at_rent, guest_at_resident, guest_at_resident_inheritance_share, with_family, guest, private_owner_inheritance_share, inheritance_share\n  \"furnishings\": {\n    \"sofaSets\": 1, // number, optional, min:0, max:100\n    \"sofas\": 2, // number, optional, min:0, max:100\n    \"mattresses\": 3, // number, optional, min:0, max:100\n    \"notes\": \"Basic furnishings available\" // string, optional, max:1000\n  },\n  \"carpetsAndMats\": {\n    \"carpetsCount\": 2, // number, optional, min:0, max:100\n    \"matsCount\": 4, // number, optional, min:0, max:100\n    \"notes\": \"Some carpets and mats present\" // string, optional, max:1000\n  },\n  \"blankets\": {\n    \"blanketsCount\": 3, // number, optional, min:0, max:100\n    \"notes\": \"Limited blankets available\" // string, optional, max:1000\n  },\n  \"quilts\": {\n    \"quiltsCount\": 2, // number, optional, min:0, max:100\n    \"notes\": \"Some quilts present\" // string, optional, max:1000\n  },\n  \"beds\": {\n    \"bedsCount\": 2, // number, optional, min:0, max:100\n    \"notes\": \"Two beds available\" // string, optional, max:1000\n  },\n  \"wardrobes\": {\n    \"wardrobesCount\": 1, // number, optional, min:0, max:100\n    \"notes\": \"One wardrobe present\" // string, optional, max:1000\n  },\n  \"householdItems\": {\n    \"tables\": 1, // number, optional, min:0, max:100\n    \"chairs\": 4, // number, optional, min:0, max:100\n    \"batteries\": 2, // number, optional, min:0, max:100\n    \"televisions\": 1, // number, optional, min:0, max:100\n    \"screens\": 0, // number, optional, min:0, max:100\n    \"waterCoolers\": 1, // number, optional, min:0, max:100\n    \"microwaves\": 0, // number, optional, min:0, max:100\n    \"vacuumCleaners\": 0, // number, optional, min:0, max:100\n    \"computers\": 0, // number, optional, min:0, max:100\n    \"laptops\": 0, // number, optional, min:0, max:100\n    \"routers\": 0, // number, optional, min:0, max:100\n    \"landlinePhones\": 1, // number, optional, min:0, max:100\n    \"mobilePhones\": \"old\", // enum, required, values: new, old, medium, available, not_available, not_reported_in_paper\n    \"electricOvens\": 0, // number, optional, min:0, max:100\n    \"freezers\": 0, // number, optional, min:0, max:100\n    \"notes\": \"Basic household items present\" // string, optional, max:1000\n  },\n  \"washingMachine\": {\n    \"count\": 1, // number, optional, min:0, max:100\n    \"type\": \"automatic\", // enum, optional, values: automatic, twin_tub, standard\n    \"notes\": \"One automatic washing machine\" // string, optional, max:4096\n  },\n  \"gasOven\": {\n    \"count\": 1, // number, optional, min:0, max:100\n    \"type\": \"standard\", // string, optional, max:100\n    \"notes\": \"One gas oven available\" // string, optional, max:1000\n  },\n  \"coolingDevices\": {\n    \"airConditionersCount\": 0, // number, optional, min:0, max:100\n    \"fansCount\": 2, // number, optional, min:0, max:100\n    \"notes\": \"Two fans available\" // string, optional, max:1000\n  },\n  \"refrigerator\": {\n    \"count\": 1, // number, optional, min:0, max:100\n    \"notes\": \"One refrigerator working\" // string, optional, max:1000\n  },\n  \"heatingDevices\": {\n    \"dieselHeatersCount\": 0, // number, optional, min:0, max:100\n    \"gasHeatersCount\": 1, // number, optional, min:0, max:100\n    \"woodHeatersCount\": 0, // number, optional, min:0, max:100\n    \"electricHeatersCount\": 0, // number, optional, min:0, max:100\n    \"notes\": \"One gas heater available\" // string, optional, max:1000\n  },\n  \"wasteBasket\": \"Present but needs cleaning\", // string, optional, max:1000\n  \"schoolExpenses\": 150000, // number, optional, min:0, max:999999.99\n  \"clothesCondition\": \"Worn but usable\", // string, optional, max:1000\n  \"shoesCondition\": \"Poor condition\", // string, optional, max:1000\n  \"foodSuppliesCondition\": \"Limited supplies\", // string, optional, max:1000\n  \"needsOrLuxuriesNotReportedInThePaper\": \"Additional blankets needed\", // string, optional, max:1000\n  \"barakaAssociationIncome\": \"lbp_150000\", // enum, optional, values: lbp_75000, lbp_150000, lbp_225000, none\n  \"income\": {\n    \"amount\": 200000, // number, optional, min:0, max:999999.99\n    \"source\": \"Father's salary\" // string, optional, max:500\n  },\n  \"availableSpendingWithoutAssociation\": 50000, // number, optional, min:0, max:999999.99\n  \"totalIncomeWithoutAssociation\": 250000, // number, optional, min:0, max:999999.99\n  \"amountOfRentIfTheApplicantIsTheOnePayingIt\": 100000, // number, optional, min:0, max:999999.99\n  \"workingIndividual\": {\n    \"age\": \"one_over_15\", // enum, optional, values: under_15, one_over_15, two_over_15, more_than_two_over_15, none\n    \"notes\": \"Father works as construction worker\" // string, optional, max:1000\n  },\n  \"disabilityOrIllness\": {\n    \"status\": \"one\", // enum, optional, values: more_than_one, one, none\n    \"notes\": \"Mother has diabetes\" // string, optional, max:1000\n  },\n  \"visitCommitteeEvaluation\": {\n    \"cleanlinessAndOrder\": \"50%\", // enum, optional, values: 30%, 50%, 70%, 90%, Not mentioned\n    \"generalMorals\": \"70%\", // enum, optional, values: 30%, 50%, 70%, 90%, Not mentioned\n    \"physicalAndMentalHealth\": \"50%\", // enum, optional, values: 30%, 50%, 70%, 90%, Not mentioned\n    \"surroundingEnvironment\": \"30%\" // enum, optional, values: 30%, 50%, 70%, 90%, Not mentioned\n  },\n  \"committeeMembers\": [\"Ahmed Ali\", \"Fatima Hassan\"] // array of strings, optional, max:200 each\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/visits",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"visits"
+							]
+						},
+						"description": "Creates a new visit record for a family. This endpoint requires CREATE_VISIT permission. The request body contains comprehensive information about the family visit including household items, income details, and committee evaluation."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Visits",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/visits?page=1&limit=10&familyId=1&visitDateFrom=2024-01-01&visitDateTo=2024-12-31&paperSentDateFrom=2024-01-01&paperSentDateTo=2024-12-31&guardianRelationship=father&numberOfFamilyMembersMin=1&numberOfFamilyMembersMax=10&numberOfRemainingFamilyMembersMin=0&numberOfRemainingFamilyMembersMax=5&houseCondition=floor&houseOwnership=rent&schoolExpensesMin=0&schoolExpensesMax=200000&barakaAssociationIncome=lbp_150000&availableSpendingMin=0&availableSpendingMax=100000&totalIncomeMin=0&totalIncomeMax=500000&rentAmountMin=0&rentAmountMax=200000&committeeMemberName=Ahmed&searchNotes=family",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"visits"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number for pagination"
+								},
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "Number of items per page"
+								},
+								{
+									"key": "familyId",
+									"value": "1",
+									"description": "Filter by family ID (positive integer)"
+								},
+								{
+									"key": "visitDateFrom",
+									"value": "2024-01-01",
+									"description": "Filter visits from this date"
+								},
+								{
+									"key": "visitDateTo",
+									"value": "2024-12-31",
+									"description": "Filter visits to this date"
+								},
+								{
+									"key": "paperSentDateFrom",
+									"value": "2024-01-01",
+									"description": "Filter paper sent date from"
+								},
+								{
+									"key": "paperSentDateTo",
+									"value": "2024-12-31",
+									"description": "Filter paper sent date to"
+								},
+								{
+									"key": "guardianRelationship",
+									"value": "father",
+									"description": "Filter by guardian relationship type"
+								},
+								{
+									"key": "numberOfFamilyMembersMin",
+									"value": "1",
+									"description": "Minimum number of family members (1-50)"
+								},
+								{
+									"key": "numberOfFamilyMembersMax",
+									"value": "10",
+									"description": "Maximum number of family members (1-50)"
+								},
+								{
+									"key": "numberOfRemainingFamilyMembersMin",
+									"value": "0",
+									"description": "Minimum remaining family members (0-50)"
+								},
+								{
+									"key": "numberOfRemainingFamilyMembersMax",
+									"value": "5",
+									"description": "Maximum remaining family members (0-50)"
+								},
+								{
+									"key": "houseCondition",
+									"value": "floor",
+									"description": "Filter by house condition"
+								},
+								{
+									"key": "houseOwnership",
+									"value": "rent",
+									"description": "Filter by house ownership type"
+								},
+								{
+									"key": "schoolExpensesMin",
+									"value": "0",
+									"description": "Minimum school expenses (0-999999.99)"
+								},
+								{
+									"key": "schoolExpensesMax",
+									"value": "200000",
+									"description": "Maximum school expenses (0-999999.99)"
+								},
+								{
+									"key": "barakaAssociationIncome",
+									"value": "lbp_150000",
+									"description": "Filter by Baraka association income amount"
+								},
+								{
+									"key": "availableSpendingMin",
+									"value": "0",
+									"description": "Minimum available spending (0-999999.99)"
+								},
+								{
+									"key": "availableSpendingMax",
+									"value": "100000",
+									"description": "Maximum available spending (0-999999.99)"
+								},
+								{
+									"key": "totalIncomeMin",
+									"value": "0",
+									"description": "Minimum total income (0-999999.99)"
+								},
+								{
+									"key": "totalIncomeMax",
+									"value": "500000",
+									"description": "Maximum total income (0-999999.99)"
+								},
+								{
+									"key": "rentAmountMin",
+									"value": "0",
+									"description": "Minimum rent amount (0-999999.99)"
+								},
+								{
+									"key": "rentAmountMax",
+									"value": "200000",
+									"description": "Maximum rent amount (0-999999.99)"
+								},
+								{
+									"key": "committeeMemberName",
+									"value": "Ahmed",
+									"description": "Search by committee member name (max:200)"
+								},
+								{
+									"key": "searchNotes",
+									"value": "family",
+									"description": "Search in notes and committee suggestions (max:1000)"
+								}
+							]
+						},
+						"description": "Retrieves a paginated list of visits with comprehensive filtering options. This endpoint requires READ_VISIT permission. Results are ordered by visit date descending (most recent first). All query parameters are optional and can be combined for advanced filtering."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Visit by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/visits/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"visits",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4",
+									"description": "Visit ID (positive integer)"
+								}
+							]
+						},
+						"description": "Retrieves a specific visit by its ID. This endpoint requires READ_VISIT permission. The response includes the visit details with family relationship loaded."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Monthly Stats",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/visits/monthly-stats?startDate=2025-04-20&endDate=2025-11-11",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"visits",
+								"monthly-stats"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "2025-04-20"
+								},
+								{
+									"key": "endDate",
+									"value": "2025-11-11"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Visit",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"visitDate\": \"2024-01-20\", // date, optional\n  \"committeeNotesAndSuggestionsOfTheVisitCommittee\": \"Updated assessment - family needs urgent help\", // string, optional, max:5000\n  \"paperSentDateOfTheVisit\": \"2024-01-21\", // date, optional\n  \"guardianRelationship\": \"mother\", // enum, optional, values: daughter, son, mother, father, paternal_uncle, paternal_aunt, maternal_uncle, maternal_aunt, paternal_uncle_cousin, paternal_aunt_cousin, maternal_uncle_cousin, maternal_aunt_cousin, paternal_grandfather, maternal_grandfather, paternal_grandmother, maternal_grandmother, paternal_uncle_wife, other\n  \"numberOfFamilyMembers\": 6, // number, optional, min:1, max:50\n  \"numberOfRemainingFamilyMembersInTheHouse\": 4, // number, optional, min:0, max:50\n  \"road\": {\n    \"isExtreme\": false, // boolean, optional\n    \"isPaved\": true, // boolean, optional\n    \"isDirt\": false, // boolean, optional\n    \"isClose\": true, // boolean, optional\n    \"notes\": \"Road access improved\" // string, optional, max:1000\n  },\n  \"houseCondition\": \"arabic\", // enum, optional, values: floor, arabic, shared, arabic_european, building_basement, ground_floor\n  \"notes\": \"House condition has improved\", // string, optional, max:5000\n  \"houseOwnership\": \"owner\", // enum, optional, values: owner, state_owned, installment, rent, guest_at_rent, guest_at_resident, guest_at_resident_inheritance_share, with_family, guest, private_owner_inheritance_share, inheritance_share\n  \"furnishings\": {\n    \"sofaSets\": 2, // number, optional, min:0, max:100\n    \"sofas\": 3, // number, optional, min:0, max:100\n    \"mattresses\": 4, // number, optional, min:0, max:100\n    \"notes\": \"More furnishings added\" // string, optional, max:1000\n  },\n  \"carpetsAndMats\": {\n    \"carpetsCount\": 3, // number, optional, min:0, max:100\n    \"matsCount\": 5, // number, optional, min:0, max:100\n    \"notes\": \"Additional carpets provided\" // string, optional, max:1000\n  },\n  \"blankets\": {\n    \"blanketsCount\": 5, // number, optional, min:0, max:100\n    \"notes\": \"More blankets received\" // string, optional, max:1000\n  },\n  \"quilts\": {\n    \"quiltsCount\": 3, // number, optional, min:0, max:100\n    \"notes\": \"Additional quilts provided\" // string, optional, max:1000\n  },\n  \"beds\": {\n    \"bedsCount\": 3, // number, optional, min:0, max:100\n    \"notes\": \"New bed added\" // string, optional, max:1000\n  },\n  \"wardrobes\": {\n    \"wardrobesCount\": 2, // number, optional, min:0, max:100\n    \"notes\": \"Additional wardrobe provided\" // string, optional, max:1000\n  },\n  \"householdItems\": {\n    \"tables\": 2, // number, optional, min:0, max:100\n    \"chairs\": 6, // number, optional, min:0, max:100\n    \"batteries\": 3, // number, optional, min:0, max:100\n    \"televisions\": 1, // number, optional, min:0, max:100\n    \"screens\": 0, // number, optional, min:0, max:100\n    \"waterCoolers\": 1, // number, optional, min:0, max:100\n    \"microwaves\": 1, // number, optional, min:0, max:100\n    \"vacuumCleaners\": 0, // number, optional, min:0, max:100\n    \"computers\": 0, // number, optional, min:0, max:100\n    \"laptops\": 0, // number, optional, min:0, max:100\n    \"routers\": 0, // number, optional, min:0, max:100\n    \"landlinePhones\": 1, // number, optional, min:0, max:100\n    \"mobilePhones\": \"medium\", // enum, optional, values: new, old, medium, available, not_available, not_reported_in_paper\n    \"electricOvens\": 0, // number, optional, min:0, max:100\n    \"freezers\": 0, // number, optional, min:0, max:100\n    \"notes\": \"Household items improved\" // string, optional, max:1000\n  },\n  \"washingMachine\": {\n    \"count\": 1, // number, optional, min:0, max:100\n    \"type\": \"twin_tub\", // enum, optional, values: automatic, twin_tub, standard\n    \"notes\": \"Washing machine working well\" // string, optional, max:4096\n  },\n  \"gasOven\": {\n    \"count\": 1, // number, optional, min:0, max:100\n    \"type\": \"modern\", // string, optional, max:100\n    \"notes\": \"Gas oven in good condition\" // string, optional, max:1000\n  },\n  \"coolingDevices\": {\n    \"airConditionersCount\": 1, // number, optional, min:0, max:100\n    \"fansCount\": 3, // number, optional, min:0, max:100\n    \"notes\": \"Air conditioner installed\" // string, optional, max:1000\n  },\n  \"refrigerator\": {\n    \"count\": 1, // number, optional, min:0, max:100\n    \"notes\": \"Refrigerator working properly\" // string, optional, max:1000\n  },\n  \"heatingDevices\": {\n    \"dieselHeatersCount\": 0, // number, optional, min:0, max:100\n    \"gasHeatersCount\": 1, // number, optional, min:0, max:100\n    \"woodHeatersCount\": 0, // number, optional, min:0, max:100\n    \"electricHeatersCount\": 1, // number, optional, min:0, max:100\n    \"notes\": \"Heating devices working well\" // string, optional, max:1000\n  },\n  \"wasteBasket\": \"Properly maintained\", // string, optional, max:1000\n  \"schoolExpenses\": 180000, // number, optional, min:0, max:999999.99\n  \"clothesCondition\": \"Good condition\", // string, optional, max:1000\n  \"shoesCondition\": \"Adequate condition\", // string, optional, max:1000\n  \"foodSuppliesCondition\": \"Sufficient supplies\", // string, optional, max:1000\n  \"needsOrLuxuriesNotReportedInThePaper\": \"No additional needs\", // string, optional, max:1000\n  \"barakaAssociationIncome\": \"lbp_225000\", // enum, optional, values: lbp_75000, lbp_150000, lbp_225000, none\n  \"income\": {\n    \"amount\": 250000, // number, optional, min:0, max:999999.99\n    \"source\": \"Father's salary increased\" // string, optional, max:500\n  },\n  \"availableSpendingWithoutAssociation\": 70000, // number, optional, min:0, max:999999.99\n  \"totalIncomeWithoutAssociation\": 320000, // number, optional, min:0, max:999999.99\n  \"amountOfRentIfTheApplicantIsTheOnePayingIt\": 120000, // number, optional, min:0, max:999999.99\n  \"workingIndividual\": {\n    \"age\": \"two_over_15\", // enum, optional, values: under_15, one_over_15, two_over_15, more_than_two_over_15, none\n    \"notes\": \"Father and eldest son working\" // string, optional, max:1000\n  },\n  \"disabilityOrIllness\": {\n    \"status\": \"none\", // enum, optional, values: more_than_one, one, none\n    \"notes\": \"Mother's condition improved\" // string, optional, max:1000\n  },\n  \"visitCommitteeEvaluation\": {\n    \"cleanlinessAndOrder\": \"70%\", // enum, optional, values: 30%, 50%, 70%, 90%, Not mentioned\n    \"generalMorals\": \"90%\", // enum, optional, values: 30%, 50%, 70%, 90%, Not mentioned\n    \"physicalAndMentalHealth\": \"70%\", // enum, optional, values: 30%, 50%, 70%, 90%, Not mentioned\n    \"surroundingEnvironment\": \"50%\" // enum, optional, values: 30%, 50%, 70%, 90%, Not mentioned\n  },\n  \"committeeMembers\": [\"Ahmed Ali\", \"Fatima Hassan\", \"Mohammed Omar\"] // array of strings, optional, max:200 each\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/visits/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"visits",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Visit ID (positive integer)"
+								}
+							]
+						},
+						"description": "Updates an existing visit record. This endpoint requires UPDATE_VISIT permission. The familyId field is excluded from updates as it cannot be changed after creation. All other fields are optional and can be updated individually or in combination."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Visit",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/visits/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"visits",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Visit ID (positive integer)"
+								}
+							]
+						},
+						"description": "Deletes a visit record by its ID. This endpoint requires DELETE_VISIT permission. Returns HTTP 204 No Content on successful deletion. The visit will be permanently removed from the database."
+					},
+					"response": []
+				}
+			],
+			"description": "Visits module endpoints for managing family visits"
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{accessToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"pm.request.headers.add({\r",
+					"  key: \"developer-mode\",\r",
+					"  value: pm.variables.get(\"developer-mode\")\r",
+					"});\r",
+					"\r",
+					"pm.request.headers.add({\r",
+					"  key: \"Accept-Language\",\r",
+					"  value: pm.variables.get(\"lang\")\r",
+					"});\r",
+					"\r",
+					"pm.request.headers.add({\r",
+					"  key: \"Authorization\",\r",
+					"  value: \"Bearer \" + pm.environment.get(\"accessToken\")\r",
+					"});\r",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "developer-mode",
+			"value": "true",
+			"type": "string"
+		},
+		{
+			"key": "lang",
+			"value": "ar",
+			"type": "string"
+		}
+	]
+}

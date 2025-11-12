@@ -7,6 +7,7 @@ import {
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { NormalizeArabicMiddleware } from './common/middlewares/normalize-arabic.middleware';
 import { ParseQueryMiddleware } from './common/middlewares/parse-query.middleware';
 import { AuthModule } from './modules/auth/auth.module';
 import { BackupModule } from './modules/backup';
@@ -79,6 +80,8 @@ import { AppTypeOrmModule } from './shared/modules/app-type-orm/app-type-orm.mod
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(ParseQueryMiddleware).forRoutes('*');
+    consumer
+      .apply(ParseQueryMiddleware, NormalizeArabicMiddleware)
+      .forRoutes('*');
   }
 }
