@@ -30,7 +30,7 @@
 
 ```mermaid
 flowchart LR
-    Client(["Web or mobile client"]) -->|"HTTPS · Bearer JWT · ?lang=ar"| MW
+    Client(["Web or mobile client"]) -->|"HTTPS · Bearer JWT"| MW
 
     subgraph API["NestJS API · /api"]
         direction LR
