@@ -30,8 +30,8 @@
 ## Architecture
 
 ```mermaid
-flowchart LR
-    Client(["Web or mobile client"]) -->|"HTTPS · Bearer JWT"| MW
+flowchart TB
+    Client(["Web or mobile client"]) -->|"HTTPS · Bearer JWT"| API
 
     subgraph API["NestJS API · /api"]
         direction LR
@@ -40,8 +40,8 @@ flowchart LR
         Pipe --> Modules["Feature modules"]
     end
 
-    Modules -->|TypeORM| DB[("PostgreSQL")]
-    Modules -->|"photos (sharp)"| Store[("Local disk or<br/>Supabase Storage")]
+    API --> DB[("PostgreSQL<br/>via TypeORM")]
+    API --> Store[("Photo storage<br/>local disk or Supabase")]
 ```
 
 One interceptor wraps every response in the same envelope. Errors go through a global exception filter that picks a handler by error type: HTTP, JWT, Multer or TypeORM. For example, a PostgreSQL unique-key violation becomes a `409` with the message "This record already exists".
