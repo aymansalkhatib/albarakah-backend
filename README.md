@@ -10,6 +10,7 @@
 [![TypeORM](https://img.shields.io/badge/TypeORM-0.3-FE0803)](https://typeorm.io)
 [![Node](https://img.shields.io/badge/Node-%3E%3D20-339933?logo=node.js&logoColor=white)](https://nodejs.org)
 [![i18n](https://img.shields.io/badge/i18n-Arabic%20%7C%20English-0A7E8C)](#localization)
+[![License](https://img.shields.io/badge/license-all%20rights%20reserved-lightgrey)](LICENSE)
 
 </div>
 
@@ -212,3 +213,9 @@ curl -X POST http://localhost:3000/api/auth/login \
 | `npm run lint`, `npm run format` | ESLint (with `--fix`) and Prettier |
 
 The seeder names are `permission`, `system-users`, `employees`, `families`, `family-members`, `family-needs`, `emergency-aid-requests`, `received-assistance`, `training-courses`, `course-batches`, `person-course-batches`, `supporters`, `visits` and `all`.
+
+## License
+
+Copyright © 2024–2026 Ayman Al-Khatib. All rights reserved.
+
+This code is proprietary and is not licensed for any use. You may not use, copy, modify or distribute it, in whole or in part, without written permission. See [LICENSE](LICENSE).
